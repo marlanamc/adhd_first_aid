@@ -484,7 +484,11 @@ export default function Home() {
                 <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
                   Here are strategies that might help when you're feeling <span className="text-primary font-medium">{selectedFeeling}</span>,
                   dealing with <span className="text-primary font-medium">{selectedIssue}</span>
-                  {selectedBarrier && <>, and working through <span className="text-primary font-medium">{selectedBarrier}</span></>}.
+                 {selectedBarrier && (
+                    <>
+                      , and working through <span className="text-primary font-medium">{selectedBarrier}</span>
+                    </>
+                  )}.
                 </p>
                 <p className="text-sm text-muted-foreground mt-2">
                   Some strategies might work for multiple situations, so we've included those too!
@@ -643,7 +647,6 @@ export default function Home() {
                       </Button>
                     </div>
                   </div>
-                </>
               )}
             </div>
           )}
