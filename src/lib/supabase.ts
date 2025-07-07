@@ -72,7 +72,10 @@ export async function getStrategies(): Promise<Strategy[]> {
   const { data, error } = await supabase
     .from('strategies')
     .select('*')
-    .order('votes', { ascending: false })
+    // order by creation time to show newest strategies first. The previous
+    // implementation attempted to sort by a non-existent `votes` column which
+    // resulted in a runtime error.
+    .order('created_at', { ascending: false })
   
   if (error) {
     console.error('Error fetching strategies:', error)
