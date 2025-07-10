@@ -1,15 +1,17 @@
 import { supabase } from './supabase'
 import type { Strategy } from './supabase'
+import type { StrategyFilters } from '../types/strategies'
 
-export interface StrategyFilters {
-  feelings?: string[]
-  issues?: string[]
-  barrier_type?: string
-  search?: string
-}
+// Strategy data access functions
 
 /**
  * Get all strategies with optional filtering
+ * @param {Object} filters - Filter options
+ * @param {string[]} filters.feelings - Filter by feelings
+ * @param {string[]} filters.issues - Filter by issues
+ * @param {string} filters.barrier_type - Filter by barrier type
+ * @param {string} filters.search - Search query
+ * @returns {Promise<Array>} Array of strategies
  */
 export async function getStrategies(filters: StrategyFilters = {}): Promise<Strategy[]> {
   try {
@@ -34,20 +36,29 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
           barrier:barrier_id (
             name
           )
+        ),
+        strategy_tags:strategy_tags (
+          tag:tag_id (
+            name,
+            category
+          )
         )
       `)
-    let strategyIds: number[] = []
+    
+    let strategyIds: string[] = []
 
     // FEELINGS
-    if ((filters.feelings?.length ?? 0) > 0) {
+    if (filters.feelings && filters.feelings.length > 0) {
+      console.log('Adding feeling filter:', filters.feelings)
       const { data: feelingIdsData, error: feelingError } = await supabase
         .from('feelings')
         .select('id')
-        .in('name', filters.feelings ?? [])
+        .in('name', filters.feelings)
 
       if (feelingError) throw feelingError
 
       const feelingIds = feelingIdsData.map(row => row.id)
+      console.log('Resolved feeling IDs:', feelingIds)
 
       const { data: sfData, error: sfError } = await supabase
         .from('strategy_feelings')
@@ -61,37 +72,32 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
     }
 
     // ISSUES
-    if ((filters.issues?.length ?? 0) > 0) {
+    if (filters.issues && filters.issues.length > 0) {
       console.log('Adding issue filter:', filters.issues)
-
-      // Step 1: Get issue IDs for the given issue names
-      const { data: issueRows, error: issueError } = await supabase
+      const { data: issueIdsData, error: issueError } = await supabase
         .from('issues')
         .select('id')
-        .in('name', filters.issues ?? [])
+        .in('name', filters.issues)
 
       if (issueError) throw issueError
 
-      const issueIds = (issueRows ?? []).map(row => row.id)
+      const issueIds = issueIdsData.map(row => row.id)
       console.log('Resolved issue IDs:', issueIds)
 
-      // Step 2: Get strategy IDs from strategy_issues
-      const { data: strategyIssueRows, error: strategyIssueError } = await supabase
+      const { data: siData, error: siError } = await supabase
         .from('strategy_issues')
         .select('strategy_id')
         .in('issue_id', issueIds)
 
-      if (strategyIssueError) throw strategyIssueError
+      if (siError) throw siError
 
-      const strategyIdsForIssues = (strategyIssueRows ?? []).map(row => row.strategy_id)
-      console.log('Matching strategy IDs for issue:', strategyIdsForIssues)
-
-      // Step 3: Refine the main strategy query
-      query = query.in('id', strategyIdsForIssues)
+      const siIds = siData.map(row => row.strategy_id)
+      strategyIds = strategyIds.length ? strategyIds.filter(id => siIds.includes(id)) : siIds
     }
 
     // BARRIERS
     if (filters.barrier_type) {
+      console.log('Adding barrier filter:', filters.barrier_type)
       const { data: barrierIdData, error: barrierError } = await supabase
         .from('barriers')
         .select('id')
@@ -113,15 +119,12 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
       }
     }
 
-    // Apply strategyId filter
+    // Apply strategyId filter if we have any
     if (strategyIds.length > 0) {
       query = query.in('id', strategyIds)
-    } else if (filters.feelings || filters.issues || filters.barrier_type) {
-      // If filters were used but no match, return empty
-      return []
     }
 
-    // SEARCH
+    // Search functionality
     if (filters.search) {
       const searchTerm = filters.search.toLowerCase()
       query = query.or(
@@ -129,18 +132,20 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
       )
     }
 
-    // Run query
-    console.log('Executing strategy query...')
+    // Execute final query
+    console.log('Executing final strategy query...')
     const { data, error } = await query
 
     if (error) {
-      console.error('Supabase query error:', error)
+      console.error('Error fetching strategies:', error)
+      console.error('Error details:', JSON.stringify(error, null, 2))
+      console.error('Error message:', error.message)
+      console.error('Error code:', error.code)
       throw error
     }
 
     console.log('Query successful. Strategies found:', data?.length ?? 0)
-    console.log('Fetched strategies:', data);
-    return data ?? []
+    return data || []
   } catch (error) {
     console.error('Error in getStrategies:', error)
     throw error
@@ -149,12 +154,17 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
 
 /**
  * Get a single strategy by ID
+ * @param {string} id - Strategy ID
+ * @returns {Promise<Object|null>} Strategy object or null
  */
-export async function getStrategy(id: string): Promise<Strategy | null> {
+export async function getStrategy(id: string) {
   try {
     const { data, error } = await supabase
       .from('strategies')
-      .select('*')
+      .select(`
+        *,
+        vote_count:strategy_votes(count)
+      `)
       .eq('id', id)
       .single()
 
@@ -171,9 +181,42 @@ export async function getStrategy(id: string): Promise<Strategy | null> {
 }
 
 /**
- * Get vote count for a strategy
+ * Vote for a strategy
+ * @param {string} strategyId - Strategy ID
+ * @param {string} sessionId - User session ID
+ * @returns {Promise<boolean>} Success status
  */
-export async function getVoteCount(strategyId: string): Promise<number> {
+export async function voteForStrategy(strategyId: string, sessionId: string) {
+  try {
+    const { error } = await supabase
+      .from('strategy_votes')
+      .insert({
+        strategy_id: strategyId,
+        session_id: sessionId
+      })
+
+    if (error) {
+      // If it's a duplicate vote, that's okay
+      if (error.code === '23505') {
+        return true
+      }
+      console.error('Error voting for strategy:', error)
+      return false
+    }
+
+    return true
+  } catch (error) {
+    console.error('Error in voteForStrategy:', error)
+    return false
+  }
+}
+
+/**
+ * Get vote count for a strategy
+ * @param {string} strategyId - Strategy ID
+ * @returns {Promise<number>} Vote count
+ */
+export async function getVoteCount(strategyId: string) {
   try {
     const { count, error } = await supabase
       .from('strategy_votes')
@@ -191,3 +234,36 @@ export async function getVoteCount(strategyId: string): Promise<number> {
     return 0
   }
 }
+
+/**
+ * Check if user has voted for a strategy
+ * @param {string} strategyId - Strategy ID
+ * @param {string} sessionId - User session ID
+ * @returns {Promise<boolean>} Whether user has voted
+ */
+export async function hasUserVoted(strategyId: string, sessionId: string) {
+  try {
+    const { data, error } = await supabase
+      .from('strategy_votes')
+      .select('id')
+      .eq('strategy_id', strategyId)
+      .eq('session_id', sessionId)
+      .single()
+
+    if (error && error.code !== 'PGRST116') {
+      console.error('Error checking vote status:', error)
+      return false
+    }
+
+    return !!data
+  } catch (error) {
+    console.error('Error in hasUserVoted:', error)
+    return false
+  }
+}
+
+// Utility function to generate a session ID for anonymous users
+export function generateSessionId() {
+  return 'session_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36)
+}
+

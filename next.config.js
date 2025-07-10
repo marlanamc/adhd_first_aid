@@ -1,21 +1,32 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    ignoreBuildErrors: true,
+  env: {
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   },
-  eslint: {
-    // Disable ESLint during builds to allow unescaped quotes
-    ignoreDuringBuilds: true,
+  // Enable experimental features for better environment variable support
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['localhost:3000'],
+    },
   },
-  output: 'export',
-  trailingSlash: true,
+  // Add Supabase domain to allowed image sources
   images: {
-    unoptimized: true
-  }
+    domains: ['sjbsmjaagvyyshumkohq.supabase.co'],
+  },
+  // Webpack configuration for better environment variable handling
+  webpack: (config, { isServer }) => {
+    // Add environment variables to DefinePlugin
+    config.plugins.forEach((plugin) => {
+      if (plugin.constructor.name === 'DefinePlugin') {
+        Object.assign(plugin.definitions, {
+          'process.env.NEXT_PUBLIC_SUPABASE_URL': JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_URL),
+          'process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY': JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
+        });
+      }
+    });
+    return config;
+  },
 }
 
 module.exports = nextConfig

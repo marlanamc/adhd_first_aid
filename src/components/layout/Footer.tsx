@@ -4,7 +4,7 @@ interface FooterProps {
 
 export function Footer({ navigateToPage }: FooterProps) {
   return (
-    <footer className="py-8 md:py-12 mobile-footer mobile-safe-area bg-white/30 backdrop-blur-sm border-t border-white/20">
+    <footer className="py-8 md:py-12 bg-white/30 backdrop-blur-sm border-t border-white/20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Footer Links and Info */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -53,7 +53,7 @@ export function Footer({ navigateToPage }: FooterProps) {
         {/* Bottom Legal Text */}
         <div className="text-center pt-6 border-t border-white/20">
           <p className="text-xs text-muted-foreground/60 font-light italic">
-            © 2025 ADHD First Aid Kit • Built with care for the ADHD community
+            © 2025 ADHD First Aid Kit 
           </p>
         </div>
       </div>

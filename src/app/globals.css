@@ -59,7 +59,7 @@
 
 @layer components {
   .feeling-button {
-    @apply transition-all duration-300 ease-out relative overflow-hidden border rounded-full py-3 px-4 text-sm font-light;
+    @apply transition-all duration-300 ease-out relative overflow-hidden border rounded-full py-3 px-4 text-sm font-medium;
     @apply hover:-translate-y-[1px] hover:shadow-lg;
     @apply active:translate-y-0;
     border-color: var(--border);
@@ -213,15 +213,19 @@
 /* Custom font families */
 .font-serif {
   font-family: 'Crimson Text', serif;
+  font-weight: 600;
 }
 
 .font-sans {
   font-family: 'Inter', sans-serif;
+  font-weight: 500;
 }
 
 /* Override base font */
 body {
   font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: rgb(31, 41, 55); /* Stronger default text color */
 }
 
 /* Flowing transition animations */
@@ -336,10 +340,16 @@ body {
   font-style: italic;
 }
 
-.body-light {
+.body-medium {
   font-family: 'Inter', sans-serif;
-  font-weight: 300;
+  font-weight: 500;
   line-height: 1.7;
+}
+
+.body-strong {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  line-height: 1.6;
 }
 
 /* Gentle pulse animation for selected state */
@@ -1499,25 +1509,25 @@ body {
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --background: #16202f;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 75%;
+    --accent: 0 0% 18%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 83.9%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -1533,6 +1543,665 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Search Animations */
+@keyframes search-overlay-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes search-results-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-overlay {
+  animation: search-overlay-enter 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.search-results {
+  animation: search-results-enter 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.search-suggestion {
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.search-suggestion:hover {
+  transform: translateY(-1px);
+}
+
+/* Enhanced search input focus */
+.search-input:focus {
+  transform: scale(1.01);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.search-input:focus::placeholder {
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+/* Toggle group custom styling */
+.mode-toggle-group {
+  position: relative;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 9999px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.mode-toggle-group::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border: 2px solid rgba(0, 0, 0, 0.05);
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.mode-toggle-item {
+  position: relative;
+  border-radius: 9999px;
+  padding: 10px 24px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  color: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.mode-toggle-item[data-state="on"] {
+  background: white;
+  color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  outline: 2px solid #0066ff;
+  outline-offset: -1px;
+}
+
+.mode-toggle-item:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.mode-toggle-item[data-state="off"]:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Strategy Title Styles */
+.strategy-title {
+  font-family: var(--font-playfair);
+  font-size: 1.5rem;
+  line-height: 1.4;
+  background: linear-gradient(135deg, #1a1a1a 0%, #404040 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.strategy-title::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  mix-blend-mode: overlay;
+}
+
+@media (min-width: 640px) {
+  .strategy-title {
+    font-size: 1.75rem;
+  }
+}
+
+/* Strategy Modal Title */
+.strategy-modal-title {
+  font-family: var(--font-playfair);
+  font-size: 2.5rem;
+  line-height: 1.2;
+  background: linear-gradient(135deg, #1a1a1a 0%, #404040 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.strategy-modal-title::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  mix-blend-mode: overlay;
+}
+
+@media (min-width: 768px) {
+  .strategy-modal-title {
+    font-size: 3rem;
+  }
+}
+
+/* Source-like Toggle Button */
+.source-toggle {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: rgb(49, 174, 193);
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.1),
+              0 0 10px rgba(139, 92, 246, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+
+.source-toggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.source-toggle:hover {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.2),
+              0 0 15px rgba(139, 92, 246, 0.3);
+  transform: translateY(-1px);
+}
+
+.source-toggle:hover::before {
+  opacity: 1;
+}
+
+.source-toggle:active {
+  transform: translateY(0px);
+}
+
+.source-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  opacity: 0.9;
+  position: relative;
+  z-index: 1;
+}
+
+.source-toggle span {
+  position: relative;
+  z-index: 1;
+}
+
+/* Dark mode ocean gradient - solid dark background with subtle accent */
+.dark .ocean-gradient {
+  background: #010914;
+  position: relative;
+}
+
+.dark .ocean-gradient::before {
+  background: 
+    radial-gradient(ellipse 60% 40% at 20% 0%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 80% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(52, 152, 219, 0.06) 0%, transparent 70%);
+}
+
+.dark .subtle-ocean-gradient {
+  background: #0f0f0f;
+}
+
+.dark .subtle-ocean-gradient::before {
+  background: 
+    radial-gradient(ellipse 50% 30% at 30% 0%, rgba(99, 102, 241, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 25% at 70% 30%, rgba(139, 92, 246, 0.04) 0%, transparent 60%);
+}
+
+/* Dark mode strategy cards - much more visible */
+.dark .strategy-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  color: #f5f5f5;
+}
+
+.dark .strategy-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 20px 60px -12px rgba(99, 102, 241, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.dark .strategy-card::before {
+  background: linear-gradient(90deg, 
+    rgba(99, 102, 241, 0.6) 0%, 
+    rgba(139, 92, 246, 0.6) 100%
+  );
+}
+
+.dark .strategy-card .strategy-title {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #ffffff 0%, #e5e5e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dark .strategy-card .strategy-description {
+  color: #d1d5db !important;
+}
+
+.dark .strategy-card .strategy-category {
+  color: #9ca3af !important;
+}
+
+/* Dark mode feeling buttons - more visible */
+.dark .feeling-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(16px);
+  color: #f5f5f5;
+}
+
+.dark .feeling-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 25px -8px rgba(99, 102, 241, 0.3);
+}
+
+/* Dark mode dropdown menu - more visible */
+.dark .dropdown-menu {
+  background: rgba(15, 15, 15, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(24px);
+}
+
+.dark .dropdown-item {
+  color: #e5e5e5 !important;
+}
+
+.dark .dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+/* Dark mode text improvements */
+.dark body {
+  color: #f5f5f5;
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: #ffffff;
+}
+
+.dark .text-muted-foreground {
+  color: #9ca3af !important;
+}
+
+.dark .heading-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #d1d5db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Dark mode hover text backgrounds - using gray instead of white */
+.dark .feeling-button:hover,
+.dark button.feeling-button:hover,
+html.dark .feeling-button:hover,
+html.dark button.feeling-button:hover {
+  background: #374151 !important;
+  border-color: #6b7280 !important;
+  box-shadow: 0 8px 25px -8px rgba(99, 102, 241, 0.3) !important;
+  color: #ffffff !important;
+}
+
+.dark .strategy-card:hover {
+  background: #374151 !important;
+  border-color: #6b7280;
+  box-shadow: 
+    0 20px 60px -12px rgba(99, 102, 241, 0.2),
+    0 0 0 1px #6b7280;
+}
+
+.dark .strategy-card:hover .strategy-title {
+  color: #ffffff !important;
+}
+
+.dark .strategy-card:hover .strategy-description {
+  color: #f3f4f6 !important;
+}
+
+.dark .strategy-card:hover .strategy-category {
+  color: #d1d5db !important;
+}
+
+.dark .vote-button:hover {
+  background: #374151 !important;
+  color: #ffffff !important;
+}
+
+.dark .page-card:hover {
+  background: #374151 !important;
+  color: #ffffff !important;
+}
+
+.dark .clickable-card:hover {
+  background: #374151 !important;
+}
+
+.dark .hourglass-search-button:hover {
+  background: #374151 !important;
+  color: #ffffff !important;
+}
+
+/* Dark mode general hover improvements with high specificity to override Tailwind */
+.dark *:hover {
+  transition: all 0.3s ease;
+}
+
+.dark button:hover:not(.dropdown-trigger):not(.source-toggle),
+html.dark button:hover:not(.dropdown-trigger):not(.source-toggle) {
+  background: #374151 !important;
+  color: #ffffff !important;
+}
+
+.dark a:hover,
+html.dark a:hover {
+  background: #374151 !important;
+  color: #ffffff !important;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  margin: -0.25rem -0.5rem;
+}
+
+/* Override any Tailwind hover:bg- classes in dark mode */
+.dark [class*="hover:bg-"]:hover,
+html.dark [class*="hover:bg-"]:hover {
+  background: #374151 !important;
+  color: #ffffff !important;
+}
+
+/* Dark mode tooltip/popover backgrounds */
+.dark [role="tooltip"],
+.dark .tooltip,
+.dark [data-tooltip],
+html.dark [role="tooltip"],
+html.dark .tooltip,
+html.dark [data-tooltip] {
+  background: #374151 !important;
+  border-color: #6b7280 !important;
+  color: #ffffff !important;
+}
+
+/* Override tooltip gradient backgrounds in dark mode */
+.dark [class*="bg-gradient-to-"],
+html.dark [class*="bg-gradient-to-"] {
+  background: #123060 !important;
+  color: #ffffff !important;
+}
+
+.dark [class*="bg-gradient-to-"] p,
+.dark [class*="bg-gradient-to-"] div,
+html.dark [class*="bg-gradient-to-"] p,
+html.dark [class*="bg-gradient-to-"] div {
+  color: #ffffff !important;
+}
+
+/* Tooltip content specific overrides */
+.dark [class*="TooltipContent"],
+html.dark [class*="TooltipContent"] {
+  background: #15315f !important;
+  border: 1px solid #1a1b1d !important;
+  color: #ffffff !important;
+}
+
+/* iOS-style Segmented Control */
+.ios-segmented-control {
+  position: relative;
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 25px;
+  padding: 4px;
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  z-index: 60;
+}
+
+.ios-segmented-control::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border-radius: 22px;
+  pointer-events: none;
+}
+
+.ios-segment {
+  position: relative;
+  padding: 16px 32px;
+  background: transparent;
+  border: none;
+  border-radius: 21px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: rgba(0, 0, 0, 0.6);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  z-index: 10;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  text-align: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  flex: 1;
+  height: 100%;
+}
+
+.ios-segment:hover {
+  color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.02);
+}
+
+.ios-segment.active {
+  color: #000;
+  font-weight: 700;
+}
+
+/* iOS-style sliding background */
+.ios-segment-slider {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  height: calc(100% - 6px);
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 21px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  z-index: 1;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+}
+
+/* Dark mode iOS segmented control */
+.dark .ios-segmented-control {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.dark .ios-segmented-control::before {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+}
+
+.dark .ios-segment {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dark .ios-segment:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dark .ios-segment.active {
+  color: #000;
+}
+
+.dark .ios-segment-slider {
+  background: linear-gradient(145deg, #ffffff 0%, #f1f3f4 100%);
+  box-shadow: 
+    0 2px 12px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .ios-segmented-control {
+    padding: 3px;
+    border-radius: 20px;
+  }
+  
+  .ios-segment {
+    padding: 14px 16px;
+    font-size: 0.875rem;
+    min-width: 120px;
+    border-radius: 17px;
+    height: 100%;
+  }
+  
+  .ios-segment-slider {
+    border-radius: 17px;
+  }
+  
+  .ios-segmented-control::before {
+    border-radius: 17px;
+  }
+}
+
+/* Dark mode text color overrides */
+.dark h2.font-serif,
+.dark .category-card h2 {
+  color: #00F0FF;
+}
+
+/* Override any Tailwind text-white classes in dark mode */
+.dark .text-foreground,
+.dark [class*="text-foreground"] {
+  color: #66b0b5 !important;
+}
+
+/* Ensure category titles maintain the color */
+.dark .category-card .text-red-800,
+.dark .category-card .text-blue-800,
+.dark .category-card .text-purple-800,
+.dark .category-card .text-orange-800,
+.dark .category-card .text-green-800,
+.dark .category-card .text-indigo-800,
+.dark .category-card .text-gray-800 {
+  color: #070707 !important;
+}
+
+/* Dark mode footer */
+.dark footer,
+.dark .footer {
+  background-color: #0A192F;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Fixed header z-index adjustment */
+header.fixed {
+  z-index: 50;
+}
+
+/* Ensure logo doesn't interfere with clicks */
+.logo-container {
+  pointer-events: none;
+}
+.logo-container button {
+  pointer-events: auto;
+}
+
+/* Dark mode strategy page */
+.dark .strategy-card {
+  background-color: rgba(10, 25, 47, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .strategy-modal-body {
+  background-color: #0A192F;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .strategy-modal-title {
+  color: rgba(224, 248, 255, 0.95); /* Very light cyan-white */
+}
+
+/* Dark mode background for muted sections */
+.dark .bg-muted\/30 {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Dark mode for the navigation bar in strategies page */
+.dark .bg-white\/10 {
+  background-color: rgba(10, 25, 47, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark mode for sort/filter controls */
+.dark .bg-white\/70 {
+  background-color: rgba(10, 25, 47, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 
