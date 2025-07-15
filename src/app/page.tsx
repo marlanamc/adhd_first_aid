@@ -8,6 +8,7 @@ import { HomePage } from '@/components/pages'
 import { supabase } from '@/lib/supabase'
 import type { Feeling } from '@/lib/supabase'
 import type { ViewMode } from '@/types'
+import NewHomePage from '@/components/pages/NewHomePage'
 
 // Import styles
 import './globals.css'
@@ -27,6 +28,8 @@ export default function Home() {
   const [feelings, setFeelings] = useState<Feeling[]>([])
   const [tasks, setTasks] = useState<Task[]>([])
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [selectedCard, setSelectedCard] = useState<string | null>(null)
+  const [useNewHomepage] = useState(true) // Toggle for testing
 
   // Fetch feelings
   useEffect(() => {
@@ -99,6 +102,54 @@ export default function Home() {
     router.push(`/${page}`)
   }
 
+  const handleScriptSelect = (_category: string) => {
+    setSelectedCard('scripts-guides')
+    setIsTransitioning(true)
+    setTimeout(() => {
+      router.push(`/scripts`)
+    }, 300)
+  }
+
+  const handleSystemSelect = (_category: string) => {
+    setSelectedCard('systems')
+    setIsTransitioning(true)
+    setTimeout(() => {
+      router.push(`/systems`)
+    }, 300)
+  }
+
+  const handleGuideSelect = (_category: string) => {
+    setSelectedCard('guides')
+    setIsTransitioning(true)
+    setTimeout(() => {
+      router.push(`/guides`)
+    }, 300)
+  }
+
+  const handleStrategySelect = () => {
+    setSelectedCard('strategies')
+    setIsTransitioning(true)
+    setTimeout(() => {
+      router.push(`/strategies`)
+    }, 300)
+  }
+
+  const handleQuizSelect = () => {
+    setSelectedCard('quizzes')
+    setIsTransitioning(true)
+    setTimeout(() => {
+      router.push(`/quizzes`)
+    }, 300)
+  }
+
+  const handleResourceSelect = () => {
+    setSelectedCard('resources')
+    setIsTransitioning(true)
+    setTimeout(() => {
+      router.push(`/resources`)
+    }, 300)
+  }
+
   return (
     <div className="min-h-screen ocean-gradient relative flex flex-col">
       <Header 
@@ -110,17 +161,34 @@ export default function Home() {
       />
 
       <main className="flex-1 flex flex-col">
-        <div className="flex-1 container mx-auto max-w-6xl px-4 sm:px-6 pt-12 md:pt-16 pb-24">
-          <HomePage
-            viewMode={viewMode}
-            setViewMode={setViewMode}
+        {useNewHomepage ? (
+          <NewHomePage
             feelings={feelings}
             tasks={tasks}
             handleFeelingSelect={handleFeelingSelect}
             handleTaskSelect={handleTaskSelect}
+            onScriptSelect={handleScriptSelect}
+            onSystemSelect={handleSystemSelect}
+            onGuideSelect={handleGuideSelect}
+            onStrategySelect={handleStrategySelect}
+            onQuizSelect={handleQuizSelect}
+            onResourceSelect={handleResourceSelect}
             isTransitioning={isTransitioning}
+            selectedCard={selectedCard}
           />
-        </div>
+        ) : (
+          <div className="flex-1 container mx-auto max-w-6xl px-4 sm:px-6 pt-12 md:pt-16 pb-24">
+            <HomePage
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              feelings={feelings}
+              tasks={tasks}
+              handleFeelingSelect={handleFeelingSelect}
+              handleTaskSelect={handleTaskSelect}
+              isTransitioning={isTransitioning}
+            />
+          </div>
+        )}
       </main>
 
       <Footer navigateToPage={navigateToPage} />

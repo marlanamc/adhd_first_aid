@@ -51,12 +51,25 @@ export interface StrategyBarrier {
 export interface Strategy {
   id: string;
   name: string;
+  subtitle?: string | null;
   description?: string;
   example?: string;
   source?: string | null;
   price?: string | null;
   use_case?: string | null;
+  adhd_friendly_improvement?: string | null;
+  why_does_this_work?: string | null;
+  image?: string | null;
+  icon_file?: string | null;
+  image_source?: string | null;
+  further_reading_text?: string | null;
+  further_reading_url?: string | null;
+  further_reading_suggestions?: string | null;
+  reviewed?: boolean;
+  help_task_id?: string | null;
+  barrier_id?: string | null;
   created_at?: string | null;
+  updated_at?: string | null;
   vote_count?: number;
   featured?: boolean;
   strategy_tags?: StrategyTag[];

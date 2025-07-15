@@ -15,68 +15,183 @@ const terminology = [
   },
   {
     term: "Executive Function",
-    definition: "A set of mental skills including working memory, flexible thinking, and self-control that help us get things done, plan, focus, and juggle multiple tasks.",
+    definition: "Mental processes that help with planning, initiating, focusing, remembering, and regulating.",
     category: "Core Concepts"
   },
   {
-    term: "Dopamine",
-    definition: "A neurotransmitter that plays a key role in motivation, reward, and attention. ADHD brains often have differences in dopamine processing.",
-    category: "Neuroscience"
+    term: "Task Initiation",
+    definition: "The ability to start a task without getting stuck in overwhelm or avoidance.",
+    category: "Core Concepts"
   },
   {
-    term: "Hyperfocus",
-    definition: "An intense form of mental concentration or visualization that focuses consciousness on a subject, topic, or task to the exclusion of everything else.",
-    category: "Symptoms & Traits"
+    term: "Working Memory",
+    definition: "Holding info in your brain while using it (e.g., following steps without forgetting mid-process).",
+    category: "Core Concepts"
+  },
+  {
+    term: "Cognitive Flexibility",
+    definition: "Switching between tasks or ideas, like adapting when plans change.",
+    category: "Core Concepts"
+  },
+  {
+    term: "Emotional Regulation",
+    definition: "Managing emotional responses without spiraling or freezing.",
+    category: "Core Concepts"
+  },
+  {
+    term: "Inhibition",
+    definition: "Resisting distractions or impulses (e.g., 'don't scroll!').",
+    category: "Core Concepts"
+  },
+  {
+    term: "Mental Fog",
+    definition: "Feeling like your brain is 'buffering,' slow to engage, or hard to direct.",
+    category: "Inattentive Challenges"
   },
   {
     term: "Time Blindness",
-    definition: "Difficulty accurately estimating how much time has passed or how long tasks will take. Common in ADHD and can affect planning and punctuality.",
-    category: "Symptoms & Traits"
+    definition: "Losing track of time or not feeling the urgency until it's too late.",
+    category: "Inattentive Challenges"
   },
   {
-    term: "Rejection Sensitive Dysphoria (RSD)",
-    definition: "Intense emotional pain triggered by the perception of rejection, criticism, or failure. Often experienced by people with ADHD.",
-    category: "Symptoms & Traits"
+    term: "Drift",
+    definition: "Zoning out mid-task or forgetting what you were just doing.",
+    category: "Inattentive Challenges"
   },
   {
-    term: "Stimming",
-    definition: "Self-stimulatory behavior involving repetitive movements or sounds that help with self-regulation, focus, or sensory needs.",
-    category: "Behaviors"
+    term: "Task Abandonment",
+    definition: "Starting things, then wandering off or losing steam without closure.",
+    category: "Inattentive Challenges"
   },
   {
-    term: "Body Doubling",
-    definition: "Working alongside another person (virtually or in person) to help maintain focus and accountability without direct interaction about the task.",
-    category: "Strategies"
-  },
-  {
-    term: "Masking",
-    definition: "Consciously or unconsciously suppressing natural ADHD behaviors to appear more 'neurotypical' in social or professional settings.",
-    category: "Behaviors"
-  },
-  {
-    term: "Task Switching",
-    definition: "The ability to move attention from one task or activity to another. People with ADHD often struggle with both switching to new tasks and away from preferred tasks.",
-    category: "Core Concepts"
+    term: "Activation Deficit",
+    definition: "Knowing what you need to do—but physically can't start without external input.",
+    category: "Inattentive Challenges"
   },
   {
     term: "Dopamine Seeking",
-    definition: "The tendency to look for activities, situations, or behaviors that provide a quick dopamine boost, often as a way to self-regulate attention and motivation.",
-    category: "Behaviors"
+    definition: "Needing novelty, urgency, or interest to feel 'turned on' mentally.",
+    category: "Inattentive Challenges"
+  },
+  {
+    term: "Motor Restlessness",
+    definition: "Feeling physically agitated; needing to move, fidget, or engage the body to stay regulated.",
+    category: "Hyperactive Challenges"
+  },
+  {
+    term: "Verbal Impulsivity",
+    definition: "Speaking quickly or out of turn; interrupting or blurting without intending to.",
+    category: "Hyperactive Challenges"
+  },
+  {
+    term: "Sensory Seeking",
+    definition: "Craving stimulation through noise, touch, movement, or novelty to stay engaged.",
+    category: "Hyperactive Challenges"
+  },
+  {
+    term: "Task Hopping",
+    definition: "Jumping rapidly between tasks or activities without finishing.",
+    category: "Hyperactive Challenges"
+  },
+  {
+    term: "Emotional Reactivity",
+    definition: "Strong, fast emotional responses that feel disproportionate or hard to rein back in.",
+    category: "Hyperactive Challenges"
+  },
+  {
+    term: "Burnout Cycles",
+    definition: "Surging into projects with intense energy, then crashing into exhaustion or shutdown.",
+    category: "Hyperactive Challenges"
+  },
+  {
+    term: "Overcommitting",
+    definition: "Saying 'yes' to too many things, driven by excitement or a desire to please, then feeling overwhelmed later.",
+    category: "Hyperactive Challenges"
+  },
+  {
+    term: "Rejection Sensitive Dysphoria (RSD)",
+    definition: "Extreme emotional pain or panic in response to perceived rejection, criticism, or failure—even if imagined.",
+    category: "Emotional & Social"
+  },
+  {
+    term: "Masking",
+    definition: "Hiding symptoms, needs, or true feelings to appear 'functional,' 'normal,' or more socially acceptable.",
+    category: "Emotional & Social"
+  },
+  {
+    term: "Shame Spiral",
+    definition: "Intense self-blame or hopelessness after small mistakes, inconsistency, or perceived failures.",
+    category: "Emotional & Social"
+  },
+  {
+    term: "Perfectionism Loop",
+    definition: "Getting stuck in avoidance or over-editing because nothing feels 'good enough' to finish.",
+    category: "Emotional & Social"
+  },
+  {
+    term: "Emotional Flooding",
+    definition: "Feeling overwhelmed by intense emotions that derail focus or motivation.",
+    category: "Emotional & Social"
+  },
+  {
+    term: "Social Exhaustion",
+    definition: "Fatigue after long periods of masking or people-pleasing, leading to shutdown or isolation.",
+    category: "Emotional & Social"
+  },
+  {
+    term: "Sensory Overload",
+    definition: "Feeling overwhelmed or agitated by too much noise, light, movement, or sensory input.",
+    category: "Cognitive & Sensory"
+  },
+  {
+    term: "Hyperfocus",
+    definition: "Becoming intensely absorbed in one task or topic, sometimes losing awareness of time or surroundings.",
+    category: "Cognitive & Sensory"
   },
   {
     term: "Analysis Paralysis",
-    definition: "Being unable to make decisions or take action due to overthinking or considering too many options at once.",
-    category: "Symptoms & Traits"
+    definition: "Overthinking decisions or steps so much that you become stuck, unable to act or choose.",
+    category: "Cognitive & Sensory"
   },
   {
-    term: "ADHD Paralysis",
-    definition: "A state where you know what needs to be done but feel unable to start or complete tasks, often due to overwhelm or perfectionism.",
-    category: "Symptoms & Traits"
+    term: "Thought Ping-Pong",
+    definition: "Rapid bouncing between ideas, making it hard to hold onto one train of thought.",
+    category: "Cognitive & Sensory"
   },
   {
-    term: "Interest-Based Nervous System",
-    definition: "A concept describing how ADHD brains are motivated more by interest, novelty, urgency, and passion rather than importance alone.",
-    category: "Core Concepts"
+    term: "Low Frustration Tolerance",
+    definition: "Quick to feel irritated or upset when tasks are challenging or progress is blocked.",
+    category: "Cognitive & Sensory"
+  },
+  {
+    term: "Body Doubling",
+    definition: "Doing a task alongside someone (even silently) to help initiate/focus.",
+    category: "Support Tools"
+  },
+  {
+    term: "Externalizing Systems",
+    definition: "Using visuals, calendars, alarms to 'offload' memory and mental steps.",
+    category: "Support Tools"
+  },
+  {
+    term: "Scaffolding",
+    definition: "Adding simple supports (e.g., a checklist or step-by-step plan) to build success.",
+    category: "Support Tools"
+  },
+  {
+    term: "Anchoring",
+    definition: "Linking a habit to something already in your routine (e.g., 'after coffee…').",
+    category: "Support Tools"
+  },
+  {
+    term: "Low-Activation Task",
+    definition: "A task that requires almost no setup, pressure, or planning—just motion.",
+    category: "Support Tools"
+  },
+  {
+    term: "Nonlinear Progress",
+    definition: "Emphasizing that success may look like spirals, not straight lines.",
+    category: "Support Tools"
   }
 ]
 

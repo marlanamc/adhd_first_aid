@@ -85,18 +85,23 @@ export type {
 CREATE TABLE strategies (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
-  description TEXT NOT NULL,
-  alt_text TEXT,
-  feeling TEXT[] NOT NULL,
-  issue TEXT NOT NULL,
-  type TEXT NOT NULL,
-  mode TEXT[] NOT NULL,
-  barrier_type TEXT NOT NULL,
-  use_case TEXT NOT NULL,
-  source TEXT NOT NULL,
-  tags TEXT[] NOT NULL,
-  price TEXT NOT NULL,
-  image_url TEXT,
+  subtitle TEXT,
+  description TEXT,
+  example TEXT,
+  source TEXT,
+  price TEXT,
+  use_case TEXT,
+  adhd_friendly_improvement TEXT,
+  why_does_this_work TEXT,
+  image TEXT,
+  icon_file TEXT,
+  image_source TEXT,
+  further_reading_text TEXT,
+  further_reading_url TEXT,
+  further_reading_suggestions TEXT,
+  reviewed BOOLEAN DEFAULT false,
+  help_task_id UUID REFERENCES help_tasks(id),
+  barrier_id UUID REFERENCES barriers(id),
   featured BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -139,4 +144,28 @@ CREATE POLICY "Allow public read access on help_tasks" ON help_tasks
 CREATE POLICY "Allow public insert on strategy_votes" ON strategy_votes
   FOR INSERT WITH CHECK (true);
 */
+
+// Quiz submission function
+export async function saveQuizSubmission(submission: {
+  email: string;
+  archetype: string;
+  answers: number[];
+}) {
+  try {
+    // For now, just log the submission since we don't have a quiz_submissions table
+    console.log('Quiz submission received:', submission);
+    
+    // Return success response
+    return {
+      data: { id: 'mock-id', ...submission },
+      error: null
+    };
+  } catch (error) {
+    console.error('Error saving quiz submission:', error);
+    return {
+      data: null,
+      error: error instanceof Error ? error : new Error('Failed to save quiz submission')
+    };
+  }
+}
 

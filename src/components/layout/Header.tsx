@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Search, Menu, Moon, Sun } from 'lucide-react'
+import { Search, Menu, Moon, Sun, Heart } from 'lucide-react'
 import Image from 'next/image'
 import { useTheme } from '@/contexts/ThemeContext'
+import { useFavorites } from '@/hooks/useFavorites'
 
 interface HeaderProps {
   navigateHome: () => void
@@ -13,6 +14,7 @@ interface HeaderProps {
 export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderProps) {
   const [showDropdown, setShowDropdown] = useState(false)
   const { theme, toggleTheme } = useTheme()
+  const { favoritesCount } = useFavorites()
 
   return (
     <>
@@ -63,6 +65,88 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                 {/* Dropdown Content */}
                 {showDropdown && (
                   <div className="dropdown-menu absolute right-0 top-full mt-2 w-56 bg-white/95 backdrop-blur-lg rounded-lg shadow-lg border border-white/30 overflow-hidden">
+                    {/* First Section: Main Navigation */}
+                    <button
+                      onClick={() => {
+                        navigateToPage('favorites')
+                        setShowDropdown(false)
+                      }}
+                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light flex items-center gap-2"
+                    >
+                      <Heart className="h-4 w-4" />
+                      <span>My Favorites</span>
+                      {favoritesCount > 0 && (
+                        <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                          {favoritesCount}
+                        </span>
+                      )}
+                    </button>
+                    {/* Second Divider */}
+                    <div className="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+                    <button
+                      onClick={() => {
+                        navigateToPage('faq')
+                        setShowDropdown(false)
+                      }}
+                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                    >
+                      FAQ
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigateToPage('blog')
+                        setShowDropdown(false)
+                      }}
+                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                    >
+                      Blog
+                    </button>
+
+                    {/* Third Divider */}
+                    <div className="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+
+                    {/* Second Section: Secondary Pages */}
+                    <button
+                      onClick={() => {
+                        navigateToPage('about')
+                        setShowDropdown(false)
+                      }}
+                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                    >
+                      About
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigateToPage('contact')
+                        setShowDropdown(false)
+                      }}
+                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                    >
+                      Contact Me
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigateToPage('suggest')
+                        setShowDropdown(false)
+                      }}
+                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                    >
+                      Suggest a Strategy
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigateToPage('legal')
+                        setShowDropdown(false)
+                      }}
+                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                    >
+                      Legal & Privacy
+                    </button>
+
+                    {/* Second Divider */}
+                    <div className="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+
+                    {/* Third Section: Settings */}
                     <button
                       onClick={() => {
                         toggleTheme()
@@ -81,70 +165,6 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                           Light Mode
                         </>
                       )}
-                    </button>
-                    <div className="border-t border-white/20 my-1"></div>
-                    <button
-                      onClick={() => {
-                        navigateToPage('about')
-                        setShowDropdown(false)
-                      }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
-                    >
-                      About
-                    </button>
-                    <button
-                      onClick={() => {
-                        navigateToPage('blog')
-                        setShowDropdown(false)
-                      }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
-                    >
-                      Blog
-                    </button>
-                    <button
-                      onClick={() => {
-                        navigateToPage('terminology')
-                        setShowDropdown(false)
-                      }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
-                    >
-                      Terminology
-                    </button>
-                    <button
-                      onClick={() => {
-                        navigateToPage('faq')
-                        setShowDropdown(false)
-                      }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
-                    >
-                      FAQ
-                    </button>
-                    <button
-                      onClick={() => {
-                        navigateToPage('suggest')
-                        setShowDropdown(false)
-                      }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
-                    >
-                      Suggest a Strategy
-                    </button>
-                    <button
-                      onClick={() => {
-                        navigateToPage('contact')
-                        setShowDropdown(false)
-                      }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
-                    >
-                      Contact Me
-                    </button>
-                    <button
-                      onClick={() => {
-                        navigateToPage('legal')
-                        setShowDropdown(false)
-                      }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
-                    >
-                      Legal & Privacy
                     </button>
                   </div>
                 )}

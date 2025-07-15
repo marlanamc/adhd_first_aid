@@ -17,12 +17,14 @@ interface Task {
 }
 
 interface HomePageProps {
-  viewMode: 'feeling' | 'task'
-  setViewMode: (mode: 'feeling' | 'task') => void
+  viewMode: 'feeling' | 'task' | 'scripts' | 'systems'
+  setViewMode: (mode: 'feeling' | 'task' | 'scripts' | 'systems') => void
   feelings: Feeling[]
   tasks: Task[]
   handleFeelingSelect: (feeling: string) => void
   handleTaskSelect: (task: string) => void
+  handleScriptSelect?: (script: string) => void
+  handleSystemSelect?: (system: string) => void
   isTransitioning: boolean
 }
 

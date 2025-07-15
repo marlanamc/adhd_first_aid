@@ -6,9 +6,12 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, ChevronRight, Heart, Star, X, ExternalLink, Filter } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { FavoriteButton } from '@/components/ui/FavoriteButton'
+import { HomePage } from '@/components/pages'
 import { getStrategies } from '@/lib/strategies'
-import type { Strategy } from '@/lib/supabase'
-import type { SortOption } from '@/types'
+import { supabase } from '@/lib/supabase'
+import type { Strategy, Feeling } from '@/lib/supabase'
+import type { SortOption, ViewMode } from '@/types'
 
 // Helper function to get tag colors
 const getTagColor = (index: number) => {
@@ -47,14 +50,67 @@ function StrategiesPageContent() {
   const [tagFilter, setTagFilter] = useState<string[]>([])
   const [availableTags, setAvailableTags] = useState<string[]>([])
   const [availablePrices, setAvailablePrices] = useState<string[]>([])
+  const [viewMode, setViewMode] = useState<ViewMode>('feeling')
+  const [feelings, setFeelings] = useState<Feeling[]>([])
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   // Determine if this is a task flow or feeling flow
   const isTaskFlow = !!task
   const isSearchFlow = !!searchQuery
+  const isSelectionFlow = !feeling && !issue && !task && !barrier && !searchQuery
+
+  interface Task {
+    id: string
+    name: string
+    emoji: string | null
+    color: string | null
+    category: string | null
+    description: string | null
+  }
+
+  // Fetch feelings and tasks for selection flow
+  useEffect(() => {
+    async function fetchFeelingsAndTasks() {
+      if (!isSelectionFlow) return
+
+      try {
+        // Fetch feelings
+        const { data: feelingsData, error: feelingsError } = await supabase
+          .from('feelings')
+          .select('id, name, emoji, color, category, description')
+          .order('name')
+
+        if (feelingsError) {
+          console.error('Error fetching feelings:', feelingsError)
+        } else {
+          setFeelings(feelingsData || [])
+        }
+
+        // Fetch help tasks
+        const { data: tasksData, error: tasksError } = await supabase
+          .from('help_tasks')
+          .select('id, name, emoji, color, category, description')
+
+        if (tasksError) {
+          console.error('Error fetching help tasks:', tasksError)
+        } else {
+          const validTasks = (tasksData || []).filter(task => task.name) as Task[]
+          setTasks(validTasks)
+        }
+      } catch (err) {
+        console.error('Exception while fetching data:', err)
+      }
+    }
+
+    fetchFeelingsAndTasks()
+  }, [isSelectionFlow])
 
   // Fetch strategies based on URL parameters
   useEffect(() => {
     async function fetchStrategies() {
+      if (isSelectionFlow) return // Don't fetch strategies for selection flow
+
       try {
         setLoading(true)
         setError(null)
@@ -77,7 +133,7 @@ function StrategiesPageContent() {
     }
 
     fetchStrategies()
-  }, [feeling, issue, task, barrier, searchQuery])
+  }, [feeling, issue, task, barrier, searchQuery, isSelectionFlow])
 
   // Get unique tags and prices from strategies
   useEffect(() => {
@@ -153,6 +209,62 @@ function StrategiesPageContent() {
   const handleStrategyClick = (strategy: Strategy) => {
     setSelectedStrategy(strategy)
     setShowStrategyModal(true)
+  }
+
+  const handleFeelingSelect = (feeling: string) => {
+    setIsTransitioning(true)
+    setTimeout(() => {
+      router.push(`/feeling/${encodeURIComponent(feeling)}`)
+    }, 300)
+  }
+
+  const handleTaskSelect = (task: string) => {
+    setIsTransitioning(true)
+    setTimeout(() => {
+      router.push(`/task/${encodeURIComponent(task)}`)
+    }, 300)
+  }
+
+  // Show original toggle interface if no parameters are provided
+  if (isSelectionFlow) {
+    return (
+      <div className="min-h-screen ocean-gradient relative flex flex-col">
+        <Header 
+          navigateHome={navigateHome} 
+          navigateToPage={navigateToPage} 
+          onSearchOpen={() => {}} 
+        />
+
+        <main className="flex-1 flex flex-col">
+          <div className="flex-1 container mx-auto max-w-6xl px-4 sm:px-6 pt-32 md:pt-36 pb-24">
+            
+            {/* Back Button */}
+            <div className="flex items-center justify-between bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3 mb-8 max-w-xs">
+              <button
+                onClick={navigateHome}
+                className="text-muted-foreground hover:text-foreground transition-colors duration-300 font-light inline-flex items-center cursor-pointer"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Home
+              </button>
+            </div>
+
+            {/* Use the original HomePage component */}
+            <HomePage
+              viewMode={viewMode}
+              setViewMode={(mode: 'feeling' | 'task' | 'scripts' | 'systems') => setViewMode(mode as ViewMode)}
+              feelings={feelings}
+              tasks={tasks}
+              handleFeelingSelect={handleFeelingSelect}
+              handleTaskSelect={handleTaskSelect}
+              isTransitioning={isTransitioning}
+            />
+          </div>
+        </main>
+
+        <Footer navigateToPage={navigateToPage} />
+      </div>
+    )
   }
 
   if (loading) {
@@ -405,15 +517,17 @@ function StrategiesPageContent() {
                             )}
                           </div>
                           <div className="flex items-center space-x-2 ml-2">
-                            <button
-                              className="p-1 sm:p-2 text-muted-foreground hover:text-foreground transition-colors"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                // Handle save functionality
+                            <FavoriteButton
+                              strategy={{
+                                id: strategy.id,
+                                name: strategy.name,
+                                description: strategy.description || '',
+                                category: assignedFeelings.join(', ') || 'General',
+                                tags: strategy.tags || [],
+                                price: strategy.price || 'Free'
                               }}
-                            >
-                              <Star className="h-4 w-4" />
-                            </button>
+                              size="sm"
+                            />
                           </div>
                         </div>
 

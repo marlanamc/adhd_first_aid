@@ -10,9 +10,11 @@ import { Button } from '@/components/ui/button'
 export default function SuggestPage() {
   const router = useRouter()
   const [formData, setFormData] = useState({
-    strategyName: '',
+    suggestionType: 'strategy', // 'strategy', 'script', 'guide', 'system'
+    title: '',
     description: '',
     example: '',
+    systemStrategies: '',
     feelings: [] as string[],
     issues: [] as string[],
     barriers: [] as string[],
@@ -84,7 +86,7 @@ export default function SuggestPage() {
               Thank You for Your Submission!
             </h1>
             <p className="text-muted-foreground leading-relaxed text-lg mb-8">
-              Your strategy suggestion has been received and will be reviewed by our team. 
+              Your {formData.suggestionType} suggestion has been received and will be reviewed by our team. 
               If approved, it will be added to our database to help others in the ADHD community.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -92,9 +94,11 @@ export default function SuggestPage() {
                 onClick={() => {
                   setIsSubmitted(false)
                   setFormData({
-                    strategyName: '',
+                    suggestionType: 'strategy',
+                    title: '',
                     description: '',
                     example: '',
+                    systemStrategies: '',
                     feelings: [],
                     issues: [],
                     barriers: [],
@@ -109,7 +113,7 @@ export default function SuggestPage() {
                 size="default"
                 className="bg-primary hover:bg-primary/90"
               >
-                Submit Another Strategy
+                Submit Another Suggestion
               </Button>
               <Button
                 onClick={navigateHome}
@@ -153,11 +157,11 @@ export default function SuggestPage() {
           <div className="animate-in px-4 md:px-6">
             <div className="text-center mb-12">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-foreground mb-6 leading-tight">
-                Suggest a Strategy
+                Make a Suggestion
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-light max-w-3xl mx-auto">
-                Share a strategy, technique, or approach that has helped you with ADHD challenges. 
-                Your contribution could be exactly what someone else needs to hear.
+                Share a strategy, communication script, helpful guide, or system that has helped you with ADHD challenges. 
+                Your contribution could be exactly what someone else needs.
               </p>
             </div>
 
@@ -168,10 +172,11 @@ export default function SuggestPage() {
                 <div>
                   <h3 className="font-semibold text-blue-900 mb-2">Submission Guidelines</h3>
                   <ul className="text-blue-800 text-sm space-y-1">
-                    <li>• Be specific and include real examples of how the strategy works</li>
+                    <li>• Be specific and include real examples of how it works</li>
                     <li>• Focus on practical, actionable approaches rather than general advice</li>
-                    <li>• Include context about when and where the strategy is most effective</li>
-                    <li>• Only submit strategies you&apos;ve personally tried and found helpful</li>
+                    <li>• Include context about when and where it's most effective</li>
+                    <li>• Can be a new suggestion or additions to existing content based on your lived experience</li>
+                    <li>• Only submit what you've personally tried and found helpful</li>
                     <li>• All submissions are reviewed before being added to the database</li>
                   </ul>
                 </div>
@@ -180,25 +185,66 @@ export default function SuggestPage() {
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-8">
-              {/* Strategy Details */}
+              {/* Suggestion Type */}
               <div className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-xl p-6 md:p-8 shadow-lg">
                 <h2 className="text-2xl font-serif text-foreground mb-6 flex items-center">
                   <Lightbulb className="h-6 w-6 text-primary mr-3" />
-                  Strategy Details
+                  What would you like to suggest?
+                </h2>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  {[
+                    { value: 'strategy', label: 'Strategy', desc: 'A technique or approach' },
+                    { value: 'script', label: 'Script', desc: 'Communication template' },
+                    { value: 'guide', label: 'Guide', desc: 'Step-by-step guidance' },
+                    { value: 'system', label: 'System', desc: 'Life management framework' }
+                  ].map((type) => (
+                    <button
+                      key={type.value}
+                      type="button"
+                      onClick={() => handleInputChange('suggestionType', type.value)}
+                      className={`p-4 rounded-lg text-center transition-all duration-200 ${
+                        formData.suggestionType === type.value
+                          ? 'bg-primary text-white shadow-lg'
+                          : 'bg-white/60 text-muted-foreground hover:bg-white/80'
+                      }`}
+                    >
+                      <div className="font-semibold">{type.label}</div>
+                      <div className="text-xs mt-1 opacity-80">{type.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Details */}
+              <div className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-xl p-6 md:p-8 shadow-lg">
+                <h2 className="text-2xl font-serif text-foreground mb-6">
+                  {formData.suggestionType === 'strategy' && 'Strategy Details'}
+                  {formData.suggestionType === 'script' && 'Script Details'}
+                  {formData.suggestionType === 'guide' && 'Guide Details'}
+                  {formData.suggestionType === 'system' && 'System Details'}
                 </h2>
                 
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      Strategy Name *
+                      {formData.suggestionType === 'strategy' && 'Strategy Name *'}
+                      {formData.suggestionType === 'script' && 'Script Title *'}
+                      {formData.suggestionType === 'guide' && 'Guide Title *'}
+                      {formData.suggestionType === 'system' && 'System Name *'}
                     </label>
                     <input
                       type="text"
                       required
-                      value={formData.strategyName}
-                      onChange={(e) => handleInputChange('strategyName', e.target.value)}
+                      value={formData.title}
+                      onChange={(e) => handleInputChange('title', e.target.value)}
                       className="w-full px-4 py-3 bg-white/60 border border-white/20 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
-                      placeholder="e.g., The 5-Minute Rule for Starting Tasks"
+                      placeholder={
+                        formData.suggestionType === 'strategy' ? 'e.g., The 5-Minute Rule for Starting Tasks' :
+                        formData.suggestionType === 'script' ? 'e.g., Explaining ADHD to Your Manager' :
+                        formData.suggestionType === 'guide' ? 'e.g., Complete Guide to Getting Diagnosed' :
+                        'e.g., ADHD-Friendly Morning Routine System'
+                      }
                     />
                   </div>
 
@@ -212,13 +258,21 @@ export default function SuggestPage() {
                       value={formData.description}
                       onChange={(e) => handleInputChange('description', e.target.value)}
                       className="w-full px-4 py-3 bg-white/60 border border-white/20 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
-                      placeholder="Describe the strategy in detail. What exactly do you do? How does it work?"
+                      placeholder={
+                        formData.suggestionType === 'strategy' ? 'Describe the strategy in detail. What exactly do you do? How does it work?' :
+                        formData.suggestionType === 'script' ? 'What is this script for? What situation does it help with?' :
+                        formData.suggestionType === 'guide' ? 'What does this guide cover? What will people learn?' :
+                        'What does this system help with? How is it organized?'
+                      }
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      Example *
+                      {formData.suggestionType === 'strategy' && 'Example *'}
+                      {formData.suggestionType === 'script' && 'Sample Script/Template *'}
+                      {formData.suggestionType === 'guide' && 'Key Steps/Outline *'}
+                      {formData.suggestionType === 'system' && 'Example Implementation *'}
                     </label>
                     <textarea
                       required
@@ -226,9 +280,31 @@ export default function SuggestPage() {
                       value={formData.example}
                       onChange={(e) => handleInputChange('example', e.target.value)}
                       className="w-full px-4 py-3 bg-white/60 border border-white/20 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
-                      placeholder="Give a specific example of how you've used this strategy. Be concrete!"
+                      placeholder={
+                        formData.suggestionType === 'strategy' ? 'Give a specific example of how you\'ve used this strategy. Be concrete!' :
+                        formData.suggestionType === 'script' ? 'Provide a sample conversation or template. What would someone actually say?' :
+                        formData.suggestionType === 'guide' ? 'Outline the main steps or sections this guide would include.' :
+                        'How would someone implement this system? What are the main components?'
+                      }
                     />
                   </div>
+
+                  {/* System Components - Only show for systems */}
+                  {formData.suggestionType === 'system' && (
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-2">
+                        Strategies Included *
+                      </label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={formData.systemStrategies || ''}
+                        onChange={(e) => handleInputChange('systemStrategies', e.target.value)}
+                        className="w-full px-4 py-3 bg-white/60 border border-white/20 rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        placeholder="List the specific strategies that make up this system. Be specific about how they work together."
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -401,7 +477,10 @@ export default function SuggestPage() {
                   ) : (
                     <>
                       <Send className="h-5 w-5 mr-2" />
-                      Submit Strategy
+                      {formData.suggestionType === 'strategy' && 'Submit Strategy'}
+                      {formData.suggestionType === 'script' && 'Submit Script'}
+                      {formData.suggestionType === 'guide' && 'Submit Guide'}
+                      {formData.suggestionType === 'system' && 'Submit System'}
                     </>
                   )}
                 </Button>

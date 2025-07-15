@@ -88,30 +88,44 @@ function transformRecord(record: any) {
     .map(i => i.trim())
     .filter(i => !!i)
 
-  // Process tags by category
+  // Process tags by category (updated with new categories)
   const tagsByCategory = {
     task_context: parseArrayField(record['task_context_tags']),
     energy_state: parseArrayField(record['energy_state_tags']),
     mental_state: parseArrayField(record['mental_state_tags']),
     solution_type: parseArrayField(record['solution_type_tags']),
-    strategy_style: parseArrayField(record['strategy_style_tags'])
+    strategy_style: parseArrayField(record['strategy_style_tags']),
+    life_role: parseArrayField(record['life_role_tags']),
+    identity: parseArrayField(record['identity_tags']),
+    cultural_context: parseArrayField(record['cultural_context_tags']),
+    treatment_context: parseArrayField(record['treatment_context_tags']),
+    life_transition: parseArrayField(record['life_transition_tags'])
   }
 
-  // Get barrier type
-  const barriers = parseArrayField(record['barrier_type'])
+  // Get barrier (fixed field name)
+  const barriers = parseArrayField(record['barrier'])
 
   // Get help task
   const helpTask = record['help_task']?.trim() || null
 
   return {
     core: {
-      name: record['name']?.trim() || '',
+      name: record['Name']?.trim() || '',
+      subtitle: record['subtitle']?.trim() || null,
       description: record['description']?.trim() || '',
       example: record['example']?.trim() || '',
       source: record['source']?.trim() || null,
       price: record['price']?.trim() || null,
       use_case: record['use_case']?.trim() || null,
       adhd_friendly_improvement: record['adhd_friendly_improvement']?.trim() || null,
+      why_does_this_work: record['why_does_this_work']?.trim() || null,
+      image: record['image']?.trim() || null,
+      icon_file: record['icon_file']?.trim() || null,
+      image_source: record['image_source']?.trim() || null,
+      further_reading_text: record['further_reading_text']?.trim() || null,
+      further_reading_url: record['further_reading_url']?.trim() || null,
+      further_reading_suggestions: record['further_reading_suggestions']?.trim() || null,
+      reviewed: record['Reviewed?']?.trim()?.toLowerCase() === 'yes',
       help_task_id: null as string | null,
       barrier_id: null as string | null
     },

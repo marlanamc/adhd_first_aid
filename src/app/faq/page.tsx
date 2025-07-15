@@ -64,18 +64,24 @@ const faqs = [
   },
   {
     id: 10,
+    category: "ADHD Questions",
+    question: "Isn't this just common sense? Do people with ADHD really need help with things like this?",
+    answer: "What's \"common sense\" for one person might be a daily challenge for someone with ADHD. It's not about intelligence — it's about how the brain processes motivation, memory, time, and emotion. People with ADHD often know what to do, but struggle to do it consistently. These strategies aren't about being smart or dumb — they're about building support systems that actually work with the way your brain operates."
+  },
+  {
+    id: 11,
     category: "Contributing",
     question: "How can I submit my own strategies?",
     answer: "You can submit strategies through our 'Suggest a Strategy' page. We welcome strategies that have genuinely helped you, along with specific examples of how to implement them. All submissions are reviewed before being added to help ensure quality and safety."
   },
   {
-    id: 11,
+    id: 12,
     category: "Contributing",
     question: "What makes a good strategy submission?",
     answer: "Good strategies are specific, actionable, and include real examples. Instead of 'be organized,' a good strategy might be 'use a daily brain dump where you write down every task in your head for 5 minutes each morning, then pick the top 3 to focus on.' Include what worked, when it worked, and any tips for implementation."
   },
   {
-    id: 12,
+    id: 13,
     category: "Privacy & Safety",
     question: "Do you collect personal information?",
     answer: "We collect minimal information necessary to operate the site. We don't require accounts to use our basic features, and we don't sell personal information. See our Privacy Policy for complete details about what information we collect and how it's used."

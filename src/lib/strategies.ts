@@ -17,7 +17,7 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
   try {
     console.log('Starting getStrategies with filters:', filters)
 
-    // Start with full strategies query
+    // Start with full strategies query including new fields
     let query = supabase
       .from('strategies')
       .select(`
@@ -42,6 +42,12 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
             name,
             category
           )
+        ),
+        help_task:help_task_id (
+          name
+        ),
+        barrier:barrier_id (
+          name
         )
       `)
     
@@ -124,11 +130,11 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
       query = query.in('id', strategyIds)
     }
 
-    // Search functionality
+    // Search functionality - updated to include new fields
     if (filters.search) {
       const searchTerm = filters.search.toLowerCase()
       query = query.or(
-        `name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`
+        `name.ilike.%${searchTerm}%,subtitle.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,example.ilike.%${searchTerm}%,use_case.ilike.%${searchTerm}%`
       )
     }
 
