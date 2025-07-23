@@ -1,21 +1,33 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter, useParams } from 'next/navigation'
+import { useState, useEffect, use } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft, ChevronRight, BookOpen } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { getStrategies } from '@/lib/strategies'
+// import { getAllGuides, type GuideMetadata } from '@/lib/markdown'
 
-export default function FeelingIssuePage() {
+// Hardcoded guide mappings for now (we can make this dynamic later)
+const FEELING_GUIDE_MAPPINGS = {
+  'overwhelmed': {
+    title: 'Cognitive & Overload Guide',
+    slug: 'mentalfog',
+    emoji: '😶‍🌫️',
+    description: 'Navigate mental fog and overwhelm with practical ADHD-friendly strategies'
+  }
+}
+
+export default function FeelingIssuePage({ params }: { params: Promise<{ feeling: string }> }) {
   const router = useRouter()
-  const params = useParams()
-  const feeling = decodeURIComponent(params.feeling as string)
+  const resolvedParams = use(params)
+  const feeling = decodeURIComponent(resolvedParams.feeling)
   
   const [issues, setIssues] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [availableGuide, setAvailableGuide] = useState<any>(null)
 
   // Fetch strategies and extract available issues
   useEffect(() => {
@@ -42,6 +54,34 @@ export default function FeelingIssuePage() {
           })
         ))
         setIssues(availableIssues)
+
+        // Check if there's a guide for this feeling
+        const feelingKey = feeling.toLowerCase().trim()
+        console.log('Raw feeling from URL:', feeling)
+        console.log('Processed feeling key:', feelingKey)
+        console.log('Available mappings:', Object.keys(FEELING_GUIDE_MAPPINGS))
+        
+        // Try multiple variations
+        let matchedGuide = null
+        
+        // Direct match
+        if (FEELING_GUIDE_MAPPINGS[feelingKey as keyof typeof FEELING_GUIDE_MAPPINGS]) {
+          matchedGuide = FEELING_GUIDE_MAPPINGS[feelingKey as keyof typeof FEELING_GUIDE_MAPPINGS]
+          console.log('Direct match found')
+        }
+        // Check if feeling contains "overwhelmed"
+        else if (feelingKey.includes('overwhelmed') || feelingKey.includes('overwhelm')) {
+          matchedGuide = FEELING_GUIDE_MAPPINGS['overwhelmed']
+          console.log('Substring match found for overwhelmed')
+        }
+        
+        if (matchedGuide) {
+          console.log('Found matching guide:', matchedGuide)
+          setAvailableGuide(matchedGuide)
+        } else {
+          console.log('No guide found for feeling:', feelingKey)
+          setAvailableGuide(null)
+        }
       } catch (err) {
         console.error('Error fetching strategies:', err)
       } finally {
@@ -60,7 +100,13 @@ export default function FeelingIssuePage() {
   }
 
   const goBack = () => {
-    router.push('/')
+    // Go back to strategies page if that's where user came from, otherwise home
+    const referrer = document.referrer
+    if (referrer && referrer.includes('/strategies')) {
+      router.push('/strategies')
+    } else {
+      router.back() // Use browser back for better UX
+    }
   }
 
   const navigateHome = () => {
@@ -149,6 +195,31 @@ export default function FeelingIssuePage() {
                   </Button>
                 ))}
               </div>
+
+              {/* Read More Guide Button */}
+              {availableGuide && (
+                <>
+                  {console.log('Rendering guide button for:', availableGuide)}
+                <div className="mt-8 text-center">
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 max-w-md mx-auto">
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                      <BookOpen className="h-5 w-5 text-primary" />
+                      <h3 className="text-lg font-medium text-foreground">Need More Support?</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      Read our comprehensive guide about {feeling.toLowerCase()} with practical strategies and insights.
+                    </p>
+                    <Button
+                      onClick={() => router.push(`/guides/${availableGuide.slug}`)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition-all duration-200"
+                    >
+                      <BookOpen className="h-4 w-4 mr-2" />
+                      Read: {availableGuide.title}
+                    </Button>
+                  </div>
+                </div>
+                </>
+              )}
             </div>
           </div>
         </div>

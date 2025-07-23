@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { ArrowLeft, BookOpen, Headphones, Globe, User, ExternalLink, Search, Filter } from 'lucide-react'
 
 // ADHD terminology and definitions
@@ -226,6 +225,13 @@ const resourceCategories = [
     icon: User,
     description: 'ADHD-related terms and definitions',
     color: 'from-orange-400 to-red-500'
+  },
+  {
+    id: 'view-all',
+    title: 'View All',
+    icon: Globe,
+    description: 'All resource types',
+    color: 'from-gray-400 to-gray-600'
   }
 ]
 
@@ -304,7 +310,7 @@ const resources = {
 
 export default function ResourcesPage() {
   const router = useRouter()
-  const [selectedCategory, setSelectedCategory] = useState('websites')
+  const [selectedCategory, setSelectedCategory] = useState('view-all')
   const [searchQuery, setSearchQuery] = useState('')
   const [terminologyFilter, setTerminologyFilter] = useState('All')
 
@@ -325,6 +331,10 @@ export default function ResourcesPage() {
   }
 
   const getCurrentResources = () => {
+    if (selectedCategory === 'view-all') {
+      return [...resources.websites, ...resources.books, ...resources.podcasts]
+        .sort((a, b) => a.title.localeCompare(b.title))
+    }
     return resources[selectedCategory as keyof typeof resources] || []
   }
 
@@ -338,6 +348,8 @@ export default function ResourcesPage() {
     
     if (terminologyFilter !== 'All') {
       filtered = filtered.filter(term => term.category === terminologyFilter)
+    } else {
+      filtered = [...filtered].sort((a, b) => a.term.localeCompare(b.term))
     }
     
     if (searchQuery) {
@@ -351,7 +363,7 @@ export default function ResourcesPage() {
   }
 
   return (
-    <div className="min-h-screen ocean-gradient relative flex flex-col">
+    <div className="min-h-screen bg-[#FFD4DB] dark:bg-[#4A2D35] relative flex flex-col">
       <Header 
         navigateHome={navigateHome} 
         navigateToPage={navigateToPage} 
@@ -365,7 +377,7 @@ export default function ResourcesPage() {
             <div className="flex items-center justify-between bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3 mb-8 max-w-xs">
               <button
                 onClick={goBack}
-                className="text-muted-foreground hover:text-foreground transition-colors duration-300 font-light inline-flex items-center cursor-pointer"
+                className="text-black dark:text-white hover:text-black/70 dark:hover:text-white/70 transition-colors duration-300 font-light inline-flex items-center cursor-pointer"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
@@ -376,57 +388,53 @@ export default function ResourcesPage() {
           {/* Content */}
           <div className="animate-in px-4 md:px-6">
             <div className="text-center mb-12">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-foreground mb-6 leading-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-black mb-6 leading-tight">
                 Resources
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-light max-w-3xl mx-auto">
+              <p className="text-lg md:text-xl text-black leading-relaxed font-light max-w-3xl mx-auto">
                 Helpful links, podcasts, books, and terminology to support your ADHD journey
               </p>
             </div>
 
-            {/* Category Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              {resourceCategories.map((category) => {
-                const IconComponent = category.icon
-                const isSelected = selectedCategory === category.id
-                const isTerminology = category.id === 'terminology'
-                
-                return (
-                  <div
-                    key={category.id}
-                    onClick={() => handleCategoryClick(category.id)}
-                    className={`
-                      relative group cursor-pointer transform transition-all duration-300 
-                      ${isSelected ? 'scale-105 shadow-2xl' : 'hover:scale-105 hover:shadow-xl'}
-                      ${isTerminology ? 'opacity-90 hover:opacity-100' : ''}
-                    `}
-                  >
-                    <div className={`
-                      relative overflow-hidden rounded-2xl p-6
-                      bg-gradient-to-br ${category.color}
-                      backdrop-blur-lg bg-opacity-90
-                      transition-all duration-300
-                      group-hover:bg-opacity-100
-                      h-[13rem] flex flex-col justify-between
-                      ${isSelected ? 'ring-2 ring-white/50' : ''}
-                    `}>
-                      <div className="flex-1 flex flex-col">
-                        <div className="mb-4">
-                          <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                            <IconComponent className="w-6 h-6 text-white" />
-                          </div>
-                        </div>
-                        <h3 className="text-xl font-bold text-white mb-2">
+            {/* Category Selection */}
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold text-black text-center mb-6">Choose a resource type:</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {resourceCategories.map((category) => {
+                  const IconComponent = category.icon
+                  const isSelected = selectedCategory === category.id
+                  
+                  return (
+                    <button
+                      key={category.id}
+                      onClick={() => handleCategoryClick(category.id)}
+                      className={`
+                        group cursor-pointer transform transition-all duration-300 ease-out
+                        hover:scale-105 hover:-translate-y-1 text-left
+                        ${isSelected ? 'scale-105 -translate-y-1' : ''}
+                      `}
+                    >
+                      <div className={`backdrop-blur-md rounded-2xl p-3 
+                                    transition-all duration-300
+                                    group-hover:bg-white/30
+                                    h-16 flex flex-col justify-center
+                                    ${isSelected 
+                                      ? 'bg-white/40 ring-2 ring-black/[0.15] dark:ring-white/[0.3]' 
+                                      : 'bg-white/10 hover:bg-white/20'}`}>
+                        
+                        <h3 className={`text-sm font-medium text-black text-center mb-1
+                                      ${isSelected ? 'font-semibold' : ''}`}>
                           {category.title}
                         </h3>
-                        <p className="text-white/90 text-sm leading-relaxed">
-                          {category.description}
+                        <p className={`text-xs text-black/70 text-center
+                                      ${isSelected ? 'text-black/90' : ''}`}>
+                          {category.description.split(' ').slice(0, 3).join(' ')}...
                         </p>
                       </div>
-                    </div>
-                  </div>
-                )
-              })}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
 
             {/* Search Bar */}
@@ -466,71 +474,81 @@ export default function ResourcesPage() {
 
             {/* Resources List */}
             {selectedCategory !== 'terminology' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredResources.map((resource, index) => (
-                  <div
-                    key={resource.id}
-                    className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                    style={{
-                      animationDelay: `${index * 0.1}s`
-                    }}
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <span className="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                        {resource.category}
-                      </span>
-                      <ExternalLink className="h-5 w-5 text-muted-foreground" />
-                    </div>
-                    
-                    <h3 className="text-xl font-semibold text-foreground mb-3">
-                      {resource.title}
-                    </h3>
-                    
-                    <p className="text-muted-foreground leading-relaxed mb-4 flex-grow">
-                      {resource.description}
-                    </p>
-                    
-                    <a
-                      href={resource.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center space-x-2 text-primary hover:text-primary/80 font-medium transition-colors duration-200"
+              <div>
+                <h2 className="text-2xl font-bold text-black text-center mb-8">
+                  {selectedCategory === 'view-all' ? 'All Resources' : resourceCategories.find(cat => cat.id === selectedCategory)?.title}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredResources.map((resource, index) => (
+                    <div
+                      key={resource.id}
+                      className="bg-white/20 backdrop-blur-md border border-white/10 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                      style={{
+                        animationDelay: `${index * 0.1}s`
+                      }}
                     >
-                      <span>View Resource</span>
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  </div>
-                ))}
+                      <div className="flex items-start justify-between mb-4">
+                        <span className="bg-white/20 text-black px-3 py-1 rounded-full text-sm font-medium">
+                          {resource.category}
+                        </span>
+                        <ExternalLink className="h-5 w-5 text-black/70" />
+                      </div>
+                      
+                      <h3 className="text-xl font-semibold text-black mb-3">
+                        {resource.title}
+                      </h3>
+                      
+                      <p className="text-black/80 leading-relaxed mb-4 flex-grow">
+                        {resource.description}
+                      </p>
+                      
+                      <a
+                        href={resource.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center space-x-2 text-black hover:text-black/80 font-medium transition-colors duration-200"
+                      >
+                        <span>View Resource</span>
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
             {/* Terminology List */}
             {selectedCategory === 'terminology' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {getFilteredTerminology().map((term, index) => (
-                  <div
-                    key={term.term}
-                    className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                    style={{
-                      animationDelay: `${index * 0.1}s`
-                    }}
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <span className="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                        {term.category}
-                      </span>
-                      <User className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <h2 className="text-2xl font-bold text-black text-center mb-8">
+                  ADHD Terminology
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {getFilteredTerminology().map((term, index) => (
+                    <div
+                      key={term.term}
+                      className="bg-white/20 backdrop-blur-md border border-white/10 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                      style={{
+                        animationDelay: `${index * 0.1}s`
+                      }}
+                    >
+                      <div className="flex items-start justify-between mb-4">
+                        <span className="bg-white/20 text-black px-3 py-1 rounded-full text-sm font-medium">
+                          {term.category}
+                        </span>
+                        <User className="h-5 w-5 text-black/70" />
+                      </div>
+                      
+                      <h3 className="text-xl font-semibold text-black mb-3">
+                        {term.term}
+                      </h3>
+                      
+                      <p className="text-black/80 leading-relaxed">
+                        {term.definition}
+                      </p>
                     </div>
-                    
-                    <h3 className="text-xl font-semibold text-foreground mb-3">
-                      {term.term}
-                    </h3>
-                    
-                    <p className="text-muted-foreground leading-relaxed">
-                      {term.definition}
-                    </p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
 
@@ -559,11 +577,41 @@ export default function ResourcesPage() {
                 </div>
               </div>
             )}
+
+            {/* Footer Text */}
+            <div className="text-center mt-12 max-w-3xl mx-auto">
+              <div className="bg-white/20 backdrop-blur-md rounded-2xl p-6 border border-white/10">
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
+                  Need More Resources?
+                </h3>
+                <p className="text-black/70 dark:text-white/70 text-sm mb-4">
+                  These resources provide evidence-based information and community support for your ADHD journey.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <button 
+                    onClick={() => setSelectedCategory('websites')}
+                    className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm px-4 py-2 rounded-lg transition-all duration-200"
+                  >
+                    Browse Websites
+                  </button>
+                  <button 
+                    onClick={() => setSelectedCategory('books')}
+                    className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm px-4 py-2 rounded-lg transition-all duration-200"
+                  >
+                    Find Books
+                  </button>
+                  <button 
+                    onClick={() => setSelectedCategory('podcasts')}
+                    className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm px-4 py-2 rounded-lg transition-all duration-200"
+                  >
+                    Listen to Podcasts
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>
-
-      <Footer navigateToPage={navigateToPage} />
     </div>
   )
 }

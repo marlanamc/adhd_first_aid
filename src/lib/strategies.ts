@@ -22,6 +22,7 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
       .from('strategies')
       .select(`
         *,
+        vote_count:strategy_votes!inner(count),
         strategy_feelings:strategy_feelings (
           feeling:feeling_id (
             name
@@ -34,7 +35,11 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
         ),
         strategy_barriers:strategy_barriers (
           barrier:barrier_id (
-            name
+            name,
+            emoji,
+            color,
+            category,
+            hover_description
           )
         ),
         strategy_tags:strategy_tags (
@@ -43,11 +48,16 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
             category
           )
         ),
-        help_task:help_task_id (
-          name
+        strategy_help_tasks:strategy_help_tasks (
+          help_task:help_task_id (
+            name
+          )
         ),
-        barrier:barrier_id (
-          name
+        strategy_why_does_this_work:strategy_why_does_this_work (
+          why_does_this_work:why_id (
+            name,
+            category
+          )
         )
       `)
     
@@ -123,6 +133,30 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
         const sbIds = sbData.map(row => row.strategy_id)
         strategyIds = strategyIds.length ? strategyIds.filter(id => sbIds.includes(id)) : sbIds
       }
+    }
+
+    // HELP TASKS
+    if (filters.help_tasks && filters.help_tasks.length > 0) {
+      console.log('Adding help_tasks filter:', filters.help_tasks)
+      const { data: helpTaskIdsData, error: helpTaskError } = await supabase
+        .from('help_tasks')
+        .select('id')
+        .in('name', filters.help_tasks)
+
+      if (helpTaskError) throw helpTaskError
+
+      const helpTaskIds = helpTaskIdsData.map(row => row.id)
+      console.log('Resolved help_task IDs:', helpTaskIds)
+
+      const { data: shtData, error: shtError } = await supabase
+        .from('strategy_help_tasks')
+        .select('strategy_id')
+        .in('help_task_id', helpTaskIds)
+
+      if (shtError) throw shtError
+
+      const shtIds = shtData.map(row => row.strategy_id)
+      strategyIds = strategyIds.length ? strategyIds.filter(id => shtIds.includes(id)) : shtIds
     }
 
     // Apply strategyId filter if we have any

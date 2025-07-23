@@ -1,279 +1,431 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowLeft, Calendar, Home, Zap, Brain } from 'lucide-react'
+import { ArrowLeft, Settings, Plus, Heart, Clock, Zap, Coffee, Moon, RefreshCw, Users, Share2, Download, Home, Brain, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 
-// Life management systems based on Reddit research
-const systemCategories = [
+// Sample systems data - in a real app, this would come from a database
+const featuredSystems = [
   {
-    id: 'routines',
-    title: 'Daily Routines',
-    description: 'Flexible frameworks for morning, evening, and weekly routines',
-    icon: Calendar,
-    color: 'from-orange-400 to-yellow-500',
-    systems: [
-      {
-        title: 'ADHD-Friendly Morning Routine',
-        preview: 'Gentle start to your day that works with your brain...',
-        components: ['Preparation night before', 'Flexible timing', 'Energy awareness']
-      },
-      {
-        title: 'Evening Wind-Down System',
-        preview: 'End your day with clarity and preparation...',
-        components: ['Brain dump', 'Tomorrow prep', 'Self-care ritual']
-      },
-      {
-        title: 'Weekly Planning Framework',
-        preview: 'Stay on track without overwhelm...',
-        components: ['Priority setting', 'Energy mapping', 'Buffer time']
-      }
-    ]
+    id: 1,
+    name: 'Morning Routine Reset',
+    description: 'A gentle morning routine for low-energy days',
+    creator: 'Community',
+    likes: 124,
+    category: 'Daily Routines',
+    difficulty: 'Easy',
+    time: '15-30 min',
+    icon: Coffee,
+    steps: 5,
+    color: 'from-amber-400 to-orange-500'
   },
   {
-    id: 'organization',
-    title: 'Organization Systems',
-    description: 'Sustainable methods for managing your physical and digital spaces',
-    icon: Home,
-    color: 'from-green-400 to-teal-500',
-    systems: [
-      {
-        title: 'The ADHD Declutter Method',
-        preview: 'Organizing that sticks, even with executive dysfunction...',
-        components: ['One-touch rule', 'Visual systems', 'Maintenance habits']
-      },
-      {
-        title: 'Digital Life Management',
-        preview: 'Tame your digital chaos with simple systems...',
-        components: ['Email workflow', 'File organization', 'App optimization']
-      },
-      {
-        title: 'Paper & Document System',
-        preview: 'Never lose important documents again...',
-        components: ['Action folders', 'Scan workflow', 'Reminder system']
-      }
-    ]
+    id: 2,
+    name: 'Post-Crash Recovery',
+    description: 'Steps to recover from executive function shutdown',
+    creator: 'ADHD Coach Sarah',
+    likes: 89,
+    category: 'Crisis Support',
+    difficulty: 'Medium',
+    time: '10-20 min',
+    icon: RefreshCw,
+    steps: 7,
+    color: 'from-blue-400 to-cyan-500'
   },
   {
-    id: 'energy-management',
-    title: 'Energy Management',
-    description: 'Work with your natural energy patterns, not against them',
+    id: 3,
+    name: '7AM Workout System',
+    description: 'Early morning exercise routine that actually sticks',
+    creator: 'FitnessADHD',
+    likes: 156,
+    category: 'Exercise',
+    difficulty: 'Hard',
+    time: '45-60 min',
     icon: Zap,
-    color: 'from-purple-400 to-pink-500',
-    systems: [
-      {
-        title: 'Energy Mapping System',
-        preview: 'Identify and optimize your daily energy patterns...',
-        components: ['Energy tracking', 'Task matching', 'Recovery planning']
-      },
-      {
-        title: 'Spoon Theory for ADHD',
-        preview: 'Manage your mental and emotional resources...',
-        components: ['Daily capacity', 'Energy budgeting', 'Recovery strategies']
-      },
-      {
-        title: 'Burnout Prevention Framework',
-        preview: 'Sustainable productivity that prevents crashes...',
-        components: ['Warning signs', 'Circuit breakers', 'Recovery protocols']
-      }
-    ]
+    steps: 8,
+    color: 'from-green-400 to-emerald-500'
   },
   {
-    id: 'productivity',
-    title: 'Productivity Systems',
-    description: 'ADHD-adapted approaches to getting things done',
+    id: 4,
+    name: 'Evening Wind-Down',
+    description: 'Consistent bedtime routine for better sleep',
+    creator: 'SleepExpert',
+    likes: 203,
+    category: 'Sleep',
+    difficulty: 'Easy',
+    time: '20-40 min',
+    icon: Moon,
+    steps: 6,
+    color: 'from-purple-400 to-indigo-500'
+  },
+  {
+    id: 5,
+    name: 'ADHD Declutter Method',
+    description: 'Organizing that sticks, even with executive dysfunction',
+    creator: 'OrganizeADHD',
+    likes: 178,
+    category: 'Organization',
+    difficulty: 'Medium',
+    time: '30-60 min',
+    icon: Home,
+    steps: 6,
+    color: 'from-teal-400 to-cyan-500'
+  },
+  {
+    id: 6,
+    name: 'Focus & Flow Framework',
+    description: 'Optimize your environment and mindset for deep work',
+    creator: 'ADHDProductivity',
+    likes: 142,
+    category: 'Productivity',
+    difficulty: 'Medium',
+    time: '20-30 min setup',
     icon: Brain,
-    color: 'from-blue-400 to-indigo-500',
-    systems: [
-      {
-        title: 'The ADHD Task System',
-        preview: 'Break down overwhelming projects into manageable steps...',
-        components: ['Task decomposition', 'Priority matrix', 'Progress tracking']
-      },
-      {
-        title: 'Focus & Flow Framework',
-        preview: 'Optimize your environment and mindset for deep work...',
-        components: ['Focus triggers', 'Distraction management', 'Flow state entry']
-      },
-      {
-        title: 'Accountability Without Shame',
-        preview: 'Self-compassionate approaches to staying on track...',
-        components: ['Progress celebration', 'Gentle redirects', 'Support systems']
-      }
-    ]
+    steps: 4,
+    color: 'from-indigo-400 to-purple-500'
   }
 ]
 
-export default function SystemsPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+const systemCategories = [
+  { name: 'Daily Routines', icon: Calendar, count: 12, color: 'from-orange-400 to-yellow-500' },
+  { name: 'Crisis Support', icon: Heart, count: 8, color: 'from-red-400 to-pink-500' },
+  { name: 'Exercise', icon: Zap, count: 15, color: 'from-green-400 to-emerald-500' },
+  { name: 'Sleep', icon: Moon, count: 9, color: 'from-purple-400 to-indigo-500' },
+  { name: 'Organization', icon: Home, count: 18, color: 'from-teal-400 to-cyan-500' },
+  { name: 'Productivity', icon: Brain, count: 21, color: 'from-blue-400 to-indigo-500' }
+]
 
-  const navigateHome = () => {
+export default function SystemsPage() {
+  const [selectedSystem, setSelectedSystem] = useState<number | null>(null)
+  const [activeTab, setActiveTab] = useState<'browse' | 'build' | 'my-systems'>('browse')
+
+  const handleSystemSelect = (systemId: number) => {
+    setSelectedSystem(systemId)
+    // In a real app, this would navigate to the system detail page
+    console.log(`Selected system: ${systemId}`)
+  }
+
+  const goBack = () => {
     window.history.back()
   }
 
-  const navigateToPage = (page: string) => {
-    window.location.href = `/${page}`
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case 'Easy': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+      case 'Medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+      case 'Hard': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
+    }
   }
 
   return (
-    <div className="min-h-screen ocean-gradient relative flex flex-col">
-      <Header 
-        navigateHome={navigateHome} 
-        navigateToPage={navigateToPage} 
-        onSearchOpen={() => {}} 
-      />
-
-      <main className="flex-1 flex flex-col">
-        <div className="flex-1 container mx-auto max-w-6xl px-4 sm:px-6 pt-32 md:pt-36 pb-24">
-          
-          {/* Back Button */}
-          <div className="flex items-center justify-between bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3 mb-8 max-w-xs">
-            <button
-              onClick={navigateHome}
-              className="text-muted-foreground hover:text-foreground transition-colors duration-300 font-light inline-flex items-center cursor-pointer"
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 py-8 pt-24">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-6">
+            <Button
+              variant="ghost"
+              onClick={goBack}
+              className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Home
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-foreground flex items-center gap-3">
+                <Settings className="h-8 w-8 text-green-500" />
+                Systems Lab
+              </h1>
+              <p className="text-muted-foreground mt-2">
+                Browse, build, and share ADHD-friendly routines that solve real problems
+              </p>
+            </div>
+          </div>
+
+          {/* Tab Navigation */}
+          <div className="flex space-x-1 bg-gray-200 dark:bg-gray-800 rounded-xl p-1 max-w-md">
+            <button
+              onClick={() => setActiveTab('browse')}
+              className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === 'browse'
+                  ? 'bg-white dark:bg-gray-700 text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Browse Systems
+            </button>
+            <button
+              onClick={() => setActiveTab('build')}
+              className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === 'build'
+                  ? 'bg-white dark:bg-gray-700 text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Build System
+            </button>
+            <button
+              onClick={() => setActiveTab('my-systems')}
+              className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === 'my-systems'
+                  ? 'bg-white dark:bg-gray-700 text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              My Systems
             </button>
           </div>
+        </div>
 
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-serif font-medium text-gray-900 dark:text-white mb-4">
-              Life Management Systems
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-              Flexible frameworks and systems designed specifically for ADHD brains. 
-              Build sustainable habits that work with your neurodivergent patterns.
-            </p>
-          </div>
-
-          {/* System Categories */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {systemCategories.map((category) => {
-              const IconComponent = category.icon
-              
-              return (
-                <div key={category.id} className="space-y-6">
-                  {/* Category Header */}
-                  <div
-                    className="group cursor-pointer transform transition-all duration-300 hover:scale-105"
-                    onClick={() => setSelectedCategory(category.id)}
-                  >
-                    <div className={`
-                      relative overflow-hidden rounded-3xl p-8 h-48
-                      bg-gradient-to-br ${category.color}
-                      backdrop-blur-lg bg-opacity-90 shadow-lg hover:shadow-xl
-                    `}>
-                      {/* Icon */}
-                      <div className="mb-6">
-                        <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                          <IconComponent className="w-8 h-8 text-white" />
+        {/* Content based on active tab */}
+        {activeTab === 'browse' && (
+          <div className="space-y-8">
+            {/* Categories */}
+            <div>
+              <h2 className="text-xl font-semibold text-foreground mb-4">Browse by Category</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                {systemCategories.map((category) => {
+                  const IconComponent = category.icon
+                  return (
+                    <div
+                      key={category.name}
+                      className="group cursor-pointer transform transition-all duration-300 hover:scale-105"
+                    >
+                      <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all">
+                        <div className="text-center">
+                          <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                            <IconComponent className="h-6 w-6 text-green-600 dark:text-green-400" />
+                          </div>
+                          <h3 className="font-medium text-foreground text-sm mb-1">{category.name}</h3>
+                          <p className="text-xs text-muted-foreground">{category.count} systems</p>
                         </div>
                       </div>
-
-                      {/* Content */}
-                      <div className="space-y-4">
-                        <h3 className="text-2xl font-bold text-white">
-                          {category.title}
-                        </h3>
-                        <p className="text-white/90 text-sm leading-relaxed">
-                          {category.description}
-                        </p>
-
-                        {/* System Count */}
-                        <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 inline-block">
-                          <span className="text-white text-sm font-medium">
-                            {category.systems.length} systems available
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Hover Effect */}
-                      <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
-                  </div>
+                  )
+                })}
+              </div>
+            </div>
 
-                  {/* Systems Preview */}
-                  <div className="space-y-4">
-                    {category.systems.map((system, index) => (
-                      <div
-                        key={index}
-                        className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
-                      >
-                        <h4 className="font-semibold text-gray-900 dark:text-white mb-2 text-lg">
-                          {system.title}
-                        </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                          {system.preview}
-                        </p>
-                        
-                        {/* Components */}
-                        <div className="space-y-2">
-                          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                            Key Components:
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            {system.components.map((component, idx) => (
-                              <span
-                                key={idx}
-                                className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 
-                                           text-xs px-3 py-1 rounded-full"
-                              >
-                                {component}
-                              </span>
-                            ))}
+            {/* Featured Systems */}
+            <div>
+              <h2 className="text-xl font-semibold text-foreground mb-4">Featured Systems</h2>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+                {featuredSystems.map((system) => {
+                  const IconComponent = system.icon
+                  return (
+                    <div
+                      key={system.id}
+                      onClick={() => handleSystemSelect(system.id)}
+                      className={`
+                        group cursor-pointer transform transition-all duration-300 ease-out
+                        hover:scale-[1.02] hover:-translate-y-1
+                        ${selectedSystem === system.id ? 'scale-[1.02] -translate-y-1' : ''}
+                      `}
+                    >
+                      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        {/* Header with gradient */}
+                        <div className={`bg-gradient-to-r ${system.color} p-6 text-white`}>
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                <IconComponent className="h-6 w-6 text-white" />
+                              </div>
+                              <div>
+                                <h3 className="text-lg font-semibold">{system.name}</h3>
+                                <p className="text-white/90 text-sm">{system.description}</p>
+                              </div>
+                            </div>
                           </div>
                         </div>
 
-                        {/* Coming Soon Badge */}
-                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
-                          <span className="bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 
-                                         text-xs px-3 py-1 rounded-full font-medium">
-                            Detailed guide coming soon
-                          </span>
+                        {/* Content */}
+                        <div className="p-6">
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                              <span>{system.steps} steps</span>
+                              <span>{system.time}</span>
+                              <span 
+                                className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(system.difficulty)}`}
+                              >
+                                {system.difficulty}
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Heart className="h-4 w-4 text-red-500" />
+                              <span className="text-sm text-muted-foreground">{system.likes}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm text-muted-foreground">by {system.creator}</p>
+                            <div className="flex space-x-2">
+                              <Button variant="outline" size="sm">
+                                <Share2 className="h-4 w-4 mr-1" />
+                                Share
+                              </Button>
+                              <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                                <Download className="h-4 w-4 mr-1" />
+                                Use System
+                              </Button>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-          {/* Development Notice */}
-          <div className="mt-16 text-center">
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-2xl p-8 max-w-2xl mx-auto">
-              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                Systems in Development
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                We're creating comprehensive, step-by-step guides for each of these systems. 
-                They'll include templates, checklists, and real-world examples from the ADHD community.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  onClick={() => navigateToPage('suggest')}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  Suggest a System
-                </Button>
-                <Button 
-                  onClick={() => navigateToPage('strategies')}
-                  variant="outline"
-                  className="border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
-                >
-                  Browse Current Strategies
-                </Button>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </div>
-        </div>
-      </main>
+        )}
 
-      <Footer navigateToPage={navigateToPage} />
+        {activeTab === 'build' && (
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Plus className="h-8 w-8 text-green-600 dark:text-green-400" />
+                </div>
+                <h2 className="text-2xl font-bold text-foreground mb-2">Build Your Own System</h2>
+                <p className="text-muted-foreground">
+                  Create a step-by-step routine that works for your ADHD brain
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    System Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g., My Morning Routine"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-background text-foreground focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Description
+                  </label>
+                  <textarea
+                    placeholder="Briefly describe what this system helps with..."
+                    rows={3}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-background text-foreground focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Category
+                    </label>
+                    <select className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-background text-foreground focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                      <option value="">Select category...</option>
+                      {systemCategories.map(cat => (
+                        <option key={cat.name} value={cat.name}>{cat.name}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Difficulty
+                    </label>
+                    <select className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-background text-foreground focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                      <option value="">Select difficulty...</option>
+                      <option value="Easy">Easy</option>
+                      <option value="Medium">Medium</option>
+                      <option value="Hard">Hard</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Time Needed
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g., 15-30 min"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-background text-foreground focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Steps
+                  </label>
+                  <div className="space-y-3">
+                    {[1, 2, 3].map((step) => (
+                      <div key={step} className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center text-sm font-medium text-green-600 dark:text-green-400">
+                          {step}
+                        </div>
+                        <input
+                          type="text"
+                          placeholder={`Step ${step}: What do you do?`}
+                          className="flex-1 px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-background text-foreground focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        />
+                      </div>
+                    ))}
+                    <Button variant="outline" className="w-full">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Another Step
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="flex justify-end space-x-3 pt-6">
+                  <Button variant="outline">Save as Draft</Button>
+                  <Button className="bg-green-600 hover:bg-green-700">
+                    Publish System
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'my-systems' && (
+          <div className="text-center py-12">
+            <div className="max-w-md mx-auto">
+              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Settings className="h-8 w-8 text-gray-400" />
+              </div>
+              <h2 className="text-xl font-semibold text-foreground mb-2">No Systems Yet</h2>
+              <p className="text-muted-foreground mb-6">
+                Build your first system to see it here, or save systems from the community.
+              </p>
+              <Button
+                onClick={() => setActiveTab('build')}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Create Your First System
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Footer Text */}
+        <div className="text-center mt-12 max-w-2xl mx-auto">
+          <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              Build Systems That Work for You
+            </h3>
+            <p className="text-muted-foreground text-sm mb-4">
+              These are step-by-step routines created by and for the ADHD community. Share what works for you and discover new approaches.
+            </p>
+            <Button 
+              onClick={() => window.location.href = '/suggest'}
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
+              Suggest a System Topic
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

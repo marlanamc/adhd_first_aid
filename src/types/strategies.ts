@@ -4,6 +4,7 @@ export interface StrategyFilters {
   feelings?: string[];
   issues?: string[];
   barrier_type?: string;
+  help_tasks?: string[];
   search?: string;
 }
 

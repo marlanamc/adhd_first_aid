@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Search, Menu, Moon, Sun, Heart } from 'lucide-react'
@@ -19,23 +21,18 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
   return (
     <>
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/10 dark:bg-gray-900/60 backdrop-blur-md border-b border-white/20 dark:border-white/10 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+          <div className="flex justify-between items-center py-1">
             {/* Logo Area */}
             <div className="flex-1 logo-container">
               <button
                 onClick={navigateHome}
-                className="flex items-center hover:opacity-80 transition-opacity duration-300 cursor-pointer"
+                className="flex items-center hover:opacity-60 transition-opacity duration-300 cursor-pointer"
               >
-                <Image
-                  src={theme === 'dark' ? '/logo-light.png' : '/logo.png'}
-                  alt="ADHD First Aid Kit"
-                  width={300}
-                  height={300}
-                  className="h-22 sm:h-28 w-auto transition-opacity duration-300"
-                  priority
-                />
+                <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#22223B] dark:text-white">
+                  ADHD <span className="text-[#E96B7D]">First Aid</span> Kit
+                </span>
               </button>
             </div>
             

@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { Heart, HeartOff, AlertTriangle, BookOpen, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface FavoriteStrategy {
   id: string
@@ -159,9 +161,9 @@ export default function FavoritesPage() {
                     <h3 className="strategy-title text-lg font-semibold text-foreground mb-3">
                       {strategy.name}
                     </h3>
-                    <p className="strategy-description text-muted-foreground text-sm leading-relaxed mb-4">
-                      {strategy.description}
-                    </p>
+                    <div className="strategy-description text-muted-foreground text-sm leading-relaxed mb-4 prose prose-sm prose-headings:text-foreground prose-strong:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{strategy.description}</ReactMarkdown>
+                    </div>
                   </div>
 
                   {/* Tags */}

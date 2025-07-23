@@ -1,190 +1,215 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
+import { useState } from 'react'
+import { ArrowLeft, Heart, Brain, Zap, Frown, Users, BrainCircuit, Battery, Flame, Sparkles, CloudLightning, Rainbow, AlertCircle, Skull, CloudRain, Waves, CloudDrizzle, Shield, UserX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
-import { supabase } from '@/lib/supabase'
-import type { Feeling } from '@/lib/supabase'
+import React from 'react'
+
+// Categories with counts
+const categories = [
+  { name: 'Cognitive & Overload', color: 'from-blue-400 to-cyan-500', count: 5 },
+  { name: 'Dysregulation & Shutdown', color: 'from-gray-400 to-slate-500', count: 6 },
+  { name: 'Heavy Feelings', color: 'from-purple-400 to-pink-500', count: 4 },
+  { name: 'Jittery & Wound Up', color: 'from-yellow-400 to-orange-500', count: 4 },
+  { name: 'Social & Connection', color: 'from-green-400 to-teal-500', count: 3 },
+  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 22 }
+]
+
+// Feelings data with new categories
+const feelings = [
+  // Cognitive & Overload  
+  { name: 'Mental Fog', category: 'Cognitive & Overload', icon: CloudDrizzle },
+  { name: 'Overwhelmed', category: 'Cognitive & Overload', icon: Waves },
+  { name: 'Forgetful', category: 'Cognitive & Overload', icon: Brain },
+  { name: 'Scattered', category: 'Cognitive & Overload', icon: CloudLightning },
+  { name: 'Overstimulated', category: 'Cognitive & Overload', icon: Sparkles },
+  
+  // Dysregulation & Shutdown
+  { name: 'Stuck', category: 'Dysregulation & Shutdown', icon: BrainCircuit },
+  { name: 'Drained', category: 'Dysregulation & Shutdown', icon: Battery },
+  { name: 'Burned Out', category: 'Dysregulation & Shutdown', icon: Flame },
+  { name: 'Numb', category: 'Dysregulation & Shutdown', icon: Skull },
+  { name: 'Ashamed', category: 'Dysregulation & Shutdown', icon: Frown },
+  { name: 'Frustrated', category: 'Dysregulation & Shutdown', icon: Flame },
+  
+  // Heavy Feelings
+  { name: 'Guilty', category: 'Heavy Feelings', icon: AlertCircle },
+  { name: 'Defeated', category: 'Heavy Feelings', icon: CloudRain },
+  { name: 'Hopeless', category: 'Heavy Feelings', icon: CloudRain },
+  { name: 'Stressed', category: 'Heavy Feelings', icon: Zap },
+  
+  // Jittery & Wound Up
+  { name: 'Anxious', category: 'Jittery & Wound Up', icon: AlertCircle },
+  { name: 'Restless', category: 'Jittery & Wound Up', icon: Sparkles },
+  { name: 'Wired', category: 'Jittery & Wound Up', icon: Zap },
+  { name: 'Tense', category: 'Jittery & Wound Up', icon: Shield },
+  
+  // Social & Connection
+  { name: 'Lonely', category: 'Social & Connection', icon: Users },
+  { name: 'Misunderstood', category: 'Social & Connection', icon: Users },
+  { name: 'Rejected', category: 'Social & Connection', icon: UserX }
+]
 
 export default function FeelingsPage() {
-  const router = useRouter()
-  const [feelings, setFeelings] = useState<Feeling[]>([])
-  const [isTransitioning, setIsTransitioning] = useState(false)
-
-  // Fetch feelings
-  useEffect(() => {
-    async function fetchFeelings() {
-      try {
-        const { data, error } = await supabase
-          .from('feelings')
-          .select('id, name, emoji, color, category, description')
-          .order('name')
-
-        if (error) {
-          console.error('Error fetching feelings:', error)
-          return
-        }
-
-        setFeelings(data || [])
-      } catch (err) {
-        console.error('Exception while fetching feelings:', err)
-      }
-    }
-    fetchFeelings()
-  }, [])
-
-  // Group feelings by category
-  const groupedFeelings = feelings.reduce((acc, feeling) => {
-    const category = feeling.category || 'Other';
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(feeling);
-    return acc;
-  }, {} as Record<string, Feeling[]>);
+  const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<string | null>('Cognitive & Overload')
 
   const handleFeelingSelect = (feeling: string) => {
-    setIsTransitioning(true)
-    setTimeout(() => {
-      router.push(`/feeling/${encodeURIComponent(feeling)}`)
-    }, 300)
+    setSelectedFeeling(feeling)
+    // Navigate to individual feeling page
+    window.location.href = `/feelings/${encodeURIComponent(feeling.toLowerCase().replace(/\s+/g, '-'))}`
   }
 
-  const navigateHome = () => {
-    router.push('/')
+  const goBack = () => {
+    window.history.back()
   }
 
-  const navigateToPage = (page: string) => {
-    router.push(`/${page}`)
-  }
+  // Filter feelings by selected category
+  const filteredFeelings = selectedCategory === 'View All'
+    ? [...feelings].sort((a, b) => a.name.localeCompare(b.name))
+    : selectedCategory 
+    ? feelings.filter(feeling => feeling.category === selectedCategory)
+    : []
 
   return (
-    <div className="min-h-screen ocean-gradient relative flex flex-col">
-      <Header 
-        navigateHome={navigateHome} 
-        navigateToPage={navigateToPage} 
-        onSearchOpen={() => {}} 
-      />
-
-      <main className="flex-1 flex flex-col">
-        <div className="flex-1 container mx-auto max-w-6xl px-4 sm:px-6 pt-12 md:pt-16 pb-24">
-          
-          {/* Back Button */}
-          <Button
-            variant="ghost"
-            onClick={navigateHome}
-            className="mb-8 text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
-          </Button>
-
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-serif font-medium text-gray-900 dark:text-white mb-4">
-              How are you feeling right now?
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-              Choose the feeling that best matches where you are emotionally. 
-              We'll help you find strategies that work with what you're experiencing.
-            </p>
+    <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] relative">
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+        {/* Header */}
+        <div className="mb-12">
+          <div className="flex items-center gap-4 mb-6">
+            <Button
+              variant="ghost"
+              size="default"
+              onClick={goBack}
+              className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
+            >
+              <ArrowLeft className="h-5 w-5 text-[#22223B] dark:text-white" />
+            </Button>
+            <div className="flex-1">
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-black text-center">
+                How are you feeling right now?
+              </h1>
+            </div>
           </div>
+        </div>
 
-          {/* Feelings by Category */}
-          <div className="space-y-12">
-            {Object.entries(groupedFeelings).map(([categoryName, categoryFeelings]) => (
-              <div key={categoryName} className="space-y-6">
-                <h2 className="text-2xl font-serif font-medium text-gray-800 dark:text-gray-200 text-center">
-                  {categoryName}
-                </h2>
-                
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {categoryFeelings.map((feeling) => (
-                    <button
-                      key={feeling.id}
-                      onClick={() => handleFeelingSelect(feeling.name)}
-                      disabled={isTransitioning}
-                      className={`
-                        relative group cursor-pointer transform transition-all duration-500 ease-out
-                        hover:scale-110 hover:-translate-y-2 hover:rotate-1
-                        ${isTransitioning ? 'pointer-events-none opacity-50' : 'shadow-lg hover:shadow-2xl'}
-                        hover:z-10
-                      `}
-                    >
-                      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl p-6 text-center
-                                     transition-all duration-500 ease-out
-                                     group-hover:bg-white/90 group-hover:backdrop-blur-xl">
-                        
-                        {/* Emoji */}
-                        {feeling.emoji && (
-                          <div className="text-4xl mb-3 transition-all duration-500 group-hover:scale-125 group-hover:rotate-6">
-                            {feeling.emoji}
-                          </div>
-                        )}
-                        
-                        {/* Feeling Name */}
-                        <h3 className="font-semibold text-gray-900 dark:text-white mb-2 
-                                      transition-all duration-500 group-hover:text-lg">
-                          {feeling.name}
-                        </h3>
-                        
-                        {/* Description */}
-                        {feeling.description && (
-                          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed
-                                        transition-all duration-500 group-hover:text-gray-700 dark:group-hover:text-gray-300">
-                            {feeling.description}
-                          </p>
-                        )}
-
-                        {/* Hover shimmer effect */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-all duration-500 
-                                       bg-gradient-to-r from-transparent via-white to-transparent
-                                       transform -skew-x-12 -translate-x-full group-hover:translate-x-full" />
-                      </div>
-                    </button>
-                  ))}
+        {/* Category Selection */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-black text-center mb-6">Choose a feeling type:</h2>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {categories.map((category) => (
+              <button
+                key={category.name}
+                onClick={() => setSelectedCategory(category.name)}
+                className={`
+                  group cursor-pointer transform transition-all duration-300 ease-out
+                  hover:scale-105 hover:-translate-y-1 text-left
+                  ${selectedCategory === category.name ? 'scale-105 -translate-y-1' : ''}
+                `}
+              >
+                <div className={`backdrop-blur-md rounded-2xl p-3 
+                              transition-all duration-300
+                              group-hover:bg-white/30
+                              h-16 flex flex-col justify-center
+                              ${selectedCategory === category.name 
+                                ? 'bg-white/40 ring-2 ring-black/[0.15] dark:ring-white/[0.3]' 
+                                : 'bg-white/10 hover:bg-white/20'}`}>
+                  
+                  <h3 className={`text-sm font-medium text-black text-center mb-1
+                                ${selectedCategory === category.name ? 'font-semibold' : ''}`}>
+                    {category.name}
+                  </h3>
+                  <p className={`text-xs text-black/70 text-center
+                                ${selectedCategory === category.name ? 'text-black/90' : ''}`}>
+                    {category.count} feeling{category.count > 1 ? 's' : ''}
+                  </p>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
+        </div>
 
-          {/* Help Text */}
-          <div className="mt-16 text-center">
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-2xl p-8 max-w-2xl mx-auto">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Don't see your feeling?
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Sometimes our emotions are complex or don't fit neatly into categories. 
-                Choose the closest match, or try browsing by what you need help with instead.
-              </p>
+        {/* Selected Category Feelings */}
+        {selectedCategory && (
+          <div>
+            <h2 className="text-2xl font-bold text-black text-center mb-8">
+              {selectedCategory === 'View All' ? 'All Feelings' : selectedCategory}
+            </h2>
+            
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {filteredFeelings.map((feeling) => (
+                <div
+                  key={feeling.name}
+                  onClick={() => handleFeelingSelect(feeling.name)}
+                  className={`
+                    group cursor-pointer transform transition-all duration-300 ease-out
+                    hover:scale-105 hover:-translate-y-1
+                    ${selectedFeeling === feeling.name ? 'scale-105 -translate-y-1' : ''}
+                  `}
+                >
+                  <div className="bg-white/20 backdrop-blur-md rounded-xl p-6 
+                                shadow-lg hover:shadow-xl transition-all duration-300
+                                group-hover:bg-white/30
+                                h-32 flex flex-col justify-center items-center
+                                border border-black/[0.08] dark:border-white/[0.15]">
+                    
+                    {/* Icon */}
+                    <div className="text-2xl mb-1 transition-all duration-300 group-hover:scale-110">
+                      {React.createElement(feeling.icon, {
+                        size: 24,
+                        className: "text-black dark:text-white"
+                      })}
+                    </div>
+                    
+                    {/* Feeling Name */}
+                    <h3 className="text-sm font-medium text-black text-center transition-all duration-300">
+                      {feeling.name}
+                    </h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Footer Text */}
+        <div className="text-center mt-12 max-w-3xl mx-auto">
+          <div className="bg-white/20 backdrop-blur-md rounded-2xl p-6 border border-white/10">
+            <h3 className="text-lg font-semibold text-black mb-2">
+              Don't see your feeling?
+            </h3>
+            <p className="text-black text-sm mb-4">
+              Sometimes emotions are complex. Try exploring other approaches to find what you need.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button 
-                onClick={() => router.push('/tasks')}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                variant="ghost"
+                size="default"
+                onClick={() => window.location.href = '/barriers'}
+                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
               >
-                Browse by Tasks Instead
+                Browse by Barriers
+              </Button>
+              <Button 
+                variant="ghost"
+                size="default"
+                onClick={() => window.location.href = '/tasks'}
+                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+              >
+                Browse by Tasks
+              </Button>
+              <Button 
+                variant="ghost"
+                size="default"
+                onClick={() => window.location.href = '/identities'}
+                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+              >
+                Browse by Identity
               </Button>
             </div>
           </div>
         </div>
-      </main>
-
-      {/* Loading State */}
-      {isTransitioning && (
-        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl">
-            <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-gray-400 text-center">
-              Finding strategies for how you're feeling...
-            </p>
-          </div>
-        </div>
-      )}
-
-      <Footer navigateToPage={navigateToPage} />
+      </div>
     </div>
   )
-}
+} 

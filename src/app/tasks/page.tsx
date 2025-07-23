@@ -1,246 +1,215 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
+import { useState } from 'react'
+import { ArrowLeft, Wrench, Home, Calendar, Brain, Clock, Mail, ClipboardList, Briefcase, BookOpen, Brush, ShoppingCart, Utensils, Bed, Shirt, Trash2, Laptop, Phone, Wallet, FileText } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
-import { supabase } from '@/lib/supabase'
+import React from 'react'
 
-interface Task {
-  id: string
-  name: string
-  emoji: string | null
-  color: string | null
-  category: string | null
-  description: string | null
+// Tasks data with icons
+const tasks = [
+  // Home & Life Maintenance
+  { name: 'Cleaning', category: 'Home & Life Maintenance', icon: Home },
+  { name: 'Laundry', category: 'Home & Life Maintenance', icon: Shirt },
+  { name: 'Dishes', category: 'Home & Life Maintenance', icon: Utensils },
+  { name: 'Decluttering', category: 'Home & Life Maintenance', icon: Trash2 },
+  { name: 'Meal Planning', category: 'Home & Life Maintenance', icon: Utensils },
+  { name: 'Shopping', category: 'Home & Life Maintenance', icon: ShoppingCart },
+  { name: 'Sleep', category: 'Home & Life Maintenance', icon: Bed },
+  
+  // Planning & Organization
+  { name: 'Calendar', category: 'Planning & Organization', icon: Calendar },
+  { name: 'To-Do Lists', category: 'Planning & Organization', icon: ClipboardList },
+  { name: 'Emails', category: 'Planning & Organization', icon: Mail },
+  { name: 'Bills & Money', category: 'Planning & Organization', icon: Wallet },
+  { name: 'Paperwork', category: 'Planning & Organization', icon: FileText },
+  
+  // Execution & Productivity
+  { name: 'Focus Time', category: 'Execution & Productivity', icon: Brain },
+  { name: 'Work Tasks', category: 'Execution & Productivity', icon: Briefcase },
+  { name: 'Study', category: 'Execution & Productivity', icon: BookOpen },
+  { name: 'Creative Projects', category: 'Execution & Productivity', icon: Brush },
+  
+  // Transition & Activation
+  { name: 'Morning Routine', category: 'Transition & Activation', icon: Clock },
+  { name: 'Screen Time', category: 'Transition & Activation', icon: Laptop },
+  { name: 'Phone Use', category: 'Transition & Activation', icon: Phone }
+]
+
+const categories = [
+  { name: 'Home & Life Maintenance', color: 'from-green-400 to-emerald-500', count: 11 },
+  { name: 'Planning & Organization', color: 'from-blue-400 to-cyan-500', count: 4 },
+  { name: 'Execution & Productivity', color: 'from-orange-400 to-amber-500', count: 3 },
+  { name: 'Transition & Activation', color: 'from-purple-400 to-indigo-500', count: 2 },
+  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 20 }
+]
+
+const categoryColors = {
+  'Home & Life Maintenance': 'from-green-400 to-emerald-500',
+  'Planning & Organization': 'from-blue-400 to-cyan-500',
+  'Execution & Productivity': 'from-orange-400 to-amber-500',
+  'Transition & Activation': 'from-purple-400 to-indigo-500'
 }
 
 export default function TasksPage() {
-  const router = useRouter()
-  const [tasks, setTasks] = useState<Task[]>([])
-  const [isTransitioning, setIsTransitioning] = useState(false)
-
-  // Fetch help tasks
-  useEffect(() => {
-    async function fetchHelpTasks() {
-      try {
-        const { data, error } = await supabase
-          .from('help_tasks')
-          .select('id, name, emoji, color, category, description')
-
-        if (error) {
-          console.error('Error fetching help tasks:', error.message)
-          return
-        }
-
-        if (!data) {
-          console.warn('No help tasks data returned')
-          return
-        }
-
-        const validTasks = data.filter(task => task.name) as Task[]
-        setTasks(validTasks)
-      } catch (err) {
-        console.error('Exception while fetching help tasks:', err)
-      }
-    }
-    fetchHelpTasks()
-  }, [])
-
-  // Group tasks by category
-  const groupedTasks = tasks.reduce((acc, task) => {
-    const category = task.category || 'Other';
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(task);
-    return acc;
-  }, {} as Record<string, Task[]>);
-
-  // Create a sorted list of categories based on a predefined order
-  const getSortedTaskCategories = () => {
-    const categoryOrder = [
-      'Getting Started',
-      'Following Through', 
-      'Planning + Organization',
-      'Cleaning + Resetting',
-      'Focus + Motivation',
-      'Emotional Support + Self-Regulation',
-      'Life Maintenance',
-      'Energy Management',
-      'Mental Clarity',
-      'Other'
-    ];
-    
-    const categories = Object.keys(groupedTasks);
-    
-    return categories.sort((a, b) => {
-      const indexA = categoryOrder.indexOf(a);
-      const indexB = categoryOrder.indexOf(b);
-      
-      // If both categories are in the predefined order, sort by their position
-      if (indexA !== -1 && indexB !== -1) {
-        return indexA - indexB;
-      }
-      
-      // If only one category is in the predefined order, it comes first
-      if (indexA !== -1) return -1;
-      if (indexB !== -1) return 1;
-      
-      // If neither category is in the predefined order, sort alphabetically
-      return a.localeCompare(b);
-    });
-  };
+  const [selectedTask, setSelectedTask] = useState<string | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<string | null>('Home & Life Maintenance')
 
   const handleTaskSelect = (task: string) => {
-    setIsTransitioning(true)
-    setTimeout(() => {
-      router.push(`/task/${encodeURIComponent(task)}`)
-    }, 300)
+    setSelectedTask(task)
+    // Navigate to individual task page
+    window.location.href = `/tasks/${encodeURIComponent(task.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))}`
   }
 
-  const navigateHome = () => {
-    router.push('/')
+  const goBack = () => {
+    window.history.back()
   }
 
-  const navigateToPage = (page: string) => {
-    router.push(`/${page}`)
-  }
+  // Filter tasks by selected category
+  const filteredTasks = selectedCategory === 'View All'
+    ? [...tasks].sort((a, b) => a.name.localeCompare(b.name))
+    : selectedCategory 
+    ? tasks.filter(task => task.category === selectedCategory)
+    : []
 
   return (
-    <div className="min-h-screen ocean-gradient relative flex flex-col">
-      <Header 
-        navigateHome={navigateHome} 
-        navigateToPage={navigateToPage} 
-        onSearchOpen={() => {}} 
-      />
-
-      <main className="flex-1 flex flex-col">
-        <div className="flex-1 container mx-auto max-w-6xl px-4 sm:px-6 pt-12 md:pt-16 pb-24">
-          
-          {/* Back Button */}
-          <Button
-            variant="ghost"
-            onClick={navigateHome}
-            className="mb-8 text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
-          </Button>
-
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-serif font-medium text-gray-900 dark:text-white mb-4">
-              What do you need help with today?
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-              Choose the area where you're struggling right now. 
-              We'll show you ADHD-friendly strategies that really work.
-            </p>
+    <div className="min-h-screen bg-gradient-to-br from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] relative">
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+        {/* Header */}
+        <div className="mb-12">
+          <div className="flex items-center gap-4 mb-6">
+            <Button
+              variant="ghost"
+              size="default"
+              onClick={goBack}
+              className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
+            >
+              <ArrowLeft className="h-5 w-5 text-[#22223B] dark:text-white" />
+            </Button>
+            <div className="flex-1">
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-black text-center">
+                What do you need help with today?
+              </h1>
+            </div>
           </div>
+        </div>
 
-          {/* Tasks by Category */}
-          <div className="space-y-12">
-            {getSortedTaskCategories().map((categoryName) => (
-              <div key={categoryName} className="space-y-6">
-                <h2 className="text-2xl font-serif font-medium text-gray-800 dark:text-gray-200 text-center">
-                  {categoryName}
-                </h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {groupedTasks[categoryName].map((task) => (
-                    <button
-                      key={task.id}
-                      onClick={() => handleTaskSelect(task.name)}
-                      disabled={isTransitioning}
-                      className={`
-                        relative group cursor-pointer transform transition-all duration-500 ease-out
-                        hover:scale-105 hover:-translate-y-1 hover:rotate-1
-                        ${isTransitioning ? 'pointer-events-none opacity-50' : 'shadow-lg hover:shadow-2xl'}
-                        hover:z-10
-                      `}
-                    >
-                      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl p-6
-                                     transition-all duration-500 ease-out
-                                     group-hover:bg-white/90 group-hover:backdrop-blur-xl">
-                        
-                        {/* Emoji and Color Indicator */}
-                        <div className="flex items-center mb-3">
-                          {task.emoji && (
-                            <div className="text-2xl mr-3 transition-all duration-500 group-hover:scale-125 group-hover:rotate-6">
-                              {task.emoji}
-                            </div>
-                          )}
-                          {task.color && (
-                            <div 
-                              className="w-4 h-4 rounded-full transition-all duration-500 group-hover:scale-125"
-                              style={{ backgroundColor: task.color }}
-                            />
-                          )}
-                        </div>
-                        
-                        {/* Task Name */}
-                        <h3 className="font-semibold text-gray-900 dark:text-white mb-3 text-left
-                                      transition-all duration-500 group-hover:text-lg">
-                          {task.name}
-                        </h3>
-                        
-                        {/* Description */}
-                        {task.description && (
-                          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed text-left
-                                        transition-all duration-500 group-hover:text-gray-700 dark:group-hover:text-gray-300">
-                            {task.description}
-                          </p>
-                        )}
-
-                        {/* Hover shimmer effect */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-all duration-500 
-                                       bg-gradient-to-r from-transparent via-white to-transparent
-                                       transform -skew-x-12 -translate-x-full group-hover:translate-x-full rounded-2xl" />
-                      </div>
-                    </button>
-                  ))}
+        {/* Category Selection */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-black text-center mb-6">Choose a task type:</h2>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {categories.map((category) => (
+              <button
+                key={category.name}
+                onClick={() => setSelectedCategory(category.name)}
+                className={`
+                  group cursor-pointer transform transition-all duration-300 ease-out
+                  hover:scale-105 hover:-translate-y-1 text-left
+                  ${selectedCategory === category.name ? 'scale-105 -translate-y-1' : ''}
+                `}
+              >
+                <div className={`backdrop-blur-md rounded-2xl p-3 
+                              transition-all duration-300
+                              group-hover:bg-white/30
+                              h-16 flex flex-col justify-center
+                              ${selectedCategory === category.name 
+                                ? 'bg-white/40 ring-2 ring-black/[0.15] dark:ring-white/[0.3]' 
+                                : 'bg-white/10 hover:bg-white/20'}`}>
+                  
+                  <h3 className={`text-sm font-medium text-black text-center mb-1
+                                ${selectedCategory === category.name ? 'font-semibold' : ''}`}>
+                    {category.name}
+                  </h3>
+                  <p className={`text-xs text-black/70 text-center
+                                ${selectedCategory === category.name ? 'text-black/90' : ''}`}>
+                    {category.count} tasks
+                  </p>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
+        </div>
 
-          {/* Help Text */}
-          <div className="mt-16 text-center">
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-2xl p-8 max-w-2xl mx-auto">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Not sure where to start?
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Sometimes it's easier to start with how you're feeling rather than what you need to do. 
-                Try browsing by your current emotional state instead.
-              </p>
+        {/* Selected Category Tasks */}
+        {selectedCategory && (
+          <div>
+            <h2 className="text-2xl font-bold text-black text-center mb-8">
+              {selectedCategory === 'View All' ? 'All Tasks' : selectedCategory}
+            </h2>
+            
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredTasks.map((task) => (
+                <div
+                  key={task.name}
+                  onClick={() => handleTaskSelect(task.name)}
+                  className={`
+                    group cursor-pointer transform transition-all duration-300 ease-out
+                    hover:scale-105 hover:-translate-y-1
+                    ${selectedTask === task.name ? 'scale-105 -translate-y-1' : ''}
+                  `}
+                >
+                  <div className="bg-white/20 backdrop-blur-md rounded-xl p-6 
+                                shadow-lg hover:shadow-xl transition-all duration-300
+                                group-hover:bg-white/30
+                                h-32 flex flex-col justify-center items-center
+                                border border-white/10">
+                    
+                    {/* Icon */}
+                    <div className="text-2xl mb-1 transition-all duration-300 group-hover:scale-110">
+                      {React.createElement(task.icon, {
+                        size: 24,
+                        className: "text-black dark:text-white"
+                      })}
+                    </div>
+                    
+                    {/* Task Name */}
+                    <h3 className="text-sm font-medium text-black text-center transition-all duration-300">
+                      {task.name}
+                    </h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Footer Text */}
+        <div className="text-center mt-12 max-w-3xl mx-auto">
+          <div className="bg-white/30 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 border border-white/10">
+            <h3 className="text-lg font-semibold text-black mb-2">
+              Not sure where to start?
+            </h3>
+            <p className="text-black text-sm mb-4">
+              Sometimes it's easier to start with how you're feeling or what's blocking you.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button 
-                onClick={() => router.push('/feelings')}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                variant="ghost"
+                size="default"
+                onClick={() => window.location.href = '/feelings'}
+                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
               >
-                Browse by How You Feel Instead
+                Browse by Feelings
+              </Button>
+              <Button 
+                variant="ghost"
+                size="default"
+                onClick={() => window.location.href = '/barriers'}
+                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+              >
+                Browse by Barriers
+              </Button>
+              <Button 
+                variant="ghost"
+                size="default"
+                onClick={() => window.location.href = '/identities'}
+                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+              >
+                Browse by Identity
               </Button>
             </div>
           </div>
         </div>
-      </main>
-
-      {/* Loading State */}
-      {isTransitioning && (
-        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl">
-            <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-gray-400 text-center">
-              Finding strategies for what you need help with...
-            </p>
-          </div>
-        </div>
-      )}
-
-      <Footer navigateToPage={navigateToPage} />
+      </div>
     </div>
   )
-}
+} 

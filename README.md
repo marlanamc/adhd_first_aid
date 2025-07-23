@@ -11,30 +11,36 @@ A gentle, supportive web application designed specifically for ADHD minds during
 ## 🌟 Key Features
 
 ### Core User Flows
-1. **Feeling-Based Flow** - `/feeling/[feeling]` → `/feeling/[feeling]/issue/[issue]` → strategies
-2. **Task-Based Flow** - `/task/[task]` → strategies  
-3. **Direct Strategy Access** - `/strategies` page with comprehensive filtering
+1. **Homepage Entry Points** - 8 distinct pathways with intuitive question-based navigation
+2. **Feeling-Based Flow** - `/feelings` → category selection → strategies
+3. **Task-Based Flow** - `/tasks` → category selection → strategies
+4. **Barrier-Based Flow** - `/barriers` → category selection → strategies  
+5. **Identity-Based Flow** - `/identities` → category selection → strategies
+6. **Systems Lab** - Browse, build, and share ADHD-friendly routines
+7. **Support Resources** - Guides, scripts, quizzes, and external resources
 
 ### Current Features
-- **Dual Navigation** - Choose by how you feel OR what you need help with
+- **8-Way Navigation** - Choose by feelings, barriers, tasks, identity, or support needs
+- **Toggle System** - Category filtering on all content pages for cleaner navigation
+- **Question-Based UI** - Homepage cards start with engaging questions ("How are you feeling?")
+- **Gradient Theming** - Each content type has its own beautiful gradient background
+- **Glassmorphism Design** - Semi-transparent cards with backdrop blur effects
 - **Supabase Database** - Real-time strategy data with relational structure
 - **Favorites System** - Save strategies locally (no account required)
-- **Dark/Light Mode** - Theme toggle with user preference storage
 - **Strategy Voting** - Session-based feedback system
 - **Responsive Design** - Mobile-first, touch-friendly interface
-- **Search Functionality** - Coming soon (framework in place)
 
 ### Content Pages
-- **About** - Project background and philosophy
-- **FAQ** - Common questions about ADHD and the toolkit
-- **Blog** - Educational content (expandable framework)
-- **Scripts & Guides** - Communication templates and step-by-step guidance with category selection
-- **Systems** - Life management systems for daily routines and organization
-- **Quizzes** - Self-assessment tools including ADHD Structure Archetype Quiz
-- **Resources** - External resources with integrated ADHD terminology and filtering
-- **Contact** - Feedback and communication
-- **Legal & Privacy** - Clear disclaimers and data practices
-- **Suggest Strategy** - Community contribution form
+- **Feelings** (`/feelings`) - Emotion-first navigation with 5 categories
+- **Barriers** (`/barriers`) - What's blocking you? 4 barrier types with toggle selection
+- **Tasks** (`/tasks`) - Task-specific help with 4 categories  
+- **Identities** (`/identities`) - Identity-based support with 6 life contexts
+- **Systems Lab** (`/systems`) - Browse, build, and share ADHD-friendly routines
+- **Guides** (`/guides`) - Educational content with 4 simplified categories
+- **Scripts** (`/scripts`) - Communication templates for hard moments
+- **Quizzes** (`/quizzes`) - Interactive self-assessment tools
+- **Resources** (`/resources`) - Websites, books, podcasts, and ADHD terminology
+- **About/FAQ/Contact** - Project information and community features
 
 ## 🏗️ Technical Architecture
 
@@ -47,40 +53,53 @@ A gentle, supportive web application designed specifically for ADHD minds during
 
 ### Database Schema
 ```
-strategies (main content)
+strategies (main content with icons, images, further reading)
 ├── feelings (emotional states) → strategy_feelings (junction)
-├── issues (challenges) → strategy_issues (junction)  
-├── barriers (obstacles) → strategy_barriers (junction)
+├── issues (challenges + emotional regulation) → strategy_issues (junction)  
+├── barriers (cognitive/emotional/sensory) → strategy_barriers (junction)
+├── help_tasks (task types) → strategy_help_tasks (junction) - supports multiple
 ├── tags (categories) → strategy_tags (junction)
-├── help_tasks (task types) → linked via help_task_id
+├── life_roles → strategy_life_roles (junction)
+├── solution_types → strategy_solution_types (junction)
+├── styles → strategy_styles (junction)
+├── why_does_this_work (mechanisms) → strategy_why_does_this_work (junction)
 └── strategy_votes (session-based feedback)
 ```
+
+**Key Features:**
+- **Complete Metadata**: All lookup tables include emoji, color, category, and hover descriptions
+- **Multiple Help Tasks**: Strategies can be linked to multiple help tasks per strategy
+- **Title Case Standardization**: All data normalized to consistent capitalization
+- **Comprehensive Coverage**: 289 strategies with full relational data
 
 ### Project Structure
 ```
 src/
-├── app/                  # Next.js App Router
-│   ├── feeling/[feeling]/     # Feeling-based navigation
-│   ├── task/[task]/          # Task-based navigation
-│   ├── strategies/           # Strategy listing page
-│   ├── scripts/              # Scripts & guides with category selection
-│   ├── systems/              # Life management systems
-│   ├── quizzes/              # Self-assessment quizzes and downloads
-│   ├── resources/            # External resources with terminology
-│   ├── favorites/            # User favorites
-│   └── [other pages]/        # About, FAQ, Blog, etc.
+├── app/                      # Next.js App Router with all content types
+│   ├── feelings/             # Emotion-first navigation with categories
+│   ├── barriers/             # Barrier-focused navigation with toggle system
+│   ├── tasks/                # Task-specific navigation with categories  
+│   ├── identities/           # Identity-based navigation with life contexts
+│   ├── systems/              # Systems Lab - browse/build/share routines
+│   ├── guides/               # Educational content with simplified categories
+│   ├── scripts/              # Communication templates for hard moments
+│   ├── quizzes/              # Interactive self-assessment tools
+│   ├── resources/            # External resources with terminology integration
+│   ├── favorites/            # User favorites (localStorage)
+│   └── [support pages]/      # About, FAQ, Contact, etc.
 ├── components/
 │   ├── ui/                   # shadcn/ui component library + FavoriteButton
-│   ├── layout/               # Header, Footer
-│   ├── pages/                # Modular page components
-│   └── quiz/                 # Quiz components (StructureQuiz)
+│   ├── layout/               # Header, Footer with glassmorphism design
+│   ├── pages/                # NewHomePage with 8-way navigation
+│   └── quiz/                 # Interactive quiz components
 ├── lib/
-│   ├── supabase.ts          # Database client & types
+│   ├── supabase.ts          # Database client with enhanced queries
 │   ├── strategies.ts        # Strategy utilities
 │   └── utils.ts             # General utilities
-├── types/                   # TypeScript definitions
-├── contexts/                # Theme management
-└── hooks/                   # Custom hooks (favorites, etc.)
+├── types/                   # TypeScript definitions for all data types
+├── contexts/                # Theme management with gradient support
+├── hooks/                   # Custom hooks (favorites, votes, etc.)
+└── archive/                 # Archived files and old scripts
 ```
 
 ## 🎨 Design Philosophy
@@ -163,10 +182,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ## 📊 Data & Content Management
 
 ### Current Data Structure
-- **Comprehensive Strategy Database**: 200+ strategies with detailed categorization
-- **Relational Design**: Strategies linked to feelings, issues, barriers, and tags
-- **CSV Import System**: `npm run import-data` for bulk data management
-- **Data Validation**: Built-in checks for consistency and completeness
+- **Comprehensive Strategy Database**: 289 strategies with detailed categorization
+- **Advanced Relational Design**: Strategies linked to feelings, issues, barriers, help_tasks, why_mechanisms, and more
+- **Smart CSV Import System**: `npm run import-data` with resume capability and data normalization
+- **Data Standardization**: All names normalized to Title Case with specific mismatch mappings
+- **Complete Metadata**: Every lookup table includes emoji, color, category, hover descriptions
 
 ### Content Guidelines
 - **Peer-to-Peer**: Strategies from community experience and research
@@ -176,9 +196,14 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 - **Accessibility**: Clear descriptions, alternative text, multiple entry points
 
 ### Data Sources
-- **CSV Management**: `scripts/sample.csv` - main strategy data  
-- **Import Pipeline**: `scripts/import-data.ts` - CSV to Supabase processing
-- **Documentation**: See `docs/` folder for data validation guides and taxonomy
+- **CSV Management**: `Strategies_Clean_Sources.csv` - main strategy data (289 entries)
+- **Import Pipeline**: `scripts/import-data.ts` - Enhanced CSV to Supabase processing with:
+  - Resume capability for large imports
+  - Data normalization for consistency  
+  - Multiple help_tasks support
+  - Specific field mapping (feelings, issues, barriers, why_mechanisms)
+- **Schema Management**: `scripts/database/complete-schema.sql` - Complete database setup
+- **Documentation**: `docs/datadictionary_clean.md` - Updated taxonomy with all standardized data
 
 ## ⚠️ Important Legal Considerations
 
@@ -230,17 +255,57 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 - `src/components/layout/Header.tsx` - Navigation with favorites and theme toggle
 
 ### Data Management
-- `scripts/import-data.ts` - CSV to Supabase import pipeline
-- `scripts/sample.csv` - Master strategy data (200+ entries)
-- `docs/complete_database_review_guide.md` - Data validation checklist
-- `docs/datadictionary_clean.md` - Complete taxonomy of feelings, barriers, etc.
+- `scripts/import-data.ts` - Enhanced CSV to Supabase import pipeline with resume capability
+- `Strategies_Clean_Sources.csv` - Master strategy data (289 entries)
+- `scripts/database/complete-schema.sql` - Complete database schema with all metadata
+- `docs/datadictionary_clean.md` - Updated taxonomy with standardized Title Case data
 
 ### Configuration
 - `next.config.js` - Next.js with Supabase environment variable handling
 - `tailwind.config.js` - Custom ADHD-friendly animations and theming
 - `components.json` - shadcn/ui configuration
 
-## 🆕 Recent Updates (2024)
+## 🆕 Recent Updates (January 2025)
+
+### 🎨 Major ADHD-Friendly Layout Overhaul
+- **Collapsible Sections**: All feeling, task, barrier, and identity pages now feature collapsible content sections to reduce cognitive overwhelm
+- **Gentle Guidance**: Added "Take your time, open each section when you're ready" messaging with plant emoji to encourage self-paced exploration
+- **Plus/Minus Icons**: Clear, non-navigational expand/collapse indicators that don't suggest page navigation
+- **Custom Tooltips**: Hover-enabled "Open section" / "Close section" guidance with beautiful styling
+- **Smooth Animations**: Content slides in gracefully when expanded for a calming user experience
+
+### 🧭 Contextual Navigation Enhancement
+- **Smart 4-Button Layout**: Each page type shows relevant navigation options, avoiding self-referential buttons:
+  - **Barrier Pages**: Feelings | Tasks (top), Identity | Systems (bottom)
+  - **Task Pages**: Feelings | Barriers (top), Identity | Systems (bottom)  
+  - **Identity Pages**: Feelings | Barriers (top), Tasks | Systems (bottom)
+  - **Feeling Pages**: Tasks | Barriers (top), Identity | Systems (bottom)
+- **Prominent Guide Sections**: Strategy guides moved above navigation for better discoverability
+- **Consistent Visual Hierarchy**: All pages follow the same layout pattern for cognitive ease
+
+### 📝 Custom Content Templates
+- **Specialized Feeling Pages**: Custom 5-step layouts for Mental Fog, Forgetful, Scattered, Overstimulated, Stuck, and Overwhelmed
+- **Contextual Strategies**: Each page type (tasks, barriers, identities) features themed content and icons
+- **Unified Design Language**: Consistent color-coded sections with meaningful emojis across all content types
+
+### 🎯 Enhanced Guide System
+- **Floating Progress Bar**: Reading progress tracker that follows users while scrolling through guides
+- **Beautiful Guide Styling**: Custom NewGuideClient with glassmorphism design instead of plain markdown
+- **Dynamic Content Rendering**: Guides automatically adapt between Cognitive & Overload Guide and Dysregulation & Shutdown Guide
+- **Step-by-Step Guidance**: Clear progression through guide content with visual indicators
+
+### Major User Experience Improvements
+- **Strategy Navigation Fix**: Fixed "Find Your Strategy" button to show proper strategy selection interface instead of compressed homepage
+- **Icon System Enhancement**: Comprehensive Lucide icon mapping for all 289 strategies with fallback handling
+- **ADHD-Friendly Content**: Improved all strategy descriptions with bullet points and simple language for better readability
+- **Gallery Layout Fix**: Fixed strategy card alignment in gallery view for consistent horizontal layout
+- **Price Tag Styling**: Updated to translucent black text for improved readability and accessibility
+
+### Enhanced Interaction Features
+- **Selection Highlighting**: User-selected terms (feelings, issues, tasks) are now bolded in page descriptions for better context
+- **Complete Tooltip System**: Implemented hover tooltips for feelings, help_tasks, and barriers with glassmorphism styling
+- **Query Optimization**: Enhanced database queries to fetch complete objects with hover descriptions
+- **Interactive Feedback**: Improved visual feedback throughout the user journey
 
 ### Scripts & Guides Integration
 - **Combined Interface**: Merged scripts and guides into a single page with category selection boxes
@@ -263,10 +328,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 - **Consistent Navigation**: All pages now have uniform navigation patterns and styling
 - **Mobile Optimization**: Improved touch interactions and responsive design
 
-### Content Organization
+### Content Organization & Technical Improvements
 - **Card Layout Improvements**: Consistent card heights and better visual hierarchy
 - **Priority Reordering**: Guides now appear before scripts in navigation to match user preferences
 - **Enhanced Accessibility**: Better keyboard navigation and screen reader support
+- **Project Cleanup**: Organized folder structure with archive for old files and scripts
 
 ## 🌈 The Vision
 
@@ -275,6 +341,3 @@ This project exists to create a genuinely helpful resource for the ADHD communit
 The goal isn't to "fix" ADHD brains, but to provide tools that work with their unique wiring. It's a space where overwhelm is met with understanding, and practical support is offered without judgment.
 
 ---
-
-**Live Site**: https://henbtlon.manus.space
-**Built with care for the ADHD community** 💙

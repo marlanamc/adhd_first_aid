@@ -7,13 +7,20 @@ import { ArrowLeft, ChevronRight } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { supabase } from '@/lib/supabase'
+import type { Barrier } from '@/types/database'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 export default function TaskBarrierPage() {
   const router = useRouter()
   const params = useParams()
   const task = decodeURIComponent(params.task as string)
   
-  const [barriers, setBarriers] = useState<string[]>([])
+  const [barriers, setBarriers] = useState<Barrier[]>([])
   const [loading, setLoading] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
 
@@ -55,7 +62,7 @@ export default function TaskBarrierPage() {
 
         const { data: barriersData, error: barriersError } = await supabase
           .from('barriers')
-          .select('name')
+          .select('name, emoji, color, category, hover_description')
           .in('id', barrierIds)
 
         if (barriersError) {
@@ -63,11 +70,7 @@ export default function TaskBarrierPage() {
           return
         }
 
-        const barrierNames = (barriersData || [])
-          .map(barrier => barrier.name)
-          .filter((name): name is string => !!name)
-        
-        setBarriers(barrierNames)
+        setBarriers(barriersData || [])
       } catch (err) {
         console.error('Error fetching barriers:', err)
       } finally {
@@ -78,19 +81,25 @@ export default function TaskBarrierPage() {
     fetchBarriersForTask()
   }, [task])
 
-  const handleBarrierSelect = (barrier: string) => {
+  const handleBarrierSelect = (barrierName: string) => {
     setIsTransitioning(true)
     setTimeout(() => {
       const searchParams = new URLSearchParams({
         task,
-        barrier
+        barrier: barrierName
       })
       router.push(`/strategies?${searchParams.toString()}`)
     }, 300)
   }
 
   const goBack = () => {
-    router.push('/')
+    // Go back to strategies page if that's where user came from, otherwise home
+    const referrer = document.referrer
+    if (referrer && referrer.includes('/strategies')) {
+      router.push('/strategies')
+    } else {
+      router.back() // Use browser back for better UX
+    }
   }
 
   const navigateHome = () => {
@@ -161,20 +170,38 @@ export default function TaskBarrierPage() {
 
               <div className="flex flex-wrap justify-center gap-3 sm:gap-4 max-w-4xl mx-auto">
                 {barriers.map((barrier, index) => (
-                  <Button
-                    key={barrier}
-                    variant="ghost"
-                    size="default"
-                    onClick={() => handleBarrierSelect(barrier)}
-                    className="feeling-button h-auto py-3 sm:py-4 px-4 sm:px-6 text-sm font-light rounded-full mobile-transition mobile-button-large inline-flex items-center justify-center whitespace-nowrap text-muted-foreground hover:text-foreground"
-                    style={{
-                      animationDelay: `${index * 0.1}s`,
-                      transform: isTransitioning ? 'translateY(-20px)' : 'translateY(0)',
-                      opacity: isTransitioning ? 0 : 1
-                    }}
-                  >
-                    <span className="text-center leading-tight">{barrier}</span>
-                  </Button>
+                  <TooltipProvider key={barrier.name}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="default"
+                          onClick={() => handleBarrierSelect(barrier.name)}
+                          className="feeling-button h-auto py-3 sm:py-4 px-4 sm:px-6 text-sm font-light rounded-full mobile-transition mobile-button-large inline-flex items-center justify-center whitespace-nowrap text-muted-foreground hover:text-foreground"
+                          style={{
+                            animationDelay: `${index * 0.1}s`,
+                            transform: isTransitioning ? 'translateY(-20px)' : 'translateY(0)',
+                            opacity: isTransitioning ? 0 : 1
+                          }}
+                        >
+                          <span className="text-center leading-tight">{barrier.name}</span>
+                        </Button>
+                      </TooltipTrigger>
+                      {barrier.hover_description && (
+                        <TooltipContent className="bg-white/95 backdrop-blur-md text-sm p-4 max-w-sm rounded-xl shadow-xl border border-white/20">
+                          <div className="flex items-start gap-3">
+                            <div className="flex-shrink-0 w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center text-lg">
+                              {barrier.emoji || '🚧'}
+                            </div>
+                            <div>
+                              <p className="font-medium text-foreground mb-1">{barrier.name}</p>
+                              <p className="text-muted-foreground leading-relaxed">{barrier.hover_description}</p>
+                            </div>
+                          </div>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
                 ))}
               </div>
             </div>

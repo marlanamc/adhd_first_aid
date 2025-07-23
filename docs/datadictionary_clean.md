@@ -1,3 +1,4 @@
+```markdown
 # 📚 ADHD Strategies Database: Data Dictionary
 
 ## 🎯 Overview
@@ -34,7 +35,7 @@ This data dictionary defines all categories, tags, and classification systems us
 
 - **Overwhelmed** - Everything feels like too much at once — too many tabs open in your mind
 - **Overstimulated** - Your senses are overloaded — lights, sounds, and tasks are all too loud
-- **Burned out** - You've been pushing for too long, and now you feel empty, drained, or numb
+- **Burned Out** - You've been pushing for too long, and now you feel empty, drained, or numb
 
 ### 🏃 Physical/Body Feelings
 *You can't regulate — your body feels off or needs something*
@@ -63,56 +64,65 @@ This data dictionary defines all categories, tags, and classification systems us
 *What you need help with right now - the specific challenge you're facing*
 
 ### 🚀 Getting Started
-- **Starting something hard** - You keep putting it off — even though it matters
-- **Leaving the house** - You need to get out the door, but everything feels like friction
-- **Getting going in the morning** - You're awake, but getting started feels impossible
+- **Starting Something Hard** - You keep putting it off — even though it matters
+- **Leaving The House** - You need to get out the door, but everything feels like friction
+- **Getting Going In The Morning** - You're awake, but getting started feels impossible
+- **Overcoming Procrastination** - You keep putting things off and need help taking action
+- **Task Initiation Support** - You need help with the first step of getting started
 
 ### 🔁 Following Through
-- **Finishing what I start** - You begin with energy but rarely get to the end
+- **Finishing What I Start** - You begin with energy but rarely get to the end
 
 ### 🧠 Planning + Organization
-- **Planning my time** - You want to use your time better but don't know where to start
-- **Managing my schedule** - Keeping track of appointments and to-dos feels overwhelming
+- **Planning My Time** - You want to use your time better but don't know where to start
+- **Managing My Schedule** - Keeping track of appointments and to-dos feels overwhelming
 
 ### 🧼 Cleaning + Resetting
-- **Cleaning up** - Your space is a mess and it's making everything harder
-- **Resetting my space** - You need a fresh start — physically and mentally
+- **Cleaning Up** - Your space is a mess and it's making everything harder
+- **Resetting My Space** - You need a fresh start — physically and mentally
 
 ### 💥 Emotional Support + Self-Regulation
-- **Calming down** - You're overstimulated or overwhelmed and need to decompress
-- **Recovering from a crash** - You pushed too hard and now everything feels impossible
-- **Being kinder to myself** - You're stuck in self-blame and need gentle support
+- **Calming Down** - You're overstimulated or overwhelmed and need to decompress
+- **Recovering From A Crash** - You pushed too hard and now everything feels impossible
+- **Being Kinder To Myself** - You're stuck in self-blame and need gentle support
+- **Managing Emotional Dysregulation** - Your emotions feel intense and hard to control
 
 ### 🎯 Focus + Motivation
-- **Staying focused** - Your brain keeps jumping — and nothing's getting done
-- **Finding motivation** - You can't make yourself care — even when you want to
-- **Re-entering after a derail** - You got thrown off and can't seem to restart
+- **Staying Focused** - Your brain keeps jumping — and nothing's getting done
+- **Finding Motivation** - You can't make yourself care — even when you want to
+- **Re-Entering After A Derail** - You got thrown off and can't seem to restart
+- **Focus Enhancement** - You need to improve your concentration and attention
+- **Maintaining Focus** - You can focus but struggle to sustain it over time
+- **Focus Task Execution** - You need help staying on track while completing tasks
+- **Overcoming Resistance** - You feel internal pushback or avoidance toward tasks
+- **Quick Task Management** - You need efficient ways to handle short, urgent tasks
 
 ### 🧺 Life Maintenance
-- **Meal planning or prep** - You're tired of scrambling for food — and decisions
-- **Catching up on life tasks** - The little things are piling up and becoming big things
-- **Doing errands** - Everything you need is outside the house — but so is your energy
-- **Getting through emails** - Your inbox is a mountain and you don't know where to begin
-- **Managing bills and finances** - You keep missing due dates or avoiding money tasks
+- **Meal Planning Or Prep** - You're tired of scrambling for food — and decisions
+- **Catching Up On Life Tasks** - The little things are piling up and becoming big things
+- **Doing Errands** - Everything you need is outside the house — but so is your energy
+- **Getting Through Emails** - Your inbox is a mountain and you don't know where to begin
+- **Managing Bills And Finances** - You keep missing due dates or avoiding money tasks
+- **Personal Hygiene** - Basic self-care tasks feel overwhelming or hard to remember
 
 ### 🔄 Transitions & Changes
-- **Switching between tasks** - You get stuck in one activity and can't shift gears
-- **Adapting to changes** - Unexpected changes throw you off completely
-- **Ending hyperfocus** - You get absorbed and can't stop when you need to
+- **Switching Between Tasks** - You get stuck in one activity and can't shift gears
+- **Adapting To Changes** - Unexpected changes throw you off completely
+- **Ending Hyperfocus** - You get absorbed and can't stop when you need to
 
 ### 💬 Social & Communication
-- **Having difficult conversations** - You avoid confrontation or hard topics
-- **Setting boundaries** - You say yes to everything and get overwhelmed
-- **Asking for help** - You struggle to reach out when you need support
+- **Having Difficult Conversations** - You avoid confrontation or hard topics
+- **Setting Boundaries** - You say yes to everything and get overwhelmed
+- **Asking For Help** - You struggle to reach out when you need support
 
 ### 🧠 Executive Function Specific
-- **Breaking down big projects** - Large tasks feel impossible to tackle
-- **Prioritizing when everything feels urgent** - You can't figure out what to do first
-- **Following through on commitments** - You make promises but struggle to keep them
+- **Breaking Down Big Projects** - Large tasks feel impossible to tackle
+- **Prioritizing When Everything Feels Urgent** - You can't figure out what to do first
+- **Following Through On Commitments** - You make promises but struggle to keep them
 
 ### ⚡ Energy Management
-- **Managing energy crashes** - You hit a wall and can't function
-- **Working with inconsistent energy** - Some days you're on fire, others you can't function
+- **Managing Energy Crashes** - You hit a wall and can't function
+- **Working With Inconsistent Energy** - Some days you're on fire, others you can't function
 
 ---
 
@@ -126,6 +136,7 @@ This data dictionary defines all categories, tags, and classification systems us
 - **Avoidant** - Avoiding tasks on purpose or by instinct
 - **Frozen/Shut Down** - Paralyzed under pressure or overload
 - **Avoiding Routine** - Rejecting repetitive structure
+- **Task Initiation** - Specific difficulty with starting tasks
 
 ### 💭 Mental State Issues
 - **Bored** - Lack of stimulation or engagement
@@ -137,6 +148,8 @@ This data dictionary defines all categories, tags, and classification systems us
 - **Perfectionist** - Fixate on doing it "right," so nothing gets done
 - **Time Blind** - Misjudge how long things take or when to start
 - **Hyperfocused** - Get absorbed and can't stop when you need to
+- **Anxiety Management** - Struggling with worry, fear, or anxious thoughts
+- **Emotional Regulation** - Managing emotions, reactions, and emotional intensity
 
 ### 📅 Time + Planning Issues
 - **Poor Time Estimation** - Chronically underestimate how long things take
@@ -176,6 +189,11 @@ This data dictionary defines all categories, tags, and classification systems us
 
 ### 🌪️ Sensory / Physical Barriers
 - **Overstimulation** - Feel overwhelmed by noise, lights, notifications, or general input
+- **Environmental Cues** - Your surroundings make it harder to focus or take action
+
+### 🔧 Structural Barriers
+- **Task Structuring** - Difficulty breaking down or organizing complex tasks
+- **Working Memory Engagement** - Struggle to hold information in mind while working
 
 ---
 
@@ -249,6 +267,7 @@ This data dictionary defines all categories, tags, and classification systems us
 - **Quick Fix** - Immediate, fast solutions
 - **Reframe** - New perspective, different angle
 - **Accountability** - Check-ins, support, reporting
+- **Tracking** - Monitoring progress, patterns, or behaviors
 
 ### 🎨 Strategy Style
 *What it feels like to use this*
@@ -273,6 +292,7 @@ This data dictionary defines all categories, tags, and classification systems us
 - Working Professional
 - Entrepreneur
 - Retiree
+- Romantic Relationships
 
 ### 👥 Identity Tags
 - Women
@@ -402,145 +422,40 @@ This data dictionary defines all categories, tags, and classification systems us
 - Focus on ADHD-specific benefits
 - Separate multiple values with commas (like other tag fields)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 **Streamlined List (16 Core Mechanisms):**
 
 ### 🧠 Dopamine & Motivation
-- **activates dopamine** - Triggers reward pathways and motivation
-- **gamifies action** - Makes tasks feel like games with rewards
-- **provides instant rewards** - Offers immediate positive feedback
+- **Activates Dopamine** - Triggers reward pathways and motivation
+- **Gamifies Action** - Makes tasks feel like games with rewards
+- **Provides Instant Rewards** - Offers immediate positive feedback
 
 ### ⚙️ Executive Function Support  
-- **reduces decision fatigue** - Minimizes choices and cognitive load
-- **provides external structure** - Creates frameworks and systems
-- **breaks down complexity** - Simplifies overwhelming tasks
+- **Executive Function Support** - Strategies that support planning, decision-making, and task management
+- **Reduces Decision Fatigue** - Minimizes choices and cognitive load
+- **Provides External Structure** - Creates frameworks and systems
+- **Breaks Down Complexity** - Simplifies overwhelming tasks
 
 ### 🧮 Cognitive Load Management
-- **frees up working memory** - Reduces mental bandwidth requirements
-- **minimizes friction** - Removes barriers to starting/continuing
-- **externalizes tasks** - Moves info from brain to external systems
+- **Cognitive Load Management** - Strategies that reduce mental bandwidth and working memory demands
+- **Frees Up Working Memory** - Reduces mental bandwidth requirements
+- **Minimizes Friction** - Removes barriers to starting/continuing
+- **Externalizes Tasks** - Moves info from brain to external systems
+
+### 🎯 Sensory & Engagement
+- **Sensory Engagement** - Uses multiple senses to enhance focus and retention
 
 ### 💚 Emotional Support
-- **reduces shame** - Addresses ADHD-related guilt and self-criticism
-- **meets you where you are** - Accepts current capacity without judgment
-- **builds confidence** - Creates success experiences
-- **helps regulate emotions** - Calms nervous system and manages emotional intensity
+- **Emotional Support** - Strategies that address ADHD-related emotional challenges and build resilience
+- **Emotional Regulation** - Helps manage emotional intensity and reactions
+- **Reduces Shame** - Addresses ADHD-related guilt and self-criticism
+- **Meets You Where You Are** - Accepts current capacity without judgment
+- **Builds Confidence** - Creates success experiences
+- **Helps Regulate Emotions** - Calms nervous system and manages emotional intensity
 
 ### 🚀 Implementation Support
-- **starts small** - Uses manageable first steps
-- **builds momentum** - Creates forward motion and energy
-- **creates accountability** - Adds external motivation and tracking
+- **Starts Small** - Uses manageable first steps
+- **Builds Momentum** - Creates forward motion and energy
+- **Creates Accountability** - Adds external motivation and tracking
 
 ---
 
@@ -554,39 +469,4 @@ This data dictionary defines all categories, tags, and classification systems us
 
 **Strategy: "Progress Over Perfect"**
 `reduces shame, meets you where you are, builds confidence`
-- creates urgency
-- externalizes internal noise
-- externalizes tasks
-- feels doable
-- frees up working memory
-- gives permission to stop
-- gamifies action
-- helps you prioritize
-- improves focus
-- increases follow-through
-- is kind to your brain
-- lowers resistance
-- makes tools visible
-- meets you where you are
-- minimizes friction
-- provides comfort
-- provides external structure
-- reduces decision fatigue
-- reduces mental load
-- reduces overwhelm
-- reduces shame
-- reduces time blindness
-- reduces visual clutter
-- reframes pressure
-- regulates nervous system
-- reinforces self-trust
-- removes distractions
-- rewards effort
-- shifts emotional state
-- slows racing thoughts
-- starts a habit loop
-- starts small
-- supports task initiation
-- takes pressure off
-- uses your strengths
-- validates your experience 
+

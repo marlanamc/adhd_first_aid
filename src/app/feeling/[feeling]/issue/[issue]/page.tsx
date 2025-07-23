@@ -7,6 +7,13 @@ import { ArrowLeft, ChevronRight } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { getStrategies } from '@/lib/strategies'
+import type { Barrier } from '@/types/database'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 export default function FeelingIssueBarrierPage() {
   const router = useRouter()
@@ -14,7 +21,7 @@ export default function FeelingIssueBarrierPage() {
   const feeling = decodeURIComponent(params.feeling as string)
   const issue = decodeURIComponent(params.issue as string)
   
-  const [barriers, setBarriers] = useState<string[]>([])
+  const [barriers, setBarriers] = useState<Barrier[]>([])
   const [loading, setLoading] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
 
@@ -28,20 +35,20 @@ export default function FeelingIssueBarrierPage() {
           issues: [issue]
         })
 
-        // Extract unique barriers from strategies
-        const availableBarriers = Array.from(new Set(
-          data.flatMap(strategy => {
-            if (Array.isArray(strategy.strategy_barriers)) {
-              return strategy.strategy_barriers
-                .map(sb => sb.barrier?.name)
-                .filter((name): name is string => !!name)
-            }
-            if (strategy.barrier_type) {
-              return [strategy.barrier_type]
-            }
-            return []
-          })
-        ))
+        // Extract unique barriers from strategies - now getting full barrier objects
+        const seenBarriers = new Set()
+        const availableBarriers = data.flatMap(strategy => {
+          if (Array.isArray(strategy.strategy_barriers)) {
+            return strategy.strategy_barriers
+              .map(sb => sb.barrier)
+              .filter(barrier => {
+                if (!barrier?.name || seenBarriers.has(barrier.name)) return false
+                seenBarriers.add(barrier.name)
+                return true
+              })
+          }
+          return []
+        })
         setBarriers(availableBarriers)
       } catch (err) {
         console.error('Error fetching strategies:', err)
@@ -53,20 +60,20 @@ export default function FeelingIssueBarrierPage() {
     fetchStrategiesAndBarriers()
   }, [feeling, issue])
 
-  const handleBarrierSelect = (barrier: string) => {
+  const handleBarrierSelect = (barrierName: string) => {
     setIsTransitioning(true)
     setTimeout(() => {
       const searchParams = new URLSearchParams({
         feeling,
         issue,
-        barrier
+        barrier: barrierName
       })
       router.push(`/strategies?${searchParams.toString()}`)
     }, 300)
   }
 
   const goBack = () => {
-    router.push(`/feeling/${encodeURIComponent(feeling)}`)
+    router.back() // Use browser back for better UX
   }
 
   const navigateHome = () => {
@@ -139,20 +146,38 @@ export default function FeelingIssueBarrierPage() {
 
               <div className="flex flex-wrap justify-center gap-3 sm:gap-4 max-w-4xl mx-auto">
                 {barriers.map((barrier, index) => (
-                  <Button
-                    key={barrier}
-                    variant="ghost"
-                    size="default"
-                    onClick={() => handleBarrierSelect(barrier)}
-                    className="feeling-button h-auto py-3 sm:py-4 px-4 sm:px-6 text-sm font-light rounded-full mobile-transition mobile-button-large inline-flex items-center justify-center whitespace-nowrap text-muted-foreground hover:text-foreground"
-                    style={{
-                      animationDelay: `${index * 0.1}s`,
-                      transform: isTransitioning ? 'translateY(-20px)' : 'translateY(0)',
-                      opacity: isTransitioning ? 0 : 1
-                    }}
-                  >
-                    <span className="text-center leading-tight">{barrier}</span>
-                  </Button>
+                  <TooltipProvider key={barrier.name}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="default"
+                          onClick={() => handleBarrierSelect(barrier.name)}
+                          className="feeling-button h-auto py-3 sm:py-4 px-4 sm:px-6 text-sm font-light rounded-full mobile-transition mobile-button-large inline-flex items-center justify-center whitespace-nowrap text-muted-foreground hover:text-foreground"
+                          style={{
+                            animationDelay: `${index * 0.1}s`,
+                            transform: isTransitioning ? 'translateY(-20px)' : 'translateY(0)',
+                            opacity: isTransitioning ? 0 : 1
+                          }}
+                        >
+                          <span className="text-center leading-tight">{barrier.name}</span>
+                        </Button>
+                      </TooltipTrigger>
+                      {barrier.hover_description && (
+                        <TooltipContent className="bg-white/95 backdrop-blur-md text-sm p-4 max-w-sm rounded-xl shadow-xl border border-white/20">
+                          <div className="flex items-start gap-3">
+                            <div className="flex-shrink-0 w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center text-lg">
+                              {barrier.emoji || '🚧'}
+                            </div>
+                            <div>
+                              <p className="font-medium text-foreground mb-1">{barrier.name}</p>
+                              <p className="text-muted-foreground leading-relaxed">{barrier.hover_description}</p>
+                            </div>
+                          </div>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
                 ))}
               </div>
             </div>

@@ -18,7 +18,7 @@ export interface Feeling {
   emoji?: string | null;
   color?: string | null;
   category?: string | null;
-  description?: string | null;
+  hover_description?: string | null;
 }
 
 export interface StrategyFeeling {
@@ -29,6 +29,10 @@ export interface StrategyFeeling {
 export interface Issue {
   id: string;
   name: string;
+  emoji?: string | null;
+  color?: string | null;
+  category?: string | null;
+  hover_description?: string | null;
 }
 
 export interface StrategyIssue {
@@ -39,12 +43,28 @@ export interface StrategyIssue {
 export interface Barrier {
   id: string;
   name: string;
-  description?: string;
-  category?: string;
+  emoji?: string | null;
+  color?: string | null;
+  category?: string | null;
+  hover_description?: string | null;
 }
 
 export interface StrategyBarrier {
   barrier: Barrier;
+  strategy_id: string;
+}
+
+export interface WhyDoesThisWork {
+  id: string;
+  name: string;
+  category?: string | null;
+  emoji?: string | null;
+  color?: string | null;
+  hover_description?: string | null;
+}
+
+export interface StrategyWhyDoesThisWork {
+  why_does_this_work: WhyDoesThisWork;
   strategy_id: string;
 }
 
@@ -70,12 +90,14 @@ export interface Strategy {
   barrier_id?: string | null;
   created_at?: string | null;
   updated_at?: string | null;
-  vote_count?: number;
+  vote_count?: number | { count: number };
   featured?: boolean;
   strategy_tags?: StrategyTag[];
   strategy_feelings?: StrategyFeeling[];
   strategy_issues?: StrategyIssue[];
   strategy_barriers?: StrategyBarrier[];
+  strategy_help_tasks?: StrategyHelpTask[];
+  strategy_why_does_this_work?: StrategyWhyDoesThisWork[];
   // Legacy fields for backward compatibility
   issue?: string | string[];
   barrier_type?: string;
@@ -84,10 +106,15 @@ export interface Strategy {
 export interface HelpTask {
   id: string;
   name: string;
-  description?: string;
-  emoji?: string;
-  color?: string;
-  category?: string;
+  emoji?: string | null;
+  color?: string | null;
+  category?: string | null;
+  hover_description?: string | null;
+}
+
+export interface StrategyHelpTask {
+  help_task: HelpTask;
+  strategy_id: string;
 }
 
 export interface HelpTaskBarrier {

@@ -16,9 +16,11 @@ interface FavoriteButtonProps {
   }
   className?: string
   size?: 'sm' | 'md' | 'lg'
+  showText?: boolean
+  text?: string
 }
 
-export function FavoriteButton({ strategy, className, size = 'md' }: FavoriteButtonProps) {
+export function FavoriteButton({ strategy, className, size = 'md', showText = false, text = 'Favorite' }: FavoriteButtonProps) {
   const { isFavorite, toggleFavorite } = useFavorites()
   const isCurrentlyFavorite = isFavorite(strategy.id)
 
@@ -38,6 +40,39 @@ export function FavoriteButton({ strategy, className, size = 'md' }: FavoriteBut
     sm: 'p-1',
     md: 'p-2',
     lg: 'p-3'
+  }
+
+  const textButtonClasses = {
+    sm: 'px-2 py-1 text-xs',
+    md: 'px-3 py-2 text-sm',
+    lg: 'px-4 py-2 text-base'
+  }
+
+  if (showText) {
+    return (
+      <button
+        onClick={handleClick}
+        className={cn(
+          'inline-flex items-center space-x-2 rounded-full transition-all duration-200 hover:scale-105',
+          'shadow-sm hover:shadow-md',
+          textButtonClasses[size],
+          isCurrentlyFavorite 
+            ? 'text-red-500 hover:text-red-600' 
+            : 'text-gray-400 hover:text-red-500',
+          className
+        )}
+        title={isCurrentlyFavorite ? 'Remove from favorites' : 'Add to favorites'}
+      >
+        <Heart 
+          className={cn(
+            sizeClasses[size],
+            'transition-all duration-200',
+            isCurrentlyFavorite && 'fill-current'
+          )}
+        />
+        <span className="font-medium">{isCurrentlyFavorite ? 'Favorited' : text}</span>
+      </button>
+    )
   }
 
   return (

@@ -11,7 +11,7 @@ export interface BlogPost {
   publishDate: string;
 }
 
-export type ViewMode = 'feeling' | 'task';
+export type ViewMode = 'feeling' | 'task' | 'all';
 
 export type AppStep = 'feeling' | 'issue' | 'barrier' | 'gallery' | 'faq' | 'about' | 'blog' | 'terminology' | 'legal';
 
