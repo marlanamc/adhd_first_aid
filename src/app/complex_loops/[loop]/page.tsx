@@ -1,19 +1,19 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, Wrench, Heart, Home, Calendar, Brain, Clock, Mail, ClipboardList, Briefcase, BookOpen, Brush, ShoppingCart, Utensils, Bed, Shirt, Trash2, Laptop, Phone, Wallet, FileText, Plus, Minus, Share2, Construction, RotateCcw, Rainbow, Puzzle } from 'lucide-react'
+import { ArrowLeft, RotateCcw, Heart, Smartphone, Calendar, MessageSquareText, Clock, Laptop, Users, Brain, Zap, Volume2, Eye, ShoppingCart, Utensils, Bed, Briefcase, Mail, AlertCircle, Plus, Minus, Share2, Wrench, Construction, Rainbow, Puzzle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 
-interface TaskPageProps {
+interface ComplexLoopPageProps {
   params: {
-    task: string
+    loop: string
   }
 }
 
-export default function TaskPage({ params }: TaskPageProps) {
-  const [taskName, setTaskName] = useState<string>('')
-  const [taskIcon, setTaskIcon] = useState<React.ElementType>(Wrench)
+export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
+  const [loopName, setLoopName] = useState<string>('')
+  const [loopIcon, setLoopIcon] = useState<React.ElementType>(RotateCcw)
   const [expandedSections, setExpandedSections] = useState<{[key: number]: boolean}>({})
   const [hoveredSection, setHoveredSection] = useState<number | null>(null)
   const [copySuccess, setCopySuccess] = useState(false)
@@ -27,49 +27,55 @@ export default function TaskPage({ params }: TaskPageProps) {
 
   useEffect(() => {
     // Convert URL param back to display name
-    const name = decodeURIComponent(params.task)
+    const name = decodeURIComponent(params.loop)
       .split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ')
-      .replace(/And/g, '&') // Fix "Emails And Texts" -> "Emails & Texts"
-    setTaskName(name)
+      .replace(/And/g, '&')
+    setLoopName(name)
 
-    // Map tasks to Lucide icons (matching main tasks page)
+    // Map complex loops to Lucide icons (matching main complex loops page)
     const iconMap: Record<string, React.ElementType> = {
-      'Cleaning': Home,
-      'Laundry': Shirt,
-      'Dishes': Utensils,
-      'Decluttering': Trash2,
-      'Meal Planning': Utensils,
-      'Shopping': ShoppingCart,
-      'Sleep': Bed,
-      'Calendar': Calendar,
-      'To-Do Lists': ClipboardList,
-      'Emails': Mail,
-      'Bills & Money': Wallet,
-      'Paperwork': FileText,
-      'Focus Time': Brain,
-      'Work Tasks': Briefcase,
-      'Study': BookOpen,
-      'Creative Projects': Brush,
-      'Morning Routine': Clock,
-      'Screen Time': Laptop,
-      'Phone Use': Phone,
-      // Legacy mappings for compatibility
-      'Meal Prep': Utensils,
-      'Emails & Texts': Mail,
-      'Hygiene': Home,
-      'Finances': Wallet,
-      'Errands': ShoppingCart,
-      'Planning': Calendar,
-      'Time Management': Clock,
-      'Starting Something Hard': Brain,
-      'Finishing Something': ClipboardList,
-      'Leaving the House': Home,
-      'Getting Ready': Clock
+      // Digital & Screen
+      'Phone Scrolling': Smartphone,
+      'Screen Time Binges': Laptop,
+      'Social Media Spirals': MessageSquareText,
+      'Online Shopping': ShoppingCart,
+      
+      // Time & Schedule
+      'Chronic Lateness': Clock,
+      'Missed Appointments': Calendar,
+      'Last Minute Canceling': Calendar,
+      'Double Booking Yourself': Calendar,
+      
+      // Emotional & Social
+      'People Pleasing Burnout': Users,
+      'Rejection Sensitivity Loops': Heart,
+      'Social Masking Exhaustion': Users,
+      'Text Message Avoidance': MessageSquareText,
+      'Email Overwhelm': Mail,
+      'Friendships': Users,
+      'Intimacy': Heart,
+      
+      // Decision & Perfectionism
+      'Decision Overwhelm': Brain,
+      'Perfectionism Cycles': Eye,
+      'Analysis Paralysis': Brain,
+      'Pre Event Paralysis': AlertCircle,
+      
+      // Life & Wellness
+      'Overeating': Utensils,
+      'Undereating': Utensils,
+      'Job Search': Briefcase,
+      
+      // Sleep & Energy
+      'Can\'t Fall Asleep': Brain,
+      'Sleeping Through Alarms': Volume2,
+      'Constantly Tired': Eye,
+      'Bedtime Procrastination': Clock
     }
-    setTaskIcon(iconMap[name] || Wrench)
-  }, [params.task])
+    setLoopIcon(iconMap[name] || RotateCcw)
+  }, [params.loop])
 
   const goBack = () => {
     // Check if there's a category parameter in the URL
@@ -78,21 +84,21 @@ export default function TaskPage({ params }: TaskPageProps) {
     
     if (category) {
       // Go back to the specific category page - re-encode the category
-      window.location.href = `/tasks?category=${encodeURIComponent(category)}`
+      window.location.href = `/complex_loops?category=${encodeURIComponent(category)}`
     } else {
-      // Try browser history first, fallback to main tasks page
-      if (document.referrer && document.referrer.includes('/tasks')) {
+      // Try browser history first, fallback to main complex loops page
+      if (document.referrer && document.referrer.includes('/complex_loops')) {
         window.history.back()
       } else {
-        window.location.href = '/tasks'
+        window.location.href = '/complex_loops'
       }
     }
   }
 
   const handleShare = async () => {
     const shareData = {
-      title: `ADHD First Aid Kit - ${taskName}`,
-      text: `Get help with ${taskName.toLowerCase()} - ADHD-friendly strategies and support`,
+      title: `ADHD First Aid Kit - ${loopName}`,
+      text: `Get help breaking the ${loopName.toLowerCase()} loop - ADHD-friendly strategies and support`,
       url: window.location.href
     }
 
@@ -118,56 +124,78 @@ export default function TaskPage({ params }: TaskPageProps) {
     }
   }
 
-  // Example validation messages for different tasks
-  const getValidationMessage = (task: string) => {
+  // Validation messages for different complex loops
+  const getValidationMessage = (loop: string) => {
     const messages: Record<string, string> = {
-      'Cleaning': "Your space doesn't define your worth. You're not lazy - your brain just works differently.",
-      'Meal Prep': "Feeding yourself is an act of self-care. Simple meals count. You don't need to be perfect.",
-      'Emails & Texts': "Communication overwhelm is real. You're not rude for needing time to respond thoughtfully.",
-      'Hygiene': "Self-care isn't selfish. Your brain might make this feel harder, but you deserve to feel clean and comfortable.",
-      'Finances': "Money stress is overwhelming for ADHD brains. Taking small steps still counts as progress.",
-      'Starting Something Hard': "Task initiation issues aren't character flaws. Your brain needs different activation strategies.",
-      'Planning': "ADHD brains struggle with time and sequencing. External structure helps your brilliant mind function."
+      'Phone Scrolling': "Phone scrolling isn't laziness - it's your brain seeking dopamine. Your executive function isn't broken, it just needs different support.",
+      'Social Media Spirals': "Social media comparison hits ADHDers especially hard due to rejection sensitivity. Your worth isn't measured by posts.",
+      'Chronic Lateness': "Time blindness is a real ADHD symptom, not a character flaw. Your brain processes time differently.",
+      'Decision Overwhelm': "ADHD brains get overwhelmed by too many options. This isn't indecisiveness - it's neurodivergent decision processing.",
+      'People Pleasing Burnout': "Rejection sensitivity makes you overcompensate. Your needs matter too - saying no is self-care.",
+      'Email Overwhelm': "Email paralysis is common with ADHD. The backlog doesn't reflect your character or capabilities.",
+      'Can\'t Fall Asleep': "Racing thoughts at bedtime are part of ADHD. Your brain isn't trying to sabotage you - it just needs help winding down.",
+      'Bedtime Procrastination': "Revenge bedtime procrastination is real. You deserve downtime, even if it means staying up late.",
+      'Analysis Paralysis': "Perfectionism and ADHD create analysis paralysis. Good enough is actually good enough."
     }
-    return messages[task] || `This task feels hard because your ADHD brain processes things differently. That's not a flaw - it's just how you're wired.`
+    return messages[loop] || `This pattern feels overwhelming because ADHD brains get stuck in loops. You're not broken - your brain just needs different strategies to break free.`
   }
 
-  // Micro strategies based on the task
-  const getMicroStrategies = (task: string) => {
+  // Loop-breaking strategies based on the specific complex loop
+  const getLoopBreakingStrategies = (loop: string) => {
     const strategies: Record<string, Array<{title: string, description: string}>> = {
-      'Cleaning': [
-        { title: "Set timer for 15 minutes", description: "Just pick one small area and clean until the timer goes off." },
-        { title: "Put on energizing music", description: "Let the rhythm carry you through the task." },
-        { title: "Start with trash pickup", description: "Quick wins build momentum for bigger tasks." }
+      'Phone Scrolling': [
+        { title: "Set specific scroll times", description: "Allow yourself 15 minutes at 9am, 1pm, and 7pm. Set timers." },
+        { title: "Move phone to another room", description: "Physical distance creates mental distance from the urge." },
+        { title: "Replace with fidget alternative", description: "Keep stress ball, fidget toy, or book nearby for when you need stimulation." }
       ],
-      'Emails & Texts': [
-        { title: "Set specific email times", description: "Check only at 9am, 1pm, and 5pm. Close it otherwise." },
-        { title: "Use voice-to-text", description: "Sometimes speaking is easier than typing." },
-        { title: "Draft template responses", description: "Have standard replies ready for common messages." }
+      'Social Media Spirals': [
+        { title: "Unfollow accounts that trigger comparison", description: "Your feed should support, not sabotage your mental health." },
+        { title: "Set daily time limits", description: "Use built-in screen time controls to limit social apps to 30 minutes daily." },
+        { title: "Practice the 'post and leave' rule", description: "Share your content then immediately close the app - don't wait for reactions." }
       ],
-      'Starting Something Hard': [
-        { title: "Do just the first step", description: "Open the document, gather supplies, or read the first line." },
-        { title: "Set up your environment", description: "Clear your space, get water, eliminate distractions." },
-        { title: "Tell someone you're starting", description: "Body doubling works even virtually." }
+      'Chronic Lateness': [
+        { title: "Add 'ADHD time' to estimates", description: "Whatever you think it takes, add 25% more time for transitions and delays." },
+        { title: "Set 'leaving alarms'", description: "Set multiple alarms: 'get ready now,' 'gather items,' and 'walk out door.'" },
+        { title: "Prepare the night before", description: "Lay out clothes, pack bags, prep coffee - reduce morning decisions." }
       ],
-      'Planning': [
-        { title: "Brain dump everything", description: "Get all thoughts out of your head onto paper first." },
-        { title: "Pick 3 priorities max", description: "Your brain can only handle so much at once." },
-        { title: "Time block in calendar", description: "Make your intentions visible and protected." }
+      'Decision Overwhelm': [
+        { title: "Limit options to 3", description: "Too many choices paralyze ADHD brains. Narrow down to max 3 options." },
+        { title: "Set decision deadlines", description: "Give yourself 24-48 hours max, then choose the 'good enough' option." },
+        { title: "Use the 'coin flip test'", description: "Flip a coin - your gut reaction to the result reveals your true preference." }
+      ],
+      'Email Overwhelm': [
+        { title: "Declare email bankruptcy", description: "Archive everything older than 2 weeks. Start fresh - the important stuff will resurface." },
+        { title: "Use the 2-minute rule", description: "If it takes less than 2 minutes to respond, do it immediately." },
+        { title: "Set email office hours", description: "Check only at set times (9am, 1pm, 5pm) then close the app." }
+      ],
+      'Can\'t Fall Asleep': [
+        { title: "Brain dump before bed", description: "Write down racing thoughts for 10 minutes - get them out of your head." },
+        { title: "Try the '4-7-8' breathing", description: "Inhale for 4, hold for 7, exhale for 8. Repeat until drowsy." },
+        { title: "Use white noise or brown noise", description: "Consistent sound masks racing thoughts and environmental distractions." }
+      ],
+      'Bedtime Procrastination': [
+        { title: "Schedule your 'me time' earlier", description: "Block out 30-60 minutes of protected personal time before 9pm." },
+        { title: "Create a bedtime routine you enjoy", description: "Make bedtime something to look forward to, not just an end to fun." },
+        { title: "Set a 'bedtime alarm'", description: "Alarm at 9pm means start winding down, not necessarily sleep time." }
+      ],
+      'Analysis Paralysis': [
+        { title: "Set a 'good enough' standard", description: "80% perfect and done is better than 100% perfect and never finished." },
+        { title: "Time-box research/planning", description: "Give yourself 2 hours max to research, then make a decision with available info." },
+        { title: "Ask 'What's the worst that could happen?'", description: "Usually the worst case isn't actually that bad, and it's reversible." }
       ]
     }
     
-    return strategies[task] || [
-      { title: "Start smaller", description: "Break it down into the tiniest possible first step." },
-      { title: "Change your environment", description: "Sometimes a different location shifts everything." },
-      { title: "Set a timer", description: "Commit to just 10-15 minutes to start." }
+    return strategies[loop] || [
+      { title: "Interrupt the pattern", description: "When you notice the loop starting, pause and take 3 deep breaths." },
+      { title: "Change your environment", description: "Sometimes moving to a different space breaks the mental loop." },
+      { title: "Set a timer for the loop", description: "Allow yourself 10 minutes in the loop, then redirect to something else." }
     ]
   }
 
-  const microStrategies = getMicroStrategies(taskName)
+  const loopBreakingStrategies = getLoopBreakingStrategies(loopName)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] relative">
       <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
@@ -183,10 +211,10 @@ export default function TaskPage({ params }: TaskPageProps) {
               </Button>
               <div className="flex-1">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-foreground flex items-center gap-2 sm:gap-3">
-                  {React.createElement(taskIcon, {
-                    className: "h-6 w-6 sm:h-8 sm:w-8 text-blue-500 flex-shrink-0"
+                  {React.createElement(loopIcon, {
+                    className: "h-6 w-6 sm:h-8 sm:w-8 text-purple-500 flex-shrink-0"
                   })}
-                  {taskName}
+                  {loopName}
                 </h1>
               </div>
               <div className="relative">
@@ -210,7 +238,7 @@ export default function TaskPage({ params }: TaskPageProps) {
             {/* Validation Header */}
             <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 mb-8">
               <p className="text-lg md:text-xl text-foreground leading-relaxed">
-                {getValidationMessage(taskName)}
+                {getValidationMessage(loopName)}
               </p>
             </div>
           </div>
@@ -223,9 +251,9 @@ export default function TaskPage({ params }: TaskPageProps) {
             </p>
           </div>
 
-          {/* Collapsible Micro Strategies */}
+          {/* Collapsible Loop-Breaking Strategies */}
           <div className="mb-8 space-y-4">
-            {microStrategies.map((strategy, index) => (
+            {loopBreakingStrategies.map((strategy, index) => (
               <div key={index} className="relative">
                 <button
                   onClick={() => toggleSection(index)}
@@ -233,15 +261,15 @@ export default function TaskPage({ params }: TaskPageProps) {
                   onMouseLeave={() => setHoveredSection(null)}
                   className="w-full flex items-center gap-3 mb-4 p-4 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors"
                 >
-                  <div className="bg-blue-100 dark:bg-blue-900/30 rounded-full p-3">
-                    <span className="text-2xl">💡</span>
+                  <div className="bg-purple-100 dark:bg-purple-900/30 rounded-full p-3">
+                    <span className="text-2xl">🔄</span>
                   </div>
                   <div className="flex-1 text-left">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                       {strategy.title}
                     </h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      Quick start strategy
+                      Loop-breaking strategy
                     </p>
                   </div>
                   <div className="flex-shrink-0">
@@ -273,27 +301,27 @@ export default function TaskPage({ params }: TaskPageProps) {
 
           {/* Show All Strategies Button - moved above navigation */}
           <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-6">
+            <div className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-2xl p-6">
               <div className="flex items-center justify-center gap-2 mb-3">
-                <Heart className="h-5 w-5 text-blue-600" />
+                <Heart className="h-5 w-5 text-purple-600" />
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white">Need More Strategies?</h3>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed text-center">
-                Explore all available strategies specifically for {taskName.toLowerCase()}.
+                Explore all available strategies specifically for breaking the {loopName.toLowerCase()} loop.
               </p>
               <div className="text-center">
                 <Button 
-                  onClick={() => window.location.href = `/strategies?task=${encodeURIComponent(taskName)}`}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"
+                  onClick={() => window.location.href = `/strategies?complex_loop=${encodeURIComponent(loopName)}`}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl"
                 >
                   <Heart className="h-4 w-4 mr-2" />
-                  Show All Strategies for {taskName}
+                  Show All Strategies for {loopName}
                 </Button>
               </div>
             </div>
           </div>
 
-          {/* Navigation Options - Excluding Tasks */}
+          {/* Navigation Options - Excluding Complex Loops */}
           <div className="space-y-6">
             {/* Top Row - Feelings and Barriers */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -328,19 +356,19 @@ export default function TaskPage({ params }: TaskPageProps) {
               </Button>
             </div>
 
-            {/* Middle Row - Complex Loops and Identity */}
+            {/* Middle Row - Tasks and Identity */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button 
                 variant="outline"
                 size="lg"
-                onClick={() => window.location.href = '/complex_loops'}
-                className="p-6 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                onClick={() => window.location.href = '/tasks'}
+                className="p-6 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <RotateCcw className="h-6 w-6" />
+                  <Wrench className="h-6 w-6" />
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Stuck in repetitive patterns?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse Complex Loops</div>
+                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific tasks?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Tasks</div>
                   </div>
                 </div>
               </Button>

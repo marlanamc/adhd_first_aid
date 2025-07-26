@@ -130,3 +130,25 @@ export interface StrategyVote {
   session_id: string;
   created_at: string;
 }
+
+export interface StepSection {
+  number: number;
+  emoji: string;
+  title: string;
+  intro: string;
+  try_this: string[];
+  tip: string;
+}
+
+export interface FeelingsContent {
+  id: string;
+  feeling_name: string;
+  subtitle: string;
+  intro_paragraph: string;
+  gentle_advice: string;
+  stern_advice: string;
+  adhd_reasons: string[];
+  step_sections?: StepSection[];
+  created_at: string;
+  updated_at: string;
+}

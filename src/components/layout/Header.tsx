@@ -22,30 +22,30 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
     <>
       {/* Fixed Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/10 dark:bg-gray-900/60 backdrop-blur-md border-b border-white/20 dark:border-white/10 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-1">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+          <div className="flex justify-between items-center py-2 sm:py-1 min-h-[60px]">
             {/* Logo Area */}
             <div className="flex-1 logo-container">
               <button
                 onClick={navigateHome}
                 className="flex items-center hover:opacity-60 transition-opacity duration-300 cursor-pointer"
               >
-                <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#22223B] dark:text-white">
+                <span className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-[#22223B] dark:text-white">
                   ADHD <span className="text-[#E96B7D]">First Aid</span> Kit
                 </span>
               </button>
             </div>
             
             {/* Header Actions - Search and Menu */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 sm:space-x-3">
               {/* Search Icon */}
               <Button
                 variant="ghost"
                 size="default"
                 onClick={onSearchOpen}
-                className="p-3 rounded-full hover:bg-white/20 dark:hover:bg-gray-700 transition-all duration-300 shadow-lg"
+                className="p-2 sm:p-3 rounded-full hover:bg-white/20 dark:hover:bg-gray-700 transition-all duration-300 shadow-lg min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
               >
-                <Search className="h-6 w-6 text-muted-foreground hover:text-foreground transition-colors duration-300" />
+                <Search className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground hover:text-foreground transition-colors duration-300" />
               </Button>
 
               {/* Dropdown Menu */}
@@ -54,21 +54,21 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                   variant="ghost"
                   size="default"
                   onClick={() => setShowDropdown(!showDropdown)}
-                  className="dropdown-trigger p-3 rounded-full hover:bg-white/20 dark:hover:bg-gray-700 transition-all duration-300 shadow-lg"
+                  className="dropdown-trigger p-2 sm:p-3 rounded-full hover:bg-white/20 dark:hover:bg-gray-700 transition-all duration-300 shadow-lg min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
                 >
-                  <Menu className="h-6 w-6 text-muted-foreground hover:text-foreground transition-colors duration-300" />
+                  <Menu className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground hover:text-foreground transition-colors duration-300" />
                 </Button>
 
                 {/* Dropdown Content */}
                 {showDropdown && (
-                  <div className="dropdown-menu absolute right-0 top-full mt-2 w-56 bg-white/95 backdrop-blur-lg rounded-lg shadow-lg border border-white/30 overflow-hidden">
+                  <div className="dropdown-menu absolute right-0 top-full mt-2 w-48 sm:w-56 bg-white/95 backdrop-blur-lg rounded-lg shadow-lg border border-white/30 overflow-hidden z-50">
                     {/* First Section: Main Navigation */}
                     <button
                       onClick={() => {
                         navigateToPage('favorites')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light flex items-center gap-2"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px] flex items-center gap-2"
                     >
                       <Heart className="h-4 w-4" />
                       <span>My Favorites</span>
@@ -85,7 +85,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                         navigateToPage('faq')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       FAQ
                     </button>
@@ -94,7 +94,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                         navigateToPage('blog')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       Blog
                     </button>
@@ -108,7 +108,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                         navigateToPage('about')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       About
                     </button>
@@ -117,7 +117,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                         navigateToPage('contact')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       Contact Me
                     </button>
@@ -126,7 +126,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                         navigateToPage('suggest')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       Suggest a Strategy
                     </button>
@@ -135,7 +135,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                         navigateToPage('legal')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       Legal & Privacy
                     </button>
@@ -149,7 +149,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                         toggleTheme()
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light flex items-center gap-2"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px] flex items-center gap-2"
                     >
                       {theme === 'light' ? (
                         <>

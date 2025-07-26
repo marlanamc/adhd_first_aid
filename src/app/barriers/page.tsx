@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowLeft, AlertCircle, Ban, Battery, Brain, CloudLightning, Clock, HelpCircle, Mountain, Frown, CloudRain, XCircle, Timer, Map, Users, Shuffle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React from 'react'
@@ -55,10 +55,27 @@ export default function BarriersPage() {
   const [selectedBarrier, setSelectedBarrier] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>('Executive Function')
 
+  // Read category from URL parameter on page load
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const categoryFromUrl = urlParams.get('category')
+    if (categoryFromUrl) {
+      const decodedCategory = decodeURIComponent(categoryFromUrl)
+      // Check if the decoded category matches any of our known categories exactly
+      const categories = ['Executive Function', 'Social & Interpersonal', 'Emotional', 'Time & Priority', 'Decision Paralysis', 'Motivation Issues', 'View All']
+      const matchingCategory = categories.find(cat => cat === decodedCategory)
+      if (matchingCategory) {
+        setSelectedCategory(decodedCategory)
+      }
+    }
+  }, [])
+
   const handleBarrierSelect = (barrier: string) => {
     setSelectedBarrier(barrier)
-    // Navigate to individual barrier page
-    window.location.href = `/barriers/${encodeURIComponent(barrier.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))}`
+    // Navigate to individual barrier page with category parameter
+    const barrierSlug = encodeURIComponent(barrier.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))
+    const categoryParam = selectedCategory ? `?category=${encodeURIComponent(selectedCategory)}` : ''
+    window.location.href = `/barriers/${barrierSlug}${categoryParam}`
   }
 
   const goBack = () => {
@@ -198,6 +215,14 @@ export default function BarriersPage() {
                 className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
               >
                 Browse by Tasks
+              </Button>
+              <Button 
+                variant="ghost"
+                size="default"
+                onClick={() => window.location.href = '/complex_loops'}
+                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+              >
+                Browse by Complex Loops
               </Button>
               <Button 
                 variant="ghost"

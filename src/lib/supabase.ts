@@ -78,6 +78,7 @@ export type {
   HelpTask,
   HelpTaskBarrier,
   StrategyVote,
+  FeelingsContent,
 } from '../types/database';
 
 // Database schema for reference:
@@ -144,6 +145,30 @@ CREATE POLICY "Allow public read access on help_tasks" ON help_tasks
 CREATE POLICY "Allow public insert on strategy_votes" ON strategy_votes
   FOR INSERT WITH CHECK (true);
 */
+
+// Feelings content function
+export async function getFeelingsContent(feelingName: string) {
+  try {
+    const { data, error } = await supabase
+      .from('feelings_content')
+      .select('*')
+      .eq('feeling_name', feelingName)
+      .single();
+
+    if (error) {
+      console.error('Error fetching feelings content:', error);
+      return { data: null, error };
+    }
+
+    return { data, error: null };
+  } catch (error) {
+    console.error('Exception fetching feelings content:', error);
+    return {
+      data: null,
+      error: error instanceof Error ? error : new Error('Failed to fetch feelings content')
+    };
+  }
+}
 
 // Quiz submission function
 export async function saveQuizSubmission(submission: {

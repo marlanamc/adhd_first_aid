@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowLeft, Heart, Brain, Zap, Frown, Users, BrainCircuit, Battery, Flame, Sparkles, CloudLightning, Rainbow, AlertCircle, Skull, CloudRain, Waves, CloudDrizzle, Shield, UserX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React from 'react'
@@ -54,10 +54,32 @@ export default function FeelingsPage() {
   const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>('Cognitive & Overload')
 
+  // Read category from URL parameter on page load
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const categoryFromUrl = urlParams.get('category')
+    if (categoryFromUrl) {
+      const decodedCategory = decodeURIComponent(categoryFromUrl)
+      console.log('URL category:', categoryFromUrl)
+      console.log('Decoded category:', decodedCategory)
+      
+      // Check if the decoded category matches any of our known categories exactly
+      const matchingCategory = categories.find(cat => cat.name === decodedCategory)
+      if (matchingCategory) {
+        setSelectedCategory(decodedCategory)
+      } else {
+        console.log('No matching category found for:', decodedCategory)
+        console.log('Available categories:', categories.map(cat => cat.name))
+      }
+    }
+  }, [])
+
   const handleFeelingSelect = (feeling: string) => {
     setSelectedFeeling(feeling)
-    // Navigate to individual feeling page
-    window.location.href = `/feelings/${encodeURIComponent(feeling.toLowerCase().replace(/\s+/g, '-'))}`
+    // Navigate to individual feeling page with category parameter
+    const feelingSlug = encodeURIComponent(feeling.toLowerCase().replace(/\s+/g, '-'))
+    const categoryParam = selectedCategory ? `?category=${encodeURIComponent(selectedCategory)}` : ''
+    window.location.href = `/feelings/${feelingSlug}${categoryParam}`
   }
 
   const goBack = () => {
@@ -197,6 +219,14 @@ export default function FeelingsPage() {
                 className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
               >
                 Browse by Tasks
+              </Button>
+              <Button 
+                variant="ghost"
+                size="default"
+                onClick={() => window.location.href = '/complex_loops'}
+                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+              >
+                Browse by Complex Loops
               </Button>
               <Button 
                 variant="ghost"

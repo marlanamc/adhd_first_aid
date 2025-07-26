@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowLeft, User, Users, Home, Briefcase, Brain, Heart, Globe, Palette, Coins, ArrowUpRight, School, HeartHandshake, Building2, Zap, GraduationCap, Brush } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React from 'react'
@@ -54,10 +54,27 @@ export default function IdentitiesPage() {
   const [selectedIdentity, setSelectedIdentity] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>('Family & Care')
 
+  // Read category from URL parameter on page load
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const categoryFromUrl = urlParams.get('category')
+    if (categoryFromUrl) {
+      const decodedCategory = decodeURIComponent(categoryFromUrl)
+      // Check if the decoded category matches any of our known categories exactly
+      const categories = ['Family & Care', 'Work & Career', 'Neurodivergent Experience', 'Health & Wellness', 'Social & Cultural', 'Life Transitions', 'View All']
+      const matchingCategory = categories.find(cat => cat === decodedCategory)
+      if (matchingCategory) {
+        setSelectedCategory(decodedCategory)
+      }
+    }
+  }, [])
+
   const handleIdentitySelect = (identity: string) => {
     setSelectedIdentity(identity)
-    // Navigate to individual identity page
-    window.location.href = `/identities/${encodeURIComponent(identity.toLowerCase().replace(/\s+/g, '-'))}`
+    // Navigate to individual identity page with category parameter
+    const identitySlug = encodeURIComponent(identity.toLowerCase().replace(/\s+/g, '-'))
+    const categoryParam = selectedCategory ? `?category=${encodeURIComponent(selectedCategory)}` : ''
+    window.location.href = `/identities/${identitySlug}${categoryParam}`
   }
 
   const goBack = () => {
@@ -193,6 +210,14 @@ export default function IdentitiesPage() {
               <Button 
                 variant="ghost"
                 size="default"
+                onClick={() => window.location.href = '/barriers'}
+                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+              >
+                Browse by Barriers
+              </Button>
+              <Button 
+                variant="ghost"
+                size="default"
                 onClick={() => window.location.href = '/tasks'}
                 className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
               >
@@ -201,10 +226,10 @@ export default function IdentitiesPage() {
               <Button 
                 variant="ghost"
                 size="default"
-                onClick={() => window.location.href = '/barriers'}
+                onClick={() => window.location.href = '/complex_loops'}
                 className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
               >
-                Browse by Barriers
+                Browse by Complex Loops
               </Button>
             </div>
           </div>

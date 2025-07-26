@@ -1,64 +1,73 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, Wrench, Home, Calendar, Brain, Clock, Mail, ClipboardList, Briefcase, BookOpen, Brush, ShoppingCart, Utensils, Bed, Shirt, Trash2, Laptop, Phone, Wallet, FileText, Users } from 'lucide-react'
+import { ArrowLeft, RotateCcw, Smartphone, Calendar, MessageSquareText, Clock, Laptop, Heart, Users, Brain, Zap, Volume2, Eye, ShoppingCart, Utensils, Bed, Briefcase, Mail, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 
-// Tasks data with icons - updated from CSV
-const tasks = [
-  // Home & Life Maintenance
-  { name: 'Cleaning', category: 'Home & Life Maintenance', icon: Home },
-  { name: 'Laundry', category: 'Home & Life Maintenance', icon: Shirt },
-  { name: 'Dishes', category: 'Home & Life Maintenance', icon: Utensils },
-  { name: 'Decluttering', category: 'Home & Life Maintenance', icon: Trash2 },
-  { name: 'Cooking', category: 'Home & Life Maintenance', icon: Utensils },
-  { name: 'Hygiene', category: 'Home & Life Maintenance', icon: Home },
-  { name: 'Cleaning Out the Fridge', category: 'Home & Life Maintenance', icon: Utensils },
+// Complex Loops data with icons - updated from CSV
+const complexLoops = [
+  // Digital & Screen
+  { name: 'Phone Scrolling', category: 'Digital & Screen', icon: Smartphone },
+  { name: 'Screen Time Binges', category: 'Digital & Screen', icon: Laptop },
+  { name: 'Social Media Spirals', category: 'Digital & Screen', icon: MessageSquareText },
+  { name: 'Online Shopping', category: 'Digital & Screen', icon: ShoppingCart },
   
-  // Food & Shopping
-  { name: 'Meal Planning', category: 'Food & Shopping', icon: Utensils },
-  { name: 'Grocery Shopping', category: 'Food & Shopping', icon: ShoppingCart },
-  { name: 'Retail Shopping', category: 'Food & Shopping', icon: ShoppingCart },
+  // Time & Schedule
+  { name: 'Chronic Lateness', category: 'Time & Schedule', icon: Clock },
+  { name: 'Missed Appointments', category: 'Time & Schedule', icon: Calendar },
+  { name: 'Last-Minute Canceling', category: 'Time & Schedule', icon: Calendar },
+  { name: 'Double-Booking Yourself', category: 'Time & Schedule', icon: Calendar },
   
-  // Planning & Organization
-  { name: 'Planning & Scheduling', category: 'Planning & Organization', icon: Calendar },
-  { name: 'Todo Lists', category: 'Planning & Organization', icon: ClipboardList },
-  { name: 'Bills & Money', category: 'Planning & Organization', icon: Wallet },
-  { name: 'Paperwork', category: 'Planning & Organization', icon: FileText },
-  { name: 'Writing an Email', category: 'Planning & Organization', icon: Mail },
-  { name: 'Organization', category: 'Planning & Organization', icon: ClipboardList },
+  // Emotional & Social
+  { name: 'People-Pleasing Burnout', category: 'Emotional & Social', icon: Users },
+  { name: 'Rejection Sensitivity Loops', category: 'Emotional & Social', icon: Heart },
+  { name: 'Social Masking Exhaustion', category: 'Emotional & Social', icon: Users },
+  { name: 'Text Message Avoidance', category: 'Emotional & Social', icon: MessageSquareText },
+  { name: 'Email Overwhelm', category: 'Emotional & Social', icon: Mail },
+  { name: 'Friendships', category: 'Emotional & Social', icon: Users },
+  { name: 'Intimacy', category: 'Emotional & Social', icon: Heart },
   
-  // Work & Study
-  { name: 'Work Tasks', category: 'Work & Study', icon: Briefcase },
-  { name: 'Big Exam Prep', category: 'Work & Study', icon: BookOpen },
-  { name: 'Staying on Top of Classwork', category: 'Work & Study', icon: BookOpen },
-  { name: 'Focus Time', category: 'Work & Study', icon: Brain },
+  // Decision & Perfectionism
+  { name: 'Decision Overwhelm', category: 'Decision & Perfectionism', icon: Brain },
+  { name: 'Perfectionism Cycles', category: 'Decision & Perfectionism', icon: Eye },
+  { name: 'Analysis Paralysis', category: 'Decision & Perfectionism', icon: Brain },
+  { name: 'Pre-Event Paralysis', category: 'Decision & Perfectionism', icon: AlertCircle },
   
-  // Routines & Social
-  { name: 'Morning Routine', category: 'Routines & Social', icon: Clock }
+  // Life & Wellness
+  { name: 'Overeating', category: 'Life & Wellness', icon: Utensils },
+  { name: 'Undereating', category: 'Life & Wellness', icon: Utensils },
+  { name: 'Job Search', category: 'Life & Wellness', icon: Briefcase },
+  
+  // Sleep & Energy
+  { name: 'Can\'t Fall Asleep', category: 'Sleep & Energy', icon: Brain },
+  { name: 'Sleeping Through Alarms', category: 'Sleep & Energy', icon: Volume2 },
+  { name: 'Constantly Tired', category: 'Sleep & Energy', icon: Eye },
+  { name: 'Bedtime Procrastination', category: 'Sleep & Energy', icon: Clock }
 ]
 
 const categories = [
-  { name: 'Home & Life Maintenance', color: 'from-green-400 to-emerald-500', count: 7 },
-  { name: 'Food & Shopping', color: 'from-orange-400 to-amber-500', count: 3 },
-  { name: 'Planning & Organization', color: 'from-blue-400 to-cyan-500', count: 6 },
-  { name: 'Work & Study', color: 'from-purple-400 to-indigo-500', count: 4 },
-  { name: 'Routines & Social', color: 'from-pink-400 to-rose-500', count: 1 },
-  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 21 }
+  { name: 'Digital & Screen', color: 'from-blue-400 to-cyan-500', count: 4 },
+  { name: 'Time & Schedule', color: 'from-purple-400 to-indigo-500', count: 4 },
+  { name: 'Emotional & Social', color: 'from-pink-400 to-rose-500', count: 7 },
+  { name: 'Decision & Perfectionism', color: 'from-amber-400 to-orange-500', count: 4 },
+  { name: 'Life & Wellness', color: 'from-green-400 to-emerald-500', count: 3 },
+  { name: 'Sleep & Energy', color: 'from-indigo-400 to-blue-500', count: 4 },
+  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 26 }
 ]
 
 const categoryColors = {
-  'Home & Life Maintenance': 'from-green-400 to-emerald-500',
-  'Food & Shopping': 'from-orange-400 to-amber-500',
-  'Planning & Organization': 'from-blue-400 to-cyan-500',
-  'Work & Study': 'from-purple-400 to-indigo-500',
-  'Routines & Social': 'from-pink-400 to-rose-500'
+  'Digital & Screen': 'from-blue-400 to-cyan-500',
+  'Time & Schedule': 'from-purple-400 to-indigo-500',
+  'Emotional & Social': 'from-pink-400 to-rose-500',
+  'Decision & Perfectionism': 'from-amber-400 to-orange-500',
+  'Life & Wellness': 'from-green-400 to-emerald-500',
+  'Sleep & Energy': 'from-indigo-400 to-blue-500'
 }
 
-export default function TasksPage() {
-  const [selectedTask, setSelectedTask] = useState<string | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<string | null>('Home & Life Maintenance')
+export default function ComplexLoopsPage() {
+  const [selectedLoop, setSelectedLoop] = useState<string | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<string | null>('Digital & Screen')
 
   // Read category from URL parameter on page load
   useEffect(() => {
@@ -67,7 +76,7 @@ export default function TasksPage() {
     if (categoryFromUrl) {
       const decodedCategory = decodeURIComponent(categoryFromUrl)
       // Check if the decoded category matches any of our known categories exactly
-      const categories = ['Home & Life Maintenance', 'Food & Shopping', 'Planning & Organization', 'Work & Study', 'Routines & Social', 'View All']
+      const categories = ['Digital & Screen', 'Time & Schedule', 'Emotional & Social', 'Decision & Perfectionism', 'Life & Wellness', 'Sleep & Energy', 'View All']
       const matchingCategory = categories.find(cat => cat === decodedCategory)
       if (matchingCategory) {
         setSelectedCategory(decodedCategory)
@@ -75,27 +84,27 @@ export default function TasksPage() {
     }
   }, [])
 
-  const handleTaskSelect = (task: string) => {
-    setSelectedTask(task)
-    // Navigate to individual task page with category parameter
-    const taskSlug = encodeURIComponent(task.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))
+  const handleLoopSelect = (loop: string) => {
+    setSelectedLoop(loop)
+    // Navigate to individual complex loop page with category parameter
+    const loopSlug = encodeURIComponent(loop.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))
     const categoryParam = selectedCategory ? `?category=${encodeURIComponent(selectedCategory)}` : ''
-    window.location.href = `/tasks/${taskSlug}${categoryParam}`
+    window.location.href = `/complex_loops/${loopSlug}${categoryParam}`
   }
 
   const goBack = () => {
     window.history.back()
   }
 
-  // Filter tasks by selected category
-  const filteredTasks = selectedCategory === 'View All'
-    ? [...tasks].sort((a, b) => a.name.localeCompare(b.name))
+  // Filter loops by selected category
+  const filteredLoops = selectedCategory === 'View All'
+    ? [...complexLoops].sort((a, b) => a.name.localeCompare(b.name))
     : selectedCategory 
-    ? tasks.filter(task => task.category === selectedCategory)
+    ? complexLoops.filter(loop => loop.category === selectedCategory)
     : []
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] relative">
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-12">
@@ -110,7 +119,7 @@ export default function TasksPage() {
             </Button>
             <div className="flex-1">
               <h1 className="text-3xl md:text-4xl font-serif font-bold text-black text-center">
-                What do you need help with today?
+                Which loop do you want to break?
               </h1>
             </div>
           </div>
@@ -118,7 +127,7 @@ export default function TasksPage() {
 
         {/* Category Selection */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-black text-center mb-6">Choose a task type:</h2>
+          <h2 className="text-xl font-semibold text-black text-center mb-6">Choose a pattern type:</h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {categories.map((category) => (
               <button
@@ -144,7 +153,7 @@ export default function TasksPage() {
                   </h3>
                   <p className={`text-xs text-black/70 text-center
                                 ${selectedCategory === category.name ? 'text-black/90' : ''}`}>
-                    {category.count} tasks
+                    {category.count} patterns
                   </p>
                 </div>
               </button>
@@ -152,22 +161,22 @@ export default function TasksPage() {
           </div>
         </div>
 
-        {/* Selected Category Tasks */}
+        {/* Selected Category Loops */}
         {selectedCategory && (
           <div>
             <h2 className="text-2xl font-bold text-black text-center mb-8">
-              {selectedCategory === 'View All' ? 'All Tasks' : selectedCategory}
+              {selectedCategory === 'View All' ? 'All Complex Loops' : selectedCategory}
             </h2>
             
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filteredTasks.map((task) => (
+              {filteredLoops.map((loop) => (
                 <div
-                  key={task.name}
-                  onClick={() => handleTaskSelect(task.name)}
+                  key={loop.name}
+                  onClick={() => handleLoopSelect(loop.name)}
                   className={`
                     group cursor-pointer transform transition-all duration-300 ease-out
                     hover:scale-105 hover:-translate-y-1
-                    ${selectedTask === task.name ? 'scale-105 -translate-y-1' : ''}
+                    ${selectedLoop === loop.name ? 'scale-105 -translate-y-1' : ''}
                   `}
                 >
                   <div className="bg-white/20 backdrop-blur-md rounded-xl p-6 
@@ -178,15 +187,15 @@ export default function TasksPage() {
                     
                     {/* Icon */}
                     <div className="text-2xl mb-1 transition-all duration-300 group-hover:scale-110">
-                      {React.createElement(task.icon, {
+                      {React.createElement(loop.icon, {
                         size: 24,
                         className: "text-black dark:text-white"
                       })}
                     </div>
                     
-                    {/* Task Name */}
+                    {/* Loop Name */}
                     <h3 className="text-sm font-medium text-black text-center transition-all duration-300">
-                      {task.name}
+                      {loop.name}
                     </h3>
                   </div>
                 </div>
@@ -199,10 +208,10 @@ export default function TasksPage() {
         <div className="text-center mt-12 max-w-3xl mx-auto">
           <div className="bg-white/30 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 border border-white/10">
             <h3 className="text-lg font-semibold text-black mb-2">
-              Not sure where to start?
+              These patterns feel different from tasks
             </h3>
             <p className="text-black text-sm mb-4">
-              Sometimes it's easier to start with how you're feeling or what's blocking you.
+              Complex loops require deeper self-regulation and emotional awareness, not just breaking things into steps.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button 
@@ -224,10 +233,10 @@ export default function TasksPage() {
               <Button 
                 variant="ghost"
                 size="default"
-                onClick={() => window.location.href = '/complex_loops'}
+                onClick={() => window.location.href = '/tasks'}
                 className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
               >
-                Browse by Complex Loops
+                Browse by Tasks
               </Button>
               <Button 
                 variant="ghost"
@@ -243,4 +252,4 @@ export default function TasksPage() {
       </div>
     </div>
   )
-} 
+}

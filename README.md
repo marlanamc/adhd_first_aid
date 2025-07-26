@@ -28,6 +28,8 @@ A gentle, supportive web application designed specifically for ADHD minds during
 - **Supabase Database** - Real-time strategy data with relational structure
 - **Favorites System** - Save strategies locally (no account required)
 - **Strategy Voting** - Session-based feedback system
+- **Enhanced Feeling Pages** - Database-driven content with gentle/stern advice options
+- **ADHD-Friendly Language** - Trauma-informed, compassionate guidance throughout
 - **Responsive Design** - Mobile-first, touch-friendly interface
 
 ### Content Pages

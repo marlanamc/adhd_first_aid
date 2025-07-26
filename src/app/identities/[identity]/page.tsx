@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, User, Users, Home, Briefcase, Brain, Heart, Globe, Palette, Coins, ArrowUpRight, School, HeartHandshake, Building2, Zap, GraduationCap, Brush, Plus, Minus } from 'lucide-react'
+import { ArrowLeft, User, Users, Home, Briefcase, Brain, Heart, Globe, Palette, Coins, ArrowUpRight, School, HeartHandshake, Building2, Zap, GraduationCap, Brush, Plus, Minus, Share2, Wrench, Construction, RotateCcw, Puzzle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 
@@ -16,6 +16,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
   const [identityIcon, setIdentityIcon] = useState<React.ElementType>(User)
   const [expandedSections, setExpandedSections] = useState<{[key: number]: boolean}>({})
   const [hoveredSection, setHoveredSection] = useState<number | null>(null)
+  const [copySuccess, setCopySuccess] = useState(false)
 
   const toggleSection = (index: number) => {
     setExpandedSections(prev => ({
@@ -67,7 +68,50 @@ export default function IdentityPage({ params }: IdentityPageProps) {
   }, [params.identity])
 
   const goBack = () => {
-    window.history.back()
+    // Check if there's a category parameter in the URL
+    const urlParams = new URLSearchParams(window.location.search)
+    const category = urlParams.get('category')
+    
+    if (category) {
+      // Go back to the specific category page - re-encode the category
+      window.location.href = `/identities?category=${encodeURIComponent(category)}`
+    } else {
+      // Try browser history first, fallback to main identities page
+      if (document.referrer && document.referrer.includes('/identities')) {
+        window.history.back()
+      } else {
+        window.location.href = '/identities'
+      }
+    }
+  }
+
+  const handleShare = async () => {
+    const shareData = {
+      title: `ADHD First Aid Kit - ${identityName}`,
+      text: `Get identity-aware ADHD support for ${identityName.toLowerCase()} - strategies and guidance`,
+      url: window.location.href
+    }
+
+    try {
+      // Check if native sharing is available and supported
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData)
+      } else {
+        // Fallback to clipboard with better feedback
+        await navigator.clipboard.writeText(window.location.href)
+        setCopySuccess(true)
+        setTimeout(() => setCopySuccess(false), 2000) // Reset after 2 seconds
+      }
+    } catch (error) {
+      // Fallback to clipboard if share fails
+      try {
+        await navigator.clipboard.writeText(window.location.href)
+        setCopySuccess(true)
+        setTimeout(() => setCopySuccess(false), 2000) // Reset after 2 seconds
+      } catch (clipboardError) {
+        console.error('Share failed:', error)
+      }
+    }
   }
 
   // Micro strategies for this identity context (placeholder)
@@ -88,11 +132,11 @@ export default function IdentityPage({ params }: IdentityPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#8fd3f4] via-[#a18cd1] to-[#b19cd9] relative">
-      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-10 shadow-lg">
+      <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
           <div className="mb-8">
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center gap-4 mb-5">
               <Button
                 variant="ghost"
                 size="default"
@@ -101,13 +145,29 @@ export default function IdentityPage({ params }: IdentityPageProps) {
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-serif font-bold text-foreground flex items-center gap-3">
+              <div className="flex-1">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-foreground flex items-center gap-2 sm:gap-3">
                   {React.createElement(identityIcon, {
-                    className: "h-8 w-8 text-purple-500"
+                    className: "h-6 w-6 sm:h-8 sm:w-8 text-purple-500 flex-shrink-0"
                   })}
                   {identityName}
                 </h1>
+              </div>
+              <div className="relative">
+                <Button
+                  variant="ghost"
+                  size="default"
+                  onClick={handleShare}
+                  className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
+                  title={copySuccess ? "Link copied!" : "Share this page"}
+                >
+                  <Share2 className="h-5 w-5" />
+                </Button>
+                {copySuccess && (
+                  <div className="absolute -top-8 right-0 bg-green-600 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap z-50">
+                    Link copied!
+                  </div>
+                )}
               </div>
             </div>
 
@@ -198,63 +258,91 @@ export default function IdentityPage({ params }: IdentityPageProps) {
             </div>
           </div>
 
-          {/* Navigation Options */}
-          <div className="grid gap-4 md:grid-cols-2 pt-4">
-            <Button 
-              variant="outline"
-              onClick={() => window.location.href = '/feelings'}
-              className="p-6 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">❤️</span>
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Feeling stuck emotionally?</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Feelings</div>
+          {/* Navigation Options - Excluding Identities */}
+          <div className="space-y-6">
+            {/* Top Row - Feelings and Barriers */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Button 
+                variant="outline"
+                size="lg"
+                onClick={() => window.location.href = '/feelings'}
+                className="p-6 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+              >
+                <div className="flex items-center gap-3">
+                  <Heart className="h-6 w-6" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Feeling stuck emotionally?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Feelings</div>
+                  </div>
                 </div>
-              </div>
-            </Button>
+              </Button>
 
-            <Button 
-              variant="outline"
-              onClick={() => window.location.href = '/barriers'}
-              className="p-6 text-left h-auto border-2 hover:bg-orange-50 dark:hover:bg-orange-900/20"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🚧</span>
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Facing barriers or obstacles?</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Barriers Support</div>
+              <Button 
+                variant="outline"
+                size="lg"
+                onClick={() => window.location.href = '/barriers'}
+                className="p-6 text-left h-auto border-2 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+              >
+                <div className="flex items-center gap-3">
+                  <Construction className="h-6 w-6" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Facing barriers or obstacles?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Barriers Support</div>
+                  </div>
                 </div>
-              </div>
-            </Button>
+              </Button>
+            </div>
 
-            <Button 
-              variant="outline"
-              onClick={() => window.location.href = '/tasks'}
-              className="p-6 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🛠</span>
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Need help with a task?</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Task Selector</div>
+            {/* Middle Row - Tasks and Complex Loops */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Button 
+                variant="outline"
+                size="lg"
+                onClick={() => window.location.href = '/tasks'}
+                className="p-6 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+              >
+                <div className="flex items-center gap-3">
+                  <Wrench className="h-6 w-6" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific tasks?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Tasks</div>
+                  </div>
                 </div>
-              </div>
-            </Button>
-            
-            <Button 
-              variant="outline"
-              onClick={() => window.location.href = '/systems'}
-              className="p-6 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🧩</span>
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Want to build a system around this?</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Systems Lab</div>
+              </Button>
+
+              <Button 
+                variant="outline"
+                size="lg"
+                onClick={() => window.location.href = '/complex_loops'}
+                className="p-6 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+              >
+                <div className="flex items-center gap-3">
+                  <RotateCcw className="h-6 w-6" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Stuck in repetitive patterns?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse Complex Loops</div>
+                  </div>
                 </div>
-              </div>
-            </Button>
+              </Button>
+            </div>
+
+            {/* Bottom Row - Systems Lab */}
+            <div className="grid grid-cols-1 gap-4">
+              <Button 
+                variant="outline"
+                size="lg"
+                onClick={() => window.location.href = '/systems'}
+                className="p-6 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
+              >
+                <div className="flex items-center gap-3">
+                  <Puzzle className="h-6 w-6" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Want to build a system around this?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Systems Lab</div>
+                  </div>
+                </div>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

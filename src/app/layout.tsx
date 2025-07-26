@@ -1,11 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import { Inter } from 'next/font/google'
 import { Playfair_Display } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { SearchModal } from '@/components/ui/SearchModal'
 
 const inter = Inter({ subsets: ['latin'] })
 const playfair = Playfair_Display({ 
@@ -18,6 +20,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+
   return (
     <html lang="en">
       <body className={`${inter.className} ${playfair.variable}`}>
@@ -28,9 +32,7 @@ export default function RootLayout({
             <Header 
               navigateHome={() => window.location.href = '/'} 
               navigateToPage={(page: string) => window.location.href = `/${page}`} 
-              onSearchOpen={() => {
-                // TODO: Implement search functionality
-              }} 
+              onSearchOpen={() => setIsSearchOpen(true)} 
             />
 
             <main className="flex-1 flex flex-col relative z-0">
@@ -38,6 +40,11 @@ export default function RootLayout({
             </main>
 
             <Footer navigateToPage={(page: string) => window.location.href = `/${page}`} />
+            
+            <SearchModal 
+              isOpen={isSearchOpen} 
+              onClose={() => setIsSearchOpen(false)} 
+            />
           </div>
         </ThemeProvider>
       </body>

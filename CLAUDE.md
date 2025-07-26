@@ -29,6 +29,7 @@ The application uses Supabase with a comprehensive relational schema:
 
 **Core Tables:**
 - `strategies` - Main strategy data with icons, images, further reading, and full relationships
+- `feelings_content` - Comprehensive feeling pages with gentle/stern advice, ADHD reasons, and step-by-step guides
 - Lookup tables: `feelings`, `issues`, `barriers`, `help_tasks`, `tags`, `life_roles`, `solution_types`, `styles`, `why_does_this_work`
 - Junction tables: `strategy_feelings`, `strategy_issues`, `strategy_barriers`, `strategy_help_tasks`, `strategy_tags`, `strategy_life_roles`, `strategy_solution_types`, `strategy_styles`, `strategy_why_does_this_work`
 - `strategy_votes` - User voting data with session tracking
@@ -37,13 +38,14 @@ The application uses Supabase with a comprehensive relational schema:
 - Row Level Security (RLS) enabled on all tables with public read/write policies
 - Complete metadata for all lookup tables (emoji, color, category, hover_description)
 - Multiple help_tasks support per strategy
-- Title Case standardization across all data
+- Title Case standardization across all data  
 - 289 strategies with comprehensive relational data
+- 22 feelings with complete database-driven content (gentle/stern advice, ADHD reasons, step guides)
 - Session-based voting without user accounts
 
 ### Application Flow
 1. **Home Page** (`src/app/page.tsx`) - Main entry with feeling/task selection
-2. **Feeling Flow** - `/feeling/[feeling]` → `/feeling/[feeling]/issue/[issue]` → strategies
+2. **Enhanced Feeling Flow** - `/feelings/[feeling]` → database-driven content with gentle/stern advice + step guides
 3. **Task Flow** - `/task/[task]` → strategies
 4. **Strategy Display** - Modal system with detailed guidance
 
@@ -141,6 +143,22 @@ Required environment variables:
   - Smooth animations using `animate-in slide-in-from-top duration-300`
 - **Gentle Guidance System**: Added "Take your time" messaging with 🌱 emoji to encourage self-paced exploration
 - **Dynamic Content Rendering**: Custom sections for specific feelings (Mental Fog, Forgetful, Scattered, Overstimulated, Stuck, Overwhelmed)
+
+#### 💝 Complete Feelings Database Integration (Latest)
+- **Full Database Migration**: All 22 feelings now use comprehensive database-driven content instead of static pages
+- **Dual Advice System**: Each feeling offers both "Soft Start" (gentle) and "Tough Love" (stern) advice approaches
+- **ADHD-Specific Content Structure**: 
+  - Intro paragraphs with **bolded key concepts** for cognitive accessibility
+  - ADHD Reasons section explaining neurological connections
+  - 5-step actionable guides with color-coded sections and Lucide icons
+  - Trauma-informed language throughout
+- **Content Quality Improvements**:
+  - Removed ableist and shame-based language from all stern advice
+  - Replaced harsh judgment with firm accountability and compassion
+  - Added strategic bolding to intro paragraphs for key concepts
+  - Ensured all content matches original feeling page markdown files
+- **Architecture Cleanup**: Removed `/content` subdirectories, consolidated to main feeling pages (`/feelings/ashamed` etc.)
+- **Database Updates**: Complete `import_all_feelings_content.sql` script with step intro/icon refinements
 
 #### 🧭 Contextual Navigation Enhancement
 - **Smart 4-Button Layout**: Each page type shows contextually relevant navigation, avoiding self-referential buttons:

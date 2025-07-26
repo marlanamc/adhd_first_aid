@@ -164,12 +164,123 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
       query = query.in('id', strategyIds)
     }
 
-    // Search functionality - updated to include new fields
+    // Enhanced search functionality - includes all content fields
     if (filters.search) {
       const searchTerm = filters.search.toLowerCase()
-      query = query.or(
-        `name.ilike.%${searchTerm}%,subtitle.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,example.ilike.%${searchTerm}%,use_case.ilike.%${searchTerm}%`
-      )
+      
+      // First search directly in strategy fields
+      let searchResults = await supabase
+        .from('strategies')
+        .select('id')
+        .or(
+          `name.ilike.%${searchTerm}%,subtitle.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,example.ilike.%${searchTerm}%,use_case.ilike.%${searchTerm}%,further_reading.ilike.%${searchTerm}%,tips_tricks.ilike.%${searchTerm}%`
+        )
+      
+      let searchStrategyIds = searchResults.data ? searchResults.data.map(s => s.id) : []
+      
+      // Also search in related tables
+      const relatedSearches = await Promise.all([
+        // Search in feelings
+        supabase
+          .from('feelings')
+          .select('id')
+          .ilike('name', `%${searchTerm}%`),
+        // Search in barriers  
+        supabase
+          .from('barriers')
+          .select('id')
+          .ilike('name', `%${searchTerm}%`),
+        // Search in tags
+        supabase
+          .from('tags')
+          .select('id')
+          .ilike('name', `%${searchTerm}%`),
+        // Search in help_tasks
+        supabase
+          .from('help_tasks')
+          .select('id')
+          .ilike('name', `%${searchTerm}%`),
+        // Search in why_does_this_work
+        supabase
+          .from('why_does_this_work')
+          .select('id')
+          .ilike('name', `%${searchTerm}%`)
+      ])
+      
+      // Get strategy IDs from related searches
+      const [feelingResults, barrierResults, tagResults, helpTaskResults, whyResults] = relatedSearches
+      
+      // Find strategies connected to matching feelings
+      if (feelingResults.data && feelingResults.data.length > 0) {
+        const feelingIds = feelingResults.data.map(f => f.id)
+        const { data: strategyFeelings } = await supabase
+          .from('strategy_feelings')
+          .select('strategy_id')
+          .in('feeling_id', feelingIds)
+        if (strategyFeelings) {
+          searchStrategyIds.push(...strategyFeelings.map(sf => sf.strategy_id))
+        }
+      }
+      
+      // Find strategies connected to matching barriers
+      if (barrierResults.data && barrierResults.data.length > 0) {
+        const barrierIds = barrierResults.data.map(b => b.id)
+        const { data: strategyBarriers } = await supabase
+          .from('strategy_barriers')
+          .select('strategy_id')
+          .in('barrier_id', barrierIds)
+        if (strategyBarriers) {
+          searchStrategyIds.push(...strategyBarriers.map(sb => sb.strategy_id))
+        }
+      }
+      
+      // Find strategies connected to matching tags
+      if (tagResults.data && tagResults.data.length > 0) {
+        const tagIds = tagResults.data.map(t => t.id)
+        const { data: strategyTags } = await supabase
+          .from('strategy_tags')
+          .select('strategy_id')
+          .in('tag_id', tagIds)
+        if (strategyTags) {
+          searchStrategyIds.push(...strategyTags.map(st => st.strategy_id))
+        }
+      }
+      
+      // Find strategies connected to matching help_tasks
+      if (helpTaskResults.data && helpTaskResults.data.length > 0) {
+        const helpTaskIds = helpTaskResults.data.map(ht => ht.id)
+        const { data: strategyHelpTasks } = await supabase
+          .from('strategy_help_tasks')
+          .select('strategy_id')
+          .in('help_task_id', helpTaskIds)
+        if (strategyHelpTasks) {
+          searchStrategyIds.push(...strategyHelpTasks.map(sht => sht.strategy_id))
+        }
+      }
+      
+      // Find strategies connected to matching why_does_this_work
+      if (whyResults.data && whyResults.data.length > 0) {
+        const whyIds = whyResults.data.map(w => w.id)
+        const { data: strategyWhys } = await supabase
+          .from('strategy_why_does_this_work')
+          .select('strategy_id')
+          .in('why_id', whyIds)
+        if (strategyWhys) {
+          searchStrategyIds.push(...strategyWhys.map(sw => sw.strategy_id))
+        }
+      }
+      
+      // Remove duplicates and apply to query
+      if (searchStrategyIds.length > 0) {
+        const uniqueSearchIds = [...new Set(searchStrategyIds)]
+        if (strategyIds.length > 0) {
+          // Intersect with existing filters
+          strategyIds = strategyIds.filter(id => uniqueSearchIds.includes(id))
+        } else {
+          // Use search results as filter
+          strategyIds = uniqueSearchIds
+        }
+      }
     }
 
     // Execute final query
