@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MessageSquareText, Heart, Brain, Settings, BookOpen, ArrowRight, Wrench, User, HelpCircle, AlertCircle, RotateCcw } from 'lucide-react'
+import { MessageSquareText, Heart, Brain, Settings, BookOpen, ArrowRight, Wrench, User, HelpCircle, AlertCircle, RotateCcw, FileText, MessageCircle, Puzzle, ExternalLink } from 'lucide-react'
 
 interface Feeling {
   id: string
@@ -32,7 +32,7 @@ const topCategories = [
     title: 'Feeling off?',
     subtitle: 'Browse emotion-first tools',
     icon: Heart,
-    color: 'bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-[#4A2D4A] dark:via-[#4A3D2D] dark:to-[#4A362D]',
+    color: 'bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-[#8B7355] dark:via-[#7A6B52] dark:to-[#7A6752]',
     examples: ['Overwhelmed', 'Ashamed', 'Stuck']
   },
   {
@@ -40,7 +40,7 @@ const topCategories = [
     title: 'Can\'t get started?',
     subtitle: 'Find barrier-specific solutions',
     icon: AlertCircle,
-    color: 'bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-[#4A362D] dark:via-[#3D4A2D] dark:to-[#2D4A2D]',
+    color: 'bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-[#7A6752] dark:via-[#6B7A52] dark:to-[#5B7A52]',
     examples: ['Can\'t start', 'Feel shame', 'Too big']
   },
   {
@@ -48,7 +48,7 @@ const topCategories = [
     title: 'Trying to get something done?',
     subtitle: 'Get specific guidance',
     icon: Wrench,
-    color: 'bg-gradient-to-br from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] dark:from-[#2D4A2D] dark:via-[#2D4A4A] dark:to-[#2D3D4A]',
+    color: 'bg-gradient-to-br from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] dark:from-[#5B7A52] dark:via-[#527A7A] dark:to-[#526B7A]',
     examples: ['Cleaning', 'Cooking', 'Friendships']
   },
   {
@@ -56,7 +56,7 @@ const topCategories = [
     title: 'Stuck in a loop?',
     subtitle: 'Break free from repetitive ADHD spirals',
     icon: RotateCcw,
-    color: 'bg-gradient-to-br from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] dark:from-[#2D3D4A] dark:via-[#2D354A] dark:to-[#362D4A]',
+    color: 'bg-gradient-to-br from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] dark:from-[#526B7A] dark:via-[#52637A] dark:to-[#63527A]',
     examples: ['Phone Scrolling', 'Chronic Lateness']
   },
   {
@@ -64,7 +64,7 @@ const topCategories = [
     title: 'How can you be supported?',
     subtitle: 'Explore identity-specific support',
     icon: User,
-    color: 'bg-gradient-to-br from-[#a18cd1] via-[#b19cd9] to-[#dec6f7] dark:from-[#362D4A] dark:via-[#3D2D4A] dark:to-[#4A2D4A]',
+    color: 'bg-gradient-to-br from-[#a18cd1] via-[#b19cd9] to-[#dec6f7] dark:from-[#63527A] dark:via-[#6B527A] dark:to-[#7A527A]',
     examples: ['Parent', 'Caregiver', 'Student']
   }
 ]
@@ -73,7 +73,7 @@ const topCategories = [
 const systemsCategory = {
   id: 'systems',
   title: 'Systems Lab',
-  subtitle: 'Browse, build, and share ADHD-friendly routines that solve real problems',
+  subtitle: 'Build ADHD-friendly routines that actually work',
   icon: Settings,
   color: 'bg-[linear-gradient(135deg,_#fbc2eb,_#fbd786,_#fbc687,_#fff5db,_#d4fc79,_#b0f4ea,_#8fd3f4,_#78c2f2,_#a18cd1,_#b19cd9,_#dec6f7)] dark:bg-[linear-gradient(135deg,_#4A2D4A,_#4A3D2D,_#4A362D,_#3D4A2D,_#2D4A2D,_#2D4A4A,_#2D3D4A,_#2D354A,_#362D4A,_#3D2D4A,_#4A2D4A)]',
   examples: ['Morning Routine', 'Post-Crash Reset', '7AM Workout']
@@ -83,34 +83,34 @@ const systemsCategory = {
 const bottomCategories = [
   {
     id: 'guides',
-    title: '📚 Read Guides & Insights',
+    title: 'Read Guides & Insights',
     subtitle: 'Educational articles (e.g., Habit Bundling, Diagnostic Guide)',
-    icon: BookOpen,
-    color: 'bg-[#CAE5FF] dark:bg-[#2B4365]',
+    icon: FileText,
+    color: 'bg-[#CAE5FF] dark:bg-slate-700',
     examples: ['Habit Stacking', 'Diagnostic Guide', 'Types of Support']
   },
   {
     id: 'scripts',
-    title: '🗣 Scripts for Hard Moments',
+    title: 'Scripts for Hard Moments',
     subtitle: 'Prewritten things to say or send when words fail',
-    icon: MessageSquareText,
-    color: 'bg-[#E8D7FF] dark:bg-[#453975]',
+    icon: MessageCircle,
+    color: 'bg-[#E8D7FF] dark:bg-slate-600',
     examples: ['Ask for ADHD evaluation', 'Tell partner what you need', 'Workplace accommodations']
   },
   {
     id: 'quizzes',
-    title: '🧪 Quizzes & Tools',
+    title: 'Quizzes & Tools',
     subtitle: 'Interactive experiences (e.g., Structure Type Quiz, Sleep Calculator)',
-    icon: HelpCircle,
-    color: 'bg-[#E0F5CE] dark:bg-[#2D4A2A]',
+    icon: Puzzle,
+    color: 'bg-[#E0F5CE] dark:bg-slate-800',
     examples: ['Structure Quiz', 'Sleep Calculator', 'Time Blindness']
   },
   {
     id: 'resources',
-    title: '🔗 Resources & Links',
+    title: 'Resources & Links',
     subtitle: 'Podcasts, books, terminology, and external support materials',
-    icon: BookOpen,
-    color: 'bg-[#FFD4DB] dark:bg-[#4A2D35]',
+    icon: ExternalLink,
+    color: 'bg-[#FFD4DB] dark:bg-slate-500',
     examples: ['Podcasts', 'Books', 'Terminology']
   }
 ]
@@ -172,27 +172,24 @@ export default function NewHomePage({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 flex flex-col items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 flex flex-col items-center justify-center p-6">
       {/* Header */}
-      <div className="text-center mb-8 space-y-3 mt-20">
+      <div className="text-center mb-12 space-y-4 mt-20">
         <h1 className="text-xl md:text-2xl font-light text-gray-800 dark:text-gray-200">
           {getPersonalizedGreeting()}
         </h1>
-        <h2 className="text-2xl md:text-3xl font-serif font-medium text-gray-900 dark:text-white">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-gray-900 dark:text-blue-300 homepage-main-heading">
           Where do you want to start?
         </h2>
       </div>
 
       {/* Main Cards - 3 Section Layout */}
-      <div className="max-w-6xl w-full space-y-8">
+      <div className="max-w-6xl w-full space-y-12 relative">
         
         {/* Top Row - Core Entry Points */}
-        <div className="space-y-4">
-          <div className="text-center max-w-2xl mx-auto">
-            <p className="text-base text-gray-700 dark:text-gray-300 font-medium">
-              Not sure where to begin? Pick the option that feels most true right now.
-            </p>
-          </div>
+        <div className="space-y-6 relative">
+          {/* Subtle separator shadow */}
+          <div className="absolute -bottom-6 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-30"></div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-stretch">
           {topCategories.map((category) => {
@@ -203,11 +200,11 @@ export default function NewHomePage({
                 key={category.id}
                 onClick={() => handleCardClick(category.id)}
                 className={`
-                  relative group cursor-pointer transform transition-all duration-500 ease-out touch-manipulation
-                  hover:scale-110 hover:-translate-y-2 hover:rotate-1
-                  ${localSelectedCard === category.id ? 'scale-110 -translate-y-2 rotate-1' : ''}
+                  relative group cursor-pointer transform transition-all duration-300 ease-out touch-manipulation
+                  hover:-translate-y-1 hover:shadow-lg
+                  ${localSelectedCard === category.id ? '-translate-y-1 shadow-lg' : ''}
                   ${isTransitioning ? 'pointer-events-none' : ''}
-                  hover:z-10 active:scale-105
+                  hover:z-10 active:scale-95
                 `}
                 style={{
                   transformOrigin: 'center center',
@@ -215,44 +212,57 @@ export default function NewHomePage({
               >
                 <div 
                   className={`
-                    relative overflow-hidden rounded-[1.5rem] p-3
+                    relative overflow-hidden rounded-[1.5rem] p-4
                     ${category.color}
-                    transition-all duration-500 ease-out
-                    h-[12rem] md:h-[13rem]
+                    transition-all duration-300 ease-out
+                    h-[14rem] md:h-[15rem]
                     flex flex-col justify-between h-full
+                    group-hover:shadow-xl
                     after:absolute after:inset-0 after:bg-gradient-to-b after:from-white/5 after:to-transparent
                   `}
                 >
-                  <div className="mb-2 transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-6">
-                    <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-all duration-500 group-hover:bg-white/30">
-                      <IconComponent className="w-3.5 h-3.5 text-black transition-all duration-500 group-hover:w-4 group-hover:h-4" />
+                  <div className="flex flex-col h-full">
+                    {/* Icon - Fixed at top */}
+                    <div className="flex justify-center mb-3 transition-all duration-300 ease-out">
+                      <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-all duration-300 group-hover:bg-white/30">
+                        <IconComponent className="w-6 h-6 text-black transition-all duration-300" />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-1.5 flex-1">
-                    <h3 className="text-xs font-bold text-black transition-all duration-500 group-hover:text-sm leading-tight">
-                      {category.title}
-                    </h3>
-                    <p className="text-black/80 text-xs leading-tight transition-all duration-500 group-hover:text-black">
-                      {category.subtitle}
-                    </p>
+                    {/* Title - Fixed height and positioned consistently */}
+                    <div className="text-center mb-3">
+                      <h3 className="text-base font-bold text-black transition-all duration-300 group-hover:text-lg leading-tight h-[3rem] flex items-start justify-center">
+                        {category.title}
+                      </h3>
+                    </div>
                     
-                    <div className="flex flex-wrap gap-1 mt-auto pt-1.5">
-                      {category.examples.slice(0, 2).map((example, index) => (
-                        <span
-                          key={index}
-                          className="bg-white/20 backdrop-blur-sm rounded-full px-1.5 py-0.5 text-xs text-black
-                                     transition-all duration-500 ease-out transform
-                                     group-hover:bg-white/30 group-hover:scale-105 leading-none"
-                        >
-                          {example}
-                        </span>
-                      ))}
+                    {/* Content area - Takes remaining space */}
+                    <div className="flex-1 flex flex-col text-center">
+                      {/* Description - Fixed position for first line alignment */}
+                      <div className="h-12 mb-4">
+                        <p className="text-black/80 text-sm leading-relaxed transition-all duration-300 group-hover:text-black font-medium">
+                          {category.subtitle}
+                        </p>
+                      </div>
+                      
+                      {/* Example tag - Now aligned at same level */}
+                      <div className="flex justify-center">
+                        {category.examples.slice(0, 1).map((example, index) => (
+                          <span
+                            key={index}
+                            className="bg-white/20 backdrop-blur-sm rounded-full px-2 py-1 text-xs text-black
+                                       transition-all duration-300 ease-out
+                                       group-hover:bg-white/30 leading-none font-medium"
+                          >
+                            {example}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
                   <div className="absolute bottom-2 right-2">
-                    <ArrowRight className="w-3.5 h-3.5 text-black transition-all duration-500 ease-out group-hover:translate-x-1 group-hover:scale-110" />
+                    <ArrowRight className="w-3.5 h-3.5 text-black transition-all duration-300 ease-out group-hover:translate-x-1" />
                   </div>
 
                 </div>
@@ -262,65 +272,76 @@ export default function NewHomePage({
           </div>
         </div>
 
-        {/* Middle - Systems Lab (Featured) */}
-        <div className="flex justify-center">
+        {/* Middle - Systems Lab (Subtle) */}
+        <div className="flex justify-center relative">
+          {/* Subtle separator shadow */}
+          <div className="absolute -bottom-6 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-30"></div>
           <div
             onClick={() => handleCardClick(systemsCategory.id)}
             className={`
-              relative group cursor-pointer transform transition-all duration-500 ease-out touch-manipulation
-              hover:scale-105 hover:-translate-y-2 hover:rotate-1
-              ${localSelectedCard === systemsCategory.id ? 'scale-105 -translate-y-2 rotate-1' : ''}
+              relative group cursor-pointer transform transition-all duration-300 ease-out touch-manipulation
+              hover:scale-[1.01] hover:shadow-md
+              ${localSelectedCard === systemsCategory.id ? 'scale-[1.01] shadow-md' : ''}
               ${isTransitioning ? 'pointer-events-none' : ''}
-              hover:z-10 active:scale-105 max-w-xl w-full
+              active:scale-95 max-w-2xl w-full
             `}
           >
             <div 
               className={`
-                relative overflow-hidden rounded-[2rem] p-4
-                ${systemsCategory.color}
-                transition-all duration-500 ease-out
-                h-[4rem] sm:h-[5rem] md:h-[6rem]
-                flex flex-col justify-center
-                after:absolute after:inset-0 after:bg-gradient-to-b after:from-white/5 after:to-transparent
+                relative overflow-hidden rounded-xl p-4 border border-gray-200/30 dark:border-gray-700/30
+                bg-gradient-to-r from-gray-50/80 via-white/60 to-gray-50/80 
+                dark:from-gray-800/80 dark:via-gray-700/60 dark:to-gray-800/80
+                backdrop-blur-sm
+                transition-all duration-300 ease-out
+                h-[3.5rem] sm:h-[4rem]
+                flex items-center
+                group-hover:border-gray-300/40 dark:group-hover:border-gray-600/40
+                group-hover:shadow-lg
               `}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-6">
-                    <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:bg-white/30">
-                      <Settings className="w-7 h-7 text-black transition-all duration-500 group-hover:w-8 group-hover:h-8" />
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center space-x-3">
+                  {/* Smaller, more subtle icon */}
+                  <div className="transition-all duration-300 ease-out">
+                    <div className="w-8 h-8 bg-gray-100/60 dark:bg-gray-600/60 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:bg-gray-200/60 dark:group-hover:bg-gray-500/60">
+                      <Settings className="w-4 h-4 text-gray-600 dark:text-gray-300 transition-all duration-300" />
                     </div>
                   </div>
 
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-black transition-all duration-500 group-hover:text-xl mb-2">
+                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 transition-all duration-300 mb-0.5">
                       {systemsCategory.title}
                     </h3>
-                    <p className="text-black/80 text-xs leading-relaxed transition-all duration-500 group-hover:text-black">
-                      {systemsCategory.subtitle}
+                    <p className="text-gray-500 dark:text-gray-400 text-xs transition-all duration-300 group-hover:text-gray-600 dark:group-hover:text-gray-300">
+                      Combine strategies from above into routines
                     </p>
                   </div>
                 </div>
 
-                <div className="absolute bottom-6 right-6">
-                  <ArrowRight className="w-6 h-6 text-black transition-all duration-500 ease-out group-hover:translate-x-1 group-hover:scale-110" />
+                <div className="flex items-center space-x-2">
+                  {/* Visual hint that it combines the above */}
+                  <div className="flex -space-x-1">
+                    <div className="w-2 h-2 bg-[#fbc687]/60 rounded-full"></div>
+                    <div className="w-2 h-2 bg-[#d4fc79]/60 rounded-full"></div>
+                    <div className="w-2 h-2 bg-[#8fd3f4]/60 rounded-full"></div>
+                    <div className="w-2 h-2 bg-[#a18cd1]/60 rounded-full"></div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-gray-400 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:text-gray-600 dark:group-hover:text-gray-300" />
                 </div>
               </div>
-
-              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out" />
             </div>
           </div>
         </div>
 
         {/* Bottom Row - Support & Tools */}
-        <div className="space-y-6">
+        <div className="space-y-6 relative">
           <div className="text-center max-w-3xl mx-auto">
             <p className="text-lg text-gray-700 dark:text-gray-300 font-medium">
-              Ready to dive deeper? Explore tools, insights, and resources to support your ADHD journey.
+              More tools to support your journey
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-stretch max-w-4xl mx-auto">
           {bottomCategories.map((category) => {
             const IconComponent = category.icon
             
@@ -329,11 +350,11 @@ export default function NewHomePage({
                 key={category.id}
                 onClick={() => handleCardClick(category.id)}
                 className={`
-                  relative group cursor-pointer transform transition-all duration-500 ease-out touch-manipulation
-                  hover:scale-110 hover:-translate-y-2 hover:rotate-1
-                  ${localSelectedCard === category.id ? 'scale-110 -translate-y-2 rotate-1' : ''}
+                  relative group cursor-pointer transform transition-all duration-300 ease-out touch-manipulation
+                  hover:scale-[1.02] hover:shadow-md
+                  ${localSelectedCard === category.id ? 'scale-[1.02] shadow-md' : ''}
                   ${isTransitioning ? 'pointer-events-none' : ''}
-                  hover:z-10 active:scale-105
+                  active:scale-95
                 `}
                 style={{
                   transformOrigin: 'center center',
@@ -341,44 +362,50 @@ export default function NewHomePage({
               >
                 <div 
                   className={`
-                    relative overflow-hidden rounded-[2rem] p-4
+                    relative overflow-hidden rounded-lg p-3 border-2 border-gray-200/50 dark:border-gray-700/50
                     ${category.color}
-                    transition-all duration-500 ease-out
-                    h-[14rem] sm:h-[16rem] md:h-[18rem]
-                    flex flex-col justify-between h-full
-                    after:absolute after:inset-0 after:bg-gradient-to-b after:from-white/5 after:to-transparent
+                    transition-all duration-300 ease-out
+                    h-[8rem] sm:h-[8.5rem]
+                    flex flex-col
+                    group-hover:border-gray-300/60 dark:group-hover:border-gray-600/60
+                    group-hover:shadow-lg
+                    backdrop-blur-sm
                   `}
                 >
-                  <div className="mb-3 sm:mb-4 transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-6">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:bg-white/30">
-                      <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 text-black transition-all duration-500 group-hover:w-6 group-hover:h-6 sm:group-hover:w-8 sm:group-hover:h-8" />
+                  {/* Header with icon and title */}
+                  <div className="flex items-start gap-3 mb-2">
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 bg-black/10 dark:bg-white/10 rounded-lg flex items-center justify-center">
+                        <IconComponent className="w-4 h-4 text-black dark:text-white" />
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base font-semibold text-black dark:text-white leading-tight">
+                        {category.title}
+                      </h3>
                     </div>
                   </div>
 
-                  <div className="space-y-2 sm:space-y-3 flex-1">
-                    <h3 className="text-base sm:text-lg font-bold text-black transition-all duration-500 group-hover:text-lg sm:group-hover:text-xl">
-                      {category.title}
-                    </h3>
-                    <p className="text-black/80 text-xs leading-relaxed transition-all duration-500 group-hover:text-black">
+                  {/* Description */}
+                  <div className="flex-1 mb-2">
+                    <p className="text-black/70 dark:text-white/70 text-sm leading-snug font-medium">
                       {category.subtitle}
                     </p>
-                    
-                    <div className="flex flex-wrap gap-1 mt-auto">
-                      {category.examples.slice(0, 2).map((example, index) => (
+                  </div>
+                  
+                  {/* Bottom section with example and arrow */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      {category.examples.slice(0, 1).map((example, index) => (
                         <span
                           key={index}
-                          className="bg-white/20 backdrop-blur-sm rounded-full px-2 py-1 text-xs text-black
-                                     transition-all duration-500 ease-out transform
-                                     group-hover:bg-white/30 group-hover:scale-105"
+                          className="inline-block bg-black/10 dark:bg-white/10 rounded-md px-2 py-1 text-xs text-black dark:text-white font-medium"
                         >
                           {example}
                         </span>
                       ))}
                     </div>
-                  </div>
-
-                  <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6">
-                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-black transition-all duration-500 ease-out group-hover:translate-x-1 group-hover:scale-110" />
+                    <ArrowRight className="w-4 h-4 text-black/60 dark:text-white/60 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:text-black dark:group-hover:text-white ml-2" />
                   </div>
 
                 </div>

@@ -5,24 +5,125 @@ import { useState, useEffect, use } from 'react'
 import { 
   ArrowLeft, Heart, Plus, Minus, BookOpen, 
   Brain, Zap, Frown, Users, BrainCircuit, 
-  Battery, Flame, Sparkles, CloudLightning, 
-  Rainbow, AlertCircle, Skull, CloudRain, 
-  Waves, CloudDrizzle, Shield, UserX, Share2 
+  LockKeyhole, Flame, Sparkles, CloudLightning, 
+  Activity, Skull, CloudRain, Rainbow,
+  Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, HeartOff, ZapOff,
+  Share2, Wrench, Construction, RotateCcw, Puzzle, XCircle 
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getFeelingsContent } from '@/lib/supabase'
 import type { FeelingsContent } from '@/lib/supabase'
 import { StepIcon } from '@/components/ui/StepIcon';
-import { SupportBoxes } from '@/components/ui/SupportBoxes';
 
-// Function to convert markdown-style bold to JSX
-const formatBoldText = (text: string) => {
-  return text.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={index}>{part.slice(2, -2)}</strong>;
+// Function to convert markdown-style formatting to JSX with intelligent enhancement
+const formatMarkdownText = (text: string) => {
+  // If text already has markdown formatting, process it as-is
+  if (text.includes('**') || text.includes('_')) {
+    // First handle bold text (**text**)
+    const withBold = text.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
+      }
+      return { type: 'text', content: part, key: `text-${index}` };
+    });
+
+    // Then handle italics (_text_) within each part
+    const result: React.ReactNode[] = [];
+    withBold.forEach((item) => {
+      if (item.type === 'bold') {
+        result.push(<strong key={item.key}>{item.content}</strong>);
+      } else {
+        // Process italics in text parts
+        const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
+          if (part.startsWith('_') && part.endsWith('_')) {
+            return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
+          }
+          return part;
+        });
+        result.push(...italicParts);
+      }
+    });
+
+    return result;
+  }
+
+  // For plain text advice, add intelligent formatting
+  // Key phrases and concepts that should be emphasized in advice
+  const emphasisPatterns = [
+    // Emotional validation
+    { pattern: /\b(you are safe|you're safe|you are enough|you're enough|you matter|this is valid|this is real)\b/gi, style: 'bold' },
+    { pattern: /\b(not your fault|not weakness|not overreacting|not broken)\b/gi, style: 'bold' },
+    
+    // Core actions and techniques
+    { pattern: /\b(breathe|pause|stop|slow down|take a break|rest)\b/gi, style: 'bold' },
+    { pattern: /\b(one step|one thing|small steps|tiny actions)\b/gi, style: 'bold' },
+    { pattern: /\b(body knows|brain knows|you know|trust yourself)\b/gi, style: 'bold' },
+    
+    // Time and urgency reframes
+    { pattern: /\b(right now|this moment|today|not forever|will pass|temporary)\b/gi, style: 'bold' },
+    { pattern: /\b(doesn't have to be perfect|good enough|done is better|progress not perfection)\b/gi, style: 'bold' },
+    
+    // ADHD-specific concepts
+    { pattern: /\b(executive function|working memory|dopamine|nervous system|sensory|overwhelm)\b/gi, style: 'bold' },
+    { pattern: /\b(ADHD brain|neurodivergent|rejection sensitivity|time blindness)\b/gi, style: 'bold' },
+    
+    // Gentle self-talk patterns for italics
+    { pattern: /\b(maybe|perhaps|gently|softly|kindly|compassionately)\b/gi, style: 'italic' },
+    { pattern: /\b(it's okay to|it's normal to|you're allowed to|you can)\b/gi, style: 'italic' },
+  ];
+
+  let formattedText = text;
+  const replacements: Array<{start: number, end: number, replacement: string, originalText: string}> = [];
+
+  // Find and mark all patterns for replacement
+  emphasisPatterns.forEach(({ pattern, style }) => {
+    let match;
+    // Reset the regex to start from beginning
+    pattern.lastIndex = 0;
+    while ((match = pattern.exec(text)) !== null) {
+      const marker = style === 'bold' ? '**' : '_';
+      replacements.push({
+        start: match.index,
+        end: match.index + match[0].length,
+        replacement: `${marker}${match[0]}${marker}`,
+        originalText: match[0]
+      });
     }
-    return part;
   });
+
+  // Sort replacements by position (reverse order to avoid index shifting)
+  replacements.sort((a, b) => b.start - a.start);
+
+  // Apply replacements
+  replacements.forEach(({ start, end, replacement }) => {
+    formattedText = formattedText.slice(0, start) + replacement + formattedText.slice(end);
+  });
+
+  // Now process the enhanced text with our original markdown processor
+  const withBold = formattedText.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
+    }
+    return { type: 'text', content: part, key: `text-${index}` };
+  });
+
+  const result: React.ReactNode[] = [];
+  withBold.forEach((item) => {
+    if (item.type === 'bold') {
+      result.push(<strong key={item.key}>{item.content}</strong>);
+    } else {
+      // Process italics in text parts
+      const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
+        if (part.startsWith('_') && part.endsWith('_')) {
+          return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
+        }
+        return part;
+      });
+      result.push(...italicParts);
+    }
+  });
+
+  return result;
 };
 
 // Icon mapping to match main feelings page
@@ -31,33 +132,33 @@ const FEELING_ICONS: Record<string, React.ElementType> = {
   'Mental Fog': CloudDrizzle,
   'Overwhelmed': Waves,
   'Forgetful': Brain,
-  'Scattered': CloudLightning,
+  'Scattered': CloudLightning, // Changed to CloudLightning as closest to tornado
   'Overstimulated': Sparkles,
   
   // Dysregulation & Shutdown
-  'Stuck': BrainCircuit,
-  'Drained': Battery,
+  'Stuck': LockKeyhole, // Changed to LockKeyhole
+  'Drained': BrainCircuit, // Changed to BrainCircuit
   'Burned Out': Flame,
   'Numb': Skull,
   'Ashamed': Frown,
-  'Frustrated': Flame,
+  'Frustrated': ZapOff, // Changed to ZapOff
   
   // Heavy Feelings
-  'Guilty': AlertCircle,
+  'Guilty': Frown, // Changed to Frown
   'Defeated': CloudRain,
-  'Hopeless': CloudRain,
+  'Hopeless': UserMinus, // Changed to UserMinus
   'Stressed': Zap,
   
   // Jittery & Wound Up
-  'Anxious': AlertCircle,
+  'Anxious': HeartOff, // Changed to HeartOff as closest to heart-minus
   'Restless': Sparkles,
   'Wired': Zap,
-  'Tense': Shield,
+  'Tense': ArrowLeftRight, // Changed to ArrowLeftRight
   
   // Social & Connection
-  'Lonely': Users,
+  'Lonely': UserCircle, // Changed to UserCircle
   'Misunderstood': Users,
-  'Rejected': UserX
+  'Rejected': Activity // Changed to Activity as closest to square-activity
 }
 
 // Hardcoded guide mappings
@@ -146,7 +247,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
   const [hoveredSection, setHoveredSection] = useState<string | null>(null)
   const [introRevealed, setIntroRevealed] = useState(false)
-  const [showIntroParagraph, setShowIntroParagraph] = useState(false)
   const [availableGuide, setAvailableGuide] = useState<{
     title: string;
     emoji: string;
@@ -202,14 +302,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
     fetchContent()
   }, [resolvedParams.feeling])
 
-  useEffect(() => {
-    // Add delay for intro paragraph fade-in
-    const timer = setTimeout(() => {
-      setShowIntroParagraph(true)
-    }, 1500); // 1.5s delay
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const goBack = () => {
     // Check if there's a category parameter in the URL
@@ -260,13 +352,11 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] relative">
-        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-          <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-10 shadow-lg">
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
-              <span className="ml-3 text-gray-600 dark:text-gray-400">Loading content...</span>
-            </div>
+      <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
+          <div className="flex items-center gap-3">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+            <p className="text-lg">Loading feelings content...</p>
           </div>
         </div>
       </div>
@@ -275,44 +365,24 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
   if (error || !content) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] relative">
-        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-          <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-10 shadow-lg">
-            <div className="flex items-center gap-4 mb-5">
-              <Button
-                variant="ghost"
-                size="default"
-                onClick={goBack}
-                className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            </div>
-            
-            <div className="text-center py-12">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                Content Not Available
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                {error}
-              </p>
-              <Button 
-                onClick={() => window.location.href = '/feelings'}
-                className="bg-pink-600 hover:bg-pink-700 text-white"
-                variant="default"
-                size="lg"
-              >
-                Browse All Feelings
-              </Button>
-            </div>
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg max-w-md text-center">
+          <XCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold mb-2">Feeling Not Found</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">
+            {error || 'This feeling content is not available yet.'}
+          </p>
+          <Button onClick={goBack} variant="default" size="default" className="bg-pink-500 hover:bg-pink-600 text-white">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Feelings
+          </Button>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
@@ -354,10 +424,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
             {/* Intro Paragraph - with pink border like screenshot */}
             <div 
-              className={`border-l-4 border-pink-400 bg-pink-50/50 dark:bg-pink-900/10 pl-5 py-4 mb-7 rounded-r-lg transition-opacity duration-1000 ease-in-out ${showIntroParagraph ? 'opacity-100' : 'opacity-0'}`}
+              className="border-l-4 border-pink-400 bg-pink-50/50 dark:bg-pink-900/10 pl-5 py-4 mb-7 rounded-r-lg"
             >
               <p className="text-base md:text-lg text-foreground leading-relaxed">
-                {content?.intro_paragraph && formatBoldText(content.intro_paragraph)}
+                {content?.intro_paragraph && formatMarkdownText(content.intro_paragraph)}
               </p>
             </div>
           </div>
@@ -365,7 +435,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           {/* Section Divider */}
           <div className="flex items-center justify-center gap-4 mb-5 text-gray-400 dark:text-gray-600">
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
-            <p className="text-sm font-medium px-4">Choose how you want to begin</p>
+            <div className="flex items-center gap-2">
+              <ArrowLeftRight className="h-4 w-4" />
+              <p className="text-sm font-medium">Choose how you want to begin</p>
+            </div>
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
           </div>
 
@@ -377,6 +450,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 onClick={() => toggleSection('gentle')}
                 onMouseEnter={() => setHoveredSection('gentle')}
                 onMouseLeave={() => setHoveredSection(null)}
+                onTouchStart={() => setHoveredSection(null)}
                 className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors border border-green-200 dark:border-green-800 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
@@ -406,7 +480,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               {expandedSections['gentle'] && (
                 <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-green-200 dark:border-green-800 mt-2">
                   <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {content.gentle_advice}
+                    {formatMarkdownText(content.gentle_advice)}
                   </p>
                 </div>
               )}
@@ -418,6 +492,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 onClick={() => toggleSection('stern')}
                 onMouseEnter={() => setHoveredSection('stern')}
                 onMouseLeave={() => setHoveredSection(null)}
+                onTouchStart={() => setHoveredSection(null)}
                 className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
@@ -447,7 +522,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               {expandedSections['stern'] && (
                 <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-red-200 dark:border-red-800 mt-2">
                   <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {content.stern_advice}
+                    {formatMarkdownText(content.stern_advice)}
                   </p>
                 </div>
               )}
@@ -457,7 +532,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           {/* Gentle guidance note - moved before ADHD reasons section */}
           <div className="flex items-center justify-center gap-4 mb-5 text-gray-400 dark:text-gray-600">
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
-            <p className="text-sm font-medium px-4">Explore when you're ready</p>
+            <div className="flex items-center gap-2">
+              <BookOpen className="h-4 w-4" />
+              <p className="text-sm font-medium">Explore when you're ready</p>
+            </div>
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
           </div>
 
@@ -467,6 +545,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               onClick={() => toggleSection('adhd_reasons')}
               onMouseEnter={() => setHoveredSection('adhd_reasons')}
               onMouseLeave={() => setHoveredSection(null)}
+              onTouchStart={() => setHoveredSection(null)}
               className="w-full flex items-center gap-4 mb-5 p-5 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[90px] touch-manipulation"
               variant="ghost"
               size="lg"
@@ -479,7 +558,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   Why ADHD Makes {content?.feeling_name} Worse
                 </h3>
                 <p className="text-base text-gray-600 dark:text-gray-400">
-                  Understanding the neuroscience
+                  Understanding the why
                 </p>
               </div>
               <div className="flex-shrink-0">
@@ -514,10 +593,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                         <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
                           {hasColon ? (
                             <>
-                              <strong>{heading}</strong> {description}
+                              <strong>{heading}</strong> {formatMarkdownText(description)}
                             </>
                           ) : (
-                            reason
+                            formatMarkdownText(reason)
                           )}
                         </span>
                       </li>
@@ -549,6 +628,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                       onClick={() => toggleSection(`step_${index}`)}
                       onMouseEnter={() => setHoveredSection(`step_${index}`)}
                       onMouseLeave={() => setHoveredSection(null)}
+                      onTouchStart={() => setHoveredSection(null)}
                       className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[75px] touch-manipulation"
                       variant="ghost"
                       size="lg"
@@ -559,12 +639,12 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                           className="h-5 w-5 text-gray-900 dark:text-white" 
                         />
                       </div>
-                      <div className="flex-1 text-left">
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
-                          {step.number}. {step.title}
+                      <div className="flex-1 text-left min-w-0">
+                        <h3 className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white mb-1 break-words">
+                          {step.number}. {formatMarkdownText(step.title)}
                         </h3>
                         <p className="text-base text-gray-600 dark:text-gray-400">
-                          {step.intro.replace(/\*\*/g, '')}
+                          {formatMarkdownText(step.intro)}
                         </p>
                       </div>
                       <div className="flex-shrink-0">
@@ -601,10 +681,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                                   <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
                                     {hasColon ? (
                                       <>
-                                        <strong>{heading}</strong> {description}
+                                        <strong>{heading}</strong> {formatMarkdownText(description)}
                                       </>
                                     ) : (
-                                      item
+                                      formatMarkdownText(item)
                                     )}
                                   </span>
                                 </li>
@@ -615,7 +695,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                         
                         <div className={`${colors.contentBg} border-l-4 ${colors.contentBorder.replace('border-', 'border-l-')} pl-4 py-2 rounded-r-lg`}>
                           <p className="text-sm text-gray-700 dark:text-gray-300">
-                            <span className="font-semibold">💡 Tip:</span> {step.tip}
+                            <span className="font-semibold">💡 Tip:</span> {formatMarkdownText(step.tip)}
                           </p>
                         </div>
                       </div>
@@ -646,22 +726,95 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   <BookOpen className="h-4 w-4 mr-2" />
                   Read: Cognitive & Overload Guide
                 </Button>
-                <Button 
-                  onClick={() => window.location.href = `/strategies?feeling=${encodeURIComponent(content?.feeling_name || '')}`}
-                  className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-xl w-full md:w-auto"
-                  variant="default"
-                  size="lg"
-                >
-                  <Heart className="h-4 w-4 mr-2" />
-                  Show Strategies for {content?.feeling_name}
-                </Button>
               </div>
             </div>
           </div>
 
-          {/* Support Boxes */}
-          <div className="mt-8">
-            <SupportBoxes />
+          {/* Navigation Options - Excluding Feelings */}
+          <div className="mt-8 space-y-6">
+            {/* Top Row - Barriers and Tasks */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Button 
+                variant="outline"
+                size="lg"
+                onClick={() => window.location.href = '/barriers'}
+                className="p-6 text-left h-auto border-2 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+              >
+                <div className="flex items-center gap-3">
+                  <Construction className="h-6 w-6" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Facing barriers or obstacles?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Barriers Support</div>
+                  </div>
+                </div>
+              </Button>
+
+              <Button 
+                variant="outline"
+                size="lg"
+                onClick={() => window.location.href = '/tasks'}
+                className="p-6 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+              >
+                <div className="flex items-center gap-3">
+                  <Wrench className="h-6 w-6" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific tasks?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Tasks</div>
+                  </div>
+                </div>
+              </Button>
+            </div>
+
+            {/* Middle Row - Complex Loops and Identity */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Button 
+                variant="outline"
+                size="lg"
+                onClick={() => window.location.href = '/complex_loops'}
+                className="p-6 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+              >
+                <div className="flex items-center gap-3">
+                  <RotateCcw className="h-6 w-6" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Stuck in repetitive patterns?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse Complex Loops</div>
+                  </div>
+                </div>
+              </Button>
+
+              <Button 
+                variant="outline"
+                size="lg"
+                onClick={() => window.location.href = '/identities'}
+                className="p-6 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+              >
+                <div className="flex items-center gap-3">
+                  <Rainbow className="h-6 w-6" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Need identity-aware support?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse by Identity</div>
+                  </div>
+                </div>
+              </Button>
+            </div>
+
+            {/* Bottom Row - Systems Lab */}
+            <div className="grid grid-cols-1 gap-4">
+              <Button 
+                variant="outline"
+                size="lg"
+                onClick={() => window.location.href = '/systems'}
+                className="p-6 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
+              >
+                <div className="flex items-center gap-3">
+                  <Puzzle className="h-6 w-6" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Want to build a system around this?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Systems Lab</div>
+                  </div>
+                </div>
+              </Button>
+            </div>
           </div>
 
           {/* Footer */}

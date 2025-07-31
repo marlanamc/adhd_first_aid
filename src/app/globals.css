@@ -584,7 +584,6 @@ html.dark a:hover {
 /* Override any Tailwind hover:bg- classes in dark mode */
 .dark [class*="hover:bg-"]:hover,
 html.dark [class*="hover:bg-"]:hover {
-  background: #374151 !important;
   color: #ffffff !important;
 }
 
@@ -603,7 +602,6 @@ html.dark [data-tooltip] {
 /* Override tooltip gradient backgrounds in dark mode */
 .dark [class*="bg-gradient-to-"],
 html.dark [class*="bg-gradient-to-"] {
-  background: #123060 !important;
   color: #ffffff !important;
 }
 
@@ -763,6 +761,11 @@ html.dark [class*="TooltipContent"] {
 .dark h2.font-serif,
 .dark .category-card h2 {
   color: #00F0FF;
+}
+
+/* Override for main homepage heading */
+.dark h2.homepage-main-heading {
+  color: #93c5fd !important; /* This is blue-300 */
 }
 
 /* Override any Tailwind text-white classes in dark mode */

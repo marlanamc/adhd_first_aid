@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, Heart, Brain, Zap, Frown, Users, BrainCircuit, Battery, Flame, Sparkles, CloudLightning, Rainbow, AlertCircle, Skull, CloudRain, Waves, CloudDrizzle, Shield, UserX } from 'lucide-react'
+import { ArrowLeft, Heart, Brain, Zap, Frown, Users, LockKeyhole, Flame, MoveRight, CloudLightning, Activity, Skull, CloudRain, Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, Battery, UserX, ZapOff, EyeOff, Sparkles, Scissors, MousePointerClick } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 
@@ -25,27 +25,27 @@ const feelings = [
   { name: 'Overstimulated', category: 'Cognitive & Overload', icon: Sparkles },
   
   // Dysregulation & Shutdown
-  { name: 'Stuck', category: 'Dysregulation & Shutdown', icon: BrainCircuit },
+  { name: 'Stuck', category: 'Dysregulation & Shutdown', icon: LockKeyhole },
   { name: 'Drained', category: 'Dysregulation & Shutdown', icon: Battery },
   { name: 'Burned Out', category: 'Dysregulation & Shutdown', icon: Flame },
   { name: 'Numb', category: 'Dysregulation & Shutdown', icon: Skull },
   { name: 'Ashamed', category: 'Dysregulation & Shutdown', icon: Frown },
-  { name: 'Frustrated', category: 'Dysregulation & Shutdown', icon: Flame },
+  { name: 'Frustrated', category: 'Dysregulation & Shutdown', icon: ZapOff },
   
   // Heavy Feelings
-  { name: 'Guilty', category: 'Heavy Feelings', icon: AlertCircle },
+  { name: 'Guilty', category: 'Heavy Feelings', icon: EyeOff },
   { name: 'Defeated', category: 'Heavy Feelings', icon: CloudRain },
-  { name: 'Hopeless', category: 'Heavy Feelings', icon: CloudRain },
+  { name: 'Hopeless', category: 'Heavy Feelings', icon: UserMinus },
   { name: 'Stressed', category: 'Heavy Feelings', icon: Zap },
   
   // Jittery & Wound Up
-  { name: 'Anxious', category: 'Jittery & Wound Up', icon: AlertCircle },
-  { name: 'Restless', category: 'Jittery & Wound Up', icon: Sparkles },
+  { name: 'Anxious', category: 'Jittery & Wound Up', icon: Activity },
+  { name: 'Restless', category: 'Jittery & Wound Up', icon: ArrowLeftRight },
   { name: 'Wired', category: 'Jittery & Wound Up', icon: Zap },
-  { name: 'Tense', category: 'Jittery & Wound Up', icon: Shield },
+  { name: 'Tense', category: 'Jittery & Wound Up', icon: Scissors },
   
   // Social & Connection
-  { name: 'Lonely', category: 'Social & Connection', icon: Users },
+  { name: 'Lonely', category: 'Social & Connection', icon: UserCircle },
   { name: 'Misunderstood', category: 'Social & Connection', icon: Users },
   { name: 'Rejected', category: 'Social & Connection', icon: UserX }
 ]
@@ -83,7 +83,7 @@ export default function FeelingsPage() {
   }
 
   const goBack = () => {
-    window.history.back()
+    window.location.href = '/'
   }
 
   // Filter feelings by selected category
@@ -94,7 +94,7 @@ export default function FeelingsPage() {
     : []
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-12">
@@ -108,7 +108,7 @@ export default function FeelingsPage() {
               <ArrowLeft className="h-5 w-5 text-[#22223B] dark:text-white" />
             </Button>
             <div className="flex-1">
-              <h1 className="text-3xl md:text-4xl font-serif font-bold text-black text-center">
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-black dark:text-white text-center">
                 How are you feeling right now?
               </h1>
             </div>
@@ -117,7 +117,10 @@ export default function FeelingsPage() {
 
         {/* Category Selection */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-black text-center mb-6">Choose a feeling type:</h2>
+          <h2 className="text-xl font-semibold text-black dark:text-white text-center mb-6 flex items-center justify-center gap-2">
+            <MousePointerClick className="h-5 w-5" />
+            Choose a feeling type:
+          </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {categories.map((category) => (
               <button
@@ -137,12 +140,12 @@ export default function FeelingsPage() {
                                 ? 'bg-white/40 ring-2 ring-black/[0.15] dark:ring-white/[0.3]' 
                                 : 'bg-white/10 hover:bg-white/20'}`}>
                   
-                  <h3 className={`text-sm font-medium text-black text-center mb-1
+                  <h3 className={`text-sm font-medium text-black dark:text-white text-center mb-1
                                 ${selectedCategory === category.name ? 'font-semibold' : ''}`}>
                     {category.name}
                   </h3>
-                  <p className={`text-xs text-black/70 text-center
-                                ${selectedCategory === category.name ? 'text-black/90' : ''}`}>
+                  <p className={`text-xs text-black/70 dark:text-white/70 text-center
+                                ${selectedCategory === category.name ? 'text-black/90 dark:text-white/90' : ''}`}>
                     {category.count} feeling{category.count > 1 ? 's' : ''}
                   </p>
                 </div>
@@ -154,7 +157,7 @@ export default function FeelingsPage() {
         {/* Selected Category Feelings */}
         {selectedCategory && (
           <div>
-            <h2 className="text-2xl font-bold text-black text-center mb-8">
+            <h2 className="text-2xl font-bold text-black dark:text-white text-center mb-8">
               {selectedCategory === 'View All' ? 'All Feelings' : selectedCategory}
             </h2>
             
@@ -184,7 +187,7 @@ export default function FeelingsPage() {
                     </div>
                     
                     {/* Feeling Name */}
-                    <h3 className="text-sm font-medium text-black text-center transition-all duration-300">
+                    <h3 className="text-sm font-medium text-black dark:text-white text-center transition-all duration-300">
                       {feeling.name}
                     </h3>
                   </div>
@@ -196,11 +199,11 @@ export default function FeelingsPage() {
 
         {/* Footer Text */}
         <div className="text-center mt-12 max-w-3xl mx-auto">
-          <div className="bg-white/20 backdrop-blur-md rounded-2xl p-6 border border-white/10">
-            <h3 className="text-lg font-semibold text-black mb-2">
+          <div className="bg-white/20 dark:bg-gray-800/60 backdrop-blur-md rounded-2xl p-6 border border-white/10 dark:border-gray-600/30">
+            <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
               Don't see your feeling?
             </h3>
-            <p className="text-black text-sm mb-4">
+            <p className="text-black dark:text-gray-200 text-sm mb-4">
               Sometimes emotions are complex. Try exploring other approaches to find what you need.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -208,7 +211,7 @@ export default function FeelingsPage() {
                 variant="ghost"
                 size="default"
                 onClick={() => window.location.href = '/barriers'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                className="bg-white/20 dark:bg-gray-700/50 hover:bg-white/30 dark:hover:bg-gray-600/60 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
                 Browse by Barriers
               </Button>
@@ -216,7 +219,7 @@ export default function FeelingsPage() {
                 variant="ghost"
                 size="default"
                 onClick={() => window.location.href = '/tasks'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                className="bg-white/20 dark:bg-gray-700/50 hover:bg-white/30 dark:hover:bg-gray-600/60 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
                 Browse by Tasks
               </Button>
@@ -224,7 +227,7 @@ export default function FeelingsPage() {
                 variant="ghost"
                 size="default"
                 onClick={() => window.location.href = '/complex_loops'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                className="bg-white/20 dark:bg-gray-700/50 hover:bg-white/30 dark:hover:bg-gray-600/60 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
                 Browse by Complex Loops
               </Button>
@@ -232,7 +235,7 @@ export default function FeelingsPage() {
                 variant="ghost"
                 size="default"
                 onClick={() => window.location.href = '/identities'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                className="bg-white/20 dark:bg-gray-700/50 hover:bg-white/30 dark:hover:bg-gray-600/60 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
                 Browse by Identity
               </Button>
