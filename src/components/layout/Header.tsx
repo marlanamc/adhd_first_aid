@@ -31,7 +31,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                 className="flex items-center hover:opacity-60 transition-opacity duration-300 cursor-pointer"
               >
                 <span className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-[#22223B] dark:text-white">
-                  ADHD <span className="text-[#E96B7D]">First Aid</span> Kit
+                  ADHD <span className="text-pink-500 dark:text-blue-300">First Aid</span> Kit
                 </span>
               </button>
             </div>

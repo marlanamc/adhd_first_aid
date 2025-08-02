@@ -1,59 +1,61 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, RotateCcw, Smartphone, Calendar, MessageSquareText, Clock, Laptop, Heart, Users, Brain, Zap, Volume2, Eye, ShoppingCart, Utensils, Bed, Briefcase, Mail, AlertCircle } from 'lucide-react'
+import { ArrowLeft, RotateCcw, Smartphone, Calendar, MessageSquareText, Clock, Laptop, Heart, Users, Brain, Zap, Volume2, Eye, ShoppingCart, Utensils, Bed, Briefcase, Mail, AlertCircle, MousePointer, Share2, ShoppingBag, AlarmClock, CalendarX, CalendarCheck, CalendarClock, Timer, HeartCrack, UserMinus, UserX, MessagesSquare, MailQuestion, UserPlus, HeartHandshake, MessageCircleQuestion, CircleDashed, Target, Infinity, UtensilsCrossed, Salad, Building2, Dumbbell, Moon, BellRing, BatteryLow, MousePointerClick, Repeat } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import React from 'react'
 
-// Complex Loops data with icons - updated from CSV
+// Complex Loops data with icons - updated from database (all 28 loops)
 const complexLoops = [
   // Digital & Screen
   { name: 'Phone Scrolling', category: 'Digital & Screen', icon: Smartphone },
-  { name: 'Screen Time Binges', category: 'Digital & Screen', icon: Laptop },
-  { name: 'Social Media Spirals', category: 'Digital & Screen', icon: MessageSquareText },
-  { name: 'Online Shopping', category: 'Digital & Screen', icon: ShoppingCart },
+  { name: 'Social Media', category: 'Digital & Screen', icon: Share2 },
+  { name: 'Online Shopping', category: 'Digital & Screen', icon: ShoppingBag },
   
   // Time & Schedule
-  { name: 'Chronic Lateness', category: 'Time & Schedule', icon: Clock },
-  { name: 'Missed Appointments', category: 'Time & Schedule', icon: Calendar },
-  { name: 'Last-Minute Canceling', category: 'Time & Schedule', icon: Calendar },
-  { name: 'Double-Booking Yourself', category: 'Time & Schedule', icon: Calendar },
+  { name: 'Chronic Lateness', category: 'Time & Schedule', icon: AlarmClock },
+  { name: 'Missed Appointments', category: 'Time & Schedule', icon: CalendarX },
+  { name: 'Last-Minute Cancelling', category: 'Time & Schedule', icon: CalendarCheck },
+  { name: 'Double-Booking Yourself', category: 'Time & Schedule', icon: CalendarClock },
+  { name: 'Waiting Mode', category: 'Time & Schedule', icon: Timer },
   
   // Emotional & Social
-  { name: 'People-Pleasing Burnout', category: 'Emotional & Social', icon: Users },
-  { name: 'Rejection Sensitivity Loops', category: 'Emotional & Social', icon: Heart },
-  { name: 'Social Masking Exhaustion', category: 'Emotional & Social', icon: Users },
-  { name: 'Text Message Avoidance', category: 'Emotional & Social', icon: MessageSquareText },
-  { name: 'Email Overwhelm', category: 'Emotional & Social', icon: Mail },
-  { name: 'Friendships', category: 'Emotional & Social', icon: Users },
-  { name: 'Intimacy', category: 'Emotional & Social', icon: Heart },
+  { name: 'People-Pleasing Burnout', category: 'Emotional & Social', icon: HeartCrack },
+  { name: 'Rejection Sensitivity Loops', category: 'Emotional & Social', icon: UserMinus },
+  { name: 'Masking Exhaustion', category: 'Emotional & Social', icon: UserX },
+  { name: 'Replying to Texts', category: 'Emotional & Social', icon: MessagesSquare },
+  { name: 'Email Overwhelm', category: 'Emotional & Social', icon: MailQuestion },
+  { name: 'Friendships & ADHD', category: 'Emotional & Social', icon: Users },
+  { name: 'Intimacy & Connection', category: 'Emotional & Social', icon: HeartHandshake },
+  { name: 'Difficult Conversations', category: 'Emotional & Social', icon: MessageCircleQuestion },
   
   // Decision & Perfectionism
-  { name: 'Decision Overwhelm', category: 'Decision & Perfectionism', icon: Brain },
-  { name: 'Perfectionism Cycles', category: 'Decision & Perfectionism', icon: Eye },
-  { name: 'Analysis Paralysis', category: 'Decision & Perfectionism', icon: Brain },
-  { name: 'Pre-Event Paralysis', category: 'Decision & Perfectionism', icon: AlertCircle },
+  { name: 'Decision Overwhelm', category: 'Decision & Perfectionism', icon: CircleDashed },
+  { name: 'Perfectionism Cycles', category: 'Decision & Perfectionism', icon: Target },
+  { name: 'Analysis Paralysis', category: 'Decision & Perfectionism', icon: Infinity },
   
   // Life & Wellness
   { name: 'Overeating', category: 'Life & Wellness', icon: Utensils },
-  { name: 'Undereating', category: 'Life & Wellness', icon: Utensils },
-  { name: 'Job Search', category: 'Life & Wellness', icon: Briefcase },
+  { name: 'Undereating', category: 'Life & Wellness', icon: UtensilsCrossed },
+  { name: 'Job Searching', category: 'Life & Wellness', icon: Building2 },
+  { name: 'Workout Avoidance', category: 'Life & Wellness', icon: Dumbbell },
   
   // Sleep & Energy
-  { name: 'Can\'t Fall Asleep', category: 'Sleep & Energy', icon: Brain },
-  { name: 'Sleeping Through Alarms', category: 'Sleep & Energy', icon: Volume2 },
-  { name: 'Constantly Tired', category: 'Sleep & Energy', icon: Eye },
+  { name: 'Can\'t Fall Asleep', category: 'Sleep & Energy', icon: Moon },
+  { name: 'Sleeping Through Alarms', category: 'Sleep & Energy', icon: BellRing },
+  { name: 'Constantly Tired', category: 'Sleep & Energy', icon: BatteryLow },
   { name: 'Bedtime Procrastination', category: 'Sleep & Energy', icon: Clock }
 ]
 
 const categories = [
-  { name: 'Digital & Screen', color: 'from-blue-400 to-cyan-500', count: 4 },
-  { name: 'Time & Schedule', color: 'from-purple-400 to-indigo-500', count: 4 },
-  { name: 'Emotional & Social', color: 'from-pink-400 to-rose-500', count: 7 },
-  { name: 'Decision & Perfectionism', color: 'from-amber-400 to-orange-500', count: 4 },
-  { name: 'Life & Wellness', color: 'from-green-400 to-emerald-500', count: 3 },
+  { name: 'Digital & Screen', color: 'from-blue-400 to-cyan-500', count: 3 },
+  { name: 'Time & Schedule', color: 'from-purple-400 to-indigo-500', count: 5 },
+  { name: 'Emotional & Social', color: 'from-pink-400 to-rose-500', count: 8 },
+  { name: 'Decision & Perfectionism', color: 'from-amber-400 to-orange-500', count: 3 },
+  { name: 'Life & Wellness', color: 'from-green-400 to-emerald-500', count: 4 },
   { name: 'Sleep & Energy', color: 'from-indigo-400 to-blue-500', count: 4 },
-  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 26 }
+  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 27 }
 ]
 
 const categoryColors = {
@@ -68,6 +70,7 @@ const categoryColors = {
 export default function ComplexLoopsPage() {
   const [selectedLoop, setSelectedLoop] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>('Digital & Screen')
+  const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false)
 
   // Read category from URL parameter on page load
   useEffect(() => {
@@ -93,7 +96,7 @@ export default function ComplexLoopsPage() {
   }
 
   const goBack = () => {
-    window.history.back()
+    window.location.href = '/'
   }
 
   // Filter loops by selected category
@@ -104,7 +107,7 @@ export default function ComplexLoopsPage() {
     : []
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-12">
@@ -118,7 +121,7 @@ export default function ComplexLoopsPage() {
               <ArrowLeft className="h-5 w-5 text-[#22223B] dark:text-white" />
             </Button>
             <div className="flex-1">
-              <h1 className="text-3xl md:text-4xl font-serif font-bold text-black text-center">
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-black dark:text-white text-center">
                 Which loop do you want to break?
               </h1>
             </div>
@@ -127,7 +130,10 @@ export default function ComplexLoopsPage() {
 
         {/* Category Selection */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-black text-center mb-6">Choose a pattern type:</h2>
+          <h2 className="text-xl font-semibold text-black dark:text-white text-center mb-6 flex items-center justify-center gap-2">
+            <MousePointerClick className="h-5 w-5" />
+            Choose a pattern type:
+          </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {categories.map((category) => (
               <button
@@ -147,12 +153,12 @@ export default function ComplexLoopsPage() {
                                 ? 'bg-white/40 ring-2 ring-black/[0.15] dark:ring-white/[0.3]' 
                                 : 'bg-white/10 hover:bg-white/20'}`}>
                   
-                  <h3 className={`text-sm font-medium text-black text-center mb-1
+                  <h3 className={`text-sm font-medium text-black dark:text-white text-center mb-1
                                 ${selectedCategory === category.name ? 'font-semibold' : ''}`}>
                     {category.name}
                   </h3>
-                  <p className={`text-xs text-black/70 text-center
-                                ${selectedCategory === category.name ? 'text-black/90' : ''}`}>
+                  <p className={`text-xs text-black/70 dark:text-white/70 text-center
+                                ${selectedCategory === category.name ? 'text-black/90 dark:text-white/90' : ''}`}>
                     {category.count} patterns
                   </p>
                 </div>
@@ -164,7 +170,7 @@ export default function ComplexLoopsPage() {
         {/* Selected Category Loops */}
         {selectedCategory && (
           <div>
-            <h2 className="text-2xl font-bold text-black text-center mb-8">
+            <h2 className="text-2xl font-bold text-black dark:text-white text-center mb-8">
               {selectedCategory === 'View All' ? 'All Complex Loops' : selectedCategory}
             </h2>
             
@@ -194,7 +200,7 @@ export default function ComplexLoopsPage() {
                     </div>
                     
                     {/* Loop Name */}
-                    <h3 className="text-sm font-medium text-black text-center transition-all duration-300">
+                    <h3 className="text-sm font-medium text-black dark:text-white text-center transition-all duration-300">
                       {loop.name}
                     </h3>
                   </div>
@@ -207,10 +213,26 @@ export default function ComplexLoopsPage() {
         {/* Footer Text */}
         <div className="text-center mt-12 max-w-3xl mx-auto">
           <div className="bg-white/30 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 border border-white/10">
-            <h3 className="text-lg font-semibold text-black mb-2">
+            <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
               These patterns feel different from tasks
             </h3>
-            <p className="text-black text-sm mb-4">
+            
+            {/* Suggest a Complex Loop Button */}
+            <div className="mb-4 flex justify-center">
+              <Button
+                onClick={() => setIsSuggestModalOpen(true)}
+                className="group relative px-4 py-2 bg-gradient-to-r from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] hover:from-[#88cfed] hover:via-[#71bbeb] hover:to-[#9a85ca] text-gray-800 font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-0 text-sm"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="p-1 bg-white/30 rounded-md group-hover:bg-white/40 transition-colors">
+                    <Repeat className="h-4 w-4 text-gray-700" />
+                  </div>
+                  <span>Suggest a Complex Loop</span>
+                </div>
+              </Button>
+            </div>
+            
+            <p className="text-black dark:text-white text-sm mb-4">
               Complex loops require deeper self-regulation and emotional awareness, not just breaking things into steps.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -218,7 +240,7 @@ export default function ComplexLoopsPage() {
                 variant="ghost"
                 size="default"
                 onClick={() => window.location.href = '/feelings'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                className="bg-white/20 hover:bg-white/30 dark:bg-gray-700/30 dark:hover:bg-gray-600/40 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
                 Browse by Feelings
               </Button>
@@ -226,23 +248,23 @@ export default function ComplexLoopsPage() {
                 variant="ghost"
                 size="default"
                 onClick={() => window.location.href = '/barriers'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                className="bg-white/20 hover:bg-white/30 dark:bg-gray-700/30 dark:hover:bg-gray-600/40 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
                 Browse by Barriers
               </Button>
               <Button 
                 variant="ghost"
                 size="default"
-                onClick={() => window.location.href = '/tasks'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                onClick={() => window.location.href = '/life_areas'}
+                className="bg-white/20 hover:bg-white/30 dark:bg-gray-700/30 dark:hover:bg-gray-600/40 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
-                Browse by Tasks
+                Browse by Life Areas
               </Button>
               <Button 
                 variant="ghost"
                 size="default"
                 onClick={() => window.location.href = '/identities'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                className="bg-white/20 hover:bg-white/30 dark:bg-gray-700/30 dark:hover:bg-gray-600/40 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
                 Browse by Identity
               </Button>
@@ -250,6 +272,13 @@ export default function ComplexLoopsPage() {
           </div>
         </div>
       </div>
+      
+      {/* Suggest Complex Loop Modal */}
+      <SuggestContentModal
+        isOpen={isSuggestModalOpen}
+        onClose={() => setIsSuggestModalOpen(false)}
+        contentType="complex_loop"
+      />
     </div>
   )
 }

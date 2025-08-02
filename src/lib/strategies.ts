@@ -169,14 +169,14 @@ export async function getStrategies(filters: StrategyFilters = {}): Promise<Stra
       const searchTerm = filters.search.toLowerCase()
       
       // First search directly in strategy fields
-      let searchResults = await supabase
+      const searchResults = await supabase
         .from('strategies')
         .select('id')
         .or(
           `name.ilike.%${searchTerm}%,subtitle.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,example.ilike.%${searchTerm}%,use_case.ilike.%${searchTerm}%,further_reading.ilike.%${searchTerm}%,tips_tricks.ilike.%${searchTerm}%`
         )
       
-      let searchStrategyIds = searchResults.data ? searchResults.data.map(s => s.id) : []
+      const searchStrategyIds = searchResults.data ? searchResults.data.map(s => s.id) : []
       
       // Also search in related tables
       const relatedSearches = await Promise.all([

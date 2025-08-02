@@ -11,9 +11,10 @@ import {
   ArrowLeftRight, BookOpen
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { getBarriersContent } from '@/lib/supabase'
-import type { BarriersContent } from '@/lib/supabase'
+import { getBarriersContent, getBarrierSources } from '@/lib/supabase'
+import type { BarriersContent, BarrierSources } from '@/lib/supabase'
 import { StepIcon } from '@/components/ui/StepIcon';
+import { SuggestionButton } from '@/components/ui/SuggestionButton';
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
@@ -145,6 +146,7 @@ interface BarrierPageProps {
 export default function BarrierPage({ params }: BarrierPageProps) {
   const resolvedParams = use(params)
   const [content, setContent] = useState<BarriersContent | null>(null)
+  const [sources, setSources] = useState<BarrierSources[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
@@ -210,6 +212,14 @@ export default function BarrierPage({ params }: BarrierPageProps) {
         }
 
         setContent(data)
+        
+        // Fetch sources data using the URL slug
+        const barrierSlug = resolvedParams.barrier  // This is the URL slug like 'i-cant-start'
+        const { data: sourcesData, error: sourcesError } = await getBarrierSources(barrierSlug.replace(/-/g, '_'))
+        
+        if (sourcesData && sourcesData.length > 0) {
+          setSources(sourcesData)
+        }
       } catch (err) {
         setError('Failed to load barriers content.')
         console.error('Error loading barriers content:', err)
@@ -669,31 +679,147 @@ export default function BarrierPage({ params }: BarrierPageProps) {
             </div>
           )}
 
-          {/* Need More Support Box */}
-          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <div className="bg-orange-50 dark:bg-orange-900/20 rounded-2xl p-6">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Construction className="h-5 w-5 text-orange-600" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Need More Support?</h3>
+          {/* Sources Section - styled like a step but without number */}
+          {sources && sources.length > 0 && (
+            <div className="space-y-4">
+              <div className="relative">
+                <Button
+                  onClick={() => toggleSection('sources')}
+                  onMouseEnter={() => setHoveredSection('sources')}
+                  onMouseLeave={() => setHoveredSection(null)}
+                  onTouchStart={() => setHoveredSection(null)}
+                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[75px] touch-manipulation"
+                  variant="ghost"
+                  size="lg"
+                >
+                  <div className="bg-purple-200 dark:bg-purple-800 rounded-full p-3 flex-shrink-0">
+                    <BookOpen className="h-5 w-5 text-gray-900 dark:text-white" />
+                  </div>
+                  <div className="flex-1 text-left min-w-0">
+                    <h3 className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white mb-1 break-words">
+                      Sources: {content?.barrier_name}
+                    </h3>
+                    <p className="text-base text-gray-600 dark:text-gray-400">
+                      Explore the books, guides, and research that shaped this page
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0">
+                    {expandedSections['sources'] ? (
+                      <Minus className="h-6 w-6 text-gray-500" />
+                    ) : (
+                      <Plus className="h-6 w-6 text-gray-500" />
+                    )}
+                  </div>
+                </Button>
+                
+                {/* Custom Tooltip */}
+                {hoveredSection === 'sources' && (
+                  <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
+                    {expandedSections['sources'] ? "Close section" : "Open section"}
+                  </div>
+                )}
+                
+                {expandedSections['sources'] && (
+                  <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-6 animate-in slide-in-from-top duration-300">
+                    <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                      These resources explain the neurological roots and offer strategies for overcoming this barrier.
+                    </p>
+                    
+                    {/* Group sources by category and sort by count (most to least) */}
+                    {Object.entries(
+                      sources.reduce((acc, source) => {
+                        if (!acc[source.category]) {
+                          acc[source.category] = []
+                        }
+                        acc[source.category].push(source)
+                        return acc
+                      }, {} as Record<string, BarrierSources[]>)
+                    ).sort(([, a], [, b]) => b.length - a.length).map(([category, categorySources]) => (
+                      <div key={category} className="relative">
+                        <Button
+                          onClick={() => toggleSection(`sources_${category.replace(/\s+/g, '_').toLowerCase()}`)}
+                          onMouseEnter={() => setHoveredSection(`sources_${category.replace(/\s+/g, '_').toLowerCase()}`)}
+                          onMouseLeave={() => setHoveredSection(null)}
+                          onTouchStart={() => setHoveredSection(null)}
+                          className="w-full flex items-center gap-3 mb-3 p-4 rounded-lg bg-purple-50/50 dark:bg-purple-900/20 hover:bg-purple-100/50 dark:hover:bg-purple-900/30 transition-colors touch-manipulation"
+                          variant="ghost"
+                          size="default"
+                        >
+                          <div className="flex-1 text-left">
+                            <h4 className="text-base font-semibold text-gray-900 dark:text-white">
+                              {category}
+                            </h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              {categorySources.length} resources
+                            </p>
+                          </div>
+                          <div className="flex-shrink-0">
+                            {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] ? (
+                              <Minus className="h-4 w-4 text-gray-500" />
+                            ) : (
+                              <Plus className="h-4 w-4 text-gray-500" />
+                            )}
+                          </div>
+                        </Button>
+                        
+                        {/* Custom Tooltip */}
+                        {hoveredSection === `sources_${category.replace(/\s+/g, '_').toLowerCase()}` && (
+                          <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
+                            {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] ? "Close section" : "Open section"}
+                          </div>
+                        )}
+                        
+                        {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] && (
+                          <div className="bg-purple-50/30 dark:bg-purple-900/10 rounded-lg p-4 space-y-3 animate-in slide-in-from-top duration-300 mb-4">
+                            {categorySources.map((source, index) => (
+                              <div key={index} className="border-l-3 border-purple-400 dark:border-purple-600 pl-4 py-2">
+                                <div className="flex items-start gap-2">
+                                  <span className="text-purple-600 dark:text-purple-400 mt-1 flex-shrink-0">•</span>
+                                  <div>
+                                    <h5 className="font-semibold text-gray-900 dark:text-white">
+                                      {source.title}
+                                      {source.authors && (
+                                        <span className="font-normal text-gray-600 dark:text-gray-400">
+                                          {' by '}{source.authors}
+                                        </span>
+                                      )}
+                                    </h5>
+                                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mt-1">
+                                      {source.description.replace(/\s*—\s*/g, ', ')}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed text-center">
-                Find strategies and insights specifically for overcoming "{content?.barrier_name}".
-              </p>
             </div>
-          </div>
+          )}
 
-          {/* Navigation Options - Excluding Barriers */}
-          <div className="mt-8 space-y-6">
+          {/* Next Steps Section with Glassmorphism Background */}
+          <div className="mt-8 p-8 bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-xl">
+            {/* Suggestion Button */}
+            <div className="mb-8">
+              <SuggestionButton pageType="barriers" />
+            </div>
+
+            {/* Navigation Options - Excluding Barriers */}
+            <div className="space-y-4">
             {/* Top Row - Feelings and Tasks */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button 
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/feelings'}
-                className="p-6 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Heart className="h-6 w-6" />
+                  <Heart className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Feeling stuck emotionally?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Feelings</div>
@@ -704,14 +830,14 @@ export default function BarrierPage({ params }: BarrierPageProps) {
               <Button 
                 variant="outline"
                 size="lg"
-                onClick={() => window.location.href = '/tasks'}
-                className="p-6 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                onClick={() => window.location.href = '/life_areas'}
+                className="p-4 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Wrench className="h-6 w-6" />
+                  <Wrench className="h-5 w-5" />
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific tasks?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Tasks</div>
+                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific life areas?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Life Areas</div>
                   </div>
                 </div>
               </Button>
@@ -723,10 +849,10 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/complex_loops'}
-                className="p-6 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <RotateCcw className="h-6 w-6" />
+                  <RotateCcw className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Stuck in repetitive patterns?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse Complex Loops</div>
@@ -738,10 +864,10 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/identities'}
-                className="p-6 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Rainbow className="h-6 w-6" />
+                  <Rainbow className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Need identity-aware support?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse by Identity</div>
@@ -756,10 +882,10 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/systems'}
-                className="p-6 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Puzzle className="h-6 w-6" />
+                  <Puzzle className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Want to build a system around this?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Systems Lab</div>
@@ -771,8 +897,10 @@ export default function BarrierPage({ params }: BarrierPageProps) {
 
           {/* Footer */}
           <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>Need more help? Check out our <a href="/guides" className="text-orange-600 hover:underline">guides</a> or <a href="/resources" className="text-orange-600 hover:underline">resources</a>.</p>
+            <p>Need more help? Check out our <a href="/guides" className="text-orange-600 hover:underline">guides</a>, <a href="/scripts" className="text-orange-600 hover:underline">scripts</a>, <a href="/quizzes" className="text-orange-600 hover:underline">quizzes</a>, or <a href="/resources" className="text-orange-600 hover:underline">resources</a>.</p>
           </div>
+          
+          </div> {/* Close glassmorphism container */}
         </div>
       </div>
     </div>

@@ -8,12 +8,22 @@ import { ThemeProvider } from '@/contexts/ThemeContext'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { SearchModal } from '@/components/ui/SearchModal'
+import { ModalProvider, useModal } from '@/contexts/ModalContext'
+import { FeedbackModal } from '@/components/ui/FeedbackModal'
 
 const inter = Inter({ subsets: ['latin'] })
-const playfair = Playfair_Display({ 
+const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair',
 })
+
+function GlobalModals() {
+  const { isOpen, closeModal, pageType } = useModal()
+  if (!isOpen) return null
+  return (
+    <FeedbackModal isOpen={isOpen} onClose={closeModal} pageType={pageType} />
+  )
+}
 
 export default function RootLayout({
   children,
@@ -42,26 +52,35 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} ${playfair.variable}`}>
         <ThemeProvider>
-          <div className="min-h-screen flex flex-col relative">
-            <div className="fixed inset-0 bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 -z-10" />
-            
-            <Header 
-              navigateHome={() => window.location.href = '/'} 
-              navigateToPage={(page: string) => window.location.href = `/${page}`} 
-              onSearchOpen={() => setIsSearchOpen(true)} 
-            />
+          <ModalProvider>
+            <div className="min-h-screen flex flex-col relative">
+              <div className="fixed inset-0 bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 -z-10" />
 
-            <main className="flex-1 flex flex-col relative z-0">
-              {children}
-            </main>
+              <Header
+                navigateHome={() => (window.location.href = '/')}
+                navigateToPage={(page: string) =>
+                  (window.location.href = `/${page}`)
+                }
+                onSearchOpen={() => setIsSearchOpen(true)}
+              />
 
-            <Footer navigateToPage={(page: string) => window.location.href = `/${page}`} />
-            
-            <SearchModal 
-              isOpen={isSearchOpen} 
-              onClose={() => setIsSearchOpen(false)} 
-            />
-          </div>
+              <main className="flex-1 flex flex-col relative z-0">
+                {children}
+              </main>
+
+              <Footer
+                navigateToPage={(page: string) =>
+                  (window.location.href = `/${page}`)
+                }
+              />
+
+              <SearchModal
+                isOpen={isSearchOpen}
+                onClose={() => setIsSearchOpen(false)}
+              />
+              <GlobalModals />
+            </div>
+          </ModalProvider>
         </ThemeProvider>
       </body>
     </html>

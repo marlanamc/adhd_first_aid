@@ -4,16 +4,18 @@ import React from 'react'
 import { useState, useEffect, use } from 'react'
 import { 
   ArrowLeft, Heart, Plus, Minus, BookOpen, 
-  Brain, Zap, Frown, Users, BrainCircuit, 
+  Brain, Zap, Frown, Users, BrainCircuit, Battery,
   LockKeyhole, Flame, Sparkles, CloudLightning, 
   Activity, Skull, CloudRain, Rainbow,
-  Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, HeartOff, ZapOff,
+  Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, HeartOff, ZapOff, EyeOff,
   Share2, Wrench, Construction, RotateCcw, Puzzle, XCircle 
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { getFeelingsContent } from '@/lib/supabase'
-import type { FeelingsContent } from '@/lib/supabase'
+import { getFeelingsContent, getFeelingSources } from '@/lib/supabase'
+import type { FeelingsContent, FeelingSources } from '@/lib/supabase'
 import { StepIcon } from '@/components/ui/StepIcon';
+import { SuggestionButton } from '@/components/ui/SuggestionButton';
+import { ShareModal } from '@/components/ui/ShareModal';
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
@@ -65,7 +67,7 @@ const formatMarkdownText = (text: string) => {
     
     // ADHD-specific concepts
     { pattern: /\b(executive function|working memory|dopamine|nervous system|sensory|overwhelm)\b/gi, style: 'bold' },
-    { pattern: /\b(ADHD brain|neurodivergent|rejection sensitivity|time blindness)\b/gi, style: 'bold' },
+    { pattern: /\b(ADHD brain|neurodivergent|time blindness)\b/gi, style: 'bold' },
     
     // Gentle self-talk patterns for italics
     { pattern: /\b(maybe|perhaps|gently|softly|kindly|compassionately)\b/gi, style: 'italic' },
@@ -137,20 +139,20 @@ const FEELING_ICONS: Record<string, React.ElementType> = {
   
   // Dysregulation & Shutdown
   'Stuck': LockKeyhole, // Changed to LockKeyhole
-  'Drained': BrainCircuit, // Changed to BrainCircuit
+  'Drained': Battery, // Battery icon to match category page
   'Burned Out': Flame,
   'Numb': Skull,
   'Ashamed': Frown,
   'Frustrated': ZapOff, // Changed to ZapOff
   
   // Heavy Feelings
-  'Guilty': Frown, // Changed to Frown
+  'Guilty': EyeOff, // EyeOff icon to match category page
   'Defeated': CloudRain,
   'Hopeless': UserMinus, // Changed to UserMinus
   'Stressed': Zap,
   
   // Jittery & Wound Up
-  'Anxious': HeartOff, // Changed to HeartOff as closest to heart-minus
+  'Anxious': Activity, // Activity icon to match category page
   'Restless': Sparkles,
   'Wired': Zap,
   'Tense': ArrowLeftRight, // Changed to ArrowLeftRight
@@ -242,6 +244,7 @@ interface FeelingPageProps {
 export default function FeelingPage({ params }: FeelingPageProps) {
   const resolvedParams = use(params)
   const [content, setContent] = useState<FeelingsContent | null>(null)
+  const [sources, setSources] = useState<FeelingSources[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
@@ -254,6 +257,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
     description: string;
   } | null>(null)
   const [copySuccess, setCopySuccess] = useState(false)
+  const [showShareModal, setShowShareModal] = useState(false)
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
@@ -286,6 +290,14 @@ export default function FeelingPage({ params }: FeelingPageProps) {
         }
 
         setContent(data)
+
+        // Fetch sources data using the URL slug
+        const slugName = resolvedParams.feeling  // This is the URL slug like 'mental-fog'
+        const { data: sourcesData, error: sourcesError } = await getFeelingSources(slugName.replace('-', '_'))
+        
+        if (sourcesData && sourcesData.length > 0) {
+          setSources(sourcesData)
+        }
 
         // Check if there's a guide for this feeling
         const feelingKey = feelingName.toLowerCase().trim()
@@ -321,33 +333,8 @@ export default function FeelingPage({ params }: FeelingPageProps) {
     }
   }
 
-  const handleShare = async () => {
-    const shareData = {
-      title: `ADHD First Aid Kit - ${content?.feeling_name}`,
-      text: `Get help with feeling ${content?.feeling_name?.toLowerCase()} - ADHD-friendly strategies and support`,
-      url: window.location.href
-    }
-
-    try {
-      // Check if native sharing is available and supported
-      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-        await navigator.share(shareData)
-      } else {
-        // Fallback to clipboard with better feedback
-        await navigator.clipboard.writeText(window.location.href)
-        setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000) // Reset after 2 seconds
-      }
-    } catch (error) {
-      // Fallback to clipboard if share fails
-      try {
-        await navigator.clipboard.writeText(window.location.href)
-        setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000) // Reset after 2 seconds
-      } catch (clipboardError) {
-        console.error('Share failed:', error)
-      }
-    }
+  const handleShare = () => {
+    setShowShareModal(true)
   }
 
   if (loading) {
@@ -410,15 +397,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   size="default"
                   onClick={handleShare}
                   className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
-                  title={copySuccess ? "Link copied!" : "Share this page"}
+                  title="Share this page"
                 >
                   <Share2 className="h-5 w-5" />
                 </Button>
-                {copySuccess && (
-                  <div className="absolute -top-8 right-0 bg-green-600 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap z-50">
-                    Link copied!
-                  </div>
-                )}
               </div>
             </div>
 
@@ -448,9 +430,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
             <div className="relative">
               <Button
                 onClick={() => toggleSection('gentle')}
-                onMouseEnter={() => setHoveredSection('gentle')}
-                onMouseLeave={() => setHoveredSection(null)}
-                onTouchStart={() => setHoveredSection(null)}
                 className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors border border-green-200 dark:border-green-800 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
@@ -470,12 +449,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 </div>
               </Button>
               
-              {/* Custom Tooltip */}
-              {hoveredSection === 'gentle' && (
-                <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                  {expandedSections['gentle'] ? "Close section" : "Open section"}
-                </div>
-              )}
               
               {expandedSections['gentle'] && (
                 <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-green-200 dark:border-green-800 mt-2">
@@ -490,9 +463,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
             <div className="relative">
               <Button
                 onClick={() => toggleSection('stern')}
-                onMouseEnter={() => setHoveredSection('stern')}
-                onMouseLeave={() => setHoveredSection(null)}
-                onTouchStart={() => setHoveredSection(null)}
                 className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
@@ -512,12 +482,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 </div>
               </Button>
 
-              {/* Custom Tooltip */}
-              {hoveredSection === 'stern' && (
-                <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                  {expandedSections['stern'] ? "Close section" : "Open section"}
-                </div>
-              )}
 
               {expandedSections['stern'] && (
                 <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-red-200 dark:border-red-800 mt-2">
@@ -558,7 +522,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   Why ADHD Makes {content?.feeling_name} Worse
                 </h3>
                 <p className="text-base text-gray-600 dark:text-gray-400">
-                  Understanding the why
+                  The hidden drivers
                 </p>
               </div>
               <div className="flex-shrink-0">
@@ -581,19 +545,23 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 border border-purple-200 dark:border-purple-800">
                 <ul className="space-y-3">
                   {content.adhd_reasons.map((reason, index) => {
+                    // Define emojis for each ADHD reason
+                    const reasonEmojis = ['🧩', '⏰', '🧠', '💔', '⚡'];
+                    const emoji = reasonEmojis[index % reasonEmojis.length];
+                    
                     // Split on the first colon to get bold heading and description
                     const colonIndex = reason.indexOf(':');
                     const hasColon = colonIndex !== -1;
-                    const heading = hasColon ? reason.substring(0, colonIndex + 1) : '';
+                    const heading = hasColon ? reason.substring(0, colonIndex) : '';
                     const description = hasColon ? reason.substring(colonIndex + 1).trim() : reason;
                     
                     return (
                       <li key={index} className="flex items-start gap-3">
-                        <span className="text-purple-600 dark:text-purple-400 mt-1 flex-shrink-0">•</span>
+                        <span className="text-2xl mt-0 flex-shrink-0">{emoji}</span>
                         <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
                           {hasColon ? (
                             <>
-                              <strong>{heading}</strong> {formatMarkdownText(description)}
+                              <strong>{heading}</strong> - {formatMarkdownText(description)}
                             </>
                           ) : (
                             formatMarkdownText(reason)
@@ -626,9 +594,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   <div key={index} className="relative">
                     <Button
                       onClick={() => toggleSection(`step_${index}`)}
-                      onMouseEnter={() => setHoveredSection(`step_${index}`)}
-                      onMouseLeave={() => setHoveredSection(null)}
-                      onTouchStart={() => setHoveredSection(null)}
                       className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[75px] touch-manipulation"
                       variant="ghost"
                       size="lg"
@@ -641,7 +606,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                       </div>
                       <div className="flex-1 text-left min-w-0">
                         <h3 className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white mb-1 break-words">
-                          {step.number}. {formatMarkdownText(step.title)}
+                          {step.number}. {step.title.replace(/\*\*(.*?)\*\*/g, '$1')}
                         </h3>
                         <p className="text-base text-gray-600 dark:text-gray-400">
                           {formatMarkdownText(step.intro)}
@@ -656,12 +621,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                       </div>
                     </Button>
                     
-                    {/* Custom Tooltip */}
-                    {hoveredSection === `step_${index}` && (
-                      <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                        {expandedSections[`step_${index}`] ? "Close section" : "Open section"}
-                      </div>
-                    )}
                     
                     {expandedSections[`step_${index}`] && (
                       <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300">
@@ -706,42 +665,147 @@ export default function FeelingPage({ params }: FeelingPageProps) {
             </div>
           )}
 
-          {/* Need More Support Box */}
-          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-6">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <BookOpen className="h-5 w-5 text-blue-600" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Need More Support?</h3>
-              </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed text-center">
-                Read our comprehensive guide about {content?.feeling_name.toLowerCase()} with practical strategies and insights.
-              </p>
-              <div className="flex flex-col gap-3 items-center">
-                <Button 
-                  onClick={() => window.location.href = `/guides/mentalfog`}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl w-full md:w-auto"
-                  variant="default"
+          {/* Sources Section - styled like a step but without number */}
+          {sources && sources.length > 0 && (
+            <div className="space-y-4">
+              <div className="relative">
+                <Button
+                  onClick={() => toggleSection('sources')}
+                  onMouseEnter={() => setHoveredSection('sources')}
+                  onMouseLeave={() => setHoveredSection(null)}
+                  onTouchStart={() => setHoveredSection(null)}
+                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[75px] touch-manipulation"
+                  variant="ghost"
                   size="lg"
                 >
-                  <BookOpen className="h-4 w-4 mr-2" />
-                  Read: Cognitive & Overload Guide
+                  <div className="bg-purple-200 dark:bg-purple-800 rounded-full p-3 flex-shrink-0">
+                    <BookOpen className="h-5 w-5 text-gray-900 dark:text-white" />
+                  </div>
+                  <div className="flex-1 text-left min-w-0">
+                    <h3 className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white mb-1 break-words">
+                      Sources: {content?.feeling_name} & ADHD
+                    </h3>
+                    <p className="text-base text-gray-600 dark:text-gray-400">
+                      Explore the books, guides, and research that shaped this page
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0">
+                    {expandedSections['sources'] ? (
+                      <Minus className="h-6 w-6 text-gray-500" />
+                    ) : (
+                      <Plus className="h-6 w-6 text-gray-500" />
+                    )}
+                  </div>
                 </Button>
+                
+                {/* Custom Tooltip */}
+                {hoveredSection === 'sources' && (
+                  <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
+                    {expandedSections['sources'] ? "Close section" : "Open section"}
+                  </div>
+                )}
+                
+                {expandedSections['sources'] && (
+                  <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-6 animate-in slide-in-from-top duration-300">
+                    <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                      These resources explain the neurological roots of brain fog and offer strategies for clarity, focus, and function.
+                    </p>
+                    
+                    {/* Group sources by category and sort by count (most to least) */}
+                    {Object.entries(
+                      sources.reduce((acc, source) => {
+                        if (!acc[source.category]) {
+                          acc[source.category] = []
+                        }
+                        acc[source.category].push(source)
+                        return acc
+                      }, {} as Record<string, FeelingSources[]>)
+                    ).sort(([, a], [, b]) => b.length - a.length).map(([category, categorySources]) => (
+                      <div key={category} className="relative">
+                        <Button
+                          onClick={() => toggleSection(`sources_${category.replace(/\s+/g, '_').toLowerCase()}`)}
+                          onMouseEnter={() => setHoveredSection(`sources_${category.replace(/\s+/g, '_').toLowerCase()}`)}
+                          onMouseLeave={() => setHoveredSection(null)}
+                          onTouchStart={() => setHoveredSection(null)}
+                          className="w-full flex items-center gap-3 mb-3 p-4 rounded-lg bg-purple-50/50 dark:bg-purple-900/20 hover:bg-purple-100/50 dark:hover:bg-purple-900/30 transition-colors touch-manipulation"
+                          variant="ghost"
+                          size="default"
+                        >
+                          <div className="flex-1 text-left">
+                            <h4 className="text-base font-semibold text-gray-900 dark:text-white">
+                              {category}
+                            </h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              {categorySources.length} resources
+                            </p>
+                          </div>
+                          <div className="flex-shrink-0">
+                            {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] ? (
+                              <Minus className="h-4 w-4 text-gray-500" />
+                            ) : (
+                              <Plus className="h-4 w-4 text-gray-500" />
+                            )}
+                          </div>
+                        </Button>
+                        
+                        {/* Custom Tooltip */}
+                        {hoveredSection === `sources_${category.replace(/\s+/g, '_').toLowerCase()}` && (
+                          <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
+                            {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] ? "Close section" : "Open section"}
+                          </div>
+                        )}
+                        
+                        {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] && (
+                          <div className="bg-purple-50/30 dark:bg-purple-900/10 rounded-lg p-4 space-y-3 animate-in slide-in-from-top duration-300 mb-4">
+                            {categorySources.map((source, index) => (
+                              <div key={index} className="border-l-3 border-purple-400 dark:border-purple-600 pl-4 py-2">
+                                <div className="flex items-start gap-2">
+                                  <span className="text-purple-600 dark:text-purple-400 mt-1 flex-shrink-0">•</span>
+                                  <div>
+                                    <h5 className="font-semibold text-gray-900 dark:text-white">
+                                      <span className="font-bold">{source.title}</span>
+                                      {source.authors && (
+                                        <span className="font-normal text-gray-600 dark:text-gray-400">
+                                          {' '}{source.authors}
+                                        </span>
+                                      )}
+                                    </h5>
+                                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mt-1">
+                                      {source.description.replace(/\s*—\s*/g, ', ')}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Navigation Options - Excluding Feelings */}
-          <div className="mt-8 space-y-6">
-            {/* Top Row - Barriers and Tasks */}
+          {/* Next Steps Section with Glassmorphism Background */}
+          <div className="mt-8 p-8 bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-xl">
+            {/* Suggestion Button */}
+            <div className="mb-8">
+              <SuggestionButton pageType="feelings" />
+            </div>
+
+            {/* Navigation Options - Excluding Feelings */}
+            <div className="space-y-4">
+            {/* Top Row - Barriers and Life Areas */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button 
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/barriers'}
-                className="p-6 text-left h-auto border-2 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-orange-100 dark:hover:bg-orange-900/40"
               >
                 <div className="flex items-center gap-3">
-                  <Construction className="h-6 w-6" />
+                  <Construction className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Facing barriers or obstacles?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Barriers Support</div>
@@ -752,14 +816,14 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               <Button 
                 variant="outline"
                 size="lg"
-                onClick={() => window.location.href = '/tasks'}
-                className="p-6 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                onClick={() => window.location.href = '/life_areas'}
+                className="p-4 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Wrench className="h-6 w-6" />
+                  <Wrench className="h-5 w-5" />
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific tasks?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Tasks</div>
+                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific life areas?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Life Areas</div>
                   </div>
                 </div>
               </Button>
@@ -771,10 +835,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/complex_loops'}
-                className="p-6 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <RotateCcw className="h-6 w-6" />
+                  <RotateCcw className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Stuck in repetitive patterns?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse Complex Loops</div>
@@ -786,10 +850,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/identities'}
-                className="p-6 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Rainbow className="h-6 w-6" />
+                  <Rainbow className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Need identity-aware support?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse by Identity</div>
@@ -804,10 +868,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/systems'}
-                className="p-6 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Puzzle className="h-6 w-6" />
+                  <Puzzle className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Want to build a system around this?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Systems Lab</div>
@@ -819,10 +883,21 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
           {/* Footer */}
           <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>Need more help? Check out our <a href="/guides" className="text-blue-600 hover:underline">guides</a> or <a href="/resources" className="text-blue-600 hover:underline">resources</a>.</p>
+            <p>Need more help? Check out our <a href="/guides" className="text-blue-600 hover:underline">guides</a>, <a href="/scripts" className="text-blue-600 hover:underline">scripts</a>, <a href="/quizzes" className="text-blue-600 hover:underline">quizzes</a>, or <a href="/resources" className="text-blue-600 hover:underline">resources</a>.</p>
           </div>
+          
+          </div> {/* Close glassmorphism container */}
         </div>
       </div>
+      
+      {/* Share Modal */}
+      <ShareModal
+        isOpen={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        title={content?.feeling_name || ''}
+        url={typeof window !== 'undefined' ? window.location.href : ''}
+        description={`Get help with feeling ${content?.feeling_name?.toLowerCase()} - ADHD-friendly strategies and support`}
+      />
     </div>
   )
 }

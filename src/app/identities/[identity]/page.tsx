@@ -22,6 +22,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { getIdentitiesContent } from '@/lib/supabase'
 import type { IdentitiesContent } from '@/lib/supabase'
+import { SuggestionButton } from '@/components/ui/SuggestionButton';
 
 // Function to map emoji strings to Lucide icons
 const getIconForEmoji = (emoji: string) => {
@@ -1004,31 +1005,25 @@ export default function IdentityPage({ params }: IdentityPageProps) {
             </div>
           )}
 
-          {/* Need More Support Box */}
-          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <div className="bg-purple-50 dark:bg-purple-900/20 rounded-2xl p-6">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Rainbow className="h-5 w-5 text-purple-600" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Need More Support?</h3>
-              </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed text-center">
-                Find strategies and insights specifically designed for {content?.identity_name?.replace(/^(The |ADHD Identity Guide: The |ADHD Identity Guide: )/, '') || content?.identity_name}.
-              </p>
+          {/* Next Steps Section with Glassmorphism Background */}
+          <div className="mt-8 p-8 bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-xl">
+            {/* Suggestion Button */}
+            <div className="mb-8">
+              <SuggestionButton pageType="identity" />
             </div>
-          </div>
 
-          {/* Navigation Options - Excluding Identities */}
-          <div className="mt-8 space-y-6">
+            {/* Navigation Options - Excluding Identities */}
+            <div className="space-y-4">
             {/* Top Row - Feelings and Tasks */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button 
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/feelings'}
-                className="p-6 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Heart className="h-6 w-6" />
+                  <Heart className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Feeling stuck emotionally?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Feelings</div>
@@ -1039,14 +1034,14 @@ export default function IdentityPage({ params }: IdentityPageProps) {
               <Button 
                 variant="outline"
                 size="lg"
-                onClick={() => window.location.href = '/tasks'}
-                className="p-6 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                onClick={() => window.location.href = '/life_areas'}
+                className="p-4 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Wrench className="h-6 w-6" />
+                  <Wrench className="h-5 w-5" />
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific tasks?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Tasks</div>
+                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific life areas?</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Life Areas</div>
                   </div>
                 </div>
               </Button>
@@ -1058,10 +1053,10 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/barriers'}
-                className="p-6 text-left h-auto border-2 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-orange-100 dark:hover:bg-orange-900/40"
               >
                 <div className="flex items-center gap-3">
-                  <Construction className="h-6 w-6" />
+                  <Construction className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Facing barriers or obstacles?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Barriers Support</div>
@@ -1073,10 +1068,10 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/complex_loops'}
-                className="p-6 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <RotateCcw className="h-6 w-6" />
+                  <RotateCcw className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Stuck in repetitive patterns?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse Complex Loops</div>
@@ -1091,10 +1086,10 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/systems'}
-                className="p-6 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
+                className="p-4 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Puzzle className="h-6 w-6" />
+                  <Puzzle className="h-5 w-5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Want to build a system around this?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Systems Lab</div>
@@ -1106,8 +1101,10 @@ export default function IdentityPage({ params }: IdentityPageProps) {
 
           {/* Footer */}
           <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>Need more help? Check out our <a href="/guides" className="text-purple-600 hover:underline">guides</a> or <a href="/resources" className="text-purple-600 hover:underline">resources</a>.</p>
+            <p>Need more help? Check out our <a href="/guides" className="text-purple-600 hover:underline">guides</a>, <a href="/scripts" className="text-purple-600 hover:underline">scripts</a>, <a href="/quizzes" className="text-purple-600 hover:underline">quizzes</a>, or <a href="/resources" className="text-purple-600 hover:underline">resources</a>.</p>
           </div>
+          
+          </div> {/* Close glassmorphism container */}
         </div>
       </div>
     </div>

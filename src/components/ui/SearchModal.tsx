@@ -49,7 +49,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     description: strategy.subtitle || strategy.description || '',
     category: 'Strategies',
     type: 'feeling', // Default to feeling for strategies
-    url: `/strategies?search=${encodeURIComponent(strategy.name)}`,
+    url: `/`,
     icon: Heart
   })
 

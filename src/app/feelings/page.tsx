@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { ArrowLeft, Heart, Brain, Zap, Frown, Users, LockKeyhole, Flame, MoveRight, CloudLightning, Activity, Skull, CloudRain, Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, Battery, UserX, ZapOff, EyeOff, Sparkles, Scissors, MousePointerClick } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { SuggestFeelingModal } from '@/components/ui/SuggestFeelingModal'
 import React from 'react'
 
 // Categories with counts
@@ -53,6 +54,7 @@ const feelings = [
 export default function FeelingsPage() {
   const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>('Cognitive & Overload')
+  const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false)
 
   // Read category from URL parameter on page load
   useEffect(() => {
@@ -203,6 +205,22 @@ export default function FeelingsPage() {
             <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
               Don't see your feeling?
             </h3>
+            
+            {/* Suggest a Feeling Button */}
+            <div className="mb-4 flex justify-center">
+              <Button
+                onClick={() => setIsSuggestModalOpen(true)}
+                className="group relative px-4 py-2 bg-gradient-to-r from-[#fbc2eb] via-[#fbd786] to-[#fbc687] hover:from-[#f5b8e4] hover:via-[#f5d17f] hover:to-[#f5bf80] text-gray-800 font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-0 text-sm"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="p-1 bg-white/30 rounded-md group-hover:bg-white/40 transition-colors">
+                    <Sparkles className="h-4 w-4 text-gray-700" />
+                  </div>
+                  <span>Suggest a Feeling</span>
+                </div>
+              </Button>
+            </div>
+            
             <p className="text-black dark:text-gray-200 text-sm mb-4">
               Sometimes emotions are complex. Try exploring other approaches to find what you need.
             </p>
@@ -218,10 +236,10 @@ export default function FeelingsPage() {
               <Button 
                 variant="ghost"
                 size="default"
-                onClick={() => window.location.href = '/tasks'}
+                onClick={() => window.location.href = '/life_areas'}
                 className="bg-white/20 dark:bg-gray-700/50 hover:bg-white/30 dark:hover:bg-gray-600/60 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
-                Browse by Tasks
+                Browse by Life Areas
               </Button>
               <Button 
                 variant="ghost"
@@ -243,6 +261,12 @@ export default function FeelingsPage() {
           </div>
         </div>
       </div>
+      
+      {/* Suggest Feeling Modal */}
+      <SuggestFeelingModal
+        isOpen={isSuggestModalOpen}
+        onClose={() => setIsSuggestModalOpen(false)}
+      />
     </div>
   )
 } 

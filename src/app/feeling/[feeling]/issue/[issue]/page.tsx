@@ -68,7 +68,7 @@ export default function FeelingIssueBarrierPage() {
         issue,
         barrier: barrierName
       })
-      router.push(`/strategies?${searchParams.toString()}`)
+      router.push('/')
     }, 300)
   }
 

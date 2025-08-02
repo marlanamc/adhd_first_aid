@@ -1,58 +1,63 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, User, Users, Home, Briefcase, Brain, Heart, Globe, Palette, Coins, ArrowUpRight, School, HeartHandshake, Building2, Zap, GraduationCap, Brush } from 'lucide-react'
+import { ArrowLeft, User, Users, Home, Briefcase, Brain, Heart, Globe, Palette, Coins, ArrowUpRight, School, HeartHandshake, Building2, Zap, GraduationCap, Brush, Baby, UserCog, UserMinus, Stethoscope, UserCheck, Building, Lightbulb, Award, BrainCircuit, HeartPulse, UserX, Rainbow, UserPlus, CircleDollarSign, Target, Sparkles, BanknoteX, ClipboardPlus, Flame, Fingerprint, MousePointerClick } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import React from 'react'
 
-// Identity data with icons
+// Identity data with icons - matching our database content and URL mappings
 const identities = [
   // Family & Care
-  { name: 'Caregiver', category: 'Family & Care', icon: HeartHandshake },
-  { name: 'Parent', category: 'Family & Care', icon: Users },
-  { name: 'Over-responsible Sibling', category: 'Family & Care', icon: Users },
-  { name: 'Solo Household Manager', category: 'Family & Care', icon: Home },
+  { name: 'The Parent', category: 'Family & Care', icon: Baby },
+  { name: 'ADHD Identity Guide: The Parent of a Child with ADHD', category: 'Family & Care', icon: UserCog },
+  { name: 'The Overly Responsible Sibling', category: 'Family & Care', icon: UserPlus },
+  { name: 'The Solo Household Manager', category: 'Family & Care', icon: Home },
+  { name: 'The Caretaker', category: 'Family & Care', icon: HeartHandshake },
   
   // Work & Career
-  { name: 'Job Seeker', category: 'Work & Career', icon: ArrowUpRight },
-  { name: 'Burned Out Professional', category: 'Work & Career', icon: Building2 },
-  { name: 'Working Multiple Jobs', category: 'Work & Career', icon: Zap },
-  { name: 'Entrepreneur', category: 'Work & Career', icon: Briefcase },
-  { name: 'Breadwinner', category: 'Work & Career', icon: Coins },
+  { name: 'The Job Seeker', category: 'Work & Career', icon: Building },
+  { name: 'The Burned Out Professional', category: 'Work & Career', icon: Flame },
+  { name: 'The Working Multiple Jobs', category: 'Work & Career', icon: Briefcase },
+  { name: 'The Entrepreneur', category: 'Work & Career', icon: Lightbulb },
+  { name: 'The Breadwinner', category: 'Work & Career', icon: Award },
   
   // Health & Neurodivergence  
-  { name: 'Neurodivergent Adult', category: 'Health & Neurodivergence', icon: Brain },
-  { name: 'Newly Diagnosed ADHD', category: 'Health & Neurodivergence', icon: Brain },
-  { name: 'Sick or Chronically Ill', category: 'Health & Neurodivergence', icon: Heart },
-  { name: 'Grieving or Emotionally Raw', category: 'Health & Neurodivergence', icon: Heart },
+  { name: 'The Neurodivergent Adult', category: 'Health & Neurodivergence', icon: BrainCircuit },
+  { name: 'The Recently Diagnosed', category: 'Health & Neurodivergence', icon: ClipboardPlus },
+  { name: 'The AuDHD Individual', category: 'Health & Neurodivergence', icon: Fingerprint },
+  { name: 'The Sick or Chronically Ill', category: 'Health & Neurodivergence', icon: HeartPulse },
+  { name: 'The Grieving or Emotionally Raw Individual', category: 'Health & Neurodivergence', icon: UserX },
   
   // Identity & Community
-  { name: 'Queer or Trans in Unsupportive Environment', category: 'Identity & Community', icon: User },
-  { name: 'Immigrant or English Language Learner', category: 'Identity & Community', icon: Globe },
-  { name: 'No Support System', category: 'Identity & Community', icon: Users },
+  { name: 'ADHD Identity Guide: Queer & Trans', category: 'Identity & Community', icon: Rainbow },
+  { name: 'The Immigrant', category: 'Identity & Community', icon: Globe },
+  { name: 'The Individual Without a Support System', category: 'Identity & Community', icon: UserMinus },
+  { name: 'The Low-Income Individual', category: 'Identity & Community', icon: BanknoteX },
+  { name: 'The BIPOC Individual', category: 'Identity & Community', icon: Users },
   
   // Learning & Creative
-  { name: 'Student', category: 'Learning & Creative', icon: GraduationCap },
-  { name: 'Creative with Executive Dysfunction', category: 'Learning & Creative', icon: Brush },
+  { name: 'The Student', category: 'Learning & Creative', icon: GraduationCap },
+  { name: 'The Creative', category: 'Learning & Creative', icon: Sparkles },
   
-  // Financial & Recovery
-  { name: 'Low-Income / Financially Stretched', category: 'Financial & Recovery', icon: Coins },
-  { name: 'Recovering Perfectionist', category: 'Financial & Recovery', icon: ArrowUpRight }
+  // Recovery & Growth
+  { name: 'ADHD Identity Guide: The Recovering Perfectionist', category: 'Recovery & Growth', icon: Target }
 ]
 
 const categories = [
-  { name: 'Family & Care', color: 'from-pink-400 to-rose-500', count: 4 },
+  { name: 'Family & Care', color: 'from-pink-400 to-rose-500', count: 5 },
   { name: 'Work & Career', color: 'from-blue-400 to-indigo-500', count: 5 },
-  { name: 'Health & Neurodivergence', color: 'from-purple-400 to-violet-500', count: 4 },
-  { name: 'Identity & Community', color: 'from-green-400 to-teal-500', count: 3 },
+  { name: 'Health & Neurodivergence', color: 'from-purple-400 to-violet-500', count: 5 },
+  { name: 'Identity & Community', color: 'from-green-400 to-teal-500', count: 5 },
   { name: 'Learning & Creative', color: 'from-yellow-400 to-orange-500', count: 2 },
-  { name: 'Financial & Recovery', color: 'from-red-400 to-pink-500', count: 2 },
-  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 20 }
+  { name: 'Recovery & Growth', color: 'from-red-400 to-pink-500', count: 1 },
+  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 23 }
 ]
 
 export default function IdentitiesPage() {
   const [selectedIdentity, setSelectedIdentity] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>('Family & Care')
+  const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false)
 
   // Read category from URL parameter on page load
   useEffect(() => {
@@ -71,14 +76,47 @@ export default function IdentitiesPage() {
 
   const handleIdentitySelect = (identity: string) => {
     setSelectedIdentity(identity)
+    
+    // Create URL slug mapping to match our individual page URL mappings
+    const createUrlSlug = (name: string): string => {
+      // Special handling for our identity names to match the URL mapping in the individual page
+      const nameMapping: Record<string, string> = {
+        'The Recently Diagnosed': 'the-newly-diagnosed',
+        'The AuDHD Individual': 'the-audhd-individual',
+        'The Breadwinner': 'the-breadwinner',
+        'The Burned Out Professional': 'the-burned-out-professional',
+        'The Creative': 'the-creative',
+        'The Entrepreneur': 'the-entrepreneur',
+        'The Immigrant': 'the-immigrant',
+        'The Job Seeker': 'the-job-seeker',
+        'The Low-Income Individual': 'the-low-income-individual',
+        'The Neurodivergent Adult': 'the-neurodivergent-adult',
+        'The Individual Without a Support System': 'the-individual-without-a-support-system',
+        'The Overly Responsible Sibling': 'the-overly-responsible-sibling',
+        'The Parent': 'the-parent',
+        'ADHD Identity Guide: The Parent of a Child with ADHD': 'the-parent-of-an-adhd-child',
+        'ADHD Identity Guide: Queer & Trans': 'queer_or_trans',
+        'ADHD Identity Guide: The Recovering Perfectionist': 'the-recovering-perfectionist',
+        'The Sick or Chronically Ill': 'the-sick-or-chronically-ill-adult',
+        'The Solo Household Manager': 'the-solo-household-manager',
+        'The Student': 'the-student',
+        'The Working Multiple Jobs': 'the-working-multiple-jobs-individual',
+        'The Grieving or Emotionally Raw Individual': 'the-grieving',
+        'The BIPOC Individual': 'the-bipoc-individual',
+        'The Caretaker': 'the-caretaker'
+      }
+      
+      return nameMapping[name] || name.toLowerCase().replace(/\s+/g, '-')
+    }
+    
     // Navigate to individual identity page with category parameter
-    const identitySlug = encodeURIComponent(identity.toLowerCase().replace(/\s+/g, '-'))
+    const identitySlug = createUrlSlug(identity)
     const categoryParam = selectedCategory ? `?category=${encodeURIComponent(selectedCategory)}` : ''
     window.location.href = `/identities/${identitySlug}${categoryParam}`
   }
 
   const goBack = () => {
-    window.history.back()
+    window.location.href = '/'
   }
 
   // Filter identities by selected category
@@ -89,7 +127,7 @@ export default function IdentitiesPage() {
     : []
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#8fd3f4] via-[#a18cd1] to-[#b19cd9] relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#a18cd1] via-[#b19cd9] to-[#dec6f7] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-12">
@@ -103,7 +141,7 @@ export default function IdentitiesPage() {
               <ArrowLeft className="h-5 w-5 text-[#22223B] dark:text-white" />
             </Button>
             <div className="flex-1">
-              <h1 className="text-3xl md:text-4xl font-serif font-bold text-black text-center">
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-black dark:text-white text-center">
                 Life Context & Identity
               </h1>
             </div>
@@ -112,7 +150,10 @@ export default function IdentitiesPage() {
 
         {/* Category Selection */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-black text-center mb-6">Choose an identity type:</h2>
+          <h2 className="text-xl font-semibold text-black dark:text-white text-center mb-6 flex items-center justify-center gap-2">
+            <MousePointerClick className="h-5 w-5" />
+            Choose an identity type:
+          </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {categories.map((category) => (
               <button
@@ -132,12 +173,12 @@ export default function IdentitiesPage() {
                                 ? 'bg-white/40 ring-2 ring-black/[0.15] dark:ring-white/[0.3]' 
                                 : 'bg-white/10 hover:bg-white/20'}`}>
                   
-                  <h3 className={`text-sm font-medium text-black text-center mb-1
+                  <h3 className={`text-sm font-medium text-black dark:text-white text-center mb-1
                                 ${selectedCategory === category.name ? 'font-semibold' : ''}`}>
                     {category.name}
                   </h3>
-                  <p className={`text-xs text-black/70 text-center
-                                ${selectedCategory === category.name ? 'text-black/90' : ''}`}>
+                  <p className={`text-xs text-black/70 dark:text-white/70 text-center
+                                ${selectedCategory === category.name ? 'text-black/90 dark:text-white/90' : ''}`}>
                     {category.count} identities
                   </p>
                 </div>
@@ -149,7 +190,7 @@ export default function IdentitiesPage() {
         {/* Selected Category Identities */}
         {selectedCategory && (
           <div>
-            <h2 className="text-2xl font-bold text-black text-center mb-8">
+            <h2 className="text-2xl font-bold text-black dark:text-white text-center mb-8">
               {selectedCategory === 'View All' ? 'All Identities' : selectedCategory}
             </h2>
             
@@ -179,8 +220,8 @@ export default function IdentitiesPage() {
                     </div>
                     
                     {/* Identity Name */}
-                    <h3 className="text-sm font-medium text-black text-center transition-all duration-300">
-                      {identity.name}
+                    <h3 className="text-sm font-medium text-black dark:text-white text-center transition-all duration-300">
+                      {identity.name.replace(/^(The |ADHD Identity Guide: The |ADHD Identity Guide: )/, '')}
                     </h3>
                   </div>
                 </div>
@@ -192,10 +233,26 @@ export default function IdentitiesPage() {
         {/* Footer Text */}
         <div className="text-center mt-12 max-w-3xl mx-auto">
           <div className="bg-white/30 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 border border-white/10">
-            <h3 className="text-lg font-semibold text-black mb-2">
+            <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
               Looking for a different approach?
             </h3>
-            <p className="text-black text-sm mb-4">
+            
+            {/* Suggest an Identity Button */}
+            <div className="mb-4 flex justify-center">
+              <Button
+                onClick={() => setIsSuggestModalOpen(true)}
+                className="group relative px-4 py-2 bg-gradient-to-r from-[#a18cd1] via-[#b19cd9] to-[#dec6f7] hover:from-[#9a85ca] hover:via-[#aa95d2] hover:to-[#d7bff0] text-gray-800 font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-0 text-sm"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="p-1 bg-white/30 rounded-md group-hover:bg-white/40 transition-colors">
+                    <User className="h-4 w-4 text-gray-700" />
+                  </div>
+                  <span>Suggest an Identity</span>
+                </div>
+              </Button>
+            </div>
+            
+            <p className="text-black dark:text-white text-sm mb-4">
               Your identity and life context shape your ADHD experience. Try other pathways to find what you need.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -203,7 +260,7 @@ export default function IdentitiesPage() {
                 variant="ghost"
                 size="default"
                 onClick={() => window.location.href = '/feelings'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                className="bg-white/20 hover:bg-white/30 dark:bg-gray-700/30 dark:hover:bg-gray-600/40 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
                 Browse by Feelings
               </Button>
@@ -211,23 +268,23 @@ export default function IdentitiesPage() {
                 variant="ghost"
                 size="default"
                 onClick={() => window.location.href = '/barriers'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                className="bg-white/20 hover:bg-white/30 dark:bg-gray-700/30 dark:hover:bg-gray-600/40 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
                 Browse by Barriers
               </Button>
               <Button 
                 variant="ghost"
                 size="default"
-                onClick={() => window.location.href = '/tasks'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                onClick={() => window.location.href = '/life_areas'}
+                className="bg-white/20 hover:bg-white/30 dark:bg-gray-700/30 dark:hover:bg-gray-600/40 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
-                Browse by Tasks
+                Browse by Life Areas
               </Button>
               <Button 
                 variant="ghost"
                 size="default"
                 onClick={() => window.location.href = '/complex_loops'}
-                className="bg-white/20 hover:bg-white/30 text-black border border-white/20 backdrop-blur-sm"
+                className="bg-white/20 hover:bg-white/30 dark:bg-gray-700/30 dark:hover:bg-gray-600/40 text-black dark:text-white border border-white/20 dark:border-gray-600/30 backdrop-blur-sm"
               >
                 Browse by Complex Loops
               </Button>
@@ -235,6 +292,13 @@ export default function IdentitiesPage() {
           </div>
         </div>
       </div>
+      
+      {/* Suggest Identity Modal */}
+      <SuggestContentModal
+        isOpen={isSuggestModalOpen}
+        onClose={() => setIsSuggestModalOpen(false)}
+        contentType="identity"
+      />
     </div>
   )
 }

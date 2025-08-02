@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MessageSquareText, Heart, Brain, Settings, BookOpen, ArrowRight, Wrench, User, HelpCircle, AlertCircle, RotateCcw, FileText, MessageCircle, Puzzle, ExternalLink } from 'lucide-react'
+import { MessageSquareText, HeartCrack, Brain, Settings, BookOpen, ArrowRight, Wrench, User, HelpCircle, AlertCircle, RotateCcw, FileText, MessageCircle, Puzzle, ExternalLink } from 'lucide-react'
 
 interface Feeling {
   id: string
@@ -31,25 +31,25 @@ const topCategories = [
     id: 'feelings',
     title: 'Feeling off?',
     subtitle: 'Browse emotion-first tools',
-    icon: Heart,
+    icon: HeartCrack,
     color: 'bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-[#8B7355] dark:via-[#7A6B52] dark:to-[#7A6752]',
     examples: ['Overwhelmed', 'Ashamed', 'Stuck']
   },
   {
     id: 'barriers',
-    title: 'Can\'t get started?',
+    title: 'Something holding you back?',
     subtitle: 'Find barrier-specific solutions',
     icon: AlertCircle,
     color: 'bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-[#7A6752] dark:via-[#6B7A52] dark:to-[#5B7A52]',
-    examples: ['Can\'t start', 'Feel shame', 'Too big']
+    examples: ['Can\'t start', 'Too big', 'Feel shame']
   },
   {
     id: 'tasks',
-    title: 'Trying to get something done?',
+    title: 'What do you need help with?',
     subtitle: 'Get specific guidance',
     icon: Wrench,
     color: 'bg-gradient-to-br from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] dark:from-[#5B7A52] dark:via-[#527A7A] dark:to-[#526B7A]',
-    examples: ['Cleaning', 'Cooking', 'Friendships']
+    examples: ['Cleaning', 'Friendships', 'Cooking']
   },
   {
     id: 'complex_loops',
@@ -65,7 +65,7 @@ const topCategories = [
     subtitle: 'Explore identity-specific support',
     icon: User,
     color: 'bg-gradient-to-br from-[#a18cd1] via-[#b19cd9] to-[#dec6f7] dark:from-[#63527A] dark:via-[#6B527A] dark:to-[#7A527A]',
-    examples: ['Parent', 'Caregiver', 'Student']
+    examples: ['Parent', 'Student', 'Caregiver']
   }
 ]
 
@@ -84,7 +84,7 @@ const bottomCategories = [
   {
     id: 'guides',
     title: 'Read Guides & Insights',
-    subtitle: 'Educational articles (e.g., Habit Bundling, Diagnostic Guide)',
+    subtitle: 'Guides and insights on ADHD struggles',
     icon: FileText,
     color: 'bg-[#CAE5FF] dark:bg-slate-700',
     examples: ['Habit Stacking', 'Diagnostic Guide', 'Types of Support']
@@ -100,7 +100,7 @@ const bottomCategories = [
   {
     id: 'quizzes',
     title: 'Quizzes & Tools',
-    subtitle: 'Interactive experiences (e.g., Structure Type Quiz, Sleep Calculator)',
+    subtitle: 'Interactive experiences and tools',
     icon: Puzzle,
     color: 'bg-[#E0F5CE] dark:bg-slate-800',
     examples: ['Structure Quiz', 'Sleep Calculator', 'Time Blindness']
@@ -108,10 +108,10 @@ const bottomCategories = [
   {
     id: 'resources',
     title: 'Resources & Links',
-    subtitle: 'Podcasts, books, terminology, and external support materials',
+    subtitle: 'External support materials',
     icon: ExternalLink,
     color: 'bg-[#FFD4DB] dark:bg-slate-500',
-    examples: ['Podcasts', 'Books', 'Terminology']
+    examples: ['Podcasts', 'Books', 'Terms']
   }
 ]
 
@@ -131,7 +131,7 @@ export default function NewHomePage({
         break
       case 'tasks':
         // Navigate to tasks selector page  
-        window.location.href = '/tasks'
+        window.location.href = '/life_areas'
         break
       case 'identities':
         // Navigate to identities selector page
@@ -215,7 +215,7 @@ export default function NewHomePage({
                     relative overflow-hidden rounded-[1.5rem] p-4
                     ${category.color}
                     transition-all duration-300 ease-out
-                    h-[14rem] md:h-[15rem]
+                    h-[15rem] md:h-[16rem]
                     flex flex-col justify-between h-full
                     group-hover:shadow-xl
                     after:absolute after:inset-0 after:bg-gradient-to-b after:from-white/5 after:to-transparent
@@ -245,9 +245,9 @@ export default function NewHomePage({
                         </p>
                       </div>
                       
-                      {/* Example tag - Now aligned at same level */}
-                      <div className="flex justify-center">
-                        {category.examples.slice(0, 1).map((example, index) => (
+                      {/* Examples - Show 2 examples */}
+                      <div className="flex justify-center gap-1.5 flex-wrap">
+                        {category.examples.slice(0, 2).map((example, index) => (
                           <span
                             key={index}
                             className="bg-white/20 backdrop-blur-sm rounded-full px-2 py-1 text-xs text-black
@@ -365,7 +365,7 @@ export default function NewHomePage({
                     relative overflow-hidden rounded-lg p-3 border-2 border-gray-200/50 dark:border-gray-700/50
                     ${category.color}
                     transition-all duration-300 ease-out
-                    h-[8rem] sm:h-[8.5rem]
+                    h-[9rem] sm:h-[9.5rem]
                     flex flex-col
                     group-hover:border-gray-300/60 dark:group-hover:border-gray-600/60
                     group-hover:shadow-lg
@@ -393,10 +393,10 @@ export default function NewHomePage({
                     </p>
                   </div>
                   
-                  {/* Bottom section with example and arrow */}
+                  {/* Bottom section with examples and arrow */}
                   <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      {category.examples.slice(0, 1).map((example, index) => (
+                    <div className="flex-1 flex gap-1.5 flex-wrap">
+                      {category.examples.slice(0, 3).map((example, index) => (
                         <span
                           key={index}
                           className="inline-block bg-black/10 dark:bg-white/10 rounded-md px-2 py-1 text-xs text-black dark:text-white font-medium"
@@ -425,7 +425,7 @@ export default function NewHomePage({
             <p className="text-gray-600 dark:text-gray-400 text-center">
               {selectedCard === 'feelings' && 'Finding feelings pages...'}
               {selectedCard === 'barriers' && 'Finding barrier solutions...'}
-              {selectedCard === 'tasks' && 'Finding task help...'}
+              {selectedCard === 'tasks' && 'Loading Life Areas...'}
               {selectedCard === 'identities' && 'Finding identity pages...'}
               {selectedCard === 'complex_loops' && 'Breaking loops...'}
               {selectedCard === 'systems' && 'Opening Systems Lab...'}

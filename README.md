@@ -28,15 +28,17 @@ A gentle, supportive web application designed specifically for ADHD minds during
 - **Supabase Database** - Real-time strategy data with relational structure
 - **Favorites System** - Save strategies locally (no account required)
 - **Strategy Voting** - Session-based feedback system
-- **Enhanced Feeling Pages** - Database-driven content with gentle/stern advice options
+- **Database-Driven Content** - All feelings, tasks, identities, and complex loops now use comprehensive database content
+- **Collapsible Sections** - Reduce cognitive overwhelm with expandable content areas
 - **ADHD-Friendly Language** - Trauma-informed, compassionate guidance throughout
 - **Responsive Design** - Mobile-first, touch-friendly interface
 
 ### Content Pages
-- **Feelings** (`/feelings`) - Emotion-first navigation with 5 categories
-- **Barriers** (`/barriers`) - What's blocking you? 4 barrier types with toggle selection
-- **Tasks** (`/tasks`) - Task-specific help with 4 categories  
-- **Identities** (`/identities`) - Identity-based support with 6 life contexts
+- **Feelings** (`/feelings`) - 22 emotion-specific pages with gentle/stern advice
+- **Barriers** (`/barriers`) - 20 barrier pages with targeted strategies
+- **Tasks** (`/tasks`) - 36 task-specific pages with ADHD-friendly guidance
+- **Identities** (`/identities`) - 23 identity pages with contextual support
+- **Complex Loops** (`/complex_loops`) - 29 behavioral pattern pages with strategies
 - **Systems Lab** (`/systems`) - Browse, build, and share ADHD-friendly routines
 - **Guides** (`/guides`) - Educational content with 4 simplified categories
 - **Scripts** (`/scripts`) - Communication templates for hard moments
@@ -65,7 +67,11 @@ strategies (main content with icons, images, further reading)
 ├── solution_types → strategy_solution_types (junction)
 ├── styles → strategy_styles (junction)
 ├── why_does_this_work (mechanisms) → strategy_why_does_this_work (junction)
-└── strategy_votes (session-based feedback)
+├── strategy_votes (session-based feedback)
+├── feelings_content (complete feeling pages with dual advice system)
+├── identities_content (identity-specific guidance with smart formatting)
+├── complex_loops_content (behavioral loops with encouragement sections)
+└── tasks_content (task-specific strategies and guidance)
 ```
 
 **Key Features:**
@@ -78,10 +84,11 @@ strategies (main content with icons, images, further reading)
 ```
 src/
 ├── app/                      # Next.js App Router with all content types
-│   ├── feelings/             # Emotion-first navigation with categories
-│   ├── barriers/             # Barrier-focused navigation with toggle system
-│   ├── tasks/                # Task-specific navigation with categories  
-│   ├── identities/           # Identity-based navigation with life contexts
+│   ├── feelings/             # 22 emotion pages with database content
+│   ├── barriers/             # 20 barrier pages with targeted strategies
+│   ├── tasks/                # 36 task pages with ADHD guidance
+│   ├── identities/           # 23 identity pages with contextual support
+│   ├── complex_loops/        # 29 behavioral loop pages
 │   ├── systems/              # Systems Lab - browse/build/share routines
 │   ├── guides/               # Educational content with simplified categories
 │   ├── scripts/              # Communication templates for hard moments
@@ -101,6 +108,12 @@ src/
 ├── types/                   # TypeScript definitions for all data types
 ├── contexts/                # Theme management with gradient support
 ├── hooks/                   # Custom hooks (favorites, votes, etc.)
+├── content_markdown/        # Original markdown content files
+│   ├── feelings/            # 22 feeling pages
+│   ├── tasks/               # 36 task pages
+│   ├── barriers/            # 20 barrier pages
+│   ├── identities/          # 23 identity pages
+│   └── complex_loops/       # 29 behavioral loop pages
 └── archive/                 # Archived files and old scripts
 ```
 
@@ -268,6 +281,13 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 - `components.json` - shadcn/ui configuration
 
 ## 🆕 Recent Updates (January 2025)
+
+### 🚀 Complete Database Migration
+- **All Content Now Database-Driven**: Feelings, tasks, identities, barriers, and complex loops all use comprehensive database content
+- **36 Task Pages**: Complete with gentle/stern advice, ADHD reasons, and actionable strategies
+- **29 Complex Loop Pages**: Behavioral patterns with recognition tips and breaking strategies
+- **Consistent Structure**: All pages follow the same collapsible section pattern for cognitive ease
+- **Smart Formatting**: Advanced markdown processing with proper bold/italic rendering and bullet hierarchies
 
 ### 🎨 Major ADHD-Friendly Layout Overhaul
 - **Collapsible Sections**: All feeling, task, barrier, and identity pages now feature collapsible content sections to reduce cognitive overwhelm

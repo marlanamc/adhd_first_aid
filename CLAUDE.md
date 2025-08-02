@@ -30,6 +30,9 @@ The application uses Supabase with a comprehensive relational schema:
 **Core Tables:**
 - `strategies` - Main strategy data with icons, images, further reading, and full relationships
 - `feelings_content` - Comprehensive feeling pages with gentle/stern advice, ADHD reasons, and step-by-step guides
+- `identities_content` - Complete identity pages with ADHD-specific guidance for different life contexts
+- `complex_loops_content` - Complex behavioral loops with strategies and encouragement sections
+- `tasks_content` - Task-specific guidance and strategies
 - Lookup tables: `feelings`, `issues`, `barriers`, `help_tasks`, `tags`, `life_roles`, `solution_types`, `styles`, `why_does_this_work`
 - Junction tables: `strategy_feelings`, `strategy_issues`, `strategy_barriers`, `strategy_help_tasks`, `strategy_tags`, `strategy_life_roles`, `strategy_solution_types`, `strategy_styles`, `strategy_why_does_this_work`
 - `strategy_votes` - User voting data with session tracking
@@ -41,19 +44,26 @@ The application uses Supabase with a comprehensive relational schema:
 - Title Case standardization across all data  
 - 289 strategies with comprehensive relational data
 - 22 feelings with complete database-driven content (gentle/stern advice, ADHD reasons, step guides)
+- 23 identities with full database-driven content (gentle/stern advice, content sections with smart formatting)
 - Session-based voting without user accounts
 
 ### Application Flow
-1. **Home Page** (`src/app/page.tsx`) - Main entry with feeling/task selection
-2. **Enhanced Feeling Flow** - `/feelings/[feeling]` → database-driven content with gentle/stern advice + step guides
-3. **Task Flow** - `/task/[task]` → strategies
-4. **Strategy Display** - Modal system with detailed guidance
+1. **Home Page** (`src/app/page.tsx`) - Main entry with feeling/task/barrier/identity selection
+2. **Feeling Flow** - `/feelings/[feeling]` → database-driven content with gentle/stern advice + step guides
+3. **Task Flow** - `/tasks/[task]` → database-driven content with strategies and guidance
+4. **Barrier Flow** - `/barriers/[barrier]` → targeted strategies for specific obstacles
+5. **Identity Flow** - `/identities/[identity]` → ADHD-specific guidance for different life contexts
+6. **Complex Loop Flow** - `/complex_loops/[loop]` → behavioral pattern recognition and strategies
+7. **Strategy Display** - Modal system with detailed guidance
 
 ### Key Directories
 
 **`src/app/`** - Next.js App Router pages
-- `feeling/[feeling]/` - Feeling-based navigation
-- `task/[task]/` - Task-based navigation  
+- `feelings/[feeling]/` - Database-driven feeling pages with gentle/stern advice
+- `tasks/[task]/` - Database-driven task pages with comprehensive guidance
+- `barriers/[barrier]/` - Barrier-specific strategy navigation
+- `identities/[identity]/` - Database-driven identity pages with ADHD-specific content
+- `complex_loops/[loop]/` - Database-driven complex behavioral loop pages
 - `strategies/` - Strategy listing page
 - `scripts/` - Scripts and guides page with category selection
 - `systems/` - Life management systems page
@@ -80,6 +90,15 @@ The application uses Supabase with a comprehensive relational schema:
 - `import-data.ts` - CSV to Supabase importer
 - `database/` - SQL scripts for schema setup
 
+**`content_markdown/`** - Original markdown content files (organized by type)
+- `feelings/` - 22 feeling pages with gentle/stern advice
+- `tasks/` - 36 task pages with ADHD-specific guidance
+- `barriers/` - 20 barrier pages with targeted strategies
+- `identities/` - 23 identity pages with contextual support
+- `complex_loops/` - 29 behavioral loop pages with pattern recognition
+
+**`archive/`** - Previous versions and deprecated files
+
 ### Environment Setup
 Required environment variables:
 - `NEXT_PUBLIC_SUPABASE_URL`
@@ -96,7 +115,11 @@ Required environment variables:
    - Data normalization and Title Case standardization
    - Multiple help_tasks support
    - Field-specific mapping for consistency
-2. **Schema Setup** - `scripts/database/complete-schema.sql` provides complete database setup
+2. **Database Setup** - Organized scripts in `scripts/database/`:
+   - **Quick Setup**: `setup-complete-database.sql` - One-command complete database setup
+   - **Core Schema**: `core-schema/complete-schema.sql` - Main database foundation
+   - **Content Schemas**: `content-schemas/` - Individual content table schemas (feelings, barriers)
+   - **Content Imports**: `content-imports/` - Complete content data (23 feelings, 20 barriers)
 3. **Query Patterns** - Fetch with joins for strategy relationships across all tables
 4. **Client-Side** - Supabase client queries with error handling
 5. **Caching** - No explicit caching, relies on Supabase/browser caching
@@ -144,7 +167,19 @@ Required environment variables:
 - **Gentle Guidance System**: Added "Take your time" messaging with 🌱 emoji to encourage self-paced exploration
 - **Dynamic Content Rendering**: Custom sections for specific feelings (Mental Fog, Forgetful, Scattered, Overstimulated, Stuck, Overwhelmed)
 
-#### 💝 Complete Feelings Database Integration (Latest)
+#### 🆔 Complete Identity Pages Overhaul (Latest)
+- **Full Database Integration**: All 23 identity pages now use comprehensive database-driven content
+- **Smart Content Formatting**: Advanced markdown processing with proper bold/italic rendering in all contexts including callouts
+- **Hierarchical Bullet System**: 
+  - Bold headers (`**text**`) → bullets (`•`) with bold formatting
+  - Indented content → arrows (`→`) with proper indentation
+  - Intelligent detection: non-bold items following bold headers automatically become indented arrows
+- **Clean Display Names**: Strip "The " and "ADHD Identity Guide: " prefixes from displayed names while maintaining database integrity
+- **Updated Identity Names**: "Newly Diagnosed" → "Recently Diagnosed", removed "Adult" suffixes, standardized naming
+- **Consistent Visual Hierarchy**: Same collapsible section system as feelings with proper spacing and colors
+- **Contextual Navigation**: Identity pages show relevant cross-links to feelings, barriers, tasks, and systems
+
+#### 💝 Complete Feelings Database Integration
 - **Full Database Migration**: All 22 feelings now use comprehensive database-driven content instead of static pages
 - **Dual Advice System**: Each feeling offers both "Soft Start" (gentle) and "Tough Love" (stern) advice approaches
 - **ADHD-Specific Content Structure**: 
@@ -174,6 +209,13 @@ Required environment variables:
 - **Beautiful Guide Styling**: Custom `NewGuideClient` with glassmorphism design instead of plain markdown
 - **Dynamic Content Rendering**: Guides automatically adapt between Cognitive & Overload Guide and Dysregulation & Shutdown Guide
 - **Custom Content Templates**: Specialized 5-step layouts with color-coded sections and themed emojis
+
+#### 🛠 Complete Tasks & Complex Loops Database Integration (Latest)
+- **Full Database Migration**: All 36 task pages now use comprehensive database-driven content
+- **Complex Loops Support**: 29 behavioral loop pages with database-driven content
+- **Consistent Structure**: Both tasks and loops follow the same collapsible section pattern
+- **Smart Formatting**: Markdown processing with proper bold/italic rendering and bullet hierarchies
+- **Cross-Navigation**: Contextual links between related tasks, loops, feelings, and barriers
 
 #### Previous Major Features
 - **Scripts & Guides Integration**: Combined scripts and guides into single page with category selection boxes

@@ -88,7 +88,7 @@ export default function TaskBarrierPage() {
         task,
         barrier: barrierName
       })
-      router.push(`/strategies?${searchParams.toString()}`)
+      router.push('/')
     }, 300)
   }
 
@@ -96,7 +96,7 @@ export default function TaskBarrierPage() {
     // Go back to strategies page if that's where user came from, otherwise home
     const referrer = document.referrer
     if (referrer && referrer.includes('/strategies')) {
-      router.push('/strategies')
+      router.push('/')
     } else {
       router.back() // Use browser back for better UX
     }

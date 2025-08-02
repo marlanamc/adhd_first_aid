@@ -103,7 +103,7 @@ export default function FeelingIssuePage({ params }: { params: Promise<{ feeling
     // Go back to strategies page if that's where user came from, otherwise home
     const referrer = document.referrer
     if (referrer && referrer.includes('/strategies')) {
-      router.push('/strategies')
+      router.push('/')
     } else {
       router.back() // Use browser back for better UX
     }

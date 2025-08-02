@@ -87,10 +87,10 @@ export default function NotFoundPage() {
         {/* Quick Links */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
           {[
-            { title: 'Strategies', path: '/strategies', icon: '🧠' },
             { title: 'FAQ', path: '/faq', icon: '❓' },
             { title: 'Resources', path: '/resources', icon: '📚' },
-            { title: 'Contact', path: '/contact', icon: '💬' }
+            { title: 'Contact', path: '/contact', icon: '💬' },
+            { title: 'Feelings', path: '/feelings', icon: '❤️' }
           ].map((link) => (
             <button
               key={link.path}

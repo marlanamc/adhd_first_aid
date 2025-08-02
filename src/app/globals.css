@@ -837,5 +837,265 @@ header.fixed {
   border-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Print Styles */
+@media print {
+  /* Hide header, navigation, interactive elements, and footer */
+  header,
+  footer,
+  .print-hide,
+  button,
+  .no-print,
+  .suggestion-button,
+  .glassmorphism-container,
+  .bg-white\/20.dark\:bg-gray-900\/20.backdrop-blur-xl,
+  nav {
+    display: none !important;
+  }
+
+  /* Add print header */
+  body::before {
+    content: "ADHD First Aid Kit";
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #333;
+  }
+
+  /* Force expand all collapsible sections - use more specific selectors */
+  [style*="max-height: 0"],
+  [style*="overflow: hidden"],
+  .hidden {
+    display: block !important;
+    max-height: none !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  /* Show all content sections */
+  .space-y-6 > div {
+    display: block !important;
+  }
+
+  /* Hide expand/collapse buttons and icons */
+  .plus-icon,
+  .minus-icon,
+  [aria-expanded] {
+    display: none !important;
+  }
+
+  /* Clean up page layout for print */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+
+  /* Remove all gradient backgrounds for print */
+  .bg-gradient-to-br,
+  .bg-gradient-to-r,
+  .bg-gradient-to-l,
+  .bg-gradient-to-t,
+  .bg-gradient-to-b,
+  [class*="bg-gradient"] {
+    background: white !important;
+  }
+
+  /* Adjust margins and containers */
+  .container,
+  .max-w-4xl,
+  .max-w-6xl {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 30px !important;
+  }
+
+  /* Add page margins for better print layout */
+  @page {
+    margin: 0.75in;
+  }
+
+  /* Ensure content has proper margins */
+  body {
+    margin: 20px !important;
+    padding: 20px !important;
+  }
+
+  /* Page break management - be more selective to avoid issues */
+  .border-l-4 {
+    page-break-inside: avoid;
+    margin-bottom: 15px;
+  }
+
+  /* Allow content to break more naturally */
+  .space-y-6 > div {
+    margin-bottom: 15px;
+  }
+
+  /* Only prevent breaks for short paragraphs */
+  p {
+    orphans: 2;
+    widows: 2;
+  }
+
+  /* Keep list items together only if short */
+  li {
+    orphans: 2;
+    widows: 2;
+  }
+
+  /* Ensure ALL headings show up and don't get cut */
+  h1, h2, h3, h4, h5, h6 {
+    color: black !important;
+    background: white !important;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    orphans: 3;
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    margin-top: 20px !important;
+    margin-bottom: 15px !important;
+    padding: 0 !important;
+  }
+
+  /* Make sure page title and subtitle are visible and don't break */
+  .text-2xl, .text-3xl, .text-4xl, .text-5xl,
+  .font-serif, .font-bold, .font-medium {
+    color: black !important;
+    display: block !important;
+    visibility: visible !important;
+    page-break-inside: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Ensure section headers show and keep with content */
+  .text-lg, .text-xl, .text-base, .text-sm {
+    color: black !important;
+    display: block !important;
+    page-break-after: avoid;
+    visibility: visible !important;
+  }
+
+  /* Make sure section titles and subtitles are visible */
+  .text-center, .text-left {
+    color: black !important;
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  /* Ensure advice section headers show properly */
+  .flex.items-center h3,
+  .flex.items-center .text-lg,
+  .flex.items-center .font-bold {
+    color: black !important;
+    display: inline-block !important;
+    visibility: visible !important;
+  }
+
+  /* Keep section headers with their content */
+  [class*="text-"] + div,
+  h3 + div,
+  h2 + div {
+    page-break-before: avoid;
+    margin-top: 10px !important;
+  }
+
+  /* Fix step content spacing */
+  .space-y-4 > *,
+  .space-y-3 > *,
+  .space-y-6 > * {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Ensure proper paragraph spacing */
+  p + p {
+    margin-top: 10px !important;
+  }
+
+  /* Force text visibility for print */
+  body {
+    color: black !important;
+    background: white !important;
+  }
+
+  /* Make sure all text elements are black and properly positioned */
+  p, span, strong, em, li {
+    color: black !important;
+    position: static !important;
+  }
+
+  /* Allow divs to keep some spacing for structure */
+  div {
+    color: black !important;
+    position: static !important;
+  }
+
+  /* Fix any overlapping content */
+  * {
+    position: static !important;
+    z-index: auto !important;
+    transform: none !important;
+  }
+
+  /* Ensure flex layouts work in print */
+  .flex {
+    display: block !important;
+  }
+
+  .flex.items-center {
+    display: block !important;
+  }
+
+  /* Make sure icons in headers are visible */
+  .flex.items-center svg,
+  .flex.items-center .lucide {
+    display: inline !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin-right: 8px !important;
+  }
+
+  /* Keep important backgrounds for structure */
+  .border-l-4,
+  .bg-green-50,
+  .bg-red-50, 
+  .bg-blue-50,
+  .bg-purple-50 {
+    background: #f8f8f8 !important;
+  }
+
+  /* Keep callout box styling but make print-friendly */
+  .border-l-4 {
+    border-left: 4px solid #666 !important;
+    background: #f8f8f8 !important;
+    padding: 15px !important;
+    margin: 10px 0 !important;
+  }
+
+  /* Make sure all text content is visible - be more specific */
+  .text-gray-500,
+  .text-gray-600,
+  .text-gray-700,
+  .text-muted-foreground,
+  .text-foreground,
+  .text-white,
+  .text-purple-500,
+  .text-blue-500,
+  .text-green-500 {
+    color: black !important;
+  }
+
+  /* Ensure icons show up */
+  svg {
+    color: black !important;
+    fill: currentColor !important;
+  }
+}
+
 
 

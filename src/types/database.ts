@@ -152,3 +152,88 @@ export interface FeelingsContent {
   created_at: string;
   updated_at: string;
 }
+
+export interface BarriersContent {
+  id: string;
+  barrier_name: string;
+  subtitle: string;
+  intro_paragraph: string;
+  gentle_advice: string;
+  stern_advice: string;
+  adhd_reasons: string[];
+  step_sections?: StepSection[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IdentityContentSection {
+  title: string;
+  emoji: string;
+  content: string[];
+  subsections?: {
+    title: string;
+    emoji: string;
+    content: string[];
+  }[];
+}
+
+export interface IdentitiesContent {
+  id: string;
+  identity_name: string;
+  subtitle?: string;
+  emoji: string;
+  intro_paragraph: string;
+  gentle_advice: string;
+  stern_advice: string;
+  content_sections: IdentityContentSection[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TasksContent {
+  id: string;
+  task_name: string;
+  subtitle?: string;
+  intro_paragraph: string;
+  gentle_advice: string;
+  stern_advice: string;
+  adhd_reasons: string[];
+  content_sections: IdentityContentSection[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ComplexLoopsContent {
+  id: string;
+  loop_name: string;
+  subtitle?: string;
+  intro_paragraph: string;
+  gentle_advice: string;
+  stern_advice: string;
+  adhd_reasons: string[];
+  content_sections: IdentityContentSection[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FeelingSources {
+  id: string;
+  feeling_slug: string;
+  category: string;
+  title: string;
+  authors: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BarrierSources {
+  id: string;
+  barrier_slug: string;
+  category: string;
+  title: string;
+  authors: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+}

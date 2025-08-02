@@ -79,6 +79,12 @@ export type {
   HelpTaskBarrier,
   StrategyVote,
   FeelingsContent,
+  BarriersContent,
+  IdentitiesContent,
+  TasksContent,
+  ComplexLoopsContent,
+  FeelingSources,
+  BarrierSources,
 } from '../types/database';
 
 // Database schema for reference:
@@ -170,6 +176,30 @@ export async function getFeelingsContent(feelingName: string) {
   }
 }
 
+// Barriers content function
+export async function getBarriersContent(barrierName: string) {
+  try {
+    const { data, error } = await supabase
+      .from('barriers_content')
+      .select('*')
+      .eq('barrier_name', barrierName)
+      .single();
+
+    if (error) {
+      console.error('Error fetching barriers content:', error);
+      return { data: null, error };
+    }
+
+    return { data, error: null };
+  } catch (error) {
+    console.error('Exception fetching barriers content:', error);
+    return {
+      data: null,
+      error: error instanceof Error ? error : new Error('Failed to fetch barriers content')
+    };
+  }
+}
+
 // Quiz submission function
 export async function saveQuizSubmission(submission: {
   email: string;
@@ -190,6 +220,152 @@ export async function saveQuizSubmission(submission: {
     return {
       data: null,
       error: error instanceof Error ? error : new Error('Failed to save quiz submission')
+    };
+  }
+}
+
+// Identity Content Functions
+export async function getIdentitiesContent(identityName: string) {
+  try {
+    const { data, error } = await supabase
+      .from('identities_content')
+      .select('*')
+      .eq('identity_name', identityName)
+      .single();
+    
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching identity content:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error : new Error('Failed to fetch identity content') 
+    };
+  }
+}
+
+export async function getAllIdentitiesContent() {
+  try {
+    const { data, error } = await supabase
+      .from('identities_content')
+      .select('*')
+      .order('identity_name');
+    
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching all identity content:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error : new Error('Failed to fetch identity content') 
+    };
+  }
+}
+
+// Tasks Content Functions
+export async function getTasksContent(taskName: string) {
+  try {
+    const { data, error } = await supabase
+      .from('tasks_content')
+      .select('*')
+      .ilike('task_name', taskName)
+      .single();
+    
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching task content:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error : new Error('Failed to fetch task content') 
+    };
+  }
+}
+
+export async function getAllTasksContent() {
+  try {
+    const { data, error } = await supabase
+      .from('tasks_content')
+      .select('*')
+      .order('task_name');
+    
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching all task content:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error : new Error('Failed to fetch task content') 
+    };
+  }
+}
+
+// Complex Loops Content Functions
+export async function getComplexLoopsContent(loopName: string) {
+  try {
+    const { data, error } = await supabase
+      .from('complex_loops_content')
+      .select('*')  
+      .ilike('loop_name', loopName)
+      .single();
+    
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching complex loop content:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error : new Error('Failed to fetch complex loop content') 
+    };
+  }
+}
+
+export async function getAllComplexLoopsContent() {
+  try {
+    const { data, error } = await supabase
+      .from('complex_loops_content')
+      .select('*')
+      .order('loop_name');
+    
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching all complex loop content:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error : new Error('Failed to fetch complex loop content') 
+    };
+  }
+}
+
+// Feeling Sources Functions
+export async function getFeelingSources(feelingSlug: string) {
+  try {
+    const { data, error } = await supabase
+      .from('feeling_sources')
+      .select('*')
+      .eq('feeling_slug', feelingSlug)  
+      .order('category, title');
+    
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching feeling sources:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error : new Error('Failed to fetch feeling sources') 
+    };
+  }
+}
+
+// Barrier Sources Functions
+export async function getBarrierSources(barrierSlug: string) {
+  try {
+    const { data, error } = await supabase
+      .from('barrier_sources')
+      .select('*')
+      .eq('barrier_slug', barrierSlug)  
+      .order('category, title');
+    
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching barrier sources:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error : new Error('Failed to fetch barrier sources') 
     };
   }
 }

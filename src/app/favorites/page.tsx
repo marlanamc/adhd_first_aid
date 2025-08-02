@@ -116,11 +116,11 @@ export default function FavoritesPage() {
                 Start exploring strategies and click the heart icon to save your favorites here.
               </p>
               <Button
-                onClick={() => window.location.href = '/strategies'}
+                onClick={() => window.location.href = '/'}
                 className="bg-blue-600 hover:bg-blue-700 text-white"
               >
                 <BookOpen className="h-4 w-4 mr-2" />
-                Browse Strategies
+                Explore Content
               </Button>
             </div>
           </div>
