@@ -8,7 +8,7 @@ import {
   LockKeyhole, Flame, Sparkles, CloudLightning, 
   Activity, Skull, CloudRain, Rainbow,
   Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, HeartOff, ZapOff, EyeOff,
-  Share2, Wrench, Construction, RotateCcw, Puzzle, XCircle 
+  Share2, Wrench, Construction, RotateCcw, Puzzle, XCircle, UserX, Scissors 
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getFeelingsContent, getFeelingSources } from '@/lib/supabase'
@@ -153,14 +153,14 @@ const FEELING_ICONS: Record<string, React.ElementType> = {
   
   // Jittery & Wound Up
   'Anxious': Activity, // Activity icon to match category page
-  'Restless': Sparkles,
+  'Restless': ArrowLeftRight, // Changed to ArrowLeftRight to represent restless back-and-forth energy
   'Wired': Zap,
-  'Tense': ArrowLeftRight, // Changed to ArrowLeftRight
+  'Tense': Scissors, // Changed to Scissors to match category page
   
   // Social & Connection
   'Lonely': UserCircle, // Changed to UserCircle
   'Misunderstood': Users,
-  'Rejected': Activity // Changed to Activity as closest to square-activity
+  'Rejected': UserX // Changed to UserX to represent rejected person
 }
 
 // Hardcoded guide mappings
@@ -628,23 +628,16 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                           <p className="font-semibold text-gray-900 dark:text-white mb-3">Try this:</p>
                           <ul className="space-y-2">
                             {step.try_this.map((item, itemIndex) => {
-                              // Split on the first colon to get bold heading and description
-                              const colonIndex = item.indexOf(':');
-                              const hasColon = colonIndex !== -1;
-                              const heading = hasColon ? item.substring(0, colonIndex + 1) : '';
-                              const description = hasColon ? item.substring(colonIndex + 1).trim() : item;
+                              // Check if item starts with arrow (for nested items)
+                              const isArrowItem = item.trim().startsWith('→');
                               
                               return (
-                                <li key={itemIndex} className="flex items-start gap-3">
-                                  <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
+                                <li key={itemIndex} className={`flex items-start gap-3 ${isArrowItem ? 'ml-6' : ''}`}>
+                                  {!isArrowItem && (
+                                    <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
+                                  )}
                                   <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {hasColon ? (
-                                      <>
-                                        <strong>{heading}</strong> {formatMarkdownText(description)}
-                                      </>
-                                    ) : (
-                                      formatMarkdownText(item)
-                                    )}
+                                    {formatMarkdownText(item)}
                                   </span>
                                 </li>
                               );
@@ -671,9 +664,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               <div className="relative">
                 <Button
                   onClick={() => toggleSection('sources')}
-                  onMouseEnter={() => setHoveredSection('sources')}
-                  onMouseLeave={() => setHoveredSection(null)}
-                  onTouchStart={() => setHoveredSection(null)}
                   className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[75px] touch-manipulation"
                   variant="ghost"
                   size="lg"
@@ -697,13 +687,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                     )}
                   </div>
                 </Button>
-                
-                {/* Custom Tooltip */}
-                {hoveredSection === 'sources' && (
-                  <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                    {expandedSections['sources'] ? "Close section" : "Open section"}
-                  </div>
-                )}
                 
                 {expandedSections['sources'] && (
                   <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-6 animate-in slide-in-from-top duration-300">

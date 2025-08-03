@@ -16,6 +16,16 @@ export function SuggestFeelingModal({ isOpen, onClose }: SuggestFeelingModalProp
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
+  const handleClose = () => {
+    // Reset form state when closing
+    setSubmitted(false)
+    setFeelingName('')
+    setEmail('')
+    setAdditionalInfo('')
+    setIsSubmitting(false)
+    onClose()
+  }
+
   // Prevent body scroll when modal is open
   React.useEffect(() => {
     if (isOpen) {
@@ -48,20 +58,20 @@ Timestamp: ${new Date().toLocaleString()}`
       // Create mailto link
       const mailtoLink = `mailto:marlie@navcoaching.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
       
-      // Open in new tab
-      window.open(mailtoLink, '_blank')
+      // Don't open email client - just show thank you message
+      // window.open(mailtoLink, '_blank')
       
       setSubmitted(true)
       setIsSubmitting(false)
       
-      // Close modal after showing success
-      setTimeout(() => {
-        onClose()
-        setSubmitted(false)
-        setFeelingName('')
-        setEmail('')
-        setAdditionalInfo('')
-      }, 3000)
+      // Don't auto-close - let user close manually by clicking outside or X button
+      // setTimeout(() => {
+      //   onClose()
+      //   setSubmitted(false)
+      //   setFeelingName('')
+      //   setEmail('')
+      //   setAdditionalInfo('')
+      // }, 3000)
     } catch (error) {
       console.error('Error submitting feeling suggestion:', error)
       setIsSubmitting(false)
@@ -71,15 +81,15 @@ Timestamp: ${new Date().toLocaleString()}`
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100]">
+    <div className="fixed inset-0 z-[999]">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-lg"
-        onClick={onClose}
+        onClick={handleClose}
       />
       
       {/* Modal Container */}
-      <div className="absolute inset-0 overflow-hidden flex items-center justify-center p-4">
+      <div className="absolute inset-0 overflow-hidden flex items-center justify-center p-4 pb-16">
         {/* Modal Content */}
         <div className="w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-2xl relative overflow-hidden">
           {/* Header Bar */}
@@ -87,7 +97,7 @@ Timestamp: ${new Date().toLocaleString()}`
             <Button
               variant="ghost"
               size="sm"
-              onClick={onClose}
+              onClick={handleClose}
               className="absolute top-4 right-4 h-10 w-10 p-0 rounded-full hover:bg-black/10 transition-colors"
             >
               <X className="h-5 w-5 text-gray-800" />
@@ -119,13 +129,10 @@ Timestamp: ${new Date().toLocaleString()}`
                     </div>
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
-                    Thank You! 🎉
+                    Thanks for helping other people with ADHD! 💛
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Your feeling suggestion has been sent! Marlie will review it and consider adding it to the collection.
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-500 mt-3">
-                    Thanks for helping us improve! 💛
+                    Your feeling suggestion will help expand our collection so more people can find the support they need.
                   </p>
                 </div>
               </div>

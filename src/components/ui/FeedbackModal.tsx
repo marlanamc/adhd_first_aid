@@ -17,6 +17,15 @@ export function FeedbackModal({ isOpen, onClose, pageType = 'feelings' }: Feedba
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
+  // Reset form when modal closes
+  const handleClose = () => {
+    onClose()
+    setSubmitted(false)
+    setFeedback('')
+    setEmail('')
+    setCategory('general')
+  }
+
   // Prevent body scroll when modal is open
   React.useEffect(() => {
     if (isOpen) {
@@ -124,38 +133,22 @@ export function FeedbackModal({ isOpen, onClose, pageType = 'feelings' }: Feedba
       // Simulate API call - in production, replace with actual email service
       await new Promise(resolve => setTimeout(resolve, 1500))
       
-      // For now, we'll still use mailto as fallback but make it less prominent
-      const subject = `ADHD First Aid Kit Feedback - ${category.charAt(0).toUpperCase() + category.slice(1)}`
-      const body = `Feedback Category: ${category.charAt(0).toUpperCase() + category.slice(1)}
-Page Type: ${pageType.charAt(0).toUpperCase() + pageType.slice(1)}
-Current Page: ${window.location.href}
-    
-User Email (optional): ${email || 'Not provided'}
-
-Feedback:
-${feedback}
-
----
-Sent from ADHD First Aid Kit Feedback Form
-Timestamp: ${new Date().toLocaleString()}`
-
-      // Create mailto link as backup
-      const mailtoLink = `mailto:marlie@navcoaching.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+      // Log feedback data for now (in production, send to actual email service)
+      const feedbackData = {
+        category: category.charAt(0).toUpperCase() + category.slice(1),
+        pageType: pageType.charAt(0).toUpperCase() + pageType.slice(1),
+        currentPage: window.location.href,
+        email: email || 'Not provided',
+        feedback,
+        timestamp: new Date().toLocaleString()
+      }
       
-      // Open in new tab so it doesn't disrupt the user experience
-      window.open(mailtoLink, '_blank')
+      console.log('Feedback submitted:', feedbackData)
       
       setSubmitted(true)
       setIsSubmitting(false)
       
-      // Close modal after showing success
-      setTimeout(() => {
-        onClose()
-        setSubmitted(false)
-        setFeedback('')
-        setEmail('')
-        setCategory('general')
-      }, 3000)
+      // Don't auto-close - let user close manually by clicking outside or X button
     } catch (error) {
       console.error('Error submitting feedback:', error)
       setIsSubmitting(false)
@@ -170,7 +163,7 @@ Timestamp: ${new Date().toLocaleString()}`
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-lg"
-        onClick={onClose}
+        onClick={handleClose}
       />
       
       {/* Modal Container */}
@@ -182,7 +175,7 @@ Timestamp: ${new Date().toLocaleString()}`
         <Button
           variant="ghost"
           size="sm"
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute top-4 right-4 h-10 w-10 p-0 rounded-full hover:bg-black/10 transition-colors"
         >
           <X className="h-5 w-5 text-gray-800" />
@@ -220,7 +213,7 @@ Timestamp: ${new Date().toLocaleString()}`
                   Your feedback has been sent successfully! Marlie will receive your message and may follow up if you provided an email.
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-500 mt-3">
-                  Thanks for helping us improve! 💛
+                  Thanks for helping other people with ADHD! 💛
                 </p>
               </div>
             </div>
