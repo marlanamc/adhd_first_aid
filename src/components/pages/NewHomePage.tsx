@@ -32,7 +32,7 @@ const topCategories = [
     title: 'Feeling off?',
     subtitle: 'Browse emotion-first tools',
     icon: HeartCrack,
-    color: 'bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-[#8B7355] dark:via-[#7A6B52] dark:to-[#7A6752]',
+    color: 'bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-[#8B7355] dark:via-[#7A6B52] dark:to-[#7A6752]',
     examples: ['Overwhelmed', 'Ashamed', 'Stuck']
   },
   {
@@ -40,7 +40,7 @@ const topCategories = [
     title: 'Something holding you back?',
     subtitle: 'Find barrier-specific solutions',
     icon: AlertCircle,
-    color: 'bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-[#7A6752] dark:via-[#6B7A52] dark:to-[#5B7A52]',
+    color: 'bg-gradient-to-br from-[#fbd786] via-[#fff5db] to-[#c0f5a3] dark:from-[#7A6752] dark:via-[#6B7A52] dark:to-[#5B7A52]',
     examples: ['Can\'t start', 'Too big', 'Feel shame']
   },
   {
@@ -56,7 +56,7 @@ const topCategories = [
     title: 'Stuck in a loop?',
     subtitle: 'Break free from repetitive ADHD spirals',
     icon: RotateCcw,
-    color: 'bg-gradient-to-br from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] dark:from-[#526B7A] dark:via-[#52637A] dark:to-[#63527A]',
+    color: 'bg-gradient-to-br from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] dark:from-[#526B7A] dark:via-[#52637A] dark:to-[#63527A]',
     examples: ['Phone Scrolling', 'Chronic Lateness']
   },
   {
@@ -64,7 +64,7 @@ const topCategories = [
     title: 'How can you be supported?',
     subtitle: 'Explore identity-specific support',
     icon: User,
-    color: 'bg-gradient-to-br from-[#a18cd1] via-[#b19cd9] to-[#dec6f7] dark:from-[#63527A] dark:via-[#6B527A] dark:to-[#7A527A]',
+    color: 'bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-[#63527A] dark:via-[#6B527A] dark:to-[#7A527A]',
     examples: ['Parent', 'Student', 'Caregiver']
   }
 ]
@@ -423,17 +423,17 @@ export default function NewHomePage({
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl">
             <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
             <p className="text-gray-600 dark:text-gray-400 text-center">
-              {selectedCard === 'feelings' && 'Finding feelings pages...'}
-              {selectedCard === 'barriers' && 'Finding barrier solutions...'}
-              {selectedCard === 'tasks' && 'Loading Life Areas...'}
-              {selectedCard === 'identities' && 'Finding identity pages...'}
-              {selectedCard === 'complex_loops' && 'Breaking loops...'}
-              {selectedCard === 'systems' && 'Opening Systems Lab...'}
-              {selectedCard === 'guides' && 'Loading guides...'}
-              {selectedCard === 'scripts' && 'Finding your scripts...'}
-              {selectedCard === 'quizzes' && 'Loading quizzes and tools...'}
-              {selectedCard === 'resources' && 'Loading resources...'}
-              {!selectedCard && 'Loading...'}
+              {selectedCard === 'feelings' && 'Gathering your emotional support toolkit...'}
+              {selectedCard === 'barriers' && 'Loading your obstacle-busting strategies...'}
+              {selectedCard === 'tasks' && 'Finding support for this part of your life...'}
+              {selectedCard === 'identities' && 'Finding strategies that fit your life...'}
+              {selectedCard === 'complex_loops' && 'Breaking down your patterns with ADHD insights...'}
+              {selectedCard === 'systems' && 'Building your personalized ADHD system...'}
+              {selectedCard === 'guides' && 'Collecting your step-by-step helpers...'}
+              {selectedCard === 'scripts' && 'Gathering your conversation lifelines...'}
+              {selectedCard === 'quizzes' && 'Getting your self-discovery tools ready...'}
+              {selectedCard === 'resources' && 'Gathering your ADHD learning library...'}
+              {!selectedCard && 'Getting your ADHD toolkit ready...'}
             </p>
           </div>
         </div>

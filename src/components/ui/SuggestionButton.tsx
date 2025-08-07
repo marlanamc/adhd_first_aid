@@ -45,72 +45,67 @@ export function SuggestionButton({
 
   const pageName = getPageName()
 
-  // Define gradients for each page type to match their actual background themes
+  // Define gradients that match the homepage cards exactly
   const gradients = {
     feelings: {
-      // Matches: from-[#fbc2eb] via-[#fbd786] to-[#fbc687] (pink to peach to orange)
-      from: 'from-[#fbc2eb]',
-      via: 'via-[#fbd786]',
-      to: 'to-[#fbc687]',
-      hoverFrom: 'hover:from-[#f5b8e4]',
-      hoverVia: 'hover:via-[#f5d17f]',
-      hoverTo: 'hover:to-[#f5bf80]',
-      bgFrom: 'from-[#fbc2eb]/30',
-      bgVia: 'via-[#fbd786]/30',
-      bgTo: 'to-[#fbc687]/30',
-      textAccent: 'text-pink-100',
+      // Matches homepage: from-[#fca3b7] via-[#fbc2eb] to-[#fbd786]
+      from: 'from-[#fca3b7]',
+      via: 'via-[#fbc2eb]',
+      to: 'to-[#fbd786]',
+      hoverFrom: 'hover:from-[#fc92ab]',
+      hoverVia: 'hover:via-[#fbb6e8]',
+      hoverTo: 'hover:to-[#fbd07f]',
+      bgFrom: 'from-[#fca3b7]/20',
+      bgVia: 'via-[#fbc2eb]/20',
+      bgTo: 'to-[#fbd786]/20',
     },
     barriers: {
-      // Matches: from-[#fbc687] via-[#fff5db] to-[#d4fc79] (orange to cream to green)
-      from: 'from-[#fbc687]',
+      // Matches homepage: from-[#fbd786] via-[#fff5db] to-[#c0f5a3]
+      from: 'from-[#fbd786]',
       via: 'via-[#fff5db]',
-      to: 'to-[#d4fc79]',
-      hoverFrom: 'hover:from-[#f5bf80]',
-      hoverVia: 'hover:via-[#f9f2d4]',
-      hoverTo: 'hover:to-[#cdf672]',
-      bgFrom: 'from-[#fbc687]/30',
-      bgVia: 'via-[#fff5db]/30',
-      bgTo: 'to-[#d4fc79]/30',
-      textAccent: 'text-orange-100',
+      to: 'to-[#c0f5a3]',
+      hoverFrom: 'hover:from-[#fbd07f]',
+      hoverVia: 'hover:via-[#fef1d4]',
+      hoverTo: 'hover:to-[#b9f39c]',
+      bgFrom: 'from-[#fbd786]/20',
+      bgVia: 'via-[#fff5db]/20',
+      bgTo: 'to-[#c0f5a3]/20',
     },
     tasks: {
-      // Matches: from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] (green to teal to blue)
+      // Matches homepage: from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4]
       from: 'from-[#d4fc79]',
       via: 'via-[#b0f4ea]',
       to: 'to-[#8fd3f4]',
-      hoverFrom: 'hover:from-[#cdf672]',
-      hoverVia: 'hover:via-[#a9f1e3]',
-      hoverTo: 'hover:to-[#88cfed]',
-      bgFrom: 'from-[#d4fc79]/30',
-      bgVia: 'via-[#b0f4ea]/30',
-      bgTo: 'to-[#8fd3f4]/30',
-      textAccent: 'text-green-100',
+      hoverFrom: 'hover:from-[#cdfb72]',
+      hoverVia: 'hover:via-[#a9f2e7]',
+      hoverTo: 'hover:to-[#88cff1]',
+      bgFrom: 'from-[#d4fc79]/20',
+      bgVia: 'via-[#b0f4ea]/20',
+      bgTo: 'to-[#8fd3f4]/20',
     },
     complex_loops: {
-      // Matches: from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] (blue to blue to purple)
-      from: 'from-[#8fd3f4]',
+      // Matches homepage: from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1]
+      from: 'from-[#b0f4ea]',
       via: 'via-[#78c2f2]',
       to: 'to-[#a18cd1]',
-      hoverFrom: 'hover:from-[#88cfed]',
-      hoverVia: 'hover:via-[#71bbeb]',
-      hoverTo: 'hover:to-[#9a85ca]',
-      bgFrom: 'from-[#8fd3f4]/30',
-      bgVia: 'via-[#78c2f2]/30',
-      bgTo: 'to-[#a18cd1]/30',
-      textAccent: 'text-blue-100',
+      hoverFrom: 'hover:from-[#a9f2e7]',
+      hoverVia: 'hover:via-[#71bbef]',
+      hoverTo: 'hover:to-[#9a85ce]',
+      bgFrom: 'from-[#b0f4ea]/20',
+      bgVia: 'via-[#78c2f2]/20',
+      bgTo: 'to-[#a18cd1]/20',
     },
     identity: {
-      // Matches: from-[#a18cd1] via-[#b19cd9] to-[#dec6f7] (purple to purple to light purple)
-      from: 'from-[#a18cd1]',
-      via: 'via-[#b19cd9]',
-      to: 'to-[#dec6f7]',
-      hoverFrom: 'hover:from-[#9a85ca]',
-      hoverVia: 'hover:via-[#aa95d2]',
-      hoverTo: 'hover:to-[#d7bff0]',
-      bgFrom: 'from-[#a18cd1]/30',
-      bgVia: 'via-[#b19cd9]/30',
-      bgTo: 'to-[#dec6f7]/30',
-      textAccent: 'text-purple-100',
+      // Matches homepage: from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9]
+      from: 'from-[#78c2f2]',
+      via: 'via-[#b39ddb]',
+      to: 'to-[#e1d5f9]',
+      hoverFrom: 'hover:from-[#71bbef]',
+      hoverVia: 'hover:via-[#ac96d8]',
+      hoverTo: 'hover:to-[#dccef6]',
+      bgFrom: 'from-[#78c2f2]/20',
+      bgVia: 'via-[#b39ddb]/20',
+      bgTo: 'to-[#e1d5f9]/20',
     },
   }
 
@@ -120,17 +115,17 @@ export function SuggestionButton({
     <div className="mt-6 flex justify-center">
       <Button
         onClick={() => openModal(pageType)}
-        className={`group relative px-8 py-4 bg-gradient-to-r ${theme.from} ${theme.via} ${theme.to} ${theme.hoverFrom} ${theme.hoverVia} ${theme.hoverTo} text-gray-800 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-0`}
+        className={`group relative px-8 py-4 bg-gradient-to-r ${theme.from} ${theme.via} ${theme.to} ${theme.hoverFrom} ${theme.hoverVia} ${theme.hoverTo} text-black font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-0`}
       >
         <div className="flex items-center gap-3">
           <div className="p-2 bg-white/30 rounded-lg group-hover:bg-white/40 transition-colors">
-            <MessageSquare className="h-5 w-5 text-gray-700" />
+            <MessageSquare className="h-5 w-5 text-black" />
           </div>
           <div className="text-left">
-            <div className="text-base font-semibold text-gray-800">
+            <div className="text-base font-semibold text-black">
               Share Your Thoughts{pageName ? ` on ${pageName}` : ''}
             </div>
-            <div className="text-sm text-gray-700 group-hover:text-gray-800 transition-colors">
+            <div className="text-sm text-black/80 group-hover:text-black transition-colors">
               Suggestions • Feedback • Resources
             </div>
           </div>

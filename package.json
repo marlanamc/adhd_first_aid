@@ -7,7 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "import-data": "tsx scripts/import-data.ts"
+    "import-data": "tsx scripts/import-data.ts",
+    "validate": "tsx scripts/universal-content-validator.ts",
+    "validate:all": "tsx scripts/universal-content-validator.ts",
+    "validate:barriers": "tsx scripts/universal-content-validator.ts barriers",
+    "validate:feelings": "tsx scripts/universal-content-validator.ts feelings",
+    "validate:tasks": "tsx scripts/universal-content-validator.ts tasks",
+    "validate:identities": "tsx scripts/universal-content-validator.ts identities",
+    "validate:loops": "tsx scripts/universal-content-validator.ts loops",
+    "validate:fast": "tsx scripts/batch-barrier-validator.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",

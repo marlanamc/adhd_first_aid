@@ -1,0 +1,33 @@
+# Exclude large directories and files from Claude Code context
+archive/
+content_markdown/
+scripts/
+complex_loop_sources/
+life_areas_sources/
+
+# Exclude backup and temporary files
+*.backup
+*.bak
+*.tmp
+*~
+
+# Exclude large data files
+*.csv
+*.json
+
+# Exclude specific directories that aren't needed for most development work
+node_modules/
+.next/
+.git/
+dist/
+build/
+
+# Exclude documentation files that aren't essential
+docs/
+*.md
+!CLAUDE.md
+!README.md
+
+# Exclude environment and config files
+.env*
+!.env.example

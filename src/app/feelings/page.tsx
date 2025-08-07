@@ -96,7 +96,7 @@ export default function FeelingsPage() {
     : []
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-12">
@@ -136,8 +136,9 @@ export default function FeelingsPage() {
               >
                 <div className={`backdrop-blur-md rounded-2xl p-3 
                               transition-all duration-300
-                              group-hover:bg-white/30
-                              h-16 flex flex-col justify-center
+                              group-hover:bg-white/30 group-hover:scale-[1.02]
+                              h-16 flex flex-col justify-center gap-2
+                              relative before:absolute before:left-3 before:top-0 before:bottom-0 before:w-px before:bg-gray-200/30
                               ${selectedCategory === category.name 
                                 ? 'bg-white/40 ring-2 ring-black/[0.15] dark:ring-white/[0.3]' 
                                 : 'bg-white/10 hover:bg-white/20'}`}>
@@ -176,9 +177,10 @@ export default function FeelingsPage() {
                 >
                   <div className="bg-white/20 backdrop-blur-md rounded-xl p-6 
                                 shadow-lg hover:shadow-xl transition-all duration-300
-                                group-hover:bg-white/30
-                                h-32 flex flex-col justify-center items-center
-                                border border-black/[0.08] dark:border-white/[0.15]">
+                                group-hover:bg-white/30 group-hover:scale-[1.02]
+                                h-32 flex flex-col justify-center items-center gap-3
+                                border border-black/[0.08] dark:border-white/[0.15]
+                                relative before:absolute before:left-3 before:top-0 before:bottom-0 before:w-px before:bg-gray-200/30">
                     
                     {/* Icon */}
                     <div className="text-2xl mb-1 transition-all duration-300 group-hover:scale-110">
@@ -210,7 +212,7 @@ export default function FeelingsPage() {
             <div className="mb-4 flex justify-center">
               <Button
                 onClick={() => setIsSuggestModalOpen(true)}
-                className="group relative px-4 py-2 bg-gradient-to-r from-[#fbc2eb] via-[#fbd786] to-[#fbc687] hover:from-[#f5b8e4] hover:via-[#f5d17f] hover:to-[#f5bf80] text-gray-800 font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-0 text-sm"
+                className="group relative px-4 py-2 bg-gradient-to-r from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] hover:from-[#f89db0] hover:via-[#f5b8e4] hover:to-[#f5d17f] text-gray-800 font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-0 text-sm"
               >
                 <div className="flex items-center gap-2">
                   <div className="p-1 bg-white/30 rounded-md group-hover:bg-white/40 transition-colors">

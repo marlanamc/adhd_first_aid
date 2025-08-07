@@ -4,11 +4,11 @@ import React from 'react'
 import { useState, useEffect, use } from 'react'
 import { 
   ArrowLeft, Heart, Plus, Minus, BookOpen, 
-  Brain, Zap, Frown, Users, BrainCircuit, Battery,
+  Brain, Zap, Frown, Users, BrainCircuit, 
   LockKeyhole, Flame, Sparkles, CloudLightning, 
   Activity, Skull, CloudRain, Rainbow,
-  Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, HeartOff, ZapOff, EyeOff,
-  Share2, Wrench, Construction, RotateCcw, Puzzle, XCircle, UserX, Scissors 
+  Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, HeartOff, ZapOff,
+  Share2, Wrench, Construction, RotateCcw, Puzzle, XCircle 
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getFeelingsContent, getFeelingSources } from '@/lib/supabase'
@@ -67,7 +67,7 @@ const formatMarkdownText = (text: string) => {
     
     // ADHD-specific concepts
     { pattern: /\b(executive function|working memory|dopamine|nervous system|sensory|overwhelm)\b/gi, style: 'bold' },
-    { pattern: /\b(ADHD brain|neurodivergent|time blindness)\b/gi, style: 'bold' },
+    { pattern: /\b(ADHD brain|neurodivergent|rejection sensitivity|time blindness)\b/gi, style: 'bold' },
     
     // Gentle self-talk patterns for italics
     { pattern: /\b(maybe|perhaps|gently|softly|kindly|compassionately)\b/gi, style: 'italic' },
@@ -139,28 +139,28 @@ const FEELING_ICONS: Record<string, React.ElementType> = {
   
   // Dysregulation & Shutdown
   'Stuck': LockKeyhole, // Changed to LockKeyhole
-  'Drained': Battery, // Battery icon to match category page
+  'Drained': BrainCircuit, // Changed to BrainCircuit
   'Burned Out': Flame,
   'Numb': Skull,
   'Ashamed': Frown,
   'Frustrated': ZapOff, // Changed to ZapOff
   
   // Heavy Feelings
-  'Guilty': EyeOff, // EyeOff icon to match category page
+  'Guilty': Frown, // Changed to Frown
   'Defeated': CloudRain,
   'Hopeless': UserMinus, // Changed to UserMinus
   'Stressed': Zap,
   
   // Jittery & Wound Up
-  'Anxious': Activity, // Activity icon to match category page
-  'Restless': ArrowLeftRight, // Changed to ArrowLeftRight to represent restless back-and-forth energy
+  'Anxious': HeartOff, // Changed to HeartOff as closest to heart-minus
+  'Restless': Sparkles,
   'Wired': Zap,
-  'Tense': Scissors, // Changed to Scissors to match category page
+  'Tense': ArrowLeftRight, // Changed to ArrowLeftRight
   
   // Social & Connection
   'Lonely': UserCircle, // Changed to UserCircle
   'Misunderstood': Users,
-  'Rejected': UserX // Changed to UserX to represent rejected person
+  'Rejected': Activity // Changed to Activity as closest to square-activity
 }
 
 // Hardcoded guide mappings
@@ -257,7 +257,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
     description: string;
   } | null>(null)
   const [copySuccess, setCopySuccess] = useState(false)
-  const [showShareModal, setShowShareModal] = useState(false)
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
@@ -292,8 +292,8 @@ export default function FeelingPage({ params }: FeelingPageProps) {
         setContent(data)
 
         // Fetch sources data using the URL slug
-        const slugName = resolvedParams.feeling  // This is the URL slug like 'mental-fog'
-        const { data: sourcesData, error: sourcesError } = await getFeelingSources(slugName.replace('-', '_'))
+        const feelingSlug = resolvedParams.feeling  // This is the URL slug like 'mental-fog'
+        const { data: sourcesData, error: sourcesError } = await getFeelingSources(feelingSlug.replace(/-/g, '_'))
         
         if (sourcesData && sourcesData.length > 0) {
           setSources(sourcesData)
@@ -334,16 +334,17 @@ export default function FeelingPage({ params }: FeelingPageProps) {
   }
 
   const handleShare = () => {
-    setShowShareModal(true)
+    // Always show the custom share modal
+    setIsShareModalOpen(true)
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-            <p className="text-lg">Loading feelings content...</p>
+            <p className="text-lg">Gathering your ADHD-friendly emotional support...</p>
           </div>
         </div>
       </div>
@@ -352,7 +353,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
   if (error || !content) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg max-w-md text-center">
           <XCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-semibold mb-2">Feeling Not Found</h2>
@@ -369,7 +370,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#fbd786] to-[#fbc687] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
@@ -397,10 +398,15 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   size="default"
                   onClick={handleShare}
                   className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
-                  title="Share this page"
+                  title={copySuccess ? "Link copied!" : "Share this page"}
                 >
                   <Share2 className="h-5 w-5" />
                 </Button>
+                {copySuccess && (
+                  <div className="absolute -top-8 right-0 bg-green-600 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap z-50">
+                    Link copied!
+                  </div>
+                )}
               </div>
             </div>
 
@@ -413,6 +419,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               </p>
             </div>
           </div>
+
 
           {/* Section Divider */}
           <div className="flex items-center justify-center gap-4 mb-5 text-gray-400 dark:text-gray-600">
@@ -430,12 +437,15 @@ export default function FeelingPage({ params }: FeelingPageProps) {
             <div className="relative">
               <Button
                 onClick={() => toggleSection('gentle')}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors border border-green-200 dark:border-green-800 min-h-[60px] touch-manipulation"
+                onMouseEnter={() => setHoveredSection('gentle')}
+                onMouseLeave={() => setHoveredSection(null)}
+                onTouchStart={() => setHoveredSection(null)}
+                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#A0E8AF]/40 hover:shadow-md transition-shadow duration-300 border border-[#A0E8AF]/60 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
               >
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-green-600 dark:text-green-400" />
+                  <Sparkles className="h-5 w-5 text-[#2D9C3C]" />
                   <h3 className="text-base font-semibold text-gray-900 dark:text-white">
                     Soft Start
                   </h3>
@@ -449,9 +459,15 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 </div>
               </Button>
               
+              {/* Custom Tooltip */}
+              {hoveredSection === 'gentle' && (
+                <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
+                  {expandedSections['gentle'] ? "Close section" : "Open section"}
+                </div>
+              )}
               
               {expandedSections['gentle'] && (
-                <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-green-200 dark:border-green-800 mt-2">
+                <div className="bg-[#A0E8AF]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
                   <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
                     {formatMarkdownText(content.gentle_advice)}
                   </p>
@@ -463,28 +479,37 @@ export default function FeelingPage({ params }: FeelingPageProps) {
             <div className="relative">
               <Button
                 onClick={() => toggleSection('stern')}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800 min-h-[60px] touch-manipulation"
+                onMouseEnter={() => setHoveredSection('stern')}
+                onMouseLeave={() => setHoveredSection(null)}
+                onTouchStart={() => setHoveredSection(null)}
+                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#F87171]/30 hover:shadow-md transition-shadow duration-300 border border-[#F87171]/50 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
               >
                 <div className="flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-red-600 dark:text-red-400" />
+                  <Zap className="h-5 w-5 text-[#B91C1C]" />
                   <h3 className="text-base font-semibold text-gray-900 dark:text-white">
                     Tough Love
                   </h3>
                 </div>
                 <div className="flex-shrink-0 ml-4">
                   {expandedSections['stern'] ? (
-                    <Minus className="h-5 w-5 text-gray-500" />
+                    <Minus className="h-5 w-5 text-[#B91C1C]" />
                   ) : (
-                    <Plus className="h-5 w-5 text-gray-500" />
+                    <Plus className="h-5 w-5 text-[#B91C1C]" />
                   )}
                 </div>
               </Button>
 
+              {/* Custom Tooltip */}
+              {hoveredSection === 'stern' && (
+                <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
+                  {expandedSections['stern'] ? "Close section" : "Open section"}
+                </div>
+              )}
 
               {expandedSections['stern'] && (
-                <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-red-200 dark:border-red-800 mt-2">
+                <div className="bg-[#F87171]/30 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#F87171]/50 mt-2">
                   <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
                     {formatMarkdownText(content.stern_advice)}
                   </p>
@@ -510,18 +535,18 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               onMouseEnter={() => setHoveredSection('adhd_reasons')}
               onMouseLeave={() => setHoveredSection(null)}
               onTouchStart={() => setHoveredSection(null)}
-              className="w-full flex items-center gap-4 mb-5 p-5 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[90px] touch-manipulation"
+              className="w-full flex items-center gap-4 mb-5 p-5 rounded-xl bg-[#FFADD3]/20 hover:bg-[#FFADD3]/30 transition-colors min-h-[90px] touch-manipulation"
               variant="ghost"
               size="lg"
             >
-              <div className="bg-purple-200 dark:bg-purple-800 rounded-full p-3 flex-shrink-0">
-                <Brain className="h-5 w-5 text-gray-900 dark:text-white" />
+              <div className="bg-[#FFADD3]/90 rounded-full p-3 flex-shrink-0">
+                <Brain className="h-5 w-5 text-gray-900" />
               </div>
               <div className="flex-1 text-left">
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                <h3 className="text-lg font-bold text-gray-900 mb-1">
                   Why ADHD Makes {content?.feeling_name} Worse
                 </h3>
-                <p className="text-base text-gray-600 dark:text-gray-400">
+                <p className="text-base text-gray-600">
                   The hidden drivers
                 </p>
               </div>
@@ -542,26 +567,77 @@ export default function FeelingPage({ params }: FeelingPageProps) {
             )}
             
             {expandedSections['adhd_reasons'] && (
-              <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 border border-purple-200 dark:border-purple-800">
+              <div className="bg-[#FFADD3]/20 rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 border border-[#FFADD3]/30">
                 <ul className="space-y-3">
                   {content.adhd_reasons.map((reason, index) => {
-                    // Define emojis for each ADHD reason
-                    const reasonEmojis = ['🧩', '⏰', '🧠', '💔', '⚡'];
-                    const emoji = reasonEmojis[index % reasonEmojis.length];
-                    
                     // Split on the first colon to get bold heading and description
                     const colonIndex = reason.indexOf(':');
                     const hasColon = colonIndex !== -1;
-                    const heading = hasColon ? reason.substring(0, colonIndex) : '';
+                    const heading = hasColon ? reason.substring(0, colonIndex + 1) : '';
                     const description = hasColon ? reason.substring(colonIndex + 1).trim() : reason;
                     
+                    // Smart emoji selection for ADHD reasons
+                    const getEmoji = (reasonText: string, usedEmojis: string[]) => {
+                      const text = reasonText.toLowerCase();
+                      
+                      // More specific matches first to avoid conflicts
+                      if (text.includes('working memory') && !usedEmojis.includes('💭')) return '💭';
+                      if (text.includes('executive') && !usedEmojis.includes('⚙️')) return '⚙️';
+                      if (text.includes('dopamine') && !usedEmojis.includes('🧬')) return '🧬';
+                      if (text.includes('nervous system') && !usedEmojis.includes('🔌')) return '🔌';
+                      if (text.includes('rejection') && !usedEmojis.includes('💔')) return '💔';
+                      if (text.includes('emotional') && !usedEmojis.includes('🎭')) return '🎭';
+                      if (text.includes('regulation') && !usedEmojis.includes('🌡️')) return '🌡️';
+                      if (text.includes('sensitivity') && !usedEmojis.includes('🎚️')) return '🎚️';
+                      if (text.includes('perfectionism') && !usedEmojis.includes('🎯')) return '🎯';
+                      if (text.includes('rumination') && !usedEmojis.includes('🌀')) return '🌀';
+                      if (text.includes('shame') && !usedEmojis.includes('🔒')) return '🔒';
+                      if (text.includes('hypervigilance') && !usedEmojis.includes('👀')) return '👀';
+                      if (text.includes('attention') && !usedEmojis.includes('🔍')) return '🔍';
+                      if (text.includes('focus') && !usedEmojis.includes('🎪')) return '🎪';
+                      if (text.includes('distract') && !usedEmojis.includes('🎲')) return '🎲';
+                      if (text.includes('overwhelm') && !usedEmojis.includes('🌊')) return '🌊';
+                      if (text.includes('stimulation') && !usedEmojis.includes('⚡')) return '⚡';
+                      if (text.includes('energy') && !usedEmojis.includes('🔋')) return '🔋';
+                      if (text.includes('motivation') && !usedEmojis.includes('🚀')) return '🚀';
+                      if (text.includes('procrastination') && !usedEmojis.includes('⏰')) return '⏰';
+                      if (text.includes('time') && !usedEmojis.includes('⏳')) return '⏳';
+                      if (text.includes('pattern') && !usedEmojis.includes('🔄')) return '🔄';
+                      if (text.includes('habit') && !usedEmojis.includes('🔗')) return '🔗';
+                      if (text.includes('brain') && !usedEmojis.includes('🧠')) return '🧠';
+                      if (text.includes('cognitive') && !usedEmojis.includes('🤔')) return '🤔';
+                      if (text.includes('sensory') && !usedEmojis.includes('👂')) return '👂';
+                      if (text.includes('fatigue') && !usedEmojis.includes('😴')) return '😴';
+                      if (text.includes('burnout') && !usedEmojis.includes('🔥')) return '🔥';
+                      if (text.includes('anxiety') && !usedEmojis.includes('😰')) return '😰';
+                      if (text.includes('stress') && !usedEmojis.includes('😤')) return '😤';
+                      if (text.includes('overwhelm') && !usedEmojis.includes('🌊')) return '🌊';
+                      if (text.includes('avoidance') && !usedEmojis.includes('🙈')) return '🙈';
+                      if (text.includes('mask') && !usedEmojis.includes('🎭')) return '🎭';
+                      if (text.includes('comparison') && !usedEmojis.includes('⚖️')) return '⚖️';
+                      if (text.includes('criticism') && !usedEmojis.includes('🗣️')) return '🗣️';
+                      if (text.includes('feedback') && !usedEmojis.includes('💬')) return '💬';
+                      if (text.includes('social') && !usedEmojis.includes('👥')) return '👥';
+                      
+                      // Fallback emojis to ensure uniqueness
+                      const fallbacks = ['🧩', '🔧', '📊', '🎨', '🔮', '⭐', '🎪', '📡', '🎛️', '🔬'];
+                      return fallbacks.find(emoji => !usedEmojis.includes(emoji)) || '🧩';
+                    };
+
+                    const usedEmojis = content.adhd_reasons.slice(0, index).map((_, i) => 
+                      getEmoji(content.adhd_reasons[i], content.adhd_reasons.slice(0, i).map((_, j) => 
+                        getEmoji(content.adhd_reasons[j], [])
+                      ))
+                    );
+                    const emoji = getEmoji(reason, usedEmojis);
+                    
                     return (
-                      <li key={index} className="flex items-start gap-3">
-                        <span className="text-2xl mt-0 flex-shrink-0">{emoji}</span>
-                        <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                      <li key={index} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
+                        <span className="text-base translate-y-[1px] flex-shrink-0 group-hover/bullet:scale-110 transition-transform">{emoji}</span>
+                        <span className="text-gray-900 py-1 leading-relaxed">
                           {hasColon ? (
                             <>
-                              <strong>{heading}</strong> - {formatMarkdownText(description)}
+                              <strong>{heading.replace(/\*\*(.*?)\*\*/g, '$1')}</strong> {formatMarkdownText(description)}
                             </>
                           ) : (
                             formatMarkdownText(reason)
@@ -579,13 +655,12 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           {content.step_sections && content.step_sections.length > 0 && (
             <div className="space-y-4">
               {content.step_sections.map((step, index) => {
-                // Define different color schemes for each step
                 const colorSchemes = [
-                  { bg: 'bg-blue-100/50', hover: 'hover:bg-blue-100', dark: 'dark:bg-blue-900/20 dark:hover:bg-blue-900/30', border: 'border-blue-200 dark:border-blue-800', iconBg: 'bg-blue-200 dark:bg-blue-800', contentBg: 'bg-blue-50/70 dark:bg-blue-900/20', contentBorder: 'border-blue-200 dark:border-blue-800', bulletColor: 'text-blue-600 dark:text-blue-400' },
-                  { bg: 'bg-green-100/50', hover: 'hover:bg-green-100', dark: 'dark:bg-green-900/20 dark:hover:bg-green-900/30', border: 'border-green-200 dark:border-green-800', iconBg: 'bg-green-200 dark:bg-green-800', contentBg: 'bg-green-50/70 dark:bg-green-900/20', contentBorder: 'border-green-200 dark:border-green-800', bulletColor: 'text-green-600 dark:text-green-400' },
-                  { bg: 'bg-yellow-100/50', hover: 'hover:bg-yellow-100', dark: 'dark:bg-yellow-900/20 dark:hover:bg-yellow-900/30', border: 'border-yellow-200 dark:border-yellow-800', iconBg: 'bg-yellow-200 dark:bg-yellow-800', contentBg: 'bg-yellow-50/70 dark:bg-yellow-900/20', contentBorder: 'border-yellow-200 dark:border-yellow-800', bulletColor: 'text-yellow-600 dark:text-yellow-400' },
-                  { bg: 'bg-orange-100/50', hover: 'hover:bg-orange-100', dark: 'dark:bg-orange-900/20 dark:hover:bg-orange-900/30', border: 'border-orange-200 dark:border-orange-800', iconBg: 'bg-orange-200 dark:bg-orange-800', contentBg: 'bg-orange-50/70 dark:bg-orange-900/20', contentBorder: 'border-orange-200 dark:border-orange-800', bulletColor: 'text-orange-600 dark:text-orange-400' },
-                  { bg: 'bg-pink-100/50', hover: 'hover:bg-pink-100', dark: 'dark:bg-pink-900/20 dark:hover:bg-pink-900/30', border: 'border-pink-200 dark:border-pink-800', iconBg: 'bg-pink-200 dark:bg-pink-800', contentBg: 'bg-pink-50/70 dark:bg-pink-900/20', contentBorder: 'border-pink-200 dark:border-pink-800', bulletColor: 'text-pink-600 dark:text-pink-400' }
+                  { bg: 'bg-[#FCF6BD]/20', hover: 'hover:bg-[#FCF6BD]/30', border: 'border-[#FCF6BD]/50', iconBg: 'bg-[#FCF6BD]/90' },
+                  { bg: 'bg-[#D0F4DE]/20', hover: 'hover:bg-[#D0F4DE]/30', border: 'border-[#D0F4DE]/50', iconBg: 'bg-[#D0F4DE]/90' },
+                  { bg: 'bg-[#A9DEF9]/20', hover: 'hover:bg-[#A9DEF9]/30', border: 'border-[#A9DEF9]/50', iconBg: 'bg-[#A9DEF9]/90' },
+                  { bg: 'bg-[#E4C1F9]/20', hover: 'hover:bg-[#E4C1F9]/30', border: 'border-[#E4C1F9]/50', iconBg: 'bg-[#E4C1F9]/90' },
+                  { bg: 'bg-[#CEF4FF]/20', hover: 'hover:bg-[#CEF4FF]/30', border: 'border-[#CEF4FF]/50', iconBg: 'bg-[#CEF4FF]/90' }
                 ];
                 
                 const colors = colorSchemes[index % colorSchemes.length];
@@ -594,21 +669,24 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   <div key={index} className="relative">
                     <Button
                       onClick={() => toggleSection(`step_${index}`)}
-                      className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[75px] touch-manipulation"
+                      onMouseEnter={() => setHoveredSection(`step_${index}`)}
+                      onMouseLeave={() => setHoveredSection(null)}
+                      onTouchStart={() => setHoveredSection(null)}
+                      className={`w-full flex items-center gap-4 mb-5 p-4 rounded-xl ${colors.bg} ${colors.hover} transition-colors min-h-[75px] touch-manipulation`}
                       variant="ghost"
                       size="lg"
                     >
                       <div className={`${colors.iconBg} rounded-full p-3 flex-shrink-0`}>
                         <StepIcon 
                           iconName={step.emoji} 
-                          className="h-5 w-5 text-gray-900 dark:text-white" 
+                          className="h-5 w-5 text-gray-900" 
                         />
                       </div>
                       <div className="flex-1 text-left min-w-0">
-                        <h3 className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white mb-1 break-words">
+                        <h3 className="text-sm sm:text-lg font-bold text-gray-900 mb-1 break-words">
                           {step.number}. {step.title.replace(/\*\*(.*?)\*\*/g, '$1')}
                         </h3>
-                        <p className="text-base text-gray-600 dark:text-gray-400">
+                        <p className="text-base text-gray-600">
                           {formatMarkdownText(step.intro)}
                         </p>
                       </div>
@@ -621,23 +699,39 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                       </div>
                     </Button>
                     
+                    {/* Custom Tooltip */}
+                    {hoveredSection === `step_${index}` && (
+                      <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
+                        {expandedSections[`step_${index}`] ? "Close section" : "Open section"}
+                      </div>
+                    )}
                     
                     {expandedSections[`step_${index}`] && (
-                      <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300">
+                      <div className={`${colors.bg} rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 border ${colors.border}`}>
                         <div>
                           <p className="font-semibold text-gray-900 dark:text-white mb-3">Try this:</p>
                           <ul className="space-y-2">
                             {step.try_this.map((item, itemIndex) => {
-                              // Check if item starts with arrow (for nested items)
-                              const isArrowItem = item.trim().startsWith('→');
+                              // Split on the first colon to get bold heading and description
+                              const colonIndex = item.indexOf(':');
+                              const hasColon = colonIndex !== -1;
+                              const heading = hasColon ? item.substring(0, colonIndex + 1) : '';
+                              const description = hasColon ? item.substring(colonIndex + 1).trim() : item;
+                              
+                              // Strip ** formatting from heading since we're manually applying <strong>
+                              const cleanHeading = heading.replace(/\*\*(.*?)\*\*/g, '$1');
                               
                               return (
-                                <li key={itemIndex} className={`flex items-start gap-3 ${isArrowItem ? 'ml-6' : ''}`}>
-                                  {!isArrowItem && (
-                                    <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
-                                  )}
-                                  <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {formatMarkdownText(item)}
+                                <li key={itemIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
+                                  <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform">•</span>
+                                  <span className="text-gray-900 py-1 leading-relaxed">
+                                    {hasColon ? (
+                                      <>
+                                        <strong>{cleanHeading}</strong> {formatMarkdownText(description)}
+                                      </>
+                                    ) : (
+                                      formatMarkdownText(item)
+                                    )}
                                   </span>
                                 </li>
                               );
@@ -645,7 +739,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                           </ul>
                         </div>
                         
-                        <div className={`${colors.contentBg} border-l-4 ${colors.contentBorder.replace('border-', 'border-l-')} pl-4 py-2 rounded-r-lg`}>
+                        <div className={`${colors.bg} border-l-4 ${colors.border} pl-4 py-2 rounded-r-lg`}>
                           <p className="text-sm text-gray-700 dark:text-gray-300">
                             <span className="font-semibold">💡 Tip:</span> {formatMarkdownText(step.tip)}
                           </p>
@@ -658,24 +752,24 @@ export default function FeelingPage({ params }: FeelingPageProps) {
             </div>
           )}
 
-          {/* Sources Section - styled like a step but without number */}
+          {/* Sources Section */}
           {sources && sources.length > 0 && (
             <div className="space-y-4">
               <div className="relative">
                 <Button
                   onClick={() => toggleSection('sources')}
-                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[75px] touch-manipulation"
+                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-[#CEFFF2]/20 hover:bg-[#CEFFF2]/30 transition-colors min-h-[75px] touch-manipulation"
                   variant="ghost"
                   size="lg"
                 >
-                  <div className="bg-purple-200 dark:bg-purple-800 rounded-full p-3 flex-shrink-0">
-                    <BookOpen className="h-5 w-5 text-gray-900 dark:text-white" />
+                  <div className="bg-[#CEFFF2]/90 rounded-full p-3 flex-shrink-0">
+                    <BookOpen className="h-5 w-5 text-gray-900" />
                   </div>
                   <div className="flex-1 text-left min-w-0">
-                    <h3 className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white mb-1 break-words">
-                      Sources: {content?.feeling_name} & ADHD
+                    <h3 className="text-sm sm:text-lg font-bold text-gray-900 mb-1 break-words">
+                      Sources: {content?.feeling_name}
                     </h3>
-                    <p className="text-base text-gray-600 dark:text-gray-400">
+                    <p className="text-base text-gray-600">
                       Explore the books, guides, and research that shaped this page
                     </p>
                   </div>
@@ -689,81 +783,78 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 </Button>
                 
                 {expandedSections['sources'] && (
-                  <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-6 animate-in slide-in-from-top duration-300">
-                    <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                      These resources explain the neurological roots of brain fog and offer strategies for clarity, focus, and function.
-                    </p>
-                    
-                    {/* Group sources by category and sort by count (most to least) */}
+                  <div className="bg-[#CEFFF2]/20 rounded-lg p-4 space-y-4 animate-in slide-in-from-top duration-300 mb-4">
+                    {/* Group sources by category and sort by count (descending) */}
                     {Object.entries(
                       sources.reduce((acc, source) => {
-                        if (!acc[source.category]) {
-                          acc[source.category] = []
-                        }
-                        acc[source.category].push(source)
+                        const category = source.category || 'Other'
+                        if (!acc[category]) acc[category] = []
+                        acc[category].push(source)
                         return acc
-                      }, {} as Record<string, FeelingSources[]>)
-                    ).sort(([, a], [, b]) => b.length - a.length).map(([category, categorySources]) => (
-                      <div key={category} className="relative">
-                        <Button
-                          onClick={() => toggleSection(`sources_${category.replace(/\s+/g, '_').toLowerCase()}`)}
-                          onMouseEnter={() => setHoveredSection(`sources_${category.replace(/\s+/g, '_').toLowerCase()}`)}
-                          onMouseLeave={() => setHoveredSection(null)}
-                          onTouchStart={() => setHoveredSection(null)}
-                          className="w-full flex items-center gap-3 mb-3 p-4 rounded-lg bg-purple-50/50 dark:bg-purple-900/20 hover:bg-purple-100/50 dark:hover:bg-purple-900/30 transition-colors touch-manipulation"
-                          variant="ghost"
-                          size="default"
-                        >
-                          <div className="flex-1 text-left">
-                            <h4 className="text-base font-semibold text-gray-900 dark:text-white">
-                              {category}
+                      }, {} as Record<string, typeof sources>)
+                    )
+                    .sort(([,a], [,b]) => b.length - a.length) // Sort by count descending
+                    .map(([category, categorySources], index) => {
+                      // Color palette for category headers (matching life_areas style)
+                      const colors = [
+                        { bg: 'bg-[#FBF8CC]/40', hover: 'hover:bg-[#FBF8CC]/60', border: 'border-[#FBF8CC]/60', iconBg: 'bg-[#FBF8CC]/90' }, // Lemon Chiffon
+                        { bg: 'bg-[#FDE4CF]/40', hover: 'hover:bg-[#FDE4CF]/60', border: 'border-[#FDE4CF]/60', iconBg: 'bg-[#FDE4CF]/90' }, // Champagne Pink
+                        { bg: 'bg-[#FFCFD2]/40', hover: 'hover:bg-[#FFCFD2]/60', border: 'border-[#FFCFD2]/60', iconBg: 'bg-[#FFCFD2]/90' }, // Baby Pink
+                        { bg: 'bg-[#F1C0E8]/40', hover: 'hover:bg-[#F1C0E8]/60', border: 'border-[#F1C0E8]/60', iconBg: 'bg-[#F1C0E8]/90' }, // Pink Lavender
+                        { bg: 'bg-[#CFBAF0]/40', hover: 'hover:bg-[#CFBAF0]/60', border: 'border-[#CFBAF0]/60', iconBg: 'bg-[#CFBAF0]/90' }, // Lavender Blue
+                        { bg: 'bg-[#A3C4F3]/40', hover: 'hover:bg-[#A3C4F3]/60', border: 'border-[#A3C4F3]/60', iconBg: 'bg-[#A3C4F3]/90' }, // Baby Blue Eyes
+                        { bg: 'bg-[#90DBF4]/40', hover: 'hover:bg-[#90DBF4]/60', border: 'border-[#90DBF4]/60', iconBg: 'bg-[#90DBF4]/90' }, // Sky Blue
+                        { bg: 'bg-[#8EECF5]/40', hover: 'hover:bg-[#8EECF5]/60', border: 'border-[#8EECF5]/60', iconBg: 'bg-[#8EECF5]/90' }, // Electric Blue
+                        { bg: 'bg-[#98F5E1]/40', hover: 'hover:bg-[#98F5E1]/60', border: 'border-[#98F5E1]/60', iconBg: 'bg-[#98F5E1]/90' }, // Magic Mint
+                        { bg: 'bg-[#B9FBC0]/40', hover: 'hover:bg-[#B9FBC0]/60', border: 'border-[#B9FBC0]/60', iconBg: 'bg-[#B9FBC0]/90' }  // Granny Smith Apple
+                      ]
+                      const colorScheme = colors[index % colors.length]
+                      
+                      return (
+                        <div key={category} className="space-y-2">
+                          <Button
+                            onClick={() => toggleSection(`source-category-${category}`)}
+                            className={`w-full flex items-center justify-between p-4 rounded-xl ${colorScheme.bg} ${colorScheme.hover} border ${colorScheme.border} transition-all duration-300 shadow-sm`}
+                            variant="ghost"
+                            size="lg"
+                          >
+                            <h4 className="font-bold text-gray-900 text-base">
+                              {category} ({categorySources.length} {categorySources.length === 1 ? 'source' : 'sources'})
                             </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                              {categorySources.length} resources
-                            </p>
-                          </div>
-                          <div className="flex-shrink-0">
-                            {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] ? (
-                              <Minus className="h-4 w-4 text-gray-500" />
+                            {expandedSections[`source-category-${category}`] ? (
+                              <Minus className="h-4 w-4 text-gray-600" />
                             ) : (
-                              <Plus className="h-4 w-4 text-gray-500" />
+                              <Plus className="h-4 w-4 text-gray-600" />
                             )}
-                          </div>
-                        </Button>
-                        
-                        {/* Custom Tooltip */}
-                        {hoveredSection === `sources_${category.replace(/\s+/g, '_').toLowerCase()}` && (
-                          <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                            {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] ? "Close section" : "Open section"}
-                          </div>
-                        )}
-                        
-                        {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] && (
-                          <div className="bg-purple-50/30 dark:bg-purple-900/10 rounded-lg p-4 space-y-3 animate-in slide-in-from-top duration-300 mb-4">
-                            {categorySources.map((source, index) => (
-                              <div key={index} className="border-l-3 border-purple-400 dark:border-purple-600 pl-4 py-2">
-                                <div className="flex items-start gap-2">
-                                  <span className="text-purple-600 dark:text-purple-400 mt-1 flex-shrink-0">•</span>
-                                  <div>
-                                    <h5 className="font-semibold text-gray-900 dark:text-white">
-                                      <span className="font-bold">{source.title}</span>
-                                      {source.authors && (
-                                        <span className="font-normal text-gray-600 dark:text-gray-400">
-                                          {' '}{source.authors}
-                                        </span>
-                                      )}
-                                    </h5>
-                                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mt-1">
-                                      {source.description.replace(/\s*—\s*/g, ', ')}
-                                    </p>
+                          </Button>
+                          
+                          {expandedSections[`source-category-${category}`] && (
+                            <div className={`pl-2 space-y-3 animate-in slide-in-from-top duration-200 ${colorScheme.bg} rounded-lg p-4 border ${colorScheme.border}`}>
+                              {categorySources.map((source, sourceIndex) => (
+                                <div key={sourceIndex} className="border-l-3 border-gray-400/40 pl-4 py-2">
+                                  <div className="flex items-start gap-2">
+                                    <span className="text-gray-900 mt-1 flex-shrink-0">•</span>
+                                    <div>
+                                      <h5 className="font-semibold text-gray-900">
+                                        {source.title}
+                                        {source.authors && (
+                                          <span className="font-normal text-gray-600">
+                                            {' by '}{source.authors}
+                                          </span>
+                                        )}
+                                      </h5>
+                                      <p className="text-sm text-gray-700 leading-relaxed mt-1">
+                                        {source.description.replace(/\s*—\s*/g, ', ')}
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
                   </div>
                 )}
               </div>
@@ -779,7 +870,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
             {/* Navigation Options - Excluding Feelings */}
             <div className="space-y-4">
-            {/* Top Row - Barriers and Life Areas */}
+            {/* Top Row - Barriers and Tasks */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button 
                 variant="outline"
@@ -805,7 +896,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 <div className="flex items-center gap-3">
                   <Wrench className="h-5 w-5" />
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific life areas?</div>
+                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific tasks?</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Life Areas</div>
                   </div>
                 </div>
@@ -875,11 +966,11 @@ export default function FeelingPage({ params }: FeelingPageProps) {
       
       {/* Share Modal */}
       <ShareModal
-        isOpen={showShareModal}
-        onClose={() => setShowShareModal(false)}
-        title={content?.feeling_name || ''}
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        title={content?.feeling_name || 'Feeling Page'}
         url={typeof window !== 'undefined' ? window.location.href : ''}
-        description={`Get help with feeling ${content?.feeling_name?.toLowerCase()} - ADHD-friendly strategies and support`}
+        description={`Get help with feeling ${content?.feeling_name?.toLowerCase()} - ADHD-friendly strategies and support.`}
       />
     </div>
   )

@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import { Inter } from 'next/font/google'
 import { Playfair_Display } from 'next/font/google'
 import './globals.css'
@@ -25,12 +26,48 @@ function GlobalModals() {
   )
 }
 
+const getPageType = () => {
+  if (typeof window === 'undefined') return 'home'
+  const path = window.location.pathname
+  
+  // Main content types
+  if (path.startsWith('/barriers')) return 'barrier'
+  if (path.startsWith('/feelings')) return 'feeling'
+  if (path.startsWith('/life_areas')) return 'task'
+  if (path.startsWith('/complex_loops')) return 'complex_loop'
+  if (path.startsWith('/identities')) return 'identity'
+  
+  // Resource pages
+  if (path.startsWith('/guides')) return 'guide'
+  if (path.startsWith('/scripts')) return 'script'
+  if (path.startsWith('/quizzes')) return 'quiz'
+  if (path.startsWith('/resources')) return 'resource'
+  
+  return 'home'
+}
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const router = useRouter()
+  const pathname = usePathname()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [pageType, setPageType] = useState('home')
+
+  // Update pageType when URL changes
+  useEffect(() => {
+    setPageType(getPageType())
+  }, [pathname])
+
+  const navigateHome = useCallback(() => {
+    router.push('/')
+  }, [router])
+
+  const navigateToPage = useCallback((page: string) => {
+    router.push(`/${page}`)
+  }, [router])
 
   return (
     <html lang="en">
@@ -57,11 +94,10 @@ export default function RootLayout({
               <div className="fixed inset-0 bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 -z-10" />
 
               <Header
-                navigateHome={() => (window.location.href = '/')}
-                navigateToPage={(page: string) =>
-                  (window.location.href = `/${page}`)
-                }
+                navigateHome={navigateHome}
+                navigateToPage={navigateToPage}
                 onSearchOpen={() => setIsSearchOpen(true)}
+                pageType={pageType}
               />
 
               <main className="flex-1 flex flex-col relative z-0">
@@ -69,9 +105,7 @@ export default function RootLayout({
               </main>
 
               <Footer
-                navigateToPage={(page: string) =>
-                  (window.location.href = `/${page}`)
-                }
+                navigateToPage={navigateToPage}
               />
 
               <SearchModal

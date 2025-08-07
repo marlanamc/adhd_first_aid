@@ -85,6 +85,8 @@ export type {
   ComplexLoopsContent,
   FeelingSources,
   BarrierSources,
+  LifeAreaSources,
+  IdentitySources,
 } from '../types/database';
 
 // Database schema for reference:
@@ -332,6 +334,24 @@ export async function getAllComplexLoopsContent() {
   }
 }
 
+// Complex Loop Sources Functions
+export async function getComplexLoopSources(loopSlug: string) {
+  try {
+    const { data, error } = await supabase
+      .from('complex_loop_sources')
+      .select('*')
+      .eq('loop_slug', loopSlug)
+      .order('category, title');
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching complex loop sources:', error);
+    return {
+      data: null,
+      error: error instanceof Error ? error : new Error('Failed to fetch complex loop sources')
+    };
+  }
+}
+
 // Feeling Sources Functions
 export async function getFeelingSources(feelingSlug: string) {
   try {
@@ -367,6 +387,43 @@ export async function getBarrierSources(barrierSlug: string) {
       data: null, 
       error: error instanceof Error ? error : new Error('Failed to fetch barrier sources') 
     };
+  }
+}
+
+// Life Area Sources Functions
+export async function getLifeAreaSources(lifeAreaSlug: string) {
+  try {
+    const { data, error } = await supabase
+      .from('life_areas_sources')
+      .select('*')
+      .eq('life_area_slug', lifeAreaSlug)  
+      .order('category, title');
+    
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching life area sources:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error : new Error('Failed to fetch life area sources') 
+    };
+  }
+}
+
+// Identity Sources Functions
+export async function getIdentitySources(identitySlug: string) {
+  try {
+    const { data, error } = await supabase
+      .from('identity_sources')
+      .select('*')
+      .eq('identity_slug', identitySlug)
+      .order('category, title')
+    return { data, error }
+  } catch (error) {
+    console.error('Error fetching identity sources:', error)
+    return {
+      data: null,
+      error: error instanceof Error ? error : new Error('Failed to fetch identity sources')
+    }
   }
 }
 

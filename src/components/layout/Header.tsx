@@ -11,9 +11,40 @@ interface HeaderProps {
   navigateHome: () => void
   navigateToPage: (page: string) => void
   onSearchOpen: () => void
+  pageType?: 'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' | 'identity' | 'guide' | 'script' | 'quiz' | 'resource'
 }
 
-export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderProps) {
+const getLogoColor = (pageType?: string, isDark: boolean) => {
+  switch (pageType) {
+    // Main content types
+    case 'barrier':
+      return isDark ? 'text-orange-300' : 'text-orange-500'
+    case 'feeling':
+      return isDark ? 'text-pink-300' : 'text-pink-500'
+    case 'task':
+      return isDark ? 'text-green-300' : 'text-green-500'
+    case 'complex_loop':
+      return isDark ? 'text-blue-300' : 'text-blue-500'
+    case 'identity':
+      return isDark ? 'text-purple-300' : 'text-purple-500'
+    
+    // Resource pages
+    case 'guide':
+      return isDark ? 'text-blue-300' : 'text-blue-500'
+    case 'script':
+      return isDark ? 'text-purple-300' : 'text-purple-500'
+    case 'quiz':
+      return isDark ? 'text-emerald-300' : 'text-emerald-500'
+    case 'resource':
+      return isDark ? 'text-pink-300' : 'text-pink-500'
+    
+    // Default for home and unspecified pages
+    default:
+      return isDark ? 'text-blue-300' : 'text-pink-500'
+  }
+}
+
+export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }: HeaderProps) {
   const [showDropdown, setShowDropdown] = useState(false)
   const { theme, toggleTheme } = useTheme()
   const { favoritesCount } = useFavorites()
@@ -31,7 +62,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen }: HeaderPro
                 className="flex items-center hover:opacity-60 transition-opacity duration-300 cursor-pointer"
               >
                 <span className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-[#22223B] dark:text-white">
-                  ADHD <span className="text-pink-500 dark:text-blue-300">First Aid</span> Kit
+                  ADHD <span className={getLogoColor(pageType, theme === 'dark')}>First Aid</span> Kit
                 </span>
               </button>
             </div>

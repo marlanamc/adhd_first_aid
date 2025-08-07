@@ -237,3 +237,25 @@ export interface BarrierSources {
   created_at: string;
   updated_at: string;
 }
+
+export interface LifeAreaSources {
+  id: string;
+  life_area_slug: string;
+  category: string;
+  title: string;
+  authors: string | null;
+  description: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IdentitySources {
+  id: string;
+  identity_slug: string;
+  category: string;
+  title: string;
+  authors: string | null;
+  description: string;
+  created_at: string;
+  updated_at: string;
+}

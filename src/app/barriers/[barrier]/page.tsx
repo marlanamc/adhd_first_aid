@@ -15,6 +15,7 @@ import { getBarriersContent, getBarrierSources } from '@/lib/supabase'
 import type { BarriersContent, BarrierSources } from '@/lib/supabase'
 import { StepIcon } from '@/components/ui/StepIcon';
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
+import { Header } from '@/components/layout/Header';
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
@@ -421,15 +422,12 @@ export default function BarrierPage({ params }: BarrierPageProps) {
             <div className="relative">
               <Button
                 onClick={() => toggleSection('gentle')}
-                onMouseEnter={() => setHoveredSection('gentle')}
-                onMouseLeave={() => setHoveredSection(null)}
-                onTouchStart={() => setHoveredSection(null)}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors border border-green-200 dark:border-green-800 min-h-[60px] touch-manipulation"
+                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#A0E8AF]/40 hover:shadow-md transition-shadow duration-300 border border-[#A0E8AF]/60 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
               >
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-green-600 dark:text-green-400" />
+                  <Sparkles className="h-5 w-5 text-[#2D9C3C]" />
                   <h3 className="text-base font-semibold text-gray-900 dark:text-white">
                     Soft Start
                   </h3>
@@ -443,15 +441,8 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                 </div>
               </Button>
               
-              {/* Custom Tooltip */}
-              {hoveredSection === 'gentle' && (
-                <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                  {expandedSections['gentle'] ? "Close section" : "Open section"}
-                </div>
-              )}
-              
               {expandedSections['gentle'] && (
-                <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-green-200 dark:border-green-800 mt-2">
+                <div className="bg-[#A0E8AF]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
                   <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
                     {formatMarkdownText(content.gentle_advice)}
                   </p>
@@ -463,38 +454,28 @@ export default function BarrierPage({ params }: BarrierPageProps) {
             <div className="relative">
               <Button
                 onClick={() => toggleSection('stern')}
-                onMouseEnter={() => setHoveredSection('stern')}
-                onMouseLeave={() => setHoveredSection(null)}
-                onTouchStart={() => setHoveredSection(null)}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800 min-h-[60px] touch-manipulation"
+                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#F87171]/30 hover:shadow-md transition-shadow duration-300 border border-[#F87171]/50 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
               >
                 <div className="flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-red-600 dark:text-red-400" />
+                  <Zap className="h-5 w-5 text-[#B91C1C]" />
                   <h3 className="text-base font-semibold text-gray-900 dark:text-white">
                     Tough Love
                   </h3>
                 </div>
                 <div className="flex-shrink-0 ml-4">
                   {expandedSections['stern'] ? (
-                    <Minus className="h-5 w-5 text-gray-500" />
+                    <Minus className="h-5 w-5 text-[#EA580C]" />
                   ) : (
-                    <Plus className="h-5 w-5 text-gray-500" />
+                    <Plus className="h-5 w-5 text-[#EA580C]" />
                   )}
                 </div>
               </Button>
 
-              {/* Custom Tooltip */}
-              {hoveredSection === 'stern' && (
-                <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                  {expandedSections['stern'] ? "Close section" : "Open section"}
-                </div>
-              )}
-
               {expandedSections['stern'] && (
-                <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-red-200 dark:border-red-800 mt-2">
-                  <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+                <div className="bg-[#F87171]/30 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#F87171]/50 mt-2">
+                  <p className="text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                     {formatMarkdownText(content.stern_advice)}
                   </p>
                 </div>
@@ -516,22 +497,19 @@ export default function BarrierPage({ params }: BarrierPageProps) {
           <div className="relative mb-4">
             <Button
               onClick={() => toggleSection('adhd_reasons')}
-              onMouseEnter={() => setHoveredSection('adhd_reasons')}
-              onMouseLeave={() => setHoveredSection(null)}
-              onTouchStart={() => setHoveredSection(null)}
-              className="w-full flex items-center gap-4 mb-5 p-5 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[90px] touch-manipulation"
+              className="w-full flex items-center gap-4 mb-5 p-5 rounded-xl bg-[#FFADD3]/20 hover:bg-[#FFADD3]/30 transition-colors min-h-[90px] touch-manipulation"
               variant="ghost"
               size="lg"
             >
-              <div className="bg-purple-200 dark:bg-purple-800 rounded-full p-3 flex-shrink-0">
-                <Brain className="h-5 w-5 text-gray-900 dark:text-white" />
+              <div className="bg-[#FFADD3]/90 rounded-full p-3 flex-shrink-0">
+                <Brain className="h-5 w-5 text-gray-900" />
               </div>
               <div className="flex-1 text-left">
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                <h3 className="text-lg font-bold text-gray-900 mb-1">
                   How ADHD Amplifies The Struggle
                 </h3>
-                <p className="text-base text-gray-600 dark:text-gray-400">
-                  Understanding the why
+                <p className="text-base text-gray-600">
+                  The hidden drivers
                 </p>
               </div>
               <div className="flex-shrink-0">
@@ -543,30 +521,27 @@ export default function BarrierPage({ params }: BarrierPageProps) {
               </div>
             </Button>
             
-            {/* Custom Tooltip */}
-            {hoveredSection === 'adhd_reasons' && (
-              <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                {expandedSections['adhd_reasons'] ? "Close section" : "Open section"}
-              </div>
-            )}
-            
             {expandedSections['adhd_reasons'] && (
-              <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 border border-purple-200 dark:border-purple-800">
+              <div className="bg-[#FFADD3]/20 rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 border border-[#FFADD3]/30">
                 <ul className="space-y-3">
                   {content.adhd_reasons.map((reason, index) => {
+                    // Define emojis for each ADHD reason
+                    const reasonEmojis = ['🧩', '⏰', '🧠', '💔', '⚡'];
+                    const emoji = reasonEmojis[index % reasonEmojis.length];
+                    
                     // Split on the first colon to get bold heading and description
                     const colonIndex = reason.indexOf(':');
                     const hasColon = colonIndex !== -1;
-                    const heading = hasColon ? reason.substring(0, colonIndex + 1) : '';
+                    const heading = hasColon ? reason.substring(0, colonIndex) : '';
                     const description = hasColon ? reason.substring(colonIndex + 1).trim() : reason;
                     
                     return (
                       <li key={index} className="flex items-start gap-3">
-                        <span className="text-purple-600 dark:text-purple-400 mt-1 flex-shrink-0">•</span>
+                        <span className="text-2xl mt-0 flex-shrink-0">{emoji}</span>
                         <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
                           {hasColon ? (
                             <>
-                              <strong>{heading}</strong> {formatMarkdownText(description)}
+                              <strong>{heading}</strong> - {formatMarkdownText(description)}
                             </>
                           ) : (
                             formatMarkdownText(reason)
@@ -586,11 +561,11 @@ export default function BarrierPage({ params }: BarrierPageProps) {
               {content.step_sections.map((step, index) => {
                 // Define different color schemes for each step
                 const colorSchemes = [
-                  { bg: 'bg-blue-100/50', hover: 'hover:bg-blue-100', dark: 'dark:bg-blue-900/20 dark:hover:bg-blue-900/30', border: 'border-blue-200 dark:border-blue-800', iconBg: 'bg-blue-200 dark:bg-blue-800', contentBg: 'bg-blue-50/70 dark:bg-blue-900/20', contentBorder: 'border-blue-200 dark:border-blue-800', bulletColor: 'text-blue-600 dark:text-blue-400' },
-                  { bg: 'bg-green-100/50', hover: 'hover:bg-green-100', dark: 'dark:bg-green-900/20 dark:hover:bg-green-900/30', border: 'border-green-200 dark:border-green-800', iconBg: 'bg-green-200 dark:bg-green-800', contentBg: 'bg-green-50/70 dark:bg-green-900/20', contentBorder: 'border-green-200 dark:border-green-800', bulletColor: 'text-green-600 dark:text-green-400' },
-                  { bg: 'bg-yellow-100/50', hover: 'hover:bg-yellow-100', dark: 'dark:bg-yellow-900/20 dark:hover:bg-yellow-900/30', border: 'border-yellow-200 dark:border-yellow-800', iconBg: 'bg-yellow-200 dark:bg-yellow-800', contentBg: 'bg-yellow-50/70 dark:bg-yellow-900/20', contentBorder: 'border-yellow-200 dark:border-yellow-800', bulletColor: 'text-yellow-600 dark:text-yellow-400' },
-                  { bg: 'bg-orange-100/50', hover: 'hover:bg-orange-100', dark: 'dark:bg-orange-900/20 dark:hover:bg-orange-900/30', border: 'border-orange-200 dark:border-orange-800', iconBg: 'bg-orange-200 dark:bg-orange-800', contentBg: 'bg-orange-50/70 dark:bg-orange-900/20', contentBorder: 'border-orange-200 dark:border-orange-800', bulletColor: 'text-orange-600 dark:text-orange-400' },
-                  { bg: 'bg-pink-100/50', hover: 'hover:bg-pink-100', dark: 'dark:bg-pink-900/20 dark:hover:bg-pink-900/30', border: 'border-pink-200 dark:border-pink-800', iconBg: 'bg-pink-200 dark:bg-pink-800', contentBg: 'bg-pink-50/70 dark:bg-pink-900/20', contentBorder: 'border-pink-200 dark:border-pink-800', bulletColor: 'text-pink-600 dark:text-pink-400' }
+                  { bg: 'bg-[#FCF6BD]/20', hover: 'hover:bg-[#FCF6BD]/30', border: 'border-[#FCF6BD]/50', iconBg: 'bg-[#FCF6BD]/90' },
+                  { bg: 'bg-[#D0F4DE]/20', hover: 'hover:bg-[#D0F4DE]/30', border: 'border-[#D0F4DE]/50', iconBg: 'bg-[#D0F4DE]/90' },
+                  { bg: 'bg-[#A9DEF9]/20', hover: 'hover:bg-[#A9DEF9]/30', border: 'border-[#A9DEF9]/50', iconBg: 'bg-[#A9DEF9]/90' },
+                  { bg: 'bg-[#E4C1F9]/20', hover: 'hover:bg-[#E4C1F9]/30', border: 'border-[#E4C1F9]/50', iconBg: 'bg-[#E4C1F9]/90' },
+                  { bg: 'bg-[#ffdace]/20', hover: 'hover:bg-[#ffdace]/30', border: 'border-[#ffdace]/50', iconBg: 'bg-[#ffdace]/90' }
                 ];
                 
                 const colors = colorSchemes[index % colorSchemes.length];
@@ -599,10 +574,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                   <div key={index} className="relative">
                     <Button
                       onClick={() => toggleSection(`step_${index}`)}
-                      onMouseEnter={() => setHoveredSection(`step_${index}`)}
-                      onMouseLeave={() => setHoveredSection(null)}
-                      onTouchStart={() => setHoveredSection(null)}
-                      className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[75px] touch-manipulation"
+                      className={`w-full flex items-center gap-4 mb-5 p-4 rounded-xl ${colors.bg} ${colors.hover} transition-colors min-h-[75px] touch-manipulation`}
                       variant="ghost"
                       size="lg"
                     >
@@ -629,36 +601,17 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                       </div>
                     </Button>
                     
-                    {/* Custom Tooltip */}
-                    {hoveredSection === `step_${index}` && (
-                      <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                        {expandedSections[`step_${index}`] ? "Close section" : "Open section"}
-                      </div>
-                    )}
-                    
                     {expandedSections[`step_${index}`] && (
-                      <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300">
+                      <div className={`${colors.bg} rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 border ${colors.border}`}>
                         <div>
                           <p className="font-semibold text-gray-900 dark:text-white mb-3">Try this:</p>
                           <ul className="space-y-2">
                             {step.try_this.map((item, itemIndex) => {
-                              // Split on the first colon to get bold heading and description
-                              const colonIndex = item.indexOf(':');
-                              const hasColon = colonIndex !== -1;
-                              const heading = hasColon ? item.substring(0, colonIndex + 1) : '';
-                              const description = hasColon ? item.substring(colonIndex + 1).trim() : item;
-                              
                               return (
-                                <li key={itemIndex} className="flex items-start gap-3">
-                                  <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
-                                  <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {hasColon ? (
-                                      <>
-                                        <strong>{heading}</strong> {formatMarkdownText(description)}
-                                      </>
-                                    ) : (
-                                      formatMarkdownText(item)
-                                    )}
+                                <li key={itemIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
+                                  <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform">•</span>
+                                  <span className="text-gray-900 py-1 leading-relaxed">
+                                    {formatMarkdownText(item)}
                                   </span>
                                 </li>
                               );
@@ -666,7 +619,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                           </ul>
                         </div>
                         
-                        <div className={`${colors.contentBg} border-l-4 ${colors.contentBorder.replace('border-', 'border-l-')} pl-4 py-2 rounded-r-lg`}>
+                        <div className={`${colors.bg} border-l-4 ${colors.border} pl-4 py-2 rounded-r-lg`}>
                           <p className="text-sm text-gray-700 dark:text-gray-300">
                             <span className="font-semibold">💡 Tip:</span> {formatMarkdownText(step.tip)}
                           </p>
@@ -685,15 +638,12 @@ export default function BarrierPage({ params }: BarrierPageProps) {
               <div className="relative">
                 <Button
                   onClick={() => toggleSection('sources')}
-                  onMouseEnter={() => setHoveredSection('sources')}
-                  onMouseLeave={() => setHoveredSection(null)}
-                  onTouchStart={() => setHoveredSection(null)}
-                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[75px] touch-manipulation"
+                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-[#CEFFF2]/20 hover:bg-[#CEFFF2]/30 transition-colors min-h-[75px] touch-manipulation"
                   variant="ghost"
                   size="lg"
                 >
-                  <div className="bg-purple-200 dark:bg-purple-800 rounded-full p-3 flex-shrink-0">
-                    <BookOpen className="h-5 w-5 text-gray-900 dark:text-white" />
+                  <div className="bg-[#CEFFF2]/90 rounded-full p-3 flex-shrink-0">
+                    <BookOpen className="h-5 w-5 text-gray-900" />
                   </div>
                   <div className="flex-1 text-left min-w-0">
                     <h3 className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white mb-1 break-words">
@@ -712,13 +662,6 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                   </div>
                 </Button>
                 
-                {/* Custom Tooltip */}
-                {hoveredSection === 'sources' && (
-                  <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                    {expandedSections['sources'] ? "Close section" : "Open section"}
-                  </div>
-                )}
-                
                 {expandedSections['sources'] && (
                   <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-6 animate-in slide-in-from-top duration-300">
                     <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
@@ -728,73 +671,78 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                     {/* Group sources by category and sort by count (most to least) */}
                     {Object.entries(
                       sources.reduce((acc, source) => {
-                        if (!acc[source.category]) {
-                          acc[source.category] = []
+                        const category = source.category || 'Other'
+                        if (!acc[category]) {
+                          acc[category] = []
                         }
-                        acc[source.category].push(source)
+                        acc[category].push(source)
                         return acc
                       }, {} as Record<string, BarrierSources[]>)
-                    ).sort(([, a], [, b]) => b.length - a.length).map(([category, categorySources]) => (
-                      <div key={category} className="relative">
-                        <Button
-                          onClick={() => toggleSection(`sources_${category.replace(/\s+/g, '_').toLowerCase()}`)}
-                          onMouseEnter={() => setHoveredSection(`sources_${category.replace(/\s+/g, '_').toLowerCase()}`)}
-                          onMouseLeave={() => setHoveredSection(null)}
-                          onTouchStart={() => setHoveredSection(null)}
-                          className="w-full flex items-center gap-3 mb-3 p-4 rounded-lg bg-purple-50/50 dark:bg-purple-900/20 hover:bg-purple-100/50 dark:hover:bg-purple-900/30 transition-colors touch-manipulation"
-                          variant="ghost"
-                          size="default"
-                        >
-                          <div className="flex-1 text-left">
-                            <h4 className="text-base font-semibold text-gray-900 dark:text-white">
-                              {category}
-                            </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                              {categorySources.length} resources
-                            </p>
-                          </div>
-                          <div className="flex-shrink-0">
-                            {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] ? (
-                              <Minus className="h-4 w-4 text-gray-500" />
-                            ) : (
-                              <Plus className="h-4 w-4 text-gray-500" />
-                            )}
-                          </div>
-                        </Button>
-                        
-                        {/* Custom Tooltip */}
-                        {hoveredSection === `sources_${category.replace(/\s+/g, '_').toLowerCase()}` && (
-                          <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                            {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] ? "Close section" : "Open section"}
-                          </div>
-                        )}
-                        
-                        {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] && (
-                          <div className="bg-purple-50/30 dark:bg-purple-900/10 rounded-lg p-4 space-y-3 animate-in slide-in-from-top duration-300 mb-4">
-                            {categorySources.map((source, index) => (
-                              <div key={index} className="border-l-3 border-purple-400 dark:border-purple-600 pl-4 py-2">
-                                <div className="flex items-start gap-2">
-                                  <span className="text-purple-600 dark:text-purple-400 mt-1 flex-shrink-0">•</span>
-                                  <div>
-                                    <h5 className="font-semibold text-gray-900 dark:text-white">
-                                      {source.title}
-                                      {source.authors && (
-                                        <span className="font-normal text-gray-600 dark:text-gray-400">
-                                          {' by '}{source.authors}
-                                        </span>
-                                      )}
-                                    </h5>
-                                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mt-1">
-                                      {source.description.replace(/\s*—\s*/g, ', ')}
-                                    </p>
+                    ).sort(([, a], [, b]) => b.length - a.length).map(([category, categorySources], index) => {
+                      // Define color schemes for categories (same as feelings)
+                      const colors = [
+                        { bg: 'bg-[#FBF8CC]/40', hover: 'hover:bg-[#FBF8CC]/60', border: 'border-[#FBF8CC]/30', text: 'text-gray-900', bulletColor: 'text-orange-600' },
+                        { bg: 'bg-[#FFD3A5]/40', hover: 'hover:bg-[#FFD3A5]/60', border: 'border-[#FFD3A5]/30', text: 'text-gray-900', bulletColor: 'text-red-600' },
+                        { bg: 'bg-[#FD9FDD]/40', hover: 'hover:bg-[#FD9FDD]/60', border: 'border-[#FD9FDD]/30', text: 'text-gray-900', bulletColor: 'text-pink-600' },
+                        { bg: 'bg-[#EEAECA]/40', hover: 'hover:bg-[#EEAECA]/60', border: 'border-[#EEAECA]/30', text: 'text-gray-900', bulletColor: 'text-purple-600' },
+                        { bg: 'bg-[#94F3E4]/40', hover: 'hover:bg-[#94F3E4]/60', border: 'border-[#94F3E4]/30', text: 'text-gray-900', bulletColor: 'text-teal-600' },
+                        { bg: 'bg-[#B8E6B8]/40', hover: 'hover:bg-[#B8E6B8]/60', border: 'border-[#B8E6B8]/30', text: 'text-gray-900', bulletColor: 'text-green-600' },
+                        { bg: 'bg-[#A8E6CF]/40', hover: 'hover:bg-[#A8E6CF]/60', border: 'border-[#A8E6CF]/30', text: 'text-gray-900', bulletColor: 'text-emerald-600' },
+                        { bg: 'bg-[#C7CEEA]/40', hover: 'hover:bg-[#C7CEEA]/60', border: 'border-[#C7CEEA]/30', text: 'text-gray-900', bulletColor: 'text-indigo-600' },
+                        { bg: 'bg-[#FFDAC1]/40', hover: 'hover:bg-[#FFDAC1]/60', border: 'border-[#FFDAC1]/30', text: 'text-gray-900', bulletColor: 'text-orange-500' },
+                        { bg: 'bg-[#FFB7B2]/40', hover: 'hover:bg-[#FFB7B2]/60', border: 'border-[#FFB7B2]/30', text: 'text-gray-900', bulletColor: 'text-red-500' }
+                      ]
+                      const colorScheme = colors[index % colors.length]
+                      
+                      return (
+                        <div key={category} className="relative">
+                          <Button
+                            onClick={() => toggleSection(`sources_${category.replace(/\s+/g, '_').toLowerCase()}`)}
+                            className={`w-full flex items-center gap-3 mb-3 p-4 rounded-lg ${colorScheme.bg} ${colorScheme.hover} transition-all duration-200 touch-manipulation border ${colorScheme.border}`}
+                            variant="ghost"
+                            size="default"
+                          >
+                            <div className="flex-1 text-left">
+                              <h4 className="font-bold text-gray-900 text-base">
+                                {category} ({categorySources.length} {categorySources.length === 1 ? 'source' : 'sources'})
+                              </h4>
+                            </div>
+                            <div className="flex-shrink-0">
+                              {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] ? (
+                                <Minus className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                              ) : (
+                                <Plus className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                              )}
+                            </div>
+                          </Button>
+                          
+                          {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] && (
+                            <div className={`${colorScheme.bg} rounded-lg p-4 space-y-3 animate-in slide-in-from-top duration-300 mb-4 border ${colorScheme.border}`}>
+                              {categorySources.map((source, sourceIndex) => (
+                                <div key={sourceIndex} className={`border-l-3 ${colorScheme.border} pl-4 py-2`}>
+                                  <div className="flex items-start gap-2">
+                                    <span className={`${colorScheme.bulletColor} dark:${colorScheme.bulletColor} mt-1 flex-shrink-0`}>•</span>
+                                    <div>
+                                      <h5 className="font-semibold text-gray-900 dark:text-white">
+                                        {source.title}
+                                        {source.authors && (
+                                          <span className="font-normal text-gray-600 dark:text-gray-400">
+                                            {' by '}{source.authors}
+                                          </span>
+                                        )}
+                                      </h5>
+                                      <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mt-1">
+                                        {source.description.replace(/\s*—\s*/g, ', ')}
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
                   </div>
                 )}
               </div>

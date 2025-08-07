@@ -1,42 +1,57 @@
-#!/usr/bin/env tsx
-
-// Test URL conversion logic
-function convertUrlToTaskName(urlParam: string): string {
-  let taskName = decodeURIComponent(urlParam)
-    .split('-')
-    .map(word => {
-      // Special case for ADHD
-      if (word.toLowerCase() === 'adhd') {
-        return 'ADHD'
-      }
-      return word.charAt(0).toUpperCase() + word.slice(1)
-    })
-    .join(' ')
-    .replace(/And/g, '&')
+// Test the URL conversion logic from the [life_area]/page.tsx
+function testUrlConversion() {
+  console.log('🔄 TESTING URL TO TASK NAME CONVERSION');
+  console.log('====================================');
   
-  // Handle special URL to database name mappings
-  const urlMappings: Record<string, string> = {
-    'Hygiene': 'ADHD & Hygiene',
-    'To Do Lists': 'To-Do Lists',
-    'Big Exam Prep Long Term Studying': 'Big Exam Prep (Long-Term Studying)'
+  const testSlugs = [
+    'budgeting-and-tracking',
+    'focus-and-time', 
+    'bills-and-money',
+    'adhd-and-hygiene',
+    'regular-task-name'
+  ];
+  
+  testSlugs.forEach(slug => {
+    // Replicate the conversion logic from [life_area]/page.tsx
+    let taskName = decodeURIComponent(slug)
+      .split('-')
+      .filter(word => word.length > 0) // Remove empty strings from double dashes
+      .map(word => {
+        // Special case for ADHD
+        if (word.toLowerCase() === 'adhd') {
+          return 'ADHD';
+        }
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(' ')
+      .replace(/And/g, '&'); // Convert "And" back to "&"
+    
+    // Apply URL mappings (from the actual code)
+    const urlMappings: Record<string, string> = {
+      'ADHD Hygiene': 'Hygiene',
+      'Bills Money': 'Bills & Money',
+      'To Do Lists': 'To-Do Lists',
+      'Big Exam Prep Long Term Studying': 'Big Exam Prep (Long-Term Studying)'
+    };
+    
+    taskName = urlMappings[taskName] || taskName;
+    
+    console.log(`\nSlug: "${slug}"`);
+    console.log(`  Converts to: "${taskName}"`);
+    console.log(`  Expected: ${getExpectedTaskName(slug)}`);
+    console.log(`  Match: ${taskName === getExpectedTaskName(slug) ? '✅' : '❌'}`);
+  });
+  
+  function getExpectedTaskName(slug: string): string {
+    const expected: Record<string, string> = {
+      'budgeting-and-tracking': 'Budgeting & Tracking',
+      'focus-and-time': 'Focus & Time',
+      'bills-and-money': 'Bills & Money', 
+      'adhd-and-hygiene': 'Hygiene', // Special mapping
+      'regular-task-name': 'Regular Task Name'
+    };
+    return expected[slug] || 'Unknown';
   }
-  
-  return urlMappings[taskName] || taskName
 }
 
-console.log('🧪 Testing URL to Task Name conversion:')
-console.log('')
-
-const testCases = [
-  'hygiene',
-  'adhd-and-hygiene', 
-  'cleaning',
-  'bills-and-money',
-  'to-do-lists',
-  'big-exam-prep-long-term-studying'
-]
-
-testCases.forEach(urlParam => {
-  const result = convertUrlToTaskName(urlParam)
-  console.log(`"${urlParam}" → "${result}"`)
-})
+testUrlConversion();

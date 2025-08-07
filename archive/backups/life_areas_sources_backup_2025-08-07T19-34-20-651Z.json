@@ -1,0 +1,2712 @@
+[
+  {
+    "id": "d108cd25-0a90-4486-b240-d2f69046f5b1",
+    "life_area_slug": "car-maintenance",
+    "category": "Systems & Scheduling",
+    "title": "Dawson, Peg & Guare, Richard.",
+    "authors": "Dawson, Peg & Guare, Richard",
+    "description": "_Smart but Scattered Guide to Success_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "013f821b-133b-4345-bfab-11f015ccd372",
+    "life_area_slug": "car-maintenance",
+    "category": "Systems & Scheduling",
+    "title": "Forte, Tiago.",
+    "authors": "Forte, Tiago",
+    "description": "_Building a Second Brain_ & _The PARA Method_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "4cf649b9-649b-4011-b7c2-cafa1b8df7e4",
+    "life_area_slug": "car-maintenance",
+    "category": "Systems & Scheduling",
+    "title": "Paul, Jaclyn.",
+    "authors": "Paul, Jaclyn",
+    "description": "_Order from Chaos_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "c0a0dd80-ecad-433f-96ac-1a7d73cd1edb",
+    "life_area_slug": "car-maintenance",
+    "category": "Systems & Scheduling",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "DOMI, Ju",
+    "description": "_Productivity With ADHD: Complete Guide_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "ff5ebf8e-0792-4baa-93b4-1d8a4c523e32",
+    "life_area_slug": "car-maintenance",
+    "category": "Systems & Scheduling",
+    "title": "Start Finishing (2019)",
+    "authors": "Gilkey, Charlie",
+    "description": "_Start Finishing_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "7b081640-36dc-4de9-a739-f1eb3b1283fd",
+    "life_area_slug": "car-maintenance",
+    "category": "Systems & Scheduling",
+    "title": "Kinzer, Nikki & Wright, Pete D.",
+    "authors": "Kinzer, Nikki & Wright, Pete D",
+    "description": "_Unapologetically ADHD_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "00d64db4-d3b4-4ef1-86ce-2a14606683fd",
+    "life_area_slug": "car-maintenance",
+    "category": "Systems & Scheduling",
+    "title": "You Mean I’m Not Lazy, Stupid or Crazy?!",
+    "authors": "Kelly, Kate & Ramundo, Peggy",
+    "description": "_You Mean I’m Not Lazy, Stupid, or Crazy?!_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "d53ffb6d-b487-46c0-8065-dfe7e49aff1f",
+    "life_area_slug": "car-maintenance",
+    "category": "Emotional Reframing & Mindset",
+    "title": "How to Keep House While Drowning (2022)",
+    "authors": "Davis, KC",
+    "description": "_How to Keep House While Drowning_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "15710c48-c320-47ad-9925-474b48909c2e",
+    "life_area_slug": "car-maintenance",
+    "category": "Emotional Reframing & Mindset",
+    "title": "Lakshmin, Pooja.",
+    "authors": "Lakshmin, Pooja",
+    "description": "_Real Self-Care_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "ddb37d12-c343-42e1-8477-1931d2ff94de",
+    "life_area_slug": "car-maintenance",
+    "category": "Emotional Reframing & Mindset",
+    "title": "Le Cunff, Anne-Laure.",
+    "authors": "Le Cunff, Anne-Laure",
+    "description": "_Tiny Experiments_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "b08910ea-bc27-4092-84b6-9b6d3fdf13f7",
+    "life_area_slug": "car-maintenance",
+    "category": "Emotional Reframing & Mindset",
+    "title": "McCabe, Jessica.",
+    "authors": "McCabe, Jessica",
+    "description": "_How to ADHD_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "89ca081d-0a9e-4567-a825-283c526319eb",
+    "life_area_slug": "car-maintenance",
+    "category": "Support & Delegation",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "314e73d5-30fd-4c98-93db-93d1caf3a9e9",
+    "life_area_slug": "car-maintenance",
+    "category": "Support & Delegation",
+    "title": "Miller, William R. & Rollnick, Stephen.",
+    "authors": "Miller, William R. & Rollnick, Stephen",
+    "description": "_Motivational Interviewing_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "b6790f5a-ecd4-4f1e-865e-84a45be31037",
+    "life_area_slug": "car-maintenance",
+    "category": "Support & Delegation",
+    "title": "Solden, Sari",
+    "authors": "Women with Attention Deficit Disorder",
+    "description": "_Women with Attention Deficit Disorder_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "5ead7c17-ef35-4741-8243-9e2eb9ef257a",
+    "life_area_slug": "car-maintenance",
+    "category": "Support & Delegation",
+    "title": "Ratey, Nancy A.",
+    "authors": "Ratey, Nancy A",
+    "description": "_The Disorganized Mind_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "555c27db-8a0a-4034-9aeb-274fa4cc14be",
+    "life_area_slug": "car-maintenance",
+    "category": "Financial Tie-Ins",
+    "title": "Mad About Money (2025)",
+    "authors": "Alexander-Grout, Maddy",
+    "description": "_Mad About Money_",
+    "created_at": "2025-08-07T00:29:06.159607+00:00",
+    "updated_at": "2025-08-07T00:29:06.159607+00:00"
+  },
+  {
+    "id": "8d2c1a5c-ecbb-47c6-950d-dd52f65ca009",
+    "life_area_slug": "cleaning",
+    "category": "Cleaning-Specific Guides & Systems",
+    "title": "How to Keep House While Drowning (2022)",
+    "authors": "Davis, KC",
+    "description": "_How to Keep House While Drowning_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "d69898ba-8952-49c2-a7b7-724ca408147f",
+    "life_area_slug": "cleaning",
+    "category": "Cleaning-Specific Guides & Systems",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "White, Dana K",
+    "description": "_(5-Pile Decluttering Method)_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "b82db388-ecde-4996-964e-bea59cc3f8cb",
+    "life_area_slug": "cleaning",
+    "category": "Executive Function & Task Breakdown",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "2e50c28c-0ccb-4924-97c2-026b88364e04",
+    "life_area_slug": "cleaning",
+    "category": "Executive Function & Task Breakdown",
+    "title": "Dawson, Peg & Guare, Richard.",
+    "authors": "Dawson, Peg & Guare, Richard",
+    "description": "_Smart but Scattered Guide to Success_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "befaf5db-833a-4159-be99-9efec4544d36",
+    "life_area_slug": "cleaning",
+    "category": "Executive Function & Task Breakdown",
+    "title": "Kinzer, Nikki & Wright, Pete D.",
+    "authors": "Kinzer, Nikki & Wright, Pete D",
+    "description": "_Unapologetically ADHD_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "80cbdceb-c450-43e2-b0f4-5af14d5a9b5b",
+    "life_area_slug": "cleaning",
+    "category": "Executive Function & Task Breakdown",
+    "title": "Kustow, James.",
+    "authors": "Kustow, James",
+    "description": "_How to Thrive with Adult ADHD_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "da6823c2-a6a9-43ba-92f8-86b5170b94d3",
+    "life_area_slug": "cleaning",
+    "category": "Executive Function & Task Breakdown",
+    "title": "Levrini, Abigail L.",
+    "authors": "Levrini, Abigail L",
+    "description": "_Succeeding With Adult ADHD_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "2b1efb3e-170b-4130-bd71-fb474b04dc27",
+    "life_area_slug": "cleaning",
+    "category": "Organizing & Decluttering with ADHD",
+    "title": "Paul, Jaclyn.",
+    "authors": "Paul, Jaclyn",
+    "description": "_Order from Chaos_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "828c00ff-6777-42c9-919b-f9e26bf0b10c",
+    "life_area_slug": "cleaning",
+    "category": "Organizing & Decluttering with ADHD",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "Kohlberg, Judith & Nadeau, Kathleen",
+    "description": "_ADD-Friendly Ways to Organize Your Life_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "b73d5258-b31b-4f20-9715-a423409e5951",
+    "life_area_slug": "cleaning",
+    "category": "Organizing & Decluttering with ADHD",
+    "title": "Carder, Meredith.",
+    "authors": "Carder, Meredith",
+    "description": "_It All Makes Sense Now_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "4a204db1-a9e4-4889-ad5d-35a099a6dc7a",
+    "life_area_slug": "cleaning",
+    "category": "Emotional Reframing & Shame Reduction",
+    "title": "Pink, Richard & Pink, Roxanne.",
+    "authors": "Pink, Richard & Pink, Roxanne",
+    "description": "_Small Talk: 10 ADHD Lies_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "b12ef885-a57f-47f2-ba41-3b16877dccf3",
+    "life_area_slug": "cleaning",
+    "category": "Emotional Reframing & Shame Reduction",
+    "title": "Solden, Sari & Frank, Michelle.",
+    "authors": "Solden, Sari & Frank, Michelle",
+    "description": "_A Radical Guide for Women with ADHD_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "44d1c629-38fc-4c66-8112-ffa5d27e63b0",
+    "life_area_slug": "cleaning",
+    "category": "Emotional Reframing & Shame Reduction",
+    "title": "Solden, Sari",
+    "authors": "Women with Attention Deficit Disorder",
+    "description": "_Women with Attention Deficit Disorder_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "31a10b92-2e5f-44f8-9997-c3f860d9bd44",
+    "life_area_slug": "cleaning",
+    "category": "Emotional Reframing & Shame Reduction",
+    "title": "Lazy, Crazy, and Disgusting",
+    "authors": "Brewis, Alexandra & Wutich, Amber",
+    "description": "_Lazy, Crazy, and Disgusting_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "aa0449aa-4782-4e29-88e2-e27c389dda5a",
+    "life_area_slug": "cleaning",
+    "category": "ADHD Foundations That Shape Cleaning Struggles",
+    "title": "McCabe, Jessica.",
+    "authors": "McCabe, Jessica",
+    "description": "_How to ADHD_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "11281539-132e-48ce-936a-c93e0ab41c59",
+    "life_area_slug": "cleaning",
+    "category": "ADHD Foundations That Shape Cleaning Struggles",
+    "title": "You Mean I’m Not Lazy, Stupid or Crazy?!",
+    "authors": "Kelly, Kate & Ramundo, Peggy",
+    "description": "_You Mean I’m Not Lazy, Stupid or Crazy?!_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "e725643d-25c6-4029-aa07-fa8da960e8d9",
+    "life_area_slug": "cleaning",
+    "category": "ADHD Foundations That Shape Cleaning Struggles",
+    "title": "Ratey, Nancy A.",
+    "authors": "Ratey, Nancy A",
+    "description": "_The Disorganized Mind_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "ad84b2c3-ffcd-4842-a5b1-6627f71a51b0",
+    "life_area_slug": "cleaning",
+    "category": "ADHD Foundations That Shape Cleaning Struggles",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "Ramsay, J. Russell",
+    "description": "_Rethinking Adult ADHD_",
+    "created_at": "2025-08-07T00:29:06.328471+00:00",
+    "updated_at": "2025-08-07T00:29:06.328471+00:00"
+  },
+  {
+    "id": "6e61ccca-5a15-4ccf-bb59-1d0600122759",
+    "life_area_slug": "cooking",
+    "category": "ADHD-Friendly Cooking Systems",
+    "title": "Dee, Lisa.",
+    "authors": "Dee, Lisa",
+    "description": "_Healthy Happy ADHD_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "fb8f98a6-e076-4771-b738-b8a7ed592c4a",
+    "life_area_slug": "cooking",
+    "category": "ADHD-Friendly Cooking Systems",
+    "title": "Carder, Meredith.",
+    "authors": "Carder, Meredith",
+    "description": "_It All Makes Sense Now_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "b5c1828e-b671-429d-a4f4-9e005ee7d427",
+    "life_area_slug": "cooking",
+    "category": "ADHD-Friendly Cooking Systems",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "9612bf83-ddec-4792-b349-1ac1adb59019",
+    "life_area_slug": "cooking",
+    "category": "ADHD-Friendly Cooking Systems",
+    "title": "Kemp, Jennifer & Mitchelson, Monique.",
+    "authors": "Kemp, Jennifer & Mitchelson, Monique",
+    "description": "_The Neurodivergence Skills Workbook_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "85e7894c-422b-4d37-8a45-421e5305197b",
+    "life_area_slug": "cooking",
+    "category": "Time, Sequencing & Executive Function",
+    "title": "Kinzer, Nikki & Wright, Pete D.",
+    "authors": "Kinzer, Nikki & Wright, Pete D",
+    "description": "_Unapologetically ADHD_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "2a3ab670-04df-43dc-969f-ec681166e738",
+    "life_area_slug": "cooking",
+    "category": "Time, Sequencing & Executive Function",
+    "title": "Dawson, Peg & Guare, Richard.",
+    "authors": "Dawson, Peg & Guare, Richard",
+    "description": "_Smart but Scattered Guide to Success_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "f52d03e5-50a1-4205-837b-fa401e15db18",
+    "life_area_slug": "cooking",
+    "category": "Time, Sequencing & Executive Function",
+    "title": "You Mean I’m Not Lazy, Stupid or Crazy?!",
+    "authors": "Kelly, Kate & Ramundo, Peggy",
+    "description": "_You Mean I’m Not Lazy, Stupid or Crazy?!_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "c9f4b4a4-7d89-4732-9932-7ec5812e5ec5",
+    "life_area_slug": "cooking",
+    "category": "Time, Sequencing & Executive Function",
+    "title": "McCabe, Jessica.",
+    "authors": "McCabe, Jessica",
+    "description": "_How to ADHD_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "6c47e97b-1925-4705-916f-0c9753b08f75",
+    "life_area_slug": "cooking",
+    "category": "Time, Sequencing & Executive Function",
+    "title": "Succeeding with Adult ADHD",
+    "authors": "Levrini, Abigail",
+    "description": "_Succeeding With Adult ADHD_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "e15870aa-3cb5-45d5-9b8a-1764e3dc7901",
+    "life_area_slug": "cooking",
+    "category": "Time, Sequencing & Executive Function",
+    "title": "Ratey, Nancy A.",
+    "authors": "Ratey, Nancy A",
+    "description": "_The Disorganized Mind_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "73b43ab2-328e-481d-ba42-b8f1b391b335",
+    "life_area_slug": "cooking",
+    "category": "Nutrition & Health for the ADHD Brain",
+    "title": "Hallowell, Edward M. & Ratey, John J.",
+    "authors": "Hallowell, Edward M. & Ratey, John J",
+    "description": "_ADHD 2.0_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "6c64c723-9ce5-49df-94ec-7c4f7cc031c8",
+    "life_area_slug": "cooking",
+    "category": "Nutrition & Health for the ADHD Brain",
+    "title": "Kustow, James.",
+    "authors": "Kustow, James",
+    "description": "_How to Thrive with Adult ADHD_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "c9a3b0c7-db16-4649-93a2-06a80b0f1fdf",
+    "life_area_slug": "cooking",
+    "category": "Nutrition & Health for the ADHD Brain",
+    "title": "Brain Brilliance (2024)",
+    "authors": "Miller, Lucinda",
+    "description": "_Brain Brilliance_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "ace484fb-9776-4c0b-8fec-949ec1893749",
+    "life_area_slug": "cooking",
+    "category": "Nutrition & Health for the ADHD Brain",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "EndeavorOTC",
+    "description": "_Research Roundup: Best Foods for ADHD_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "48dcf633-3836-47b5-a3d5-b4b6071d85d8",
+    "life_area_slug": "cooking",
+    "category": "Kitchen Organization & Planning Support",
+    "title": "Paul, Jaclyn.",
+    "authors": "Paul, Jaclyn",
+    "description": "_Order from Chaos_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "79a23b78-aa15-4b8e-bf67-f007e72f4fab",
+    "life_area_slug": "cooking",
+    "category": "Kitchen Organization & Planning Support",
+    "title": "University of Rochester Medical Center",
+    "authors": "73 ADHD-Friendly Ways to Organize Your Life Now",
+    "description": "_73 ADHD-Friendly Ways to Organize Your Life Now_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "39f777e1-1032-4b4b-9adf-72d42845bb7c",
+    "life_area_slug": "cooking",
+    "category": "Emotional Support & Shame Reduction",
+    "title": "Solden, Sari",
+    "authors": "Women with Attention Deficit Disorder",
+    "description": "_Women with Attention Deficit Disorder_",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "6816b818-5fb3-4ad5-8302-a12cfc7149b3",
+    "life_area_slug": "cooking",
+    "category": "Emotional Support & Shame Reduction",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "",
+    "description": "Highlights real-world adaptations like **meal kit subscriptions and planning for leftovers** — described as “paying the ADHD tax upfront” to avoid future overwhelm.",
+    "created_at": "2025-08-07T00:29:06.714492+00:00",
+    "updated_at": "2025-08-07T00:29:06.714492+00:00"
+  },
+  {
+    "id": "775fee86-2a28-4d39-a82b-bc8fc93e17be",
+    "life_area_slug": "creative-projects",
+    "category": "Embracing ADHD Creativity",
+    "title": "Hallowell, Edward M. & Ratey, John J.",
+    "authors": "Hallowell, Edward M. & Ratey, John J",
+    "description": "_ADHD 2.0_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "988eba30-9dfb-4d60-b1c1-99aa32e6ae63",
+    "life_area_slug": "creative-projects",
+    "category": "Embracing ADHD Creativity",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "Dunne, Maureen",
+    "description": "_The Neurodiversity Edge_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "4b78074e-ff7c-4b0b-a57a-3a7882da92a4",
+    "life_area_slug": "creative-projects",
+    "category": "Embracing ADHD Creativity",
+    "title": "McCabe, Jessica.",
+    "authors": "McCabe, Jessica",
+    "description": "_How to ADHD_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "79afffa6-4960-4f2c-8169-5c22d287dd4d",
+    "life_area_slug": "creative-projects",
+    "category": "Embracing ADHD Creativity",
+    "title": "Small Talk: 10 ADHD Lies… (2024)",
+    "authors": "Pink, Richard & Roxanne",
+    "description": "_Small Talk_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "44d524ce-28c1-4539-bf24-73c87ec254ca",
+    "life_area_slug": "creative-projects",
+    "category": "Embracing ADHD Creativity",
+    "title": "Solden, Sari",
+    "authors": "Women with Attention Deficit Disorder",
+    "description": "_Women with Attention Deficit Disorder_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "fd5e3331-c19b-41ab-a330-ef4236f78ffe",
+    "life_area_slug": "creative-projects",
+    "category": "Embracing ADHD Creativity",
+    "title": "Solden, Sari & Frank, Michelle.",
+    "authors": "Solden, Sari & Frank, Michelle",
+    "description": "_A Radical Guide for Women with ADHD_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "0bc7c06a-cc09-4083-9197-4ea062a4b2a4",
+    "life_area_slug": "creative-projects",
+    "category": "Embracing ADHD Creativity",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "Dunne, Maureen",
+    "description": "_Neurodiversity Edge_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "56b2d6dd-8f09-4a48-8ad0-80d6f8f25de8",
+    "life_area_slug": "creative-projects",
+    "category": "Embracing ADHD Creativity",
+    "title": "Maté, Gabor.",
+    "authors": "Maté, Gabor",
+    "description": "_Scattered Minds_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "65c0465c-ef40-419c-b138-35c8a2ac4f78",
+    "life_area_slug": "creative-projects",
+    "category": "Turning Ideas Into Action",
+    "title": "Start Finishing (2019)",
+    "authors": "Gilkey, Charlie",
+    "description": "_Start Finishing_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "61da28bd-e28f-4bdb-93af-0790eacf4cd5",
+    "life_area_slug": "creative-projects",
+    "category": "Turning Ideas Into Action",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "50deec62-2d87-4a62-8edd-8bc7df1cfa9d",
+    "life_area_slug": "creative-projects",
+    "category": "Turning Ideas Into Action",
+    "title": "Kinzer, Nikki & Wright, Pete D.",
+    "authors": "Kinzer, Nikki & Wright, Pete D",
+    "description": "_Unapologetically ADHD_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "1bdd61ba-8559-452c-a5d9-4f7dc2fd2876",
+    "life_area_slug": "creative-projects",
+    "category": "Turning Ideas Into Action",
+    "title": "Forte, Tiago.",
+    "authors": "Forte, Tiago",
+    "description": "_Building a Second Brain_ & _The PARA Method_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "d7273592-a0d7-47a9-bf6d-f1456ea19b8a",
+    "life_area_slug": "creative-projects",
+    "category": "Turning Ideas Into Action",
+    "title": "Le Cunff, Anne-Laure.",
+    "authors": "Le Cunff, Anne-Laure",
+    "description": "_Tiny Experiments_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "8374dd3b-c070-4ba9-8fb9-f2a7ea36fa9c",
+    "life_area_slug": "creative-projects",
+    "category": "Turning Ideas Into Action",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "Ducommun, Jules",
+    "description": "_Productivity With ADHD_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "916a5b93-73ec-4c68-be59-c80bd7ef0345",
+    "life_area_slug": "creative-projects",
+    "category": "Executive Function & Creative Structure",
+    "title": "Succeeding with Adult ADHD",
+    "authors": "Levrini, Abigail",
+    "description": "_Succeeding With Adult ADHD_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "8180cc37-8188-4b91-adf9-58ad9bcee193",
+    "life_area_slug": "creative-projects",
+    "category": "Executive Function & Creative Structure",
+    "title": "Kemp, Jennifer & Mitchelson, Monique.",
+    "authors": "Kemp, Jennifer & Mitchelson, Monique",
+    "description": "_The Neurodivergence Skills Workbook_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "fc7ea0ae-3615-4e97-92c6-ef200722cac7",
+    "life_area_slug": "creative-projects",
+    "category": "Executive Function & Creative Structure",
+    "title": "Paul, Jaclyn.",
+    "authors": "Paul, Jaclyn",
+    "description": "_Order from Chaos_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "3bd3176a-91a5-4cf3-9c65-ee36b79eeb0d",
+    "life_area_slug": "creative-projects",
+    "category": "Executive Function & Creative Structure",
+    "title": "Kustow, James.",
+    "authors": "Kustow, James",
+    "description": "_How to Thrive with Adult ADHD_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "4fa76cb7-2ba2-46d4-8f6b-501163f1a3a1",
+    "life_area_slug": "creative-projects",
+    "category": "Executive Function & Creative Structure",
+    "title": "You Mean I’m Not Lazy, Stupid or Crazy?!",
+    "authors": "Kelly, Kate & Ramundo, Peggy",
+    "description": "_You Mean I’m Not Lazy, Stupid or Crazy?!_",
+    "created_at": "2025-08-07T00:29:06.881846+00:00",
+    "updated_at": "2025-08-07T00:29:06.881846+00:00"
+  },
+  {
+    "id": "81d9e509-7c60-46a7-ac77-9f30325edb81",
+    "life_area_slug": "decluttering",
+    "category": "Executive Function & Cognitive Load",
+    "title": "Dawson, Peg & Guare, Richard.",
+    "authors": "Dawson, Peg & Guare, Richard",
+    "description": "_Smart but Scattered Guide to Success_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "579ebdd2-a3a8-4de4-bb23-12c9a79af438",
+    "life_area_slug": "decluttering",
+    "category": "Executive Function & Cognitive Load",
+    "title": "Kemp, Jennifer & Mitchelson, Monique.",
+    "authors": "Kemp, Jennifer & Mitchelson, Monique",
+    "description": "_The Neurodivergence Skills Workbook_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "0b2c136d-3047-4a89-982d-e1508deebc6a",
+    "life_area_slug": "decluttering",
+    "category": "Executive Function & Cognitive Load",
+    "title": "Kinzer, Nikki & Wright, Pete D.",
+    "authors": "Kinzer, Nikki & Wright, Pete D",
+    "description": "_Unapologetically ADHD_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "7385d0ee-4e87-46e5-a9f9-d64cce20615d",
+    "life_area_slug": "decluttering",
+    "category": "Executive Function & Cognitive Load",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "Ducommun, Jules",
+    "description": "_Productivity With ADHD_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "06b0b471-66c4-4d0d-9f81-5d0498249eb8",
+    "life_area_slug": "decluttering",
+    "category": "Executive Function & Cognitive Load",
+    "title": "Succeeding with Adult ADHD",
+    "authors": "Levrini, Abigail",
+    "description": "_Succeeding With Adult ADHD_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "c1ace04b-f073-4097-9743-dcc49074f597",
+    "life_area_slug": "decluttering",
+    "category": "Practical Decluttering Strategies",
+    "title": "Paul, Jaclyn.",
+    "authors": "Paul, Jaclyn",
+    "description": "_Order from Chaos_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "07de284b-85d7-4c05-b282-95695ae24898",
+    "life_area_slug": "decluttering",
+    "category": "Practical Decluttering Strategies",
+    "title": "Kustow, James.",
+    "authors": "Kustow, James",
+    "description": "_How to Thrive with Adult ADHD_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "9aa34cf8-d41d-467a-9a71-a8141dd467ee",
+    "life_area_slug": "decluttering",
+    "category": "Practical Decluttering Strategies",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "fd6903c7-b7de-4264-a5a5-e47f70d74ad9",
+    "life_area_slug": "decluttering",
+    "category": "Practical Decluttering Strategies",
+    "title": "University of Rochester Medical Center",
+    "authors": "73 ADHD-Friendly Ways to Organize Your Life Now",
+    "description": "_73 ADHD-Friendly Ways to Organize Your Life Now_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "902be84b-a0a9-4a01-918b-c38003441389",
+    "life_area_slug": "decluttering",
+    "category": "Practical Decluttering Strategies",
+    "title": "McCabe, Jessica.",
+    "authors": "McCabe, Jessica",
+    "description": "_How to ADHD_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "680be251-d6b7-499d-bc65-2809dd690500",
+    "life_area_slug": "decluttering",
+    "category": "Emotional Reframing & Shame Reduction",
+    "title": "Solden, Sari & Frank, Michelle.",
+    "authors": "Solden, Sari & Frank, Michelle",
+    "description": "_A Radical Guide for Women with ADHD_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "a87826fe-b277-4f89-8841-50c4f46ca1d3",
+    "life_area_slug": "decluttering",
+    "category": "Emotional Reframing & Shame Reduction",
+    "title": "Ratey, Nancy A.",
+    "authors": "Ratey, Nancy A",
+    "description": "_The Disorganized Mind_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "875f2747-0224-422f-bcc1-3dcf0c065dc8",
+    "life_area_slug": "decluttering",
+    "category": "Emotional Reframing & Shame Reduction",
+    "title": "You Mean I’m Not Lazy, Stupid or Crazy?!",
+    "authors": "Kelly, Kate & Ramundo, Peggy",
+    "description": "_You Mean I’m Not Lazy, Stupid, or Crazy?!_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "c2856069-00b0-466a-9a86-514b9f4c821a",
+    "life_area_slug": "decluttering",
+    "category": "Emotional Reframing & Shame Reduction",
+    "title": "Small Talk: 10 ADHD Lies… (2024)",
+    "authors": "Pink, Richard & Roxanne",
+    "description": "_Small Talk: 10 ADHD Lies_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "fc344a9b-2434-4803-a78c-44ed75a5e879",
+    "life_area_slug": "decluttering",
+    "category": "Emotional Reframing & Shame Reduction",
+    "title": "Solden, Sari",
+    "authors": "Women with Attention Deficit Disorder",
+    "description": "_Women with Attention Deficit Disorder_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "20a0c8d3-2280-4a81-ab38-185eba3adbb1",
+    "life_area_slug": "decluttering",
+    "category": "Systems, Tools & Digital Decluttering",
+    "title": "Forte, Tiago.",
+    "authors": "Forte, Tiago",
+    "description": "_The PARA Method_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "59568aba-35e4-4aef-a62c-9ed04a7aa3d3",
+    "life_area_slug": "decluttering",
+    "category": "Systems, Tools & Digital Decluttering",
+    "title": "Paul, Jaclyn.",
+    "authors": "Paul, Jaclyn",
+    "description": "_Order from Chaos_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "5cd518e5-97a7-48d1-b46c-c5008b45ad72",
+    "life_area_slug": "decluttering",
+    "category": "Systems, Tools & Digital Decluttering",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "Ducommun, Jules",
+    "description": "_Productivity With ADHD_",
+    "created_at": "2025-08-07T00:29:07.060826+00:00",
+    "updated_at": "2025-08-07T00:29:07.060826+00:00"
+  },
+  {
+    "id": "86bbeb9c-65cb-4194-91af-37bdc4393a91",
+    "life_area_slug": "dishes",
+    "category": "Dishwashing-Specific Strategies",
+    "title": "How to Keep House While Drowning (2022)",
+    "authors": "Davis, KC",
+    "description": "_How to Keep House While Drowning_",
+    "created_at": "2025-08-07T00:29:07.248802+00:00",
+    "updated_at": "2025-08-07T00:29:07.248802+00:00"
+  },
+  {
+    "id": "3373e3ba-33ec-4b29-a0b8-fb8bf8723f80",
+    "life_area_slug": "dishes",
+    "category": "Dishwashing-Specific Strategies",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "",
+    "description": "to keep the sink usable.",
+    "created_at": "2025-08-07T00:29:07.248802+00:00",
+    "updated_at": "2025-08-07T00:29:07.248802+00:00"
+  },
+  {
+    "id": "05ac0f09-6fc9-42c7-9ed9-1ddf01baeb55",
+    "life_area_slug": "dishes",
+    "category": "Dishwashing-Specific Strategies",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "",
+    "description": "(e.g., forks first).",
+    "created_at": "2025-08-07T00:29:07.248802+00:00",
+    "updated_at": "2025-08-07T00:29:07.248802+00:00"
+  },
+  {
+    "id": "98f42e67-2bf2-4dec-88cb-d2fcb1823cf8",
+    "life_area_slug": "dishes",
+    "category": "Dishwashing-Specific Strategies",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "",
+    "description": "(music, snacks, external motivation).",
+    "created_at": "2025-08-07T00:29:07.248802+00:00",
+    "updated_at": "2025-08-07T00:29:07.248802+00:00"
+  },
+  {
+    "id": "10dbe4a4-1fa2-440a-83e9-6b6e97ecbf9f",
+    "life_area_slug": "dishes",
+    "category": "Dishwashing-Specific Strategies",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "",
+    "description": "to reduce overwhelm.",
+    "created_at": "2025-08-07T00:29:07.248802+00:00",
+    "updated_at": "2025-08-07T00:29:07.248802+00:00"
+  },
+  {
+    "id": "d922bbd1-b2c9-479d-9444-cd8aa600b78e",
+    "life_area_slug": "dishes",
+    "category": "Cooking & Cleanup Connection",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:07.248802+00:00",
+    "updated_at": "2025-08-07T00:29:07.248802+00:00"
+  },
+  {
+    "id": "11355363-df5c-48c7-aae8-ae96b2fe8427",
+    "life_area_slug": "dishes",
+    "category": "Cooking & Cleanup Connection",
+    "title": "Brain Brilliance (2024)",
+    "authors": "Miller, Lucinda",
+    "description": "_Brain Brilliance_",
+    "created_at": "2025-08-07T00:29:07.248802+00:00",
+    "updated_at": "2025-08-07T00:29:07.248802+00:00"
+  },
+  {
+    "id": "093d51d3-94a4-4cfb-af0d-ca49b0d0af78",
+    "life_area_slug": "filling-out-docs",
+    "category": "Executive Function & Task Breakdown",
+    "title": "Kinzer, Nikki & Wright, Pete D.",
+    "authors": "Kinzer, Nikki & Wright, Pete D",
+    "description": "_Unapologetically ADHD_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "9014f255-1452-4eda-83e7-7fd7750933cf",
+    "life_area_slug": "filling-out-docs",
+    "category": "Executive Function & Task Breakdown",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "91d6438c-ddfa-4d2a-a2d4-865fc930ff98",
+    "life_area_slug": "filling-out-docs",
+    "category": "Executive Function & Task Breakdown",
+    "title": "Succeeding with Adult ADHD",
+    "authors": "Levrini, Abigail",
+    "description": "_Succeeding With Adult ADHD_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "17eba817-2ca5-42ab-88b7-1aff3dde1d11",
+    "life_area_slug": "filling-out-docs",
+    "category": "Executive Function & Task Breakdown",
+    "title": "Dawson, Peg & Guare, Richard.",
+    "authors": "Dawson, Peg & Guare, Richard",
+    "description": "_Smart but Scattered Guide to Success_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "797d695b-0a37-4513-b075-5ad051cf40cb",
+    "life_area_slug": "filling-out-docs",
+    "category": "Paperwork & Form-Specific Challenges",
+    "title": "You Mean I’m Not Lazy, Stupid or Crazy?!",
+    "authors": "Kelly, Kate & Ramundo, Peggy",
+    "description": "_You Mean I’m Not Lazy, Stupid or Crazy?!_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "faeefffc-803c-4452-b427-44d3d624de85",
+    "life_area_slug": "filling-out-docs",
+    "category": "Paperwork & Form-Specific Challenges",
+    "title": "Ratey, Nancy A.",
+    "authors": "Ratey, Nancy A",
+    "description": "_The Disorganized Mind_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "f7b4a4f3-e41b-4d5c-bb75-3d944564adfc",
+    "life_area_slug": "filling-out-docs",
+    "category": "Paperwork & Form-Specific Challenges",
+    "title": "Carder, Meredith.",
+    "authors": "Carder, Meredith",
+    "description": "_It All Makes Sense Now_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "29315ea8-7245-4f37-88eb-304b42cc3cbb",
+    "life_area_slug": "filling-out-docs",
+    "category": "Paperwork & Form-Specific Challenges",
+    "title": "Mad About Money (2025)",
+    "authors": "Alexander-Grout, Maddy",
+    "description": "_Mad About Money_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "f5362968-8e70-4788-a39d-64a9d76bf044",
+    "life_area_slug": "filling-out-docs",
+    "category": "Tools, Templates & Environmental Supports",
+    "title": "McCabe, Jessica.",
+    "authors": "McCabe, Jessica",
+    "description": "_How to ADHD_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "351e3c1d-fa7b-4cdc-92df-ca54dc0b064c",
+    "life_area_slug": "filling-out-docs",
+    "category": "Tools, Templates & Environmental Supports",
+    "title": "Paul, Jaclyn.",
+    "authors": "Paul, Jaclyn",
+    "description": "_Order from Chaos_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "252d9185-8c8d-4def-b38f-1bcb5c96e966",
+    "life_area_slug": "filling-out-docs",
+    "category": "Tools, Templates & Environmental Supports",
+    "title": "Le Cunff, Anne-Laure.",
+    "authors": "Le Cunff, Anne-Laure",
+    "description": "_Tiny Experiments_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "41d6c5b2-6dfa-405f-a2f4-9159495618b5",
+    "life_area_slug": "filling-out-docs",
+    "category": "Tools, Templates & Environmental Supports",
+    "title": "Kustow, James.",
+    "authors": "Kustow, James",
+    "description": "_How to Thrive with Adult ADHD_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "f3310a4b-b298-4813-a3a5-2871c63f507a",
+    "life_area_slug": "filling-out-docs",
+    "category": "Emotional Support & Shame Reduction",
+    "title": "Small Talk: 10 ADHD Lies… (2024)",
+    "authors": "Pink, Richard & Roxanne",
+    "description": "_Small Talk: 10 ADHD Lies_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "b995621a-4211-409f-94d3-817d50dc6948",
+    "life_area_slug": "filling-out-docs",
+    "category": "Emotional Support & Shame Reduction",
+    "title": "Solden, Sari",
+    "authors": "Women with Attention Deficit Disorder",
+    "description": "_Women with Attention Deficit Disorder_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "74c9f5e4-c64d-4245-b42e-58dd6cdcaafe",
+    "life_area_slug": "filling-out-docs",
+    "category": "Emotional Support & Shame Reduction",
+    "title": "Solden, Sari & Frank, Michelle.",
+    "authors": "Solden, Sari & Frank, Michelle",
+    "description": "_A Radical Guide for Women with ADHD_",
+    "created_at": "2025-08-07T00:29:07.417847+00:00",
+    "updated_at": "2025-08-07T00:29:07.417847+00:00"
+  },
+  {
+    "id": "7f37751b-d01c-4210-82c9-34964c70cd79",
+    "life_area_slug": "cleaning",
+    "category": "Time & Planning",
+    "title": "How to Keep House While Drowning",
+    "authors": "Davis",
+    "description": "A comprehensive resource by Davis (KC\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:24.464811+00:00",
+    "updated_at": "2025-08-07T13:42:24.464811+00:00"
+  },
+  {
+    "id": "6c9196b9-29a5-4ae4-853f-ac13419857c1",
+    "life_area_slug": "cleaning",
+    "category": "Organization & Structure",
+    "title": "73 ADHD-Friendly Ways to Organize Your Life Now",
+    "authors": "ADDitude Experts",
+    "description": "A comprehensive resource by ADDitude Experts (2025) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.464811+00:00",
+    "updated_at": "2025-08-07T13:42:24.464811+00:00"
+  },
+  {
+    "id": "cb8d9acc-696c-4d1e-b83d-b86085c9af00",
+    "life_area_slug": "cleaning",
+    "category": "Organization & Structure",
+    "title": "Order from Chaos",
+    "authors": "Paul",
+    "description": "A comprehensive resource by Paul (Jaclyn L.\") providing organization strategies and systems for creating order in daily life.",
+    "created_at": "2025-08-07T13:42:24.464811+00:00",
+    "updated_at": "2025-08-07T13:42:24.464811+00:00"
+  },
+  {
+    "id": "fd2dc07e-7c1d-4c1b-b4cb-e33eb77e1eae",
+    "life_area_slug": "cleaning",
+    "category": "Tools & Frameworks",
+    "title": "The Anti-Planner",
+    "authors": "Donovan",
+    "description": "A comprehensive resource by Donovan (Dani\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:24.464811+00:00",
+    "updated_at": "2025-08-07T13:42:24.464811+00:00"
+  },
+  {
+    "id": "905f879b-3a31-4375-9b9e-a84b692caab4",
+    "life_area_slug": "cleaning",
+    "category": "Understanding ADHD Focus",
+    "title": "How to ADHD",
+    "authors": "McCabe",
+    "description": "A comprehensive resource by McCabe (Jessica\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.464811+00:00",
+    "updated_at": "2025-08-07T13:42:24.464811+00:00"
+  },
+  {
+    "id": "fed6570c-1321-43d2-b11e-079325b0683f",
+    "life_area_slug": "cleaning",
+    "category": "Time & Planning",
+    "title": "Daily Routine Examples from Adults with ADHD",
+    "authors": "ADDitude",
+    "description": "A comprehensive resource by ADDitude (2025) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.464811+00:00",
+    "updated_at": "2025-08-07T13:42:24.464811+00:00"
+  },
+  {
+    "id": "3cacae6e-aaef-4783-9e75-ae81bf6047ac",
+    "life_area_slug": "cooking",
+    "category": "Physical Health & Wellness",
+    "title": "Brain Brilliance: 60 Nourishing Recipes and a Nutritional",
+    "authors": "Miller",
+    "description": "A comprehensive resource by Miller (Lucinda\") examining the connection between nutrition, brain health, and cognitive function.",
+    "created_at": "2025-08-07T13:42:24.464811+00:00",
+    "updated_at": "2025-08-07T13:42:24.464811+00:00"
+  },
+  {
+    "id": "785601d5-d03d-4ab1-9356-f94330d453d0",
+    "life_area_slug": "cooking",
+    "category": "Time & Planning",
+    "title": "How to Keep House While Drowning",
+    "authors": "Davis",
+    "description": "A comprehensive resource by Davis (KC\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:24.464811+00:00",
+    "updated_at": "2025-08-07T13:42:24.464811+00:00"
+  },
+  {
+    "id": "aa9c9d69-bb7b-422d-a07a-f418b76ddadd",
+    "life_area_slug": "cooking",
+    "category": "Physical Health & Wellness",
+    "title": "Nutrition for ADHD and Dyslexia",
+    "authors": "Derbyshire",
+    "description": "A comprehensive resource by Derbyshire (Emma\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.464811+00:00",
+    "updated_at": "2025-08-07T13:42:24.464811+00:00"
+  },
+  {
+    "id": "72b8a6e0-4d8b-46aa-b6e0-525ad37da6b0",
+    "life_area_slug": "decluttering",
+    "category": "Organization & Structure",
+    "title": "73 ADHD-Friendly Ways to Organize Your Life Now",
+    "authors": "ADDitude Experts",
+    "description": "A comprehensive resource by ADDitude Experts (2025) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:25.029854+00:00",
+    "updated_at": "2025-08-07T13:42:25.029854+00:00"
+  },
+  {
+    "id": "5eba0ba4-86c9-4dbb-aae5-11f8253c6b9c",
+    "life_area_slug": "decluttering",
+    "category": "Time & Planning",
+    "title": "How to Keep House While Drowning",
+    "authors": "Davis",
+    "description": "A comprehensive resource by Davis (KC\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:25.029854+00:00",
+    "updated_at": "2025-08-07T13:42:25.029854+00:00"
+  },
+  {
+    "id": "ca0eb814-ef84-4512-a1f4-bf8503ffa500",
+    "life_area_slug": "decluttering",
+    "category": "Organization & Structure",
+    "title": "The Disorganized Mind",
+    "authors": "Ratey",
+    "description": "A comprehensive resource by Ratey (Nancy A.\") providing organization strategies and systems for creating order in daily life.",
+    "created_at": "2025-08-07T13:42:25.029854+00:00",
+    "updated_at": "2025-08-07T13:42:25.029854+00:00"
+  },
+  {
+    "id": "d90ab878-3460-47e8-aa3a-99f64ef6ca60",
+    "life_area_slug": "decluttering",
+    "category": "Tools & Frameworks",
+    "title": "The Anti-Planner",
+    "authors": "Donovan",
+    "description": "A comprehensive resource by Donovan (Dani\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:25.029854+00:00",
+    "updated_at": "2025-08-07T13:42:25.029854+00:00"
+  },
+  {
+    "id": "ce453a0e-087c-4374-ae23-f625e5e2ddfe",
+    "life_area_slug": "decluttering",
+    "category": "Understanding ADHD Focus",
+    "title": "How to ADHD",
+    "authors": "McCabe",
+    "description": "A comprehensive resource by McCabe (Jessica\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:25.029854+00:00",
+    "updated_at": "2025-08-07T13:42:25.029854+00:00"
+  },
+  {
+    "id": "0e6774e1-2442-426e-9ffa-55a726c71966",
+    "life_area_slug": "hygiene",
+    "category": "Physical Health & Self-Care",
+    "title": "Lazy, Crazy, and Disgusting",
+    "authors": "Brewis",
+    "description": "A comprehensive resource by Brewis (Alexandra; Wutich) offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:25.029854+00:00",
+    "updated_at": "2025-08-07T13:42:25.029854+00:00"
+  },
+  {
+    "id": "6167b79b-118b-400b-878b-a98ccd315f20",
+    "life_area_slug": "hygiene",
+    "category": "Physical Health & Wellness",
+    "title": "Real Self-Care",
+    "authors": "Lakshmin",
+    "description": "A comprehensive resource by Lakshmin (Pooja\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:25.029854+00:00",
+    "updated_at": "2025-08-07T13:42:25.029854+00:00"
+  },
+  {
+    "id": "6ed72cb4-35e9-48f9-82b2-2ce772ce8ed4",
+    "life_area_slug": "hygiene",
+    "category": "Time & Planning",
+    "title": "How to Keep House While Drowning",
+    "authors": "Davis",
+    "description": "A comprehensive resource by Davis (KC\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:25.029854+00:00",
+    "updated_at": "2025-08-07T13:42:25.029854+00:00"
+  },
+  {
+    "id": "b252b19f-d68f-40be-b8d5-7ea9a137f4b1",
+    "life_area_slug": "hygiene",
+    "category": "Time & Planning",
+    "title": "Daily Routine Examples from Adults with ADHD",
+    "authors": "ADDitude",
+    "description": "A comprehensive resource by ADDitude (2025) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:25.029854+00:00",
+    "updated_at": "2025-08-07T13:42:25.029854+00:00"
+  },
+  {
+    "id": "889ea5e9-628c-403a-aa8a-7f8b8555baf7",
+    "life_area_slug": "hygiene",
+    "category": "Physical Health & Wellness",
+    "title": "Healthy Happy ADHD",
+    "authors": "Dee",
+    "description": "A comprehensive resource by Dee (Lisa\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:25.029854+00:00",
+    "updated_at": "2025-08-07T13:42:25.029854+00:00"
+  },
+  {
+    "id": "8770c9a1-1ee7-4923-a13a-3651ced89119",
+    "life_area_slug": "making-phone-calls",
+    "category": "Communication & Social",
+    "title": "Small Talk",
+    "authors": "Pink",
+    "description": "A comprehensive resource by Pink (Richard; Pink) focusing on communication skills and social interactions.",
+    "created_at": "2025-08-07T13:42:25.571386+00:00",
+    "updated_at": "2025-08-07T13:42:25.571386+00:00"
+  },
+  {
+    "id": "ed0dd3de-3b55-4d48-8f51-ebdcbe2d6310",
+    "life_area_slug": "making-phone-calls",
+    "category": "Communication & Social",
+    "title": "Small Talk",
+    "authors": "Pink",
+    "description": "A comprehensive resource by Pink (Richard; Pink) focusing on communication skills and social interactions.",
+    "created_at": "2025-08-07T13:42:25.571386+00:00",
+    "updated_at": "2025-08-07T13:42:25.571386+00:00"
+  },
+  {
+    "id": "eb1ddaf2-cc72-4bb4-94d3-39408ddcf55c",
+    "life_area_slug": "cooking",
+    "category": "Time & Planning",
+    "title": "Daily Routine Examples from Adults with ADHD",
+    "authors": "ADDitude",
+    "description": "A comprehensive resource by ADDitude (2025) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.738996+00:00",
+    "updated_at": "2025-08-07T13:42:24.738996+00:00"
+  },
+  {
+    "id": "4a44ea56-4554-4191-8abb-19c36b8d9bff",
+    "life_area_slug": "cooking",
+    "category": "Understanding ADHD Focus",
+    "title": "How to ADHD",
+    "authors": "McCabe",
+    "description": "A comprehensive resource by McCabe (Jessica\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.738996+00:00",
+    "updated_at": "2025-08-07T13:42:24.738996+00:00"
+  },
+  {
+    "id": "42d69868-a160-4d4b-a6a0-203f544c2d2f",
+    "life_area_slug": "cooking",
+    "category": "Habit Building",
+    "title": "Tiny Habits",
+    "authors": "Fogg",
+    "description": "A comprehensive resource by Fogg (B.J.\") focusing on small, sustainable changes and habit formation techniques.",
+    "created_at": "2025-08-07T13:42:24.738996+00:00",
+    "updated_at": "2025-08-07T13:42:24.738996+00:00"
+  },
+  {
+    "id": "006d399f-36e1-40f6-8d24-0f10603584c2",
+    "life_area_slug": "dishes",
+    "category": "Time & Planning",
+    "title": "How to Keep House While Drowning",
+    "authors": "Davis",
+    "description": "A comprehensive resource by Davis (KC\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:24.738996+00:00",
+    "updated_at": "2025-08-07T13:42:24.738996+00:00"
+  },
+  {
+    "id": "c5eec1af-fb36-4e6c-b5b3-bbb29e102d90",
+    "life_area_slug": "dishes",
+    "category": "Time & Planning",
+    "title": "Daily Routine Examples from Adults with ADHD",
+    "authors": "ADDitude",
+    "description": "A comprehensive resource by ADDitude (2025) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.738996+00:00",
+    "updated_at": "2025-08-07T13:42:24.738996+00:00"
+  },
+  {
+    "id": "16ca75e6-4b86-41c3-a3ff-e3ec2665d9e1",
+    "life_area_slug": "dishes",
+    "category": "Habit Building",
+    "title": "Tiny Habits",
+    "authors": "Fogg",
+    "description": "A comprehensive resource by Fogg (B.J.\") focusing on small, sustainable changes and habit formation techniques.",
+    "created_at": "2025-08-07T13:42:24.738996+00:00",
+    "updated_at": "2025-08-07T13:42:24.738996+00:00"
+  },
+  {
+    "id": "082002e6-d497-4424-8cdf-0f7d8af82d31",
+    "life_area_slug": "dishes",
+    "category": "Understanding ADHD Focus",
+    "title": "How to ADHD",
+    "authors": "McCabe",
+    "description": "A comprehensive resource by McCabe (Jessica\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.738996+00:00",
+    "updated_at": "2025-08-07T13:42:24.738996+00:00"
+  },
+  {
+    "id": "a73b7387-7b67-4e7f-9d3c-1f050287fbdc",
+    "life_area_slug": "dishes",
+    "category": "Organization & Structure",
+    "title": "73 ADHD-Friendly Ways to Organize Your Life Now",
+    "authors": "ADDitude Experts",
+    "description": "A comprehensive resource by ADDitude Experts (2025) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.738996+00:00",
+    "updated_at": "2025-08-07T13:42:24.738996+00:00"
+  },
+  {
+    "id": "d664518f-8e76-465c-92e5-c15be2880d20",
+    "life_area_slug": "dishes",
+    "category": "Tools & Frameworks",
+    "title": "The Anti-Planner",
+    "authors": "Donovan",
+    "description": "A comprehensive resource by Donovan (Dani\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:24.738996+00:00",
+    "updated_at": "2025-08-07T13:42:24.738996+00:00"
+  },
+  {
+    "id": "6a6c53d8-4e3a-4d63-8dcf-1752f0ed9f73",
+    "life_area_slug": "decluttering",
+    "category": "Organization & Structure",
+    "title": "Order from Chaos",
+    "authors": "Paul",
+    "description": "A comprehensive resource by Paul (Jaclyn L.\") providing organization strategies and systems for creating order in daily life.",
+    "created_at": "2025-08-07T13:42:24.738996+00:00",
+    "updated_at": "2025-08-07T13:42:24.738996+00:00"
+  },
+  {
+    "id": "66749698-16c3-4f00-9088-e1bb90de1923",
+    "life_area_slug": "hygiene",
+    "category": "Understanding ADHD Focus",
+    "title": "How to ADHD",
+    "authors": "McCabe",
+    "description": "A comprehensive resource by McCabe (Jessica\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:25.313935+00:00",
+    "updated_at": "2025-08-07T13:42:25.313935+00:00"
+  },
+  {
+    "id": "f702746c-7b42-435b-80b2-3449dd0caf1a",
+    "life_area_slug": "hygiene",
+    "category": "Habit Building",
+    "title": "Tiny Habits",
+    "authors": "Fogg",
+    "description": "A comprehensive resource by Fogg (B.J.\") focusing on small, sustainable changes and habit formation techniques.",
+    "created_at": "2025-08-07T13:42:25.313935+00:00",
+    "updated_at": "2025-08-07T13:42:25.313935+00:00"
+  },
+  {
+    "id": "14f0be5d-30a5-4c13-af3c-81d2ff14dbbe",
+    "life_area_slug": "organization",
+    "category": "Organization & Structure",
+    "title": "73 ADHD-Friendly Ways to Organize Your Life Now",
+    "authors": "ADDitude Experts",
+    "description": "A comprehensive resource by ADDitude Experts (2025) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:25.313935+00:00",
+    "updated_at": "2025-08-07T13:42:25.313935+00:00"
+  },
+  {
+    "id": "0d152ffb-9951-4143-9702-dd4dc95286d8",
+    "life_area_slug": "organization",
+    "category": "Organization & Structure",
+    "title": "Order from Chaos",
+    "authors": "Paul",
+    "description": "A comprehensive resource by Paul (Jaclyn L.\") providing organization strategies and systems for creating order in daily life.",
+    "created_at": "2025-08-07T13:42:25.313935+00:00",
+    "updated_at": "2025-08-07T13:42:25.313935+00:00"
+  },
+  {
+    "id": "fbcc5ff8-9f28-4369-aa0b-8dcb4a9ccc60",
+    "life_area_slug": "organization",
+    "category": "Organization & Structure",
+    "title": "The Disorganized Mind",
+    "authors": "Ratey",
+    "description": "A comprehensive resource by Ratey (Nancy A.\") providing organization strategies and systems for creating order in daily life.",
+    "created_at": "2025-08-07T13:42:25.313935+00:00",
+    "updated_at": "2025-08-07T13:42:25.313935+00:00"
+  },
+  {
+    "id": "8c636ab2-97f4-4c2c-bded-4578db8a3cb4",
+    "life_area_slug": "organization",
+    "category": "Tools & Frameworks",
+    "title": "Building a Second Brain",
+    "authors": "Forte",
+    "description": "A comprehensive resource by Forte (Tiago\") examining the connection between nutrition, brain health, and cognitive function.",
+    "created_at": "2025-08-07T13:42:25.313935+00:00",
+    "updated_at": "2025-08-07T13:42:25.313935+00:00"
+  },
+  {
+    "id": "e34916ba-071a-42fe-8436-c2bdb2da35d5",
+    "life_area_slug": "organization",
+    "category": "Tools & Frameworks",
+    "title": "The PARA Method",
+    "authors": "Forte",
+    "description": "A comprehensive resource by Forte (Tiago\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:25.313935+00:00",
+    "updated_at": "2025-08-07T13:42:25.313935+00:00"
+  },
+  {
+    "id": "e1723628-d253-4e76-93d2-01320b6c03ee",
+    "life_area_slug": "organization",
+    "category": "Tools & Frameworks",
+    "title": "The Anti-Planner",
+    "authors": "Donovan",
+    "description": "A comprehensive resource by Donovan (Dani\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:25.313935+00:00",
+    "updated_at": "2025-08-07T13:42:25.313935+00:00"
+  },
+  {
+    "id": "99595ce7-66c7-4072-8a8b-b59cd306a4a6",
+    "life_area_slug": "organization",
+    "category": "Understanding ADHD Focus",
+    "title": "How to ADHD",
+    "authors": "McCabe",
+    "description": "A comprehensive resource by McCabe (Jessica\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:25.313935+00:00",
+    "updated_at": "2025-08-07T13:42:25.313935+00:00"
+  },
+  {
+    "id": "a226bb38-1f89-47b8-bb58-65a955b2b4b6",
+    "life_area_slug": "organization",
+    "category": "Time & Planning",
+    "title": "The Smart but Scattered Guide to Success",
+    "authors": "Dawson",
+    "description": "A comprehensive resource by Dawson (Peg; Guare) offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:25.313935+00:00",
+    "updated_at": "2025-08-07T13:42:25.313935+00:00"
+  },
+  {
+    "id": "e0dba81c-4cbc-4726-9f4c-f8ca391982f0",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Understanding ADHD Focus",
+    "title": "How to ADHD",
+    "authors": "McCabe",
+    "description": "A comprehensive resource by McCabe (Jessica\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.199487+00:00",
+    "updated_at": "2025-08-07T13:42:24.199487+00:00"
+  },
+  {
+    "id": "8622daa8-87ba-4b74-a92b-e43864b0119c",
+    "life_area_slug": "making-phone-calls",
+    "category": "Understanding ADHD Focus",
+    "title": "How to ADHD",
+    "authors": "McCabe",
+    "description": "A comprehensive resource by McCabe (Jessica\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:25.571386+00:00",
+    "updated_at": "2025-08-07T13:42:25.571386+00:00"
+  },
+  {
+    "id": "f0d48946-0200-4a67-86fe-c5e624c55dee",
+    "life_area_slug": "making-phone-calls",
+    "category": "Understanding ADHD Focus",
+    "title": "Unapologetically ADHD",
+    "authors": "Kinzer",
+    "description": "A comprehensive resource by Kinzer (Nikki; Wright) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:25.571386+00:00",
+    "updated_at": "2025-08-07T13:42:25.571386+00:00"
+  },
+  {
+    "id": "821e92ec-d967-40fe-a1bc-6788d16c5a65",
+    "life_area_slug": "making-phone-calls",
+    "category": "Tools & Frameworks",
+    "title": "The Neurodivergence Skills Workbook for Autism and ADHD",
+    "authors": "Kemp",
+    "description": "A comprehensive resource by Kemp (Jennifer; Mitchelson) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:25.571386+00:00",
+    "updated_at": "2025-08-07T13:42:25.571386+00:00"
+  },
+  {
+    "id": "10b15d3e-e841-46b2-9519-96ae4aff0e96",
+    "life_area_slug": "making-phone-calls",
+    "category": "Understanding ADHD Focus",
+    "title": "Succeeding With Adult ADHD",
+    "authors": "Levrini",
+    "description": "A comprehensive resource by Levrini (Abigail L.\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:25.571386+00:00",
+    "updated_at": "2025-08-07T13:42:25.571386+00:00"
+  },
+  {
+    "id": "cf517332-14c3-4d08-89d9-f231d1ffc70c",
+    "life_area_slug": "test-permissions",
+    "category": "Test",
+    "title": "Test Permission Record",
+    "authors": "Test Author",
+    "description": "Testing database permissions",
+    "created_at": "2025-08-07T17:30:15.083127+00:00",
+    "updated_at": "2025-08-07T17:30:15.083127+00:00"
+  },
+  {
+    "id": "00b55fe2-ee79-4e8c-822a-92ddd1a24b5e",
+    "life_area_slug": "bills-and-money",
+    "category": "ADHD & Finances",
+    "title": "Mad About Money (2025)",
+    "authors": "Alexander-Grout, Maddy",
+    "description": "_Mad About Money: Managing Finances (and Life) with ADHD_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "0cb34df2-1d4f-454b-bb0f-31fbc1562bb0",
+    "life_area_slug": "bills-and-money",
+    "category": "ADHD & Finances",
+    "title": "University of Rochester Medical Center",
+    "authors": "73 ADHD-Friendly Ways to Organize Your Life Now",
+    "description": "_73 ADHD-Friendly Ways to Organize Your Life Now_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "77a6a7f6-6f55-41a1-ba12-a20b7ddd7e45",
+    "life_area_slug": "bills-and-money",
+    "category": "Executive Function & Task Management",
+    "title": "Dawson, Peg & Guare, Richard.",
+    "authors": "Dawson, Peg & Guare, Richard",
+    "description": "_Smart but Scattered Guide to Success_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "e0e8d1d0-22f7-40e9-8569-354b2d92e4a8",
+    "life_area_slug": "bills-and-money",
+    "category": "Executive Function & Task Management",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "93c1b6d0-cc8b-4ca5-a209-fd968d8b930f",
+    "life_area_slug": "bills-and-money",
+    "category": "Executive Function & Task Management",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "Fogg, B.J",
+    "description": "_Tiny Habits_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "708beba2-b602-4e78-aa7d-ed4d9720283b",
+    "life_area_slug": "bills-and-money",
+    "category": "Executive Function & Task Management",
+    "title": "Start Finishing (2019)",
+    "authors": "Gilkey, Charlie",
+    "description": "_Start Finishing_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "30e8345c-dcc2-4d8b-b785-80b469c97e3e",
+    "life_area_slug": "bills-and-money",
+    "category": "Executive Function & Task Management",
+    "title": "Levrini, Abigail L.",
+    "authors": "Levrini, Abigail L",
+    "description": "_Succeeding With Adult ADHD_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "244f7239-0fcf-48dc-b03a-563c443a3c11",
+    "life_area_slug": "bills-and-money",
+    "category": "Externalization & Systems",
+    "title": "Forte, Tiago.",
+    "authors": "Forte, Tiago",
+    "description": "_Building a Second Brain_ & _The PARA Method_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "8acb2949-ee58-4fd3-9d5f-9aa1e4e0df7e",
+    "life_area_slug": "bills-and-money",
+    "category": "Externalization & Systems",
+    "title": "Kinzer, Nikki & Wright, Pete D.",
+    "authors": "Kinzer, Nikki & Wright, Pete D",
+    "description": "_Unapologetically ADHD_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "c56628cc-3d67-45f8-a6c7-27460868d93a",
+    "life_area_slug": "bills-and-money",
+    "category": "Externalization & Systems",
+    "title": "Paul, Jaclyn.",
+    "authors": "Paul, Jaclyn",
+    "description": "_Order from Chaos_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "519ed42b-e9e2-480a-b251-3a1bb9df5c36",
+    "life_area_slug": "bills-and-money",
+    "category": "Externalization & Systems",
+    "title": "Kustow, James.",
+    "authors": "Kustow, James",
+    "description": "_How to Thrive with Adult ADHD_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "7404c2a2-1bec-46a5-a122-90d43fa94af7",
+    "life_area_slug": "bills-and-money",
+    "category": "Mindset, Motivation & Emotional Regulation",
+    "title": "You Mean I’m Not Lazy, Stupid or Crazy?!",
+    "authors": "Kelly, Kate & Ramundo, Peggy",
+    "description": "_You Mean I’m Not Lazy, Stupid, or Crazy?!_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "e4b5ebce-8d3b-4003-9c80-868d7bdf2d3b",
+    "life_area_slug": "bills-and-money",
+    "category": "Mindset, Motivation & Emotional Regulation",
+    "title": "Kemp, Jennifer & Mitchelson, Monique.",
+    "authors": "Kemp, Jennifer & Mitchelson, Monique",
+    "description": "_The Neurodivergence Skills Workbook_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "1d2a3187-0c4a-42b3-ac49-2aa4405447ea",
+    "life_area_slug": "bills-and-money",
+    "category": "Mindset, Motivation & Emotional Regulation",
+    "title": "Lakshmin, Pooja.",
+    "authors": "Lakshmin, Pooja",
+    "description": "_Real Self-Care_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "79b0598b-3f86-4347-b9f3-809d0e1cdba3",
+    "life_area_slug": "bills-and-money",
+    "category": "Mindset, Motivation & Emotional Regulation",
+    "title": "Le Cunff, Anne-Laure.",
+    "authors": "Le Cunff, Anne-Laure",
+    "description": "_Tiny Experiments_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "dcedcb72-fe79-435a-ab94-bed571138dce",
+    "life_area_slug": "bills-and-money",
+    "category": "Mindset, Motivation & Emotional Regulation",
+    "title": "McCabe, Jessica.",
+    "authors": "McCabe, Jessica",
+    "description": "_How to ADHD_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "2d588016-6d81-4bd3-b09f-4524a0fdfd13",
+    "life_area_slug": "bills-and-money",
+    "category": "Mindset, Motivation & Emotional Regulation",
+    "title": "Miller, William R. & Rollnick, Stephen.",
+    "authors": "Miller, William R. & Rollnick, Stephen",
+    "description": "_Motivational Interviewing_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "b40bad84-69fb-4c38-bcfd-2aebb3ca9cef",
+    "life_area_slug": "bills-and-money",
+    "category": "Mindset, Motivation & Emotional Regulation",
+    "title": "Kegan, Robert & Lahey, Lisa.",
+    "authors": "Kegan, Robert & Lahey, Lisa",
+    "description": "_Immunity to Change_",
+    "created_at": "2025-08-07T00:29:05.800047+00:00",
+    "updated_at": "2025-08-07T00:29:05.800047+00:00"
+  },
+  {
+    "id": "8ca6ec83-13bb-4f3e-b3b1-d0198750576b",
+    "life_area_slug": "bills-and-money",
+    "category": "Financial Management",
+    "title": "Mad About Money",
+    "authors": "Alexander-Grout",
+    "description": "A comprehensive resource by Alexander-Grout (Maddy\") addressing financial management and money-related challenges.",
+    "created_at": "2025-08-07T13:42:23.640649+00:00",
+    "updated_at": "2025-08-07T13:42:23.640649+00:00"
+  },
+  {
+    "id": "71a793f6-3ace-4802-817c-8abc51df70bf",
+    "life_area_slug": "bills-and-money",
+    "category": "Understanding ADHD Focus",
+    "title": "ADHD 2.0: New Science and Essential Strategies for Thriving",
+    "authors": "Hallowell",
+    "description": "A comprehensive resource by Hallowell (Edward M.; Ratey) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.640649+00:00",
+    "updated_at": "2025-08-07T13:42:23.640649+00:00"
+  },
+  {
+    "id": "674d6a47-0130-420b-9ce7-85ecc943ee97",
+    "life_area_slug": "bills-and-money",
+    "category": "Understanding ADHD Focus",
+    "title": "How to ADHD",
+    "authors": "McCabe",
+    "description": "A comprehensive resource by McCabe (Jessica\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.926223+00:00",
+    "updated_at": "2025-08-07T13:42:23.926223+00:00"
+  },
+  {
+    "id": "16500ab6-091c-4203-8060-5f8586bb6e50",
+    "life_area_slug": "bills-and-money",
+    "category": "Time & Planning",
+    "title": "The Smart but Scattered Guide to Success",
+    "authors": "Dawson",
+    "description": "A comprehensive resource by Dawson (Peg; Guare) offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:23.926223+00:00",
+    "updated_at": "2025-08-07T13:42:23.926223+00:00"
+  },
+  {
+    "id": "45bc3192-17df-44e7-b9ac-16d18d649459",
+    "life_area_slug": "bills-and-money",
+    "category": "Organization & Structure",
+    "title": "Order from Chaos",
+    "authors": "Paul",
+    "description": "A comprehensive resource by Paul (Jaclyn L.\") providing organization strategies and systems for creating order in daily life.",
+    "created_at": "2025-08-07T13:42:23.926223+00:00",
+    "updated_at": "2025-08-07T13:42:23.926223+00:00"
+  },
+  {
+    "id": "5aa52fbb-69ce-4b71-9d28-6dae65f7267c",
+    "life_area_slug": "bills-and-money",
+    "category": "Understanding ADHD Focus",
+    "title": "Unapologetically ADHD",
+    "authors": "Kinzer",
+    "description": "A comprehensive resource by Kinzer (Nikki; Wright) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.926223+00:00",
+    "updated_at": "2025-08-07T13:42:23.926223+00:00"
+  },
+  {
+    "id": "f660dd24-98c6-4b22-bd73-0dbd368fc676",
+    "life_area_slug": "bills-and-money",
+    "category": "Organization & Structure",
+    "title": "73 ADHD-Friendly Ways to Organize Your Life Now",
+    "authors": "ADDitude Experts",
+    "description": "A comprehensive resource by ADDitude Experts (2025) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.926223+00:00",
+    "updated_at": "2025-08-07T13:42:23.926223+00:00"
+  },
+  {
+    "id": "f46643e6-5590-4125-b064-1c7243d5bc6a",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "Hallowell, Edward M. & Ratey, John J.",
+    "authors": "Hallowell, Edward M. & Ratey, John J",
+    "description": "_ADHD 2.0_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "1289f03d-12d2-49d2-bd84-bfd6ae021b13",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "Kinzer, Nikki & Wright, Pete D.",
+    "authors": "Kinzer, Nikki & Wright, Pete D",
+    "description": "_Unapologetically ADHD_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "ffd9e812-19d4-4693-85a3-c2bc32e1b084",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "McCabe, Jessica.",
+    "authors": "McCabe, Jessica",
+    "description": "_How to ADHD_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "bf002ee8-e66d-41c0-b641-cf3b8cd11919",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "Succeeding with Adult ADHD",
+    "authors": "Levrini, Abigail",
+    "description": "_Succeeding With Adult ADHD_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "e8d24bdc-bf8e-414a-9b4a-ecf2aec25b88",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "Carder, Meredith.",
+    "authors": "Carder, Meredith",
+    "description": "_It All Makes Sense Now_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "a7b92d34-0b21-4dda-a4fd-10c1046a069f",
+    "life_area_slug": "focus-and-time",
+    "category": "Time Blindness, Planning & Transitions",
+    "title": "Kustow, James.",
+    "authors": "Kustow, James",
+    "description": "_How to Thrive with Adult ADHD_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "2b3411cc-d148-40ea-a796-54b4f0db78fd",
+    "life_area_slug": "focus-and-time",
+    "category": "Time Blindness, Planning & Transitions",
+    "title": "Dawson, Peg & Guare, Richard.",
+    "authors": "Dawson, Peg & Guare, Richard",
+    "description": "_Smart but Scattered Guide to Success_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "e8003022-4ea4-4ff2-9797-aef8b5d28081",
+    "life_area_slug": "focus-and-time",
+    "category": "Time Blindness, Planning & Transitions",
+    "title": "Paul, Jaclyn.",
+    "authors": "Paul, Jaclyn",
+    "description": "_Order from Chaos_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "d6318811-fb1e-4573-8807-2f64fac4fc54",
+    "life_area_slug": "focus-and-time",
+    "category": "Time Blindness, Planning & Transitions",
+    "title": "Ratey, Nancy A.",
+    "authors": "Ratey, Nancy A",
+    "description": "_The Disorganized Mind_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "35a647aa-cdc5-4085-937b-ba2ca38f19e6",
+    "life_area_slug": "focus-and-time",
+    "category": "Stimulation, Sensory Aids & Environment",
+    "title": "McCabe, Jessica.",
+    "authors": "McCabe, Jessica",
+    "description": "_How to ADHD_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "0f17adc6-fa21-435e-ad70-1abb8bf72d0e",
+    "life_area_slug": "focus-and-time",
+    "category": "Stimulation, Sensory Aids & Environment",
+    "title": "Small Talk: 10 ADHD Lies… (2024)",
+    "authors": "Pink, Richard & Roxanne",
+    "description": "_Small Talk_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "0118476e-1b30-4e3b-b26c-4196dd894cbf",
+    "life_area_slug": "focus-and-time",
+    "category": "Stimulation, Sensory Aids & Environment",
+    "title": "Solden, Sari & Frank, Michelle.",
+    "authors": "Solden, Sari & Frank, Michelle",
+    "description": "_A Radical Guide for Women with ADHD_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "4fdaf495-be0d-4649-88a9-cfeb70d904c0",
+    "life_area_slug": "focus-and-time",
+    "category": "Stimulation, Sensory Aids & Environment",
+    "title": "Kemp, Jennifer & Mitchelson, Monique.",
+    "authors": "Kemp, Jennifer & Mitchelson, Monique",
+    "description": "_Neurodivergence Skills Workbook_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "65f12f1f-c07a-4619-bacd-ea484da55b2c",
+    "life_area_slug": "focus-and-time",
+    "category": "Stimulation, Sensory Aids & Environment",
+    "title": "Driven to Distraction** + **ADHD 2.0",
+    "authors": "Hallowell & Ratey",
+    "description": "_Driven to Distraction_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "4eb4d5fe-03ce-4e07-b8c0-a4921f911838",
+    "life_area_slug": "focus-and-time",
+    "category": "Tools, Frameworks & Tech Strategies",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "e5670124-a52d-4b7e-81b2-d338842bfdfc",
+    "life_area_slug": "focus-and-time",
+    "category": "Tools, Frameworks & Tech Strategies",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "DOMI, Ju",
+    "description": "_Productivity With ADHD_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "9ac945b5-d204-43c5-b7a6-300beab92f29",
+    "life_area_slug": "focus-and-time",
+    "category": "Tools, Frameworks & Tech Strategies",
+    "title": "Le Cunff, Anne-Laure.",
+    "authors": "Le Cunff, Anne-Laure",
+    "description": "_Tiny Experiments_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "40a04847-4b38-4711-b0a5-35881c27e939",
+    "life_area_slug": "focus-and-time",
+    "category": "Mindfulness & Physical Regulation",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "6 Essential Mindfulness Practices..",
+    "description": "Distills techniques like **breathwork and body scans** to support attention. Reframes focus as a skill of refocusing — not maintaining an unbroken trance.",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "537f2f32-cce3-4518-bd50-d9ecc1e73e9a",
+    "life_area_slug": "focus-and-time",
+    "category": "Mindfulness & Physical Regulation",
+    "title": "You Mean I’m Not Lazy, Stupid or Crazy?!",
+    "authors": "Kelly, Kate & Ramundo, Peggy",
+    "description": "_You Mean I’m Not Lazy, Stupid or Crazy?!_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "090bfde0-d09f-4763-bd6f-e22961d4858b",
+    "life_area_slug": "focus-and-time",
+    "category": "Mindfulness & Physical Regulation",
+    "title": "Nutrition for ADHD and Dyslexia",
+    "authors": "Derbyshire, Emma",
+    "description": "_Nutrition for ADHD and Dyslexia_",
+    "created_at": "2025-08-07T00:29:07.645519+00:00",
+    "updated_at": "2025-08-07T00:29:07.645519+00:00"
+  },
+  {
+    "id": "90c39539-cefc-44bc-b9f7-f2c10c9b2170",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "ADHD 2.0: New Science and Essential Strategies for Thriving",
+    "authors": "Hallowell",
+    "description": "A comprehensive resource by Hallowell (Edward M.; Ratey) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.352238+00:00",
+    "updated_at": "2025-08-07T13:42:23.352238+00:00"
+  },
+  {
+    "id": "76ad9576-b526-4004-8313-09b05bd6ca0f",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "Unapologetically ADHD",
+    "authors": "Kinzer",
+    "description": "A comprehensive resource by Kinzer (Nikki; Wright) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.352238+00:00",
+    "updated_at": "2025-08-07T13:42:23.352238+00:00"
+  },
+  {
+    "id": "6743f19d-6836-4a8f-9b26-d68eb943ab9c",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "How to ADHD",
+    "authors": "McCabe",
+    "description": "A comprehensive resource by McCabe (Jessica\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.352238+00:00",
+    "updated_at": "2025-08-07T13:42:23.352238+00:00"
+  },
+  {
+    "id": "c501592a-c767-41e0-abd3-801b1204a757",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "Succeeding With Adult ADHD",
+    "authors": "Levrini",
+    "description": "A comprehensive resource by Levrini (Abigail L.\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.352238+00:00",
+    "updated_at": "2025-08-07T13:42:23.352238+00:00"
+  },
+  {
+    "id": "1e3d826a-edb1-414f-9c7b-9604eeb28a44",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "It All Makes Sense Now",
+    "authors": "Carder",
+    "description": "A comprehensive resource by Carder (Meredith\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:23.352238+00:00",
+    "updated_at": "2025-08-07T13:42:23.352238+00:00"
+  },
+  {
+    "id": "6077e305-c279-4160-a599-edd75068de1a",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "How to Thrive with Adult ADHD",
+    "authors": "Kustow",
+    "description": "A comprehensive resource by Kustow (James\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.352238+00:00",
+    "updated_at": "2025-08-07T13:42:23.352238+00:00"
+  },
+  {
+    "id": "4a3f5972-ca9a-4be2-b854-f4ac91427abe",
+    "life_area_slug": "focus-and-time",
+    "category": "Time & Planning",
+    "title": "The Smart but Scattered Guide to Success",
+    "authors": "Dawson",
+    "description": "A comprehensive resource by Dawson (Peg; Guare) offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:23.352238+00:00",
+    "updated_at": "2025-08-07T13:42:23.352238+00:00"
+  },
+  {
+    "id": "2cac4ca9-40a2-4619-96fa-e5bc87be5fec",
+    "life_area_slug": "focus-and-time",
+    "category": "Organization & Structure",
+    "title": "Order from Chaos",
+    "authors": "Paul",
+    "description": "A comprehensive resource by Paul (Jaclyn L.\") providing organization strategies and systems for creating order in daily life.",
+    "created_at": "2025-08-07T13:42:23.352238+00:00",
+    "updated_at": "2025-08-07T13:42:23.352238+00:00"
+  },
+  {
+    "id": "735daaf2-b33f-4af1-904d-d80058ac56b5",
+    "life_area_slug": "focus-and-time",
+    "category": "Organization & Structure",
+    "title": "The Disorganized Mind",
+    "authors": "Ratey",
+    "description": "A comprehensive resource by Ratey (Nancy A.\") providing organization strategies and systems for creating order in daily life.",
+    "created_at": "2025-08-07T13:42:23.352238+00:00",
+    "updated_at": "2025-08-07T13:42:23.352238+00:00"
+  },
+  {
+    "id": "c37a1767-5a66-46dd-859e-8a8b095f4664",
+    "life_area_slug": "focus-and-time",
+    "category": "Tools & Frameworks",
+    "title": "The Anti-Planner",
+    "authors": "Donovan",
+    "description": "A comprehensive resource by Donovan (Dani\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:23.352238+00:00",
+    "updated_at": "2025-08-07T13:42:23.352238+00:00"
+  },
+  {
+    "id": "13355c19-6f7a-4871-a603-558811591b1d",
+    "life_area_slug": "focus-and-time",
+    "category": "Tools & Frameworks",
+    "title": "Productivity With ADHD - Complete Guide",
+    "authors": "DOMI",
+    "description": "A comprehensive resource by DOMI (Ju\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.640649+00:00",
+    "updated_at": "2025-08-07T13:42:23.640649+00:00"
+  },
+  {
+    "id": "6a31bb2f-265b-4764-8815-d9bbf0f99d9b",
+    "life_area_slug": "focus-and-time",
+    "category": "Tools & Frameworks",
+    "title": "Tiny Experiments",
+    "authors": "Le Cunff",
+    "description": "A comprehensive resource by Le Cunff (Anne-Laure\") focusing on small, sustainable changes and habit formation techniques.",
+    "created_at": "2025-08-07T13:42:23.640649+00:00",
+    "updated_at": "2025-08-07T13:42:23.640649+00:00"
+  },
+  {
+    "id": "466076f0-f6c7-4131-af24-40922ae435ea",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "You Mean I'm Not Lazy, Stupid or Crazy?!",
+    "authors": "Kelly",
+    "description": "A comprehensive resource by Kelly (Kate; Ramundo) offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:23.640649+00:00",
+    "updated_at": "2025-08-07T13:42:23.640649+00:00"
+  },
+  {
+    "id": "3b21146e-56dc-41b7-a6d3-3d400deaff1e",
+    "life_area_slug": "focus-and-time",
+    "category": "Physical Health & Wellness",
+    "title": "Nutrition for ADHD and Dyslexia",
+    "authors": "Derbyshire",
+    "description": "A comprehensive resource by Derbyshire (Emma\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.640649+00:00",
+    "updated_at": "2025-08-07T13:42:23.640649+00:00"
+  },
+  {
+    "id": "fae5b6e7-4a4a-42af-9bd3-4c762d3a6bda",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "A Radical Guide for Women with ADHD: Embrace",
+    "authors": "Solden",
+    "description": "A comprehensive resource by Solden (Sari; Frank) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.640649+00:00",
+    "updated_at": "2025-08-07T13:42:23.640649+00:00"
+  },
+  {
+    "id": "6b9f165c-050f-48ba-a951-6fa47b5e979e",
+    "life_area_slug": "focus-and-time",
+    "category": "Tools & Frameworks",
+    "title": "The Neurodivergence Skills Workbook for Autism and ADHD",
+    "authors": "Kemp",
+    "description": "A comprehensive resource by Kemp (Jennifer; Mitchelson) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.640649+00:00",
+    "updated_at": "2025-08-07T13:42:23.640649+00:00"
+  },
+  {
+    "id": "0ba1bcd8-892e-49d8-adfc-0df71c79d6b8",
+    "life_area_slug": "focus-and-time",
+    "category": "Understanding ADHD Focus",
+    "title": "Driven to Distraction (Revised)",
+    "authors": "Hallowell",
+    "description": "A comprehensive resource by Hallowell (Edward M.; Ratey) offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:23.640649+00:00",
+    "updated_at": "2025-08-07T13:42:23.640649+00:00"
+  },
+  {
+    "id": "f218356f-d9bd-4ebd-9bda-2230d8e0a880",
+    "life_area_slug": "focus-and-time",
+    "category": "Communication & Social",
+    "title": "Small Talk",
+    "authors": "Pink",
+    "description": "A comprehensive resource by Pink (Richard; Pink) focusing on communication skills and social interactions.",
+    "created_at": "2025-08-07T13:42:23.640649+00:00",
+    "updated_at": "2025-08-07T13:42:23.640649+00:00"
+  },
+  {
+    "id": "b3f24a78-1862-45fc-91fa-d479b14723a2",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "ADHD & Financial Budgeting",
+    "title": "Mad About Money (2025)",
+    "authors": "Alexander-Grout, Maddy",
+    "description": "_Mad About Money: Managing Finances (and Life) with ADHD_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "bc2b1c67-8ef9-4fd7-a91f-959b6f800ffa",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "ADHD & Financial Budgeting",
+    "title": "Start Finishing (2019)",
+    "authors": "Gilkey, Charlie",
+    "description": "_Start Finishing_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "05389fe3-d8a1-4c4a-8cf6-9f3fd043e299",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Time Tracking & Awareness",
+    "title": "Dawson, Peg & Guare, Richard.",
+    "authors": "Dawson, Peg & Guare, Richard",
+    "description": "_Smart but Scattered Guide to Success_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "cb1df83d-284e-4823-8ecf-994147ac00b7",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Time Tracking & Awareness",
+    "title": "You Mean I’m Not Lazy, Stupid or Crazy?!",
+    "authors": "Kelly, Kate & Ramundo, Peggy",
+    "description": "_You Mean I’m Not Lazy, Stupid, or Crazy?!_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "30e490f9-173b-40a8-808e-0becfe07cd69",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Time Tracking & Awareness",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "DOMI, Ju",
+    "description": "_Productivity With ADHD: Complete Guide_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "9486ed79-e3a3-4b54-90a0-e126d4b7c719",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Time Tracking & Awareness",
+    "title": "Kinzer, Nikki & Wright, Pete D.",
+    "authors": "Kinzer, Nikki & Wright, Pete D",
+    "description": "_Unapologetically ADHD_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "8ef07da9-3c95-4388-a251-a382a6735ebe",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Time Tracking & Awareness",
+    "title": "Ratey, Nancy A.",
+    "authors": "Ratey, Nancy A",
+    "description": "_The Disorganized Mind_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "d03e2d47-eb05-462c-be10-2583b65d1cc1",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Tracking Systems & Tools",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "138520f6-3582-4fa0-855b-218c79e4436c",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Tracking Systems & Tools",
+    "title": "Forte, Tiago.",
+    "authors": "Forte, Tiago",
+    "description": "_Building a Second Brain_ & _The PARA Method_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "159979de-bbec-4ffc-8f87-0a59de6ed253",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Tracking Systems & Tools",
+    "title": "Paul, Jaclyn.",
+    "authors": "Paul, Jaclyn",
+    "description": "_Order from Chaos_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "bc5afd5d-dab3-410a-a563-35151e6a0a66",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Tracking Systems & Tools",
+    "title": "Le Cunff, Anne-Laure.",
+    "authors": "Le Cunff, Anne-Laure",
+    "description": "_Tiny Experiments_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "35538003-2a81-4595-bf88-4b0c3bb191bb",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Tracking Systems & Tools",
+    "title": "McCabe, Jessica.",
+    "authors": "McCabe, Jessica",
+    "description": "_How to ADHD_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "5ef01b87-6dc3-4c6d-bd8c-aa7af89435a8",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Self-Monitoring & Values-Driven Planning",
+    "title": "Lakshmin, Pooja.",
+    "authors": "Lakshmin, Pooja",
+    "description": "_Real Self-Care_",
+    "created_at": "2025-08-07T00:29:05.97709+00:00",
+    "updated_at": "2025-08-07T00:29:05.97709+00:00"
+  },
+  {
+    "id": "9f90317c-d8c1-4cf7-a65d-293153b7daa5",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Financial Management",
+    "title": "Mad About Money",
+    "authors": "Alexander-Grout",
+    "description": "A comprehensive resource by Alexander-Grout (Maddy\") addressing financial management and money-related challenges.",
+    "created_at": "2025-08-07T13:42:23.926223+00:00",
+    "updated_at": "2025-08-07T13:42:23.926223+00:00"
+  },
+  {
+    "id": "b3e0fae8-2b6c-44da-ac25-fb359ef184f0",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Tools & Frameworks",
+    "title": "Building a Second Brain",
+    "authors": "Forte",
+    "description": "A comprehensive resource by Forte (Tiago\") examining the connection between nutrition, brain health, and cognitive function.",
+    "created_at": "2025-08-07T13:42:23.926223+00:00",
+    "updated_at": "2025-08-07T13:42:23.926223+00:00"
+  },
+  {
+    "id": "02be023d-4099-4bb7-be6f-468ceb35542b",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Tools & Frameworks",
+    "title": "The PARA Method",
+    "authors": "Forte",
+    "description": "A comprehensive resource by Forte (Tiago\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:23.926223+00:00",
+    "updated_at": "2025-08-07T13:42:23.926223+00:00"
+  },
+  {
+    "id": "f29d8891-bb68-4838-9744-0fd2feea1d5d",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Tools & Frameworks",
+    "title": "Productivity With ADHD - Complete Guide",
+    "authors": "DOMI",
+    "description": "A comprehensive resource by DOMI (Ju\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:23.926223+00:00",
+    "updated_at": "2025-08-07T13:42:23.926223+00:00"
+  },
+  {
+    "id": "d187701c-d7bb-4fd0-901a-1993540ab7d2",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Tools & Frameworks",
+    "title": "The Anti-Planner",
+    "authors": "Donovan",
+    "description": "A comprehensive resource by Donovan (Dani\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:23.926223+00:00",
+    "updated_at": "2025-08-07T13:42:23.926223+00:00"
+  },
+  {
+    "id": "69885c03-c83e-44c5-b7a6-53f4dcf1abba",
+    "life_area_slug": "budgeting-and-tracking",
+    "category": "Organization & Structure",
+    "title": "Order from Chaos",
+    "authors": "Paul",
+    "description": "A comprehensive resource by Paul (Jaclyn L.\") providing organization strategies and systems for creating order in daily life.",
+    "created_at": "2025-08-07T13:42:24.199487+00:00",
+    "updated_at": "2025-08-07T13:42:24.199487+00:00"
+  },
+  {
+    "id": "23e5c1b6-28b0-474e-8afa-53e98f1c77b6",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Executive Function & ADHD Strategy",
+    "title": "Dawson, Peg & Guare, Richard.",
+    "authors": "Dawson, Peg & Guare, Richard",
+    "description": "_Smart but Scattered Guide to Success_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "c3c753cb-cb1f-46e5-9907-6eb0a8eccb9f",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Executive Function & ADHD Strategy",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "75f6f1f5-d929-4d98-8676-916d834b7ee1",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Executive Function & ADHD Strategy",
+    "title": "Kinzer, Nikki & Wright, Pete D.",
+    "authors": "Kinzer, Nikki & Wright, Pete D",
+    "description": "_Unapologetically ADHD_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "f03a296f-dffd-4b70-9d0b-863e29579282",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Executive Function & ADHD Strategy",
+    "title": "McCabe, Jessica.",
+    "authors": "McCabe, Jessica",
+    "description": "_How to ADHD_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "ab20e0bf-2e88-4844-8998-afb0930b525e",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Executive Function & ADHD Strategy",
+    "title": "Levrini, Abigail L.",
+    "authors": "Levrini, Abigail L",
+    "description": "_Succeeding With Adult ADHD_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "7ff93548-7758-4fa1-842d-5ec2959666f5",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Executive Function & ADHD Strategy",
+    "title": "Kemp, Jennifer & Mitchelson, Monique.",
+    "authors": "Kemp, Jennifer & Mitchelson, Monique",
+    "description": "_The Neurodivergence Skills Workbook_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "6562493d-405f-4944-8c6d-4b4a08553659",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Mindset, Motivation & Self-Compassion",
+    "title": "Dee, Lisa.",
+    "authors": "Dee, Lisa",
+    "description": "_Healthy Happy ADHD_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "6ed4a86a-0658-4bfb-a2b9-df845e3284d1",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Mindset, Motivation & Self-Compassion",
+    "title": "Le Cunff, Anne-Laure.",
+    "authors": "Le Cunff, Anne-Laure",
+    "description": "_Tiny Experiments_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "0b7e96c4-6e98-4a6d-9787-fa675496c540",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Mindset, Motivation & Self-Compassion",
+    "title": "Lakshmin, Pooja.",
+    "authors": "Lakshmin, Pooja",
+    "description": "_Real Self-Care_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "b31dbeef-a56a-490b-b0c9-462627c739a9",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Mindset, Motivation & Self-Compassion",
+    "title": "Kegan, Robert & Lahey, Lisa.",
+    "authors": "Kegan, Robert & Lahey, Lisa",
+    "description": "_Immunity to Change_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "d4d1b97e-b117-4fa6-a4f2-6161a0d5541b",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Mindset, Motivation & Self-Compassion",
+    "title": "Start Finishing (2019)",
+    "authors": "Gilkey, Charlie",
+    "description": "_Start Finishing_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "0fd36b0d-88c7-4587-8c59-c9a501764af5",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Tools, Systems & Externalization",
+    "title": "Forte, Tiago.",
+    "authors": "Forte, Tiago",
+    "description": "_Building a Second Brain_ & _The PARA Method_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "f928021d-b61d-4ba8-a170-322b1926ace9",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Tools, Systems & Externalization",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "Fogg, B. J",
+    "description": "_Tiny Habits_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "f08ff4f6-808e-48bd-b0eb-cb99fb50a3cc",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Tools, Systems & Externalization",
+    "title": "Paul, Jaclyn.",
+    "authors": "Paul, Jaclyn",
+    "description": "_Order from Chaos_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "7278a44d-0558-4c99-9f8b-f4144e165d7e",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Coaching, Support & Emotional Safety",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "Kimsey-House, Karen et al",
+    "description": "_Co-Active Coaching_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "de8b89dd-aab5-4a59-8090-3912a8d9fa80",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Coaching, Support & Emotional Safety",
+    "title": "Miller, William R. & Rollnick, Stephen.",
+    "authors": "Miller, William R. & Rollnick, Stephen",
+    "description": "_Motivational Interviewing_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "64f9e158-1709-4728-9ccb-666d2d16de93",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Coaching, Support & Emotional Safety",
+    "title": "Solden, Sari",
+    "authors": "Women with Attention Deficit Disorder",
+    "description": "_Women with Attention Deficit Disorder_",
+    "created_at": "2025-08-07T00:29:05.633593+00:00",
+    "updated_at": "2025-08-07T00:29:05.633593+00:00"
+  },
+  {
+    "id": "a28e7a88-9b29-4a45-ac79-045415fe6a02",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Understanding ADHD Focus",
+    "title": "Unapologetically ADHD",
+    "authors": "Kinzer",
+    "description": "A comprehensive resource by Kinzer (Nikki; Wright) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.464811+00:00",
+    "updated_at": "2025-08-07T13:42:24.464811+00:00"
+  },
+  {
+    "id": "60ca5cb6-10f1-4bc1-b19f-28c4633a8318",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Time & Planning",
+    "title": "The Smart but Scattered Guide to Success",
+    "authors": "Dawson",
+    "description": "A comprehensive resource by Dawson (Peg; Guare) offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:24.199487+00:00",
+    "updated_at": "2025-08-07T13:42:24.199487+00:00"
+  },
+  {
+    "id": "4992cc1b-5b09-4930-9b22-82221f902c3f",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Tools & Frameworks",
+    "title": "Building a Second Brain",
+    "authors": "Forte",
+    "description": "A comprehensive resource by Forte (Tiago\") examining the connection between nutrition, brain health, and cognitive function.",
+    "created_at": "2025-08-07T13:42:24.199487+00:00",
+    "updated_at": "2025-08-07T13:42:24.199487+00:00"
+  },
+  {
+    "id": "e5dbee90-fbe7-4dcf-be73-8d6c0035c685",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Understanding ADHD Focus",
+    "title": "ADHD 2.0: New Science and Essential Strategies for Thriving",
+    "authors": "Hallowell",
+    "description": "A comprehensive resource by Hallowell (Edward M.; Ratey) that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.199487+00:00",
+    "updated_at": "2025-08-07T13:42:24.199487+00:00"
+  },
+  {
+    "id": "23f4ddd9-a078-4e63-afc5-b7d36f0cdd75",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Understanding ADHD Focus",
+    "title": "How to ADHD",
+    "authors": "McCabe",
+    "description": "A comprehensive resource by McCabe (Jessica\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.199487+00:00",
+    "updated_at": "2025-08-07T13:42:24.199487+00:00"
+  },
+  {
+    "id": "5bdcb539-f84a-4ffe-ae3a-03b2c789b25d",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Tools & Frameworks",
+    "title": "Productivity With ADHD - Complete Guide",
+    "authors": "DOMI",
+    "description": "A comprehensive resource by DOMI (Ju\") that explores ADHD-specific strategies and insights for daily management and success.",
+    "created_at": "2025-08-07T13:42:24.199487+00:00",
+    "updated_at": "2025-08-07T13:42:24.199487+00:00"
+  },
+  {
+    "id": "1d2fc1d6-9967-403a-84b9-860ec5a9334e",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Tools & Frameworks",
+    "title": "Start Finishing",
+    "authors": "Gilkey",
+    "description": "A comprehensive resource by Gilkey (Charlie\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:24.199487+00:00",
+    "updated_at": "2025-08-07T13:42:24.199487+00:00"
+  },
+  {
+    "id": "ea00ecbb-d028-4237-8f02-7b87217418a6",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Tools & Frameworks",
+    "title": "Feel-Good Productivity",
+    "authors": "Abdaal",
+    "description": "A comprehensive resource by Abdaal (Ali\") offering practical productivity systems and techniques that work well with ADHD brains.",
+    "created_at": "2025-08-07T13:42:24.199487+00:00",
+    "updated_at": "2025-08-07T13:42:24.199487+00:00"
+  },
+  {
+    "id": "0e5a5cc4-590a-4bf4-844a-26541a07a5c7",
+    "life_area_slug": "big-exam-prep-long-term-studying",
+    "category": "Tools & Frameworks",
+    "title": "The PARA Method",
+    "authors": "Forte",
+    "description": "A comprehensive resource by Forte (Tiago\") offering valuable insights and practical strategies for personal development.",
+    "created_at": "2025-08-07T13:42:24.199487+00:00",
+    "updated_at": "2025-08-07T13:42:24.199487+00:00"
+  },
+  {
+    "id": "0ad212af-c3a4-42ea-a88d-b5a4fbd8890d",
+    "life_area_slug": "cleaning-out-the-fridge",
+    "category": "Fridge-Specific Guides",
+    "title": "Donovan, Dani.",
+    "authors": "Donovan, Dani",
+    "description": "_The Anti-Planner_",
+    "created_at": "2025-08-07T00:29:06.530277+00:00",
+    "updated_at": "2025-08-07T00:29:06.530277+00:00"
+  },
+  {
+    "id": "1b7a7b1d-4c4a-4905-b4ee-ada350554b95",
+    "life_area_slug": "cleaning-out-the-fridge",
+    "category": "Fridge-Specific Guides",
+    "title": "Kustow, James.",
+    "authors": "Kustow, James",
+    "description": "_How to Thrive with Adult ADHD_",
+    "created_at": "2025-08-07T00:29:06.530277+00:00",
+    "updated_at": "2025-08-07T00:29:06.530277+00:00"
+  },
+  {
+    "id": "9a3b4fe8-d520-44e7-9ec6-7b05249334de",
+    "life_area_slug": "cleaning-out-the-fridge",
+    "category": "Fridge-Specific Guides",
+    "title": "Levrini, A. (2012). _Succeeding with Adult ADHD_.",
+    "authors": "",
+    "description": "Suggests **dedicating a regular day** (like trash day or before grocery shopping) to clean out old food — reinforcing the idea of habit-stacking and environmental anchoring.",
+    "created_at": "2025-08-07T00:29:06.530277+00:00",
+    "updated_at": "2025-08-07T00:29:06.530277+00:00"
+  },
+  {
+    "id": "f781b79f-d6e8-42e6-8b0f-e04b06d3aef2",
+    "life_area_slug": "cleaning-out-the-fridge",
+    "category": "Transferable Strategies from Similar Tasks",
+    "title": "Solden, Sari, Frank, Michelle & Littman, Ellen.",
+    "authors": "Solden, Sari, Frank, Michelle & Littman, Ellen",
+    "description": "_A Radical Guide for Women with ADHD_",
+    "created_at": "2025-08-07T00:29:06.530277+00:00",
+    "updated_at": "2025-08-07T00:29:06.530277+00:00"
+  },
+  {
+    "id": "f83d88c6-8d48-4d82-9001-44262abe1f6d",
+    "life_area_slug": "cleaning-out-the-fridge",
+    "category": "Transferable Strategies from Similar Tasks",
+    "title": "Carder, Meredith.",
+    "authors": "Carder, Meredith",
+    "description": "_It All Makes Sense Now_",
+    "created_at": "2025-08-07T00:29:06.530277+00:00",
+    "updated_at": "2025-08-07T00:29:06.530277+00:00"
+  }
+]

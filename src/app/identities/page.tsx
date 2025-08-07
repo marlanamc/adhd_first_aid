@@ -6,8 +6,15 @@ import { Button } from '@/components/ui/button'
 import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import React from 'react'
 
-// Identity data with icons - matching our database content and URL mappings
+// Identity data with icons - Brain first, Sparkles last, no duplicates
 const identities = [
+  // Health & Neurodivergence (Brain first as requested)
+  { name: 'The Neurodivergent Adult', category: 'Health & Neurodivergence', icon: Brain },
+  { name: 'The Recently Diagnosed', category: 'Health & Neurodivergence', icon: ClipboardPlus },
+  { name: 'The AuDHD Individual', category: 'Health & Neurodivergence', icon: Fingerprint },
+  { name: 'The Sick or Chronically Ill', category: 'Health & Neurodivergence', icon: HeartPulse },
+  { name: 'The Grieving or Emotionally Raw Individual', category: 'Health & Neurodivergence', icon: UserX },
+  
   // Family & Care
   { name: 'The Parent', category: 'Family & Care', icon: Baby },
   { name: 'ADHD Identity Guide: The Parent of a Child with ADHD', category: 'Family & Care', icon: UserCog },
@@ -22,13 +29,6 @@ const identities = [
   { name: 'The Entrepreneur', category: 'Work & Career', icon: Lightbulb },
   { name: 'The Breadwinner', category: 'Work & Career', icon: Award },
   
-  // Health & Neurodivergence  
-  { name: 'The Neurodivergent Adult', category: 'Health & Neurodivergence', icon: BrainCircuit },
-  { name: 'The Recently Diagnosed', category: 'Health & Neurodivergence', icon: ClipboardPlus },
-  { name: 'The AuDHD Individual', category: 'Health & Neurodivergence', icon: Fingerprint },
-  { name: 'The Sick or Chronically Ill', category: 'Health & Neurodivergence', icon: HeartPulse },
-  { name: 'The Grieving or Emotionally Raw Individual', category: 'Health & Neurodivergence', icon: UserX },
-  
   // Identity & Community
   { name: 'ADHD Identity Guide: Queer & Trans', category: 'Identity & Community', icon: Rainbow },
   { name: 'The Immigrant', category: 'Identity & Community', icon: Globe },
@@ -38,16 +38,18 @@ const identities = [
   
   // Learning & Creative
   { name: 'The Student', category: 'Learning & Creative', icon: GraduationCap },
-  { name: 'The Creative', category: 'Learning & Creative', icon: Sparkles },
   
   // Recovery & Growth
-  { name: 'ADHD Identity Guide: The Recovering Perfectionist', category: 'Recovery & Growth', icon: Target }
+  { name: 'ADHD Identity Guide: The Recovering Perfectionist', category: 'Recovery & Growth', icon: Target },
+  
+  // Creative (Sparkles last as requested)
+  { name: 'The Creative', category: 'Learning & Creative', icon: Sparkles }
 ]
 
 const categories = [
+  { name: 'Health & Neurodivergence', color: 'from-purple-400 to-violet-500', count: 5 },
   { name: 'Family & Care', color: 'from-pink-400 to-rose-500', count: 5 },
   { name: 'Work & Career', color: 'from-blue-400 to-indigo-500', count: 5 },
-  { name: 'Health & Neurodivergence', color: 'from-purple-400 to-violet-500', count: 5 },
   { name: 'Identity & Community', color: 'from-green-400 to-teal-500', count: 5 },
   { name: 'Learning & Creative', color: 'from-yellow-400 to-orange-500', count: 2 },
   { name: 'Recovery & Growth', color: 'from-red-400 to-pink-500', count: 1 },
@@ -56,7 +58,7 @@ const categories = [
 
 export default function IdentitiesPage() {
   const [selectedIdentity, setSelectedIdentity] = useState<string | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<string | null>('Family & Care')
+  const [selectedCategory, setSelectedCategory] = useState<string | null>('Health & Neurodivergence')
   const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false)
 
   // Read category from URL parameter on page load
@@ -66,7 +68,7 @@ export default function IdentitiesPage() {
     if (categoryFromUrl) {
       const decodedCategory = decodeURIComponent(categoryFromUrl)
       // Check if the decoded category matches any of our known categories exactly
-      const categories = ['Family & Care', 'Work & Career', 'Neurodivergent Experience', 'Health & Wellness', 'Social & Cultural', 'Life Transitions', 'View All']
+      const categories = ['Health & Neurodivergence', 'Family & Care', 'Work & Career', 'Identity & Community', 'Learning & Creative', 'Recovery & Growth', 'View All']
       const matchingCategory = categories.find(cat => cat === decodedCategory)
       if (matchingCategory) {
         setSelectedCategory(decodedCategory)
@@ -127,7 +129,7 @@ export default function IdentitiesPage() {
     : []
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#a18cd1] via-[#b19cd9] to-[#dec6f7] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-12">
@@ -241,7 +243,7 @@ export default function IdentitiesPage() {
             <div className="mb-4 flex justify-center">
               <Button
                 onClick={() => setIsSuggestModalOpen(true)}
-                className="group relative px-4 py-2 bg-gradient-to-r from-[#a18cd1] via-[#b19cd9] to-[#dec6f7] hover:from-[#9a85ca] hover:via-[#aa95d2] hover:to-[#d7bff0] text-gray-800 font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-0 text-sm"
+                className="group relative px-4 py-2 bg-gradient-to-r from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] hover:from-[#71bbeb] hover:via-[#ac96d4] hover:to-[#dacef2] text-gray-800 font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-0 text-sm"
               >
                 <div className="flex items-center gap-2">
                   <div className="p-1 bg-white/30 rounded-md group-hover:bg-white/40 transition-colors">

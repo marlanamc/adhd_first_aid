@@ -1,16 +1,21 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, RotateCcw, Smartphone, Calendar, MessageSquareText, Clock, Laptop, Heart, Users, Brain, Zap, Volume2, Eye, ShoppingCart, Utensils, Bed, Briefcase, Mail, AlertCircle, MousePointer, Share2, ShoppingBag, AlarmClock, CalendarX, CalendarCheck, CalendarClock, Timer, HeartCrack, UserMinus, UserX, MessagesSquare, MailQuestion, UserPlus, HeartHandshake, MessageCircleQuestion, CircleDashed, Target, Infinity, UtensilsCrossed, Salad, Building2, Dumbbell, Moon, BellRing, BatteryLow, MousePointerClick, Repeat } from 'lucide-react'
+import { ArrowLeft, Brain, Share2, ShoppingBag, AlarmClock, CalendarX, CalendarCheck, CalendarClock, Timer, HeartCrack, UserMinus, UserX, MessagesSquare, MailQuestion, Users, HeartHandshake, MessageCircleQuestion, CircleDashed, Target, Infinity, Utensils, UtensilsCrossed, Building2, Dumbbell, Moon, BellRing, BatteryLow, Sparkles, MousePointerClick, Repeat } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import React from 'react'
 
-// Complex Loops data with icons - updated from database (all 28 loops)
+// Complex Loops data with icons - Brain first, Sparkles last, no duplicates (28 loops)
 const complexLoops = [
+  // Decision & Perfectionism (Brain first as requested)
+  { name: 'Analysis Paralysis', category: 'Decision & Perfectionism', icon: Brain },
+  { name: 'Decision Overwhelm', category: 'Decision & Perfectionism', icon: CircleDashed },
+  { name: 'Perfectionism Cycles', category: 'Decision & Perfectionism', icon: Target },
+  
   // Digital & Screen
-  { name: 'Phone Scrolling', category: 'Digital & Screen', icon: Smartphone },
-  { name: 'Social Media', category: 'Digital & Screen', icon: Share2 },
+  { name: 'Phone Scrolling', category: 'Digital & Screen', icon: Share2 },
+  { name: 'Social Media', category: 'Digital & Screen', icon: MailQuestion },
   { name: 'Online Shopping', category: 'Digital & Screen', icon: ShoppingBag },
   
   // Time & Schedule
@@ -25,15 +30,10 @@ const complexLoops = [
   { name: 'Rejection Sensitivity Loops', category: 'Emotional & Social', icon: UserMinus },
   { name: 'Masking Exhaustion', category: 'Emotional & Social', icon: UserX },
   { name: 'Replying to Texts', category: 'Emotional & Social', icon: MessagesSquare },
-  { name: 'Email Overwhelm', category: 'Emotional & Social', icon: MailQuestion },
-  { name: 'Friendships & ADHD', category: 'Emotional & Social', icon: Users },
-  { name: 'Intimacy & Connection', category: 'Emotional & Social', icon: HeartHandshake },
-  { name: 'Difficult Conversations', category: 'Emotional & Social', icon: MessageCircleQuestion },
-  
-  // Decision & Perfectionism
-  { name: 'Decision Overwhelm', category: 'Decision & Perfectionism', icon: CircleDashed },
-  { name: 'Perfectionism Cycles', category: 'Decision & Perfectionism', icon: Target },
-  { name: 'Analysis Paralysis', category: 'Decision & Perfectionism', icon: Infinity },
+  { name: 'Email Overwhelm', category: 'Emotional & Social', icon: Users },
+  { name: 'Friendships & ADHD', category: 'Emotional & Social', icon: HeartHandshake },
+  { name: 'Intimacy & Connection', category: 'Emotional & Social', icon: MessageCircleQuestion },
+  { name: 'Difficult Conversations', category: 'Emotional & Social', icon: Infinity },
   
   // Life & Wellness
   { name: 'Overeating', category: 'Life & Wellness', icon: Utensils },
@@ -45,17 +45,19 @@ const complexLoops = [
   { name: 'Can\'t Fall Asleep', category: 'Sleep & Energy', icon: Moon },
   { name: 'Sleeping Through Alarms', category: 'Sleep & Energy', icon: BellRing },
   { name: 'Constantly Tired', category: 'Sleep & Energy', icon: BatteryLow },
-  { name: 'Bedtime Procrastination', category: 'Sleep & Energy', icon: Clock }
+  
+  // End with Sparkles (last as requested)
+  { name: 'Bedtime Procrastination', category: 'Sleep & Energy', icon: Sparkles }
 ]
 
 const categories = [
+  { name: 'Decision & Perfectionism', color: 'from-amber-400 to-orange-500', count: 3 },
   { name: 'Digital & Screen', color: 'from-blue-400 to-cyan-500', count: 3 },
   { name: 'Time & Schedule', color: 'from-purple-400 to-indigo-500', count: 5 },
   { name: 'Emotional & Social', color: 'from-pink-400 to-rose-500', count: 8 },
-  { name: 'Decision & Perfectionism', color: 'from-amber-400 to-orange-500', count: 3 },
   { name: 'Life & Wellness', color: 'from-green-400 to-emerald-500', count: 4 },
   { name: 'Sleep & Energy', color: 'from-indigo-400 to-blue-500', count: 4 },
-  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 27 }
+  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 28 }
 ]
 
 const categoryColors = {
@@ -69,7 +71,7 @@ const categoryColors = {
 
 export default function ComplexLoopsPage() {
   const [selectedLoop, setSelectedLoop] = useState<string | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<string | null>('Digital & Screen')
+  const [selectedCategory, setSelectedCategory] = useState<string | null>('Decision & Perfectionism')
   const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false)
 
   // Read category from URL parameter on page load
@@ -79,7 +81,7 @@ export default function ComplexLoopsPage() {
     if (categoryFromUrl) {
       const decodedCategory = decodeURIComponent(categoryFromUrl)
       // Check if the decoded category matches any of our known categories exactly
-      const categories = ['Digital & Screen', 'Time & Schedule', 'Emotional & Social', 'Decision & Perfectionism', 'Life & Wellness', 'Sleep & Energy', 'View All']
+      const categories = ['Decision & Perfectionism', 'Digital & Screen', 'Time & Schedule', 'Emotional & Social', 'Life & Wellness', 'Sleep & Energy', 'View All']
       const matchingCategory = categories.find(cat => cat === decodedCategory)
       if (matchingCategory) {
         setSelectedCategory(decodedCategory)
@@ -90,7 +92,15 @@ export default function ComplexLoopsPage() {
   const handleLoopSelect = (loop: string) => {
     setSelectedLoop(loop)
     // Navigate to individual complex loop page with category parameter
-    const loopSlug = encodeURIComponent(loop.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))
+    // Fix ampersand handling to avoid double dashes in URLs
+    const loopSlug = encodeURIComponent(
+      loop
+        .toLowerCase()
+        .replace(/&/g, 'and') // Replace & with 'and' before other processing
+        .replace(/\s+/g, '-') // Replace spaces with dashes
+        .replace(/[^a-z0-9-]/g, '') // Remove special characters
+        .replace(/--+/g, '-') // Clean up any double dashes
+    )
     const categoryParam = selectedCategory ? `?category=${encodeURIComponent(selectedCategory)}` : ''
     window.location.href = `/complex_loops/${loopSlug}${categoryParam}`
   }
@@ -107,7 +117,7 @@ export default function ComplexLoopsPage() {
     : []
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-12">
@@ -221,7 +231,7 @@ export default function ComplexLoopsPage() {
             <div className="mb-4 flex justify-center">
               <Button
                 onClick={() => setIsSuggestModalOpen(true)}
-                className="group relative px-4 py-2 bg-gradient-to-r from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] hover:from-[#88cfed] hover:via-[#71bbeb] hover:to-[#9a85ca] text-gray-800 font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-0 text-sm"
+                className="group relative px-4 py-2 bg-gradient-to-r from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] hover:from-[#a9f1e3] hover:via-[#71bbeb] hover:to-[#9a85ca] text-gray-800 font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-0 text-sm"
               >
                 <div className="flex items-center gap-2">
                   <div className="p-1 bg-white/30 rounded-md group-hover:bg-white/40 transition-colors">

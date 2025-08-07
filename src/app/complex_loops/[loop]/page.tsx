@@ -9,13 +9,40 @@ import {
   BookOpen, Zap, Star, Clock,
   Settings, Mail, ClipboardList,
   ShoppingCart, Utensils, Bed,
-  Calendar, Sparkles, Key, Flame, Smartphone, Laptop,
-  MessageSquareText, Users, AlertCircle, ArrowLeftRight, Puzzle
+  Calendar, Sparkles, Key, Flame, Laptop,
+  MessageSquareText, Users, AlertCircle, ArrowLeftRight, Puzzle,
+  ShoppingBag, AlarmClock, CalendarX, CalendarCheck, CalendarClock,
+  Timer, HeartCrack, UserMinus, UserX, MessagesSquare, MailQuestion,
+  HeartHandshake, MessageCircleQuestion, CircleDashed, Infinity,
+  UtensilsCrossed, Building2, Dumbbell, Moon, BellRing, BatteryLow,
+  Briefcase, Activity, TrendingUp, TrendingDown, Award, Music,
+  Phone, Smartphone, Globe, Palette, Link, MapPin, Dice1 as Dice, Home, Pill, Car,
+  CookingPot, Shirt, Bath, PhoneCall, Receipt, ScrollText, Trash2, 
+  Hammer, Crown, Shield, Gem, Rocket, Medal, Flower, Leaf
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { getComplexLoopsContent } from '@/lib/supabase'
+import { getComplexLoopsContent, getComplexLoopSources } from '@/lib/supabase'
 import type { ComplexLoopsContent } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
+import { ShareModal } from '@/components/ui/ShareModal';
+
+// Short, ADHD‑friendly subtitles for section headers
+const getSectionSubtitle = (title: string, loopName?: string): string => {
+  const t = (title || '').toLowerCase()
+  if (t.includes('core principles')) return 'The few big ideas to keep you steady when your brain spirals'
+  if (t.includes('strategies')) return 'Tiny, do‑able moves to break the loop right now'
+  if (t.includes('mindset')) return 'Gentle reframes that lower pressure and unlock action'
+  if (t.includes('encouragement')) return 'A quick pep talk to take with you when it’s tough'
+  if (t.includes('tools')) return 'Practical helpers you can grab fast when you need them'
+  if (t.includes('examples')) return 'Real‑life patterns and how people shift them'
+  if (t.includes('common mistakes')) return 'What trips folks up, and how to avoid it without shame'
+  if (t.includes('checklist')) return 'A simple list so your brain doesn’t have to remember it all'
+  if (t.includes('faq')) return 'Quick answers to the questions that pop up a lot'
+  // ADHD reasons header
+  if (t.includes('why') && t.includes('hard with adhd')) return 'Connect what you feel with what’s happening in your brain, no shame, just clarity'
+  // Generic fallback
+  return 'Open for a quick, plain‑language guide to help you move forward'
+}
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
@@ -148,67 +175,215 @@ const formatMarkdownText = (text: string) => {
   return result;
 };
 
-// Function to map emoji strings to Lucide icons
-const getIconForEmoji = (emoji: string) => {
-  const emojiToIconMap: Record<string, React.ElementType> = {
-    // Digital & Screen
-    '📱': Smartphone, // Phone scrolling
-    '💻': Laptop, // Screen time
-    '📺': Laptop, // TV/streaming
-    '🛒': ShoppingCart, // Online shopping
-    '📮': MessageSquareText, // Social media
+// Direct mapping of loop names to Lucide icons (no emoji intermediary)
+const getLoopIcon = (loopName: string): React.ElementType => {
+  const loopIconMap: Record<string, React.ElementType> = {
+    // Brain is first as required, then organized by category
+    'Analysis Paralysis': Brain,
     
-    // Time & Schedule
-    '⏰': Clock, // Lateness
-    '📅': Calendar, // Appointments
-    '🗓️': Calendar, // Scheduling
-    '⏱️': Clock, // Time management
+    // Social & Communication - each gets unique icon
+    'ADHD & Social Media': Share2,
+    'Phone Scrolling': Smartphone,
+    'Replying to Texts': MessagesSquare,
+    'Email Overwhelm': MailQuestion,
+    'Friendships & ADHD': Users,
+    'Intimacy & Connection': HeartHandshake,
+    'Difficult Conversations': MessageCircleQuestion,
     
-    // Sleep & Rest
-    '🌙': Bed, // Bedtime procrastination  
-    '😴': Bed, // Sleep issues
-    '⏰': Clock, // Alarms
-    '🛌': Bed, // Sleeping through alarms
+    // Time & Scheduling - each gets unique icon
+    'Chronic Lateness': AlarmClock,
+    'Missed Appointments': CalendarX,
+    'Last-Minute Cancelling': CalendarCheck,
+    'Double-Booking Yourself': CalendarClock,
+    'Waiting Mode': Timer,
     
-    // Food & Eating
-    '🍽️': Utensils, // Eating patterns
-    '🥪': Utensils, // Meals
-    '🥗': Utensils, // Healthy eating
+    // Sleep & Energy - each gets unique icon
+    'Bedtime Procrastination': Clock,
+    'Can\'t Fall Asleep': Moon,
+    'Sleeping Through Alarms': BellRing,
+    'Constantly Tired': BatteryLow,
     
-    // Communication & Social
-    '✉️': Mail, // Email overwhelm
-    '💬': MessageSquareText, // Text avoidance
-    '👥': Users, // Social situations
-    '🤝': Users, // Relationships
+    // Eating & Health - each gets unique icon
+    'Overeating': Utensils,
+    'Undereating': UtensilsCrossed,
+    'Workout Avoidance': Dumbbell,
     
-    // Mental & Emotional
-    '🧠': Brain, // Analysis paralysis
-    '😵‍💫': Brain, // Overwhelm
-    '💭': Brain, // Overthinking
-    '😰': AlertCircle, // Anxiety loops
-    '🔄': RotateCcw, // Perfectionism cycles
+    // Shopping & Decision Making - each gets unique icon
+    'Online Shopping': ShoppingBag,
+    'Decision Overwhelm': CircleDashed,
+    'Perfectionism Cycles': Target,
     
-    // Work & Productivity
-    '💼': ClipboardList, // Work avoidance
-    '📋': ClipboardList, // Task avoidance
-    '🎯': Target, // Decision overwhelm
+    // Emotional & Mental Health - each gets unique icon
+    'People-Pleasing Burnout': HeartCrack,
+    'Rejection Sensitivity Loops': UserMinus,
+    'Masking Exhaustion': UserX,
     
-    // Common fallbacks
-    '✅': CheckCircle,
-    '❌': XCircle,
-    '⚡': Zap,
-    '❤️': Heart,
-    '🛠️': Wrench,
-    '⚙️': Settings,
-    '📖': BookOpen,
-    '💡': Lightbulb,
-    '⭐': Star,
-    '🔑': Key,
-    '🔥': Flame,
-    '✨': Sparkles,
+    // Work & Career - each gets unique icon
+    'Job Searching': Building2,
+    
+    // Special sections
+    'Encouragement to Take With You': Heart,
   }
   
-  return emojiToIconMap[emoji] || RotateCcw
+  return loopIconMap[loopName] || Puzzle // Default fallback
+}
+
+// Simple emoji to icon mapping for content sections
+const getSectionIcon = (emoji: string): React.ElementType => {
+  const sectionIconMap: Record<string, React.ElementType> = {
+    // Core universal emojis - expanded mapping to prevent repetition
+    '🧠': Brain,
+    '❤️': Heart,
+    '⚡': Zap,
+    '🎯': Target,
+    '🔧': Wrench,
+    '🛠️': Construction,
+    '💡': Lightbulb,
+    '✨': Sparkles,
+    '🔥': Flame,
+    '🚀': Rocket,
+    
+    // Time & Schedule related
+    '⏰': Clock,
+    '⏱️': Timer,
+    '⏳': Clock,
+    '📅': Calendar,
+    '🗓️': Calendar,
+    
+    // Communication & Information
+    '📞': PhoneCall,
+    '📱': Phone,
+    '✉️': Mail,
+    '📧': Mail,
+    '💬': MessageSquareText,
+    '📋': ClipboardList,
+    '📝': ScrollText,
+    '📄': Receipt,
+    '📊': TrendingUp,
+    '📈': TrendingUp,
+    
+    // Digital & Technology
+    '💻': Laptop,
+    '🖥️': Laptop,
+    '📲': Phone,
+    '🔗': Link,
+    '🌐': Globe,
+    '📺': Laptop,
+    
+    // Health & Body
+    '🧘': Users, // Meditation
+    '🏃': Dumbbell, // Running
+    '💪': Zap, // Muscle/strength  
+    '🌡️': Activity, // Thermometer
+    '💊': Pill,
+    '🧼': Bath,
+    '🚿': Bath, // Shower
+    '🛁': Bath, // Bathtub
+    
+    // Food & Kitchen
+    '🍽️': Utensils,
+    '🍳': CookingPot,
+    '🥘': CookingPot,
+    '🍕': Utensils, // Pizza
+    '🥗': Utensils, // Salad
+    '🛒': ShoppingCart,
+    '🛍️': ShoppingBag, // Shopping bags
+    
+    // Home & Living
+    '🏠': Home,
+    '🚪': Home, // Door
+    '🛏️': Bed, // Bed
+    '🧹': Wrench, // Broom/cleaning
+    '🧽': Construction, // Sponge
+    '🗑️': Trash2, // Trash
+    '♻️': Trash2, // Recycling
+    
+    // Work & Business
+    '💼': Briefcase,
+    '👔': Briefcase, // Necktie/professional
+    '📈_trend': TrendingUp,
+    '💰': Award, // Money bag
+    '💳': Receipt, // Credit card
+    '🏢': Building2, // Office building
+    
+    // Transportation
+    '🚗': Car,
+    '🚌': Car, // Bus
+    '🚇': Car, // Metro
+    '✈️': Car, // Airplane
+    '🚲': Car, // Bicycle
+    
+    // Education & Learning
+    '📚': BookOpen,
+    '📖': BookOpen, // Open book
+    '✏️_pencil': ScrollText, // Pencil
+    '📝_memo': ScrollText, // Memo
+    '🎓': Award, // Graduation cap
+    '🔬': Settings, // Microscope
+    
+    // Emotions & Feelings
+    '😴': Moon, // Sleeping
+    '😰': AlertCircle, // Anxious
+    '😵': CircleDashed, // Dizzy
+    '🤯': Brain, // Mind blown
+    '😤': Flame, // Huffing
+    '💔': HeartCrack, // Broken heart
+    '🤝': HeartHandshake, // Handshake
+    '👥': Users, // People
+    '👤': UserMinus, // Person
+    '🚫': UserX, // Prohibited
+    
+    // Creative & Arts
+    '🎨': Palette,
+    '🖌️': Palette, // Paintbrush
+    '✂️': Palette, // Scissors
+    '🎭': Palette, // Theater masks
+    '🎵': Music, // Musical note
+    '🎶': Music, // Musical notes
+    
+    // Miscellaneous useful icons
+    '⭐_star': Star,
+    '🌟_sparkle': Sparkles, // Glowing star
+    '💎_gem': Gem, // Diamond
+    '👑_crown': Crown, // Crown
+    '🔑_key': Key, // Key
+    '🎲_dice': Dice, // Game die
+    '🧩_puzzle': Puzzle, // Puzzle piece
+    '🎪_circus': Target, // Circus tent
+    '🌈_rainbow': Rainbow, // Rainbow
+    '👕_shirt': Shirt,
+    '🧼_bath': Bath,
+    '📞_phone': PhoneCall,
+    '✉️_mail': Mail,
+    '💰_money': Receipt,
+    '📄_doc': ScrollText,
+    '🗑️_trash': Trash2,
+    '🔧_tool': Hammer,
+    '⚙️_settings': Settings,
+    '🎪_tent': Crown,
+    '🎭_mask': Shield,
+    '🔮_crystal': Gem,
+    '🏆_trophy': Award,
+    '🌟_star': Star,
+    '🌈_prism': Rainbow,
+    '🎵_music': Music,
+    '📊_chart': Activity,
+    '📈_up': TrendingUp,
+    '🚀_rocket': Rocket,
+    '🧩_piece': Puzzle,
+    '🔗_link': Link,
+    '🌐_globe': Globe,
+    '⭐_medal': Medal,
+    '💎_jewel': Key,
+    '🛡️_shield': Shield,
+    '🌱_sprout': Flower,
+    '🌿_leaf': Leaf,
+    '💬_chat': Heart, // Encouragement sections
+    '🧭_compass': Construction, // Navigation sections
+    '❤️_support': HeartHandshake // Support sections
+  }
+  
+  return sectionIconMap[emoji] || Settings // Default fallback
 }
 
 interface ComplexLoopPageProps {
@@ -223,6 +398,8 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
   const [error, setError] = useState<string | null>(null)
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
   const [copySuccess, setCopySuccess] = useState(false)
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [sources, setSources] = useState<Array<{ id: number; loop_slug: string; category: string; title: string; authors: string | null; description: string }> | null>(null)
 
   const toggleSection = (sectionId: string) => {
     setExpandedSections(prev => ({
@@ -238,12 +415,14 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
         // Await the params first
         const resolvedParams = await params
         
-        // Convert URL param back to display name
-        let loopName = decodeURIComponent(resolvedParams.loop)
+        // Convert URL param back to display name with smarter normalization
+        const slugParam = decodeURIComponent(resolvedParams.loop)
+        let loopName = slugParam
           .split('-')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ')
-          .replace(/And/g, '&')
+          .replace(/\bAnd\b/g, '&')
+          .replace(/Cant/gi, "Can't")
 
         // Map display names to database names
         if (loopName === 'Social Media') {
@@ -256,8 +435,12 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
         if (loopName === 'Double Booking Yourself') {
           loopName = 'Double-Booking Yourself'
         }
-        if (loopName === 'Can T Fall Asleep') {
-          loopName = 'Can\'t Fall Asleep'
+        if (loopName === 'Can T Fall Asleep' || loopName === 'Cant Fall Asleep') {
+          loopName = "Can't Fall Asleep"
+        }
+        // Use curly apostrophe variant to match DB row
+        if (slugParam === 'cant-fall-asleep') {
+          loopName = 'Can’t Fall Asleep'
         }
         if (loopName === 'Screen Free Zones') {
           loopName = 'Screen-Free Zones'
@@ -272,6 +455,23 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
           setError(`Failed to load complex loop content: ${error.message}`)
         } else if (data) {
           setContent(data)
+          // Map route slug to sources slug when names differ
+          const routeSlug = resolvedParams.loop
+          const mapRouteToSourcesSlug: Record<string, string> = {
+            'job-searching': 'job-search',
+            'double-booking-yourself': 'double-booking-self',
+            'last-minute-cancelling': 'last-min-cancelling',
+            'rejection-sensitivity-loops': 'rsd-loops',
+            'replying-to-texts': 'text-message-avoidance',
+            'adhd-and-social-media': 'social-media-spirals',
+            'sleeping-through-alarms': 'sleeping-thru-alarms',
+            "can't-fall-asleep": 'cant-fall-asleep',
+          }
+          const sourcesSlug = mapRouteToSourcesSlug[routeSlug] || routeSlug
+          const { data: srcData, error: srcError } = await getComplexLoopSources(sourcesSlug)
+          if (!srcError && srcData && srcData.length > 0) {
+            setSources(srcData as any)
+          }
         } else {
           setError('Complex loop content not found')
         }
@@ -301,39 +501,18 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
     }
   }
 
-  const handleShare = async () => {
-    const shareData = {
-      title: `ADHD First Aid Kit - ${content?.loop_name || 'Complex Loop'}`,
-      text: `Get help with ${content?.loop_name?.toLowerCase() || 'this loop'} - ADHD-friendly strategies and support`,
-      url: window.location.href
-    }
-
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData)
-      } else {
-        await navigator.clipboard.writeText(window.location.href)
-        setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000)
-      }
-    } catch (error) {
-      try {
-        await navigator.clipboard.writeText(window.location.href)
-        setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000)
-      } catch (clipboardError) {
-        console.error('Share failed:', error)
-      }
-    }
+  const handleShare = () => {
+    // Always show the custom share modal
+    setIsShareModalOpen(true)
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-            <p className="text-lg">Loading complex loop content...</p>
+            <p className="text-lg">Breaking down your pattern with ADHD insights...</p>
           </div>
         </div>
       </div>
@@ -342,7 +521,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
 
   if (error || !content) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg max-w-md text-center">
           <XCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-semibold mb-2">Complex Loop Not Found</h2>
@@ -359,7 +538,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#8fd3f4] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
@@ -375,7 +554,9 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
               </Button>
               <div className="flex-1">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-foreground flex items-center gap-2 sm:gap-3">
-                  <RotateCcw className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500 flex-shrink-0" />
+                  {React.createElement(getLoopIcon(content.loop_name), {
+                    className: "h-6 w-6 sm:h-8 sm:w-8 text-blue-500 flex-shrink-0"
+                  })}
                   {content.loop_name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                 </h1>
                 {content.subtitle && (
@@ -416,6 +597,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
 
           </div>
 
+
           {/* Section Divider */}
           <div className="flex items-center justify-center gap-4 mb-5 text-gray-400 dark:text-gray-600">
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
@@ -432,13 +614,13 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
             <div className="relative">
               <Button
                 onClick={() => toggleSection('gentle-advice')}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors border border-green-200 dark:border-green-800 min-h-[60px] touch-manipulation"
+                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#61ffb5]/40 hover:shadow-md transition-shadow duration-300 border border-[#A0E8AF]/60 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
               >
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-green-600 dark:text-green-400" />
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+                  <Sparkles className="h-5 w-5 text-[#2D9C3C]" />
+                  <h3 className="text-base font-semibold text-gray-900">
                     Soft Start
                   </h3>
                 </div>
@@ -452,8 +634,8 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
               </Button>
               
               {expandedSections['gentle-advice'] && (
-                <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-green-200 dark:border-green-800 mt-2">
-                  <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+                <div className="bg-[#61ffb5]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
+                  <p className="text-base text-gray-900 leading-relaxed">
                     {formatMarkdownText(content.gentle_advice)}
                   </p>
                 </div>
@@ -464,13 +646,13 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
             <div className="relative">
               <Button
                 onClick={() => toggleSection('stern-advice')}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800 min-h-[60px] touch-manipulation"
+                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#ff61ab]/40 hover:shadow-md transition-shadow duration-300 border border-[#FF9EBB]/60 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
               >
                 <div className="flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-red-600 dark:text-red-400" />
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+                  <Zap className="h-5 w-5 text-[#D23369]" />
+                  <h3 className="text-base font-semibold text-gray-900">
                     Tough Love
                   </h3>
                 </div>
@@ -484,8 +666,8 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
               </Button>
 
               {expandedSections['stern-advice'] && (
-                <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-red-200 dark:border-red-800 mt-2">
-                  <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+                <div className="bg-[#ff61ab]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#FF9EBB]/60 mt-2">
+                  <p className="text-base text-gray-900 leading-relaxed">
                     {formatMarkdownText(content.stern_advice)}
                   </p>
                 </div>
@@ -507,66 +689,172 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
 
             {/* ADHD Reasons - Collapsible */}
             {content.adhd_reasons && content.adhd_reasons.length > 0 && (
-              <div className="bg-purple-100/50 dark:bg-purple-900/20 backdrop-blur-sm rounded-2xl border border-purple-200 dark:border-purple-800 transition-all duration-300 mb-8">
+              <div className="bg-[#5e60ce]/20 backdrop-blur-sm rounded-2xl border border-[#5e60ce]/30 transition-all duration-300 mb-8">
                 <button
                   onClick={() => toggleSection('adhd-reasons')}
-                  className="w-full p-6 text-left hover:bg-purple-100 dark:hover:bg-purple-900/30 rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                  className="w-full p-6 text-left hover:bg-[#5e60ce]/30 rounded-2xl transition-all duration-300 flex items-center justify-between group"
                   title={expandedSections['adhd-reasons'] ? "Close section" : "Open section"}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-200 dark:bg-purple-800 rounded-lg flex-shrink-0 transition-transform duration-300">
-                      <Brain className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+                    <div className="p-2 bg-[#5e60ce]/90 rounded-lg flex-shrink-0 transition-transform duration-300">
+                      <Brain className="h-5 w-5 text-gray-900" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    <div>
+                    <h3 className="text-lg font-semibold text-gray-900">
                       Why {content.loop_name} is Hard with ADHD
                     </h3>
+                      {!expandedSections['adhd-reasons'] && (
+                        <p className="text-sm text-gray-700 mt-0.5">{getSectionSubtitle('Why this is hard with ADHD')}</p>
+                      )}
+                    </div>
                   </div>
                   {expandedSections['adhd-reasons'] ? (
-                    <Minus className="h-5 w-5 text-purple-600 dark:text-purple-300 flex-shrink-0" />
+                    <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
                   ) : (
-                    <Plus className="h-5 w-5 text-purple-600 dark:text-purple-300 flex-shrink-0" />
+                    <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
                   )}
                 </button>
                 
                 {expandedSections['adhd-reasons'] && (
                   <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
-                    <div className="space-y-2">
-                      {content.adhd_reasons.map((reason, index) => {
-                        if (reason === 'You might:' || reason === "Here's what's really going on:") {
-                          return (
-                            <div key={index} className="font-semibold text-gray-900 dark:text-gray-100 mt-4 first:mt-0">
-                              {reason}
-                            </div>
-                          )
-                        } else {
-                          const emojiMatch = reason.match(/^([\u{1F300}-\u{1F9FF}])\s+(.+)/u)
-                          if (emojiMatch) {
-                            return (
-                              <div key={index} className="flex items-start gap-2 text-gray-900 dark:text-gray-100 ml-4">
-                                <span className="mt-1 flex-shrink-0">{emojiMatch[1]}</span>
-                                <span dangerouslySetInnerHTML={{ 
-                                  __html: emojiMatch[2]
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                    .replace(/_(.*?)_/g, '<em>$1</em>')
-                                }} />
-                              </div>
-                            )
-                          } else {
-                            return (
-                              <div key={index} className="flex items-start gap-2 text-gray-900 dark:text-gray-100 ml-4">
-                                <span className="text-purple-500 mt-1 flex-shrink-0">•</span>
-                                <span dangerouslySetInnerHTML={{ 
-                                  __html: reason
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                    .replace(/_(.*?)_/g, '<em>$1</em>')
-                                }} />
-                              </div>
-                            )
-                          }
+                    <div className="space-y-4">
+                      {(() => {
+                        const youMightItems: string[] = []
+                        const whatsReallyGoingOnItems: string[] = []
+                        let currentSection = ''
+                        
+                        content.adhd_reasons.forEach((reason) => {
+                          if (reason === 'You might:') currentSection = 'you-might'
+                          else if (reason === "Here's what's really going on:") currentSection = 'whats-really-going-on'
+                          else if (currentSection === 'you-might') youMightItems.push(reason)
+                          else if (currentSection === 'whats-really-going-on') whatsReallyGoingOnItems.push(reason)
+                        })
+
+                        const sanitize = (s: string) => (s || '').replace(/\uFFFD+/g, '').replace(/\s+/g, ' ').trim()
+                        const cleanLeft = (s?: string) => sanitize((s || '').replace(/^[-•]\s*/, ''))
+                        const rawLefts = youMightItems.map(cleanLeft).filter(Boolean)
+
+                        const parseRight = (s?: string) => {
+                          if (!s) return { emoji: null as string | null, heading: null as string | null, desc: '' }
+                          const emojiMatch = s.match(/^(\p{Extended_Pictographic})\s+(.+)/u) || s.match(/^([\u{2300}-\u{23FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F300}-\u{1FAFF}])\s+(.+)/u)
+                          let rest = s; let emoji: string | null = null
+                          if (emojiMatch) { emoji = emojiMatch[1]; rest = emojiMatch[2] }
+                          rest = sanitize(rest.replace(/^[\uFFFD\s]+/, ''))
+                          const boldMatch = rest.match(/^\*\*(.*?)\*\*[:：]?\s*(.*)?$/)
+                          if (boldMatch) return { emoji, heading: boldMatch[1], desc: boldMatch[2] || '' }
+                          return { emoji, heading: null, desc: rest }
                         }
-                      })}
+
+                        const rights = whatsReallyGoingOnItems
+                          .map(parseRight)
+                          .filter(r => (r.heading && r.heading.trim()) || (r.desc && r.desc.trim()))
+
+                        const seemsRight = (text: string) => /^(\p{Extended_Pictographic}\s+)/u.test(text) || /^\*\*.+?\*\*/.test(text) || /(executive dysfunction|time blindness|working memory|motivation|shame)/i.test(text)
+                        const manualRights: Record<number, { emoji: string | null; heading: string | null; desc: string }> = {}
+                        const lefts = rawLefts.map((left, idx) => {
+                          if (!seemsRight(left)) return left
+                          const r = parseRight(left)
+                          manualRights[idx] = r
+                          let candidate = sanitize(left)
+                            .replace(/^(\p{Extended_Pictographic}\s*)/u, '')
+                            .replace(/\*\*[^*]+\*\*/g, '')
+                            .replace(/^[—:\-\s]+/, '')
+                            .trim()
+                          if (!candidate) {
+                            candidate = r.heading ? `${r.heading} shows up in your day-to-day` : 'Notice this pattern popping up'
+                          }
+                          candidate = candidate.charAt(0).toUpperCase() + candidate.slice(1)
+                          return candidate
+                        })
+
+                        const guessRight = (left: string): { emoji: string; heading: string; desc: string } => {
+                          const t = left.toLowerCase()
+                          if (/(tab|forget|remember|meeting|agreed|follow\s*up|checked|scheduled)/.test(t)) {
+                            return { emoji: '🧠', heading: 'Working memory failures', desc: 'your brain is juggling a lot, so details slip without reminders' }
+                          }
+                          if (/(avoid|boring|complex|start|starting|begin|multi\s*step|plan)/.test(t)) {
+                            return { emoji: '🧩', heading: 'Executive dysfunction', desc: "getting started is hard when your brain can't pick a first step or feel the spark" }
+                          }
+                          if (/(late|time|deadline|last-minute|estimate|expire|registration|inspection|how long it's been)/.test(t)) {
+                            return { emoji: '⏰', heading: 'Time blindness', desc: 'time feels fuzzy, so deadlines sneak up and urgency spikes' }
+                          }
+                          if (/(distract|halfway|project|never return|switch)/.test(t)) {
+                            return { emoji: '🎯', heading: 'Attention dysregulation', desc: 'focus swings make it tough to stay with one thing start‑to‑finish' }
+                          }
+                          if (/(urgency|low activation|warning light|not screaming)/.test(t)) {
+                            return { emoji: '💥', heading: 'Motivation', desc: 'your drive follows urgency/interest, not importance—low signal = low activation' }
+                          }
+                          if (/(panic|breaks|no backup|overwhelm|stress)/.test(t)) {
+                            return { emoji: '💛', heading: 'Your nervous system is overloaded', desc: 'when stress spikes, short‑term relief wins over long‑term plans—totally human' }
+                          }
+                          return { emoji: '💡', heading: 'Context matters', desc: 'your brain is adapting to stressors; gentle supports help shift the pattern' }
+                        }
+
+                        const pairs = lefts.map((left, i) => ({ left, right: manualRights[i] || rights[i] || guessRight(left) }))
+
+                        const emojiForHeading = (h?: string | null) => {
+                          const k = (h || '').toLowerCase()
+                          if (k.includes('executive')) return '🧩'
+                          if (k.includes('time')) return '⏰'
+                          if (k.includes('working memory')) return '🧠'
+                          if (k.includes('attention')) return '🎯'
+                          if (k.includes('motivation')) return '💥'
+                          if (k.includes('shame')) return '😞'
+                          if (k.includes('nervous system')) return '💛'
+                          return '💡'
+                        }
+                                    
+                                      return (
+                          <div className="space-y-3">
+                            <div className="hidden lg:grid lg:grid-cols-2 gap-3 pl-1 pr-1">
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base border-b border-gray-200 pb-1">You might:</h4>
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base border-b border-gray-200 pb-1">Here's what's really going on:</h4>
+                                              </div>
+                            {pairs.map((pair, idx) => {
+                              const rowPalette = [
+                                { bg: 'bg-[#FBF8CC]/35', border: 'border-[#FBF8CC]/60' },
+                                { bg: 'bg-[#FDE4CF]/35', border: 'border-[#FDE4CF]/60' },
+                                { bg: 'bg-[#FFCFD2]/35', border: 'border-[#FFCFD2]/60' },
+                                { bg: 'bg-[#F1C0E8]/35', border: 'border-[#F1C0E8]/60' },
+                                { bg: 'bg-[#CFBAF0]/35', border: 'border-[#CFBAF0]/60' },
+                                { bg: 'bg-[#A3C4F3]/35', border: 'border-[#A3C4F3]/60' },
+                              ]
+                              const rowColor = rowPalette[idx % rowPalette.length]
+                              const right = typeof pair.right === 'string' ? parseRight(pair.right) : pair.right
+                              const displayEmoji = right.emoji || emojiForHeading(right.heading)
+                              return (
+                                <div key={idx} className="relative grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 group">
+                                  <span className="hidden lg:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-gray-500 select-none">→</span>
+                                  <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
+                                    <span className="text-blue-600 flex-shrink-0 translate-y-[2px] text-base leading-none w-4 text-center">•</span>
+                                    <span className="text-gray-900 text-[15px] md:text-[16px] leading-[1.7] pl-0.5">{pair.left}</span>
+                                  </div>
+                                  <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
+                                    <span className="text-lg w-5 text-center translate-y-[1px] flex-shrink-0">{displayEmoji}</span>
+                                    <div className="text-gray-800 text-[15px] md:text-[16px] leading-[1.7]">
+                                      {right.heading ? (
+                                        <>
+                                          <strong className="text-gray-900">{right.heading}</strong>
+                                          {right.desc && <span className="text-gray-700">: {right.desc}</span>}
+                                        </>
+                                      ) : (
+                                        <span
+                                          dangerouslySetInnerHTML={{
+                                            __html: (right.desc || '')
+                                                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                                  .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                                                  .replace(/_(.*?)_/g, '<em>$1</em>')
+                                          }}
+                                        />
+                                            )}
+                                          </div>
+                                        </div>
+                                        </div>
+                              )
+                                  })}
+                                </div>
+                        )
+                      })()}
                     </div>
                   </div>
                 )}
@@ -579,39 +867,44 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
             <div className="space-y-4">
               {content.content_sections.map((section, index) => {
                 const colorSchemes = [
-                  { bg: 'bg-blue-100/50', hover: 'hover:bg-blue-100', dark: 'dark:bg-blue-900/20 dark:hover:bg-blue-900/30', border: 'border-blue-200 dark:border-blue-800', iconBg: 'bg-blue-200 dark:bg-blue-800', bulletColor: 'text-blue-600 dark:text-blue-400', calloutBorder: 'border-blue-300 dark:border-blue-600', calloutBg: 'bg-blue-50 dark:bg-blue-800/50' },
-                  { bg: 'bg-green-100/50', hover: 'hover:bg-green-100', dark: 'dark:bg-green-900/20 dark:hover:bg-green-900/30', border: 'border-green-200 dark:border-green-800', iconBg: 'bg-green-200 dark:bg-green-800', bulletColor: 'text-green-600 dark:text-green-400', calloutBorder: 'border-green-300 dark:border-green-600', calloutBg: 'bg-green-50 dark:bg-green-800/50' },
-                  { bg: 'bg-yellow-100/50', hover: 'hover:bg-yellow-100', dark: 'dark:bg-yellow-900/20 dark:hover:bg-yellow-900/30', border: 'border-yellow-200 dark:border-yellow-800', iconBg: 'bg-yellow-200 dark:bg-yellow-800', bulletColor: 'text-yellow-600 dark:text-yellow-400', calloutBorder: 'border-yellow-300 dark:border-yellow-600', calloutBg: 'bg-yellow-50 dark:bg-yellow-800/50' },
-                  { bg: 'bg-orange-100/50', hover: 'hover:bg-orange-100', dark: 'dark:bg-orange-900/20 dark:hover:bg-orange-900/30', border: 'border-orange-200 dark:border-orange-800', iconBg: 'bg-orange-200 dark:bg-orange-800', bulletColor: 'text-orange-600 dark:text-orange-400', calloutBorder: 'border-orange-300 dark:border-orange-600', calloutBg: 'bg-orange-50 dark:bg-orange-800/50' },
-                  { bg: 'bg-pink-100/50', hover: 'hover:bg-pink-100', dark: 'dark:bg-pink-900/20 dark:hover:bg-pink-900/30', border: 'border-pink-200 dark:border-pink-800', iconBg: 'bg-pink-200 dark:bg-pink-800', bulletColor: 'text-pink-600 dark:text-pink-400', calloutBorder: 'border-pink-300 dark:border-pink-600', calloutBg: 'bg-pink-50 dark:bg-pink-800/50' }
+                  { bg: 'bg-[#5390d9]/30', hover: 'hover:bg-[#5390d9]/60', border: 'border-[#5390d9]/50', iconBg: 'bg-[#5390d9]/90'},
+                  { bg: 'bg-[#4ea8de]/30', hover: 'hover:bg-[#4ea8de]/60', border: 'border-[#4ea8de]/50', iconBg: 'bg-[#4ea8de]/90' },
+                  { bg: 'bg-[#56cfe1]/30', hover: 'hover:bg-[#56cfe1]/60', border: 'border-[#56cfe1]/50', iconBg: 'bg-[#56cfe1]/90' },
+                  { bg: 'bg-[#64dfdf]/30', hover: 'hover:bg-[#64dfdf]/60', border: 'border-[#64dfdf]/50', iconBg: 'bg-[#64dfdf]/90' },
+                  { bg: 'bg-[#80ffdb]/30', hover: 'hover:bg-[#80ffdb]/60', border: 'border-[#80ffdb]/50', iconBg: 'bg-[#80ffdb]/90' }
                 ];
                 
                 const colors = colorSchemes[index % colorSchemes.length];
-                const IconComponent = getIconForEmoji(section.emoji);
+                const IconComponent = getSectionIcon(section.emoji);
                 const sectionId = `section-${index}`;
                 const isExpanded = expandedSections[sectionId];
 
                 return (
-                  <div key={index} className={`${colors.bg} ${colors.dark} backdrop-blur-sm rounded-2xl border ${colors.border} transition-all duration-300`}>
+                  <div key={index} className={`${colors.bg} backdrop-blur-sm rounded-2xl border ${colors.border} transition-all duration-300`}>
                     <button
                       onClick={() => toggleSection(sectionId)}
-                      className={`w-full p-6 text-left ${colors.hover} ${colors.dark} rounded-2xl transition-all duration-300 flex items-center justify-between group`}
+                      className={`w-full p-6 text-left ${colors.hover} rounded-2xl transition-all duration-300 flex items-center justify-between group`}
                       title={isExpanded ? "Close section" : "Open section"}
                     >
                       <div className="flex items-center gap-3">
                         <div className={`p-2 ${colors.iconBg} rounded-lg flex-shrink-0 transition-transform duration-300 ${isExpanded ? 'scale-110' : 'group-hover:scale-105'}`}>
-                          <IconComponent className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+                          <IconComponent className="h-5 w-5 text-gray-900" />
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                          <h3 className="text-lg font-semibold text-gray-900">
                             {section.title}
                           </h3>
+                          {!isExpanded && (
+                            <p className="text-sm text-gray-600 mt-0.5">
+                              {getSectionSubtitle(section.title, content.loop_name)}
+                            </p>
+                          )}
                         </div>
                       </div>
                       {isExpanded ? (
-                        <Minus className={`h-5 w-5 ${colors.bulletColor} flex-shrink-0`} />
+                        <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
                       ) : (
-                        <Plus className={`h-5 w-5 ${colors.bulletColor} flex-shrink-0`} />
+                        <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
                       )}
                     </button>
                     
@@ -619,7 +912,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                       <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
                         {/* Section content */}
                         {section.content && section.content.length > 0 && (
-                          <div className="space-y-3 mb-4">
+                          <div className="space-y-4 mb-4 relative before:absolute before:left-3 before:top-0 before:bottom-0 before:w-px before:bg-gray-200">
                             {(() => {
                               const groupedContent: Array<{type: 'quote', items: string[]} | {type: 'bullet', item: string}> = [];
                               let currentQuoteGroup: string[] = [];
@@ -643,9 +936,10 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                               return groupedContent.map((group, groupIndex) => {
                                 if (group.type === 'quote') {
                                   return (
-                                    <div key={groupIndex} className={`border-l-4 ${colors.calloutBorder} pl-4 py-3 ${colors.calloutBg} rounded-r-lg space-y-2`}>
+                                    <div key={groupIndex} className={`border-l-4 ${colors.border} ml-6 pl-4 py-3 ${colors.bg.replace('/40', '/10')} rounded-lg space-y-2 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 hover:shadow-sm transition-shadow group/quote`}>
+                                      <div className={`absolute -left-[1.4rem] top-1/2 -translate-y-1/2 w-3 h-3 ${colors.iconBg} rounded-full transition-transform group-hover/quote:scale-110`} />
                                       {group.items.map((item, itemIndex) => (
-                                        <div key={itemIndex} className="text-gray-700 dark:text-gray-200 italic"
+                                        <div key={itemIndex} className="text-gray-900"
                                              dangerouslySetInnerHTML={{ 
                                                __html: item.replace('> ', '')
                                                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -658,9 +952,9 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                                   )
                                 } else {
                                   return (
-                                    <div key={groupIndex} className="flex items-start gap-2">
-                                      <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
-                                      <div className="text-gray-700 dark:text-gray-200"
+                                    <div key={groupIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
+                                      <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform">•</span>
+                                      <div className="text-gray-900 pt-0.5 py-1"
                                            dangerouslySetInnerHTML={{ 
                                              __html: group.item.replace(/^- /, '')
                                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -680,24 +974,42 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                         {section.subsections && section.subsections.length > 0 && (
                           <div className="space-y-4">
                             {section.subsections.map((subsection, subIndex) => {
-                              const SubIconComponent = getIconForEmoji(subsection.emoji);
+                              const SubIconComponent = getSectionIcon(subsection.emoji);
                               const subsectionId = `subsection-${index}-${subIndex}`;
                               const isSubExpanded = expandedSections[subsectionId];
                               
+                              // Gentle color rotation using existing brand palette - more opaque and ADHD-friendly
+                              const colorRotation = [
+                                { bg: 'bg-[#FBF8CC]/80', hover: 'hover:bg-[#FBF8CC]', text: 'text-gray-900', border: 'border-[#FBF8CC]/30', iconBg: 'bg-[#FBF8CC]', textColor: 'text-gray-900' }, // Lemon Chiffon
+                                { bg: 'bg-[#FDE4CF]/80', hover: 'hover:bg-[#FDE4CF]', text: 'text-gray-900', border: 'border-[#FDE4CF]/30', iconBg: 'bg-[#FDE4CF]', textColor: 'text-gray-900' }, // Champagne Pink
+                                { bg: 'bg-[#FFCFD2]/80', hover: 'hover:bg-[#FFCFD2]', text: 'text-gray-900', border: 'border-[#FFCFD2]/30', iconBg: 'bg-[#FFCFD2]', textColor: 'text-gray-900' }, // Baby Pink
+                                { bg: 'bg-[#F1C0E8]/80', hover: 'hover:bg-[#F1C0E8]', text: 'text-gray-900', border: 'border-[#F1C0E8]/30', iconBg: 'bg-[#F1C0E8]', textColor: 'text-gray-900' }, // Pink Lavender
+                                { bg: 'bg-[#CFBAF0]/80', hover: 'hover:bg-[#CFBAF0]', text: 'text-gray-900', border: 'border-[#CFBAF0]/30', iconBg: 'bg-[#CFBAF0]', textColor: 'text-gray-900' }, // Lavender Blue
+                                { bg: 'bg-[#A3C4F3]/80', hover: 'hover:bg-[#A3C4F3]', text: 'text-gray-900', border: 'border-[#A3C4F3]/30', iconBg: 'bg-[#A3C4F3]', textColor: 'text-gray-900' }, // Baby Blue Eyes
+                                { bg: 'bg-[#90DBF4]/80', hover: 'hover:bg-[#90DBF4]', text: 'text-gray-900', border: 'border-[#90DBF4]/30', iconBg: 'bg-[#90DBF4]', textColor: 'text-gray-900' }, // Sky Blue
+                                { bg: 'bg-[#8EECF5]/80', hover: 'hover:bg-[#8EECF5]', text: 'text-gray-900', border: 'border-[#8EECF5]/30', iconBg: 'bg-[#8EECF5]', textColor: 'text-gray-900' }, // Electric Blue
+                                { bg: 'bg-[#98F5E1]/80', hover: 'hover:bg-[#98F5E1]', text: 'text-gray-900', border: 'border-[#98F5E1]/30', iconBg: 'bg-[#98F5E1]', textColor: 'text-gray-900' }, // Magic Mint
+                                { bg: 'bg-[#B9FBC0]/80', hover: 'hover:bg-[#B9FBC0]', text: 'text-gray-900', border: 'border-[#B9FBC0]/30', iconBg: 'bg-[#B9FBC0]', textColor: 'text-gray-900' } // Granny Smith Apple
+                              ];
+                              
+                              const subColors = colorRotation[subIndex % colorRotation.length];
+                              
                               return (
-                                <div key={subIndex} className="bg-white/40 dark:bg-gray-800/40 rounded-xl">
+                                <div key={subIndex} className={`${subColors.bg} backdrop-blur-sm rounded-xl border ${subColors.border} transition-all duration-300`}>
                                   <button
                                     type="button"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       toggleSection(subsectionId);
                                     }}
-                                    className="w-full p-4 text-left hover:bg-white/60 dark:hover:bg-gray-700/60 rounded-xl transition-all duration-300 flex items-center justify-between group"
+                                    className={`w-full p-4 text-left ${subColors.hover} rounded-xl transition-all duration-300 flex items-center justify-between group`}
                                     title={isSubExpanded ? "Close section" : "Open section"}
                                   >
                                     <div className="flex items-center gap-2">
-                                      <SubIconComponent className="h-4 w-4 text-gray-700 dark:text-gray-200" />
-                                      <h4 className="text-base font-semibold text-gray-800 dark:text-gray-100">
+                                      <div className={`p-1.5 ${subColors.iconBg} rounded-md flex-shrink-0 transition-transform duration-300 ${isSubExpanded ? 'scale-110' : 'group-hover:scale-105'}`}>
+                                        <SubIconComponent className="h-4 w-4 text-gray-900" />
+                                      </div>
+                                      <h4 className={`text-lg font-semibold ${subColors.textColor}`}>
                                         <div dangerouslySetInnerHTML={{ 
                                           __html: subsection.title
                                             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -707,9 +1019,9 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                                       </h4>
                                     </div>
                                     {isSubExpanded ? (
-                                      <Minus className="h-4 w-4 text-gray-600 dark:text-gray-300 flex-shrink-0" />
+                                      <Minus className={`h-4 w-4 ${subColors.textColor} flex-shrink-0 opacity-70`} />
                                     ) : (
-                                      <Plus className="h-4 w-4 text-gray-600 dark:text-gray-300 flex-shrink-0" />
+                                      <Plus className={`h-4 w-4 ${subColors.textColor} flex-shrink-0 opacity-70`} />
                                     )}
                                   </button>
                                   
@@ -717,9 +1029,9 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                                     <div className="px-4 pb-4 animate-in slide-in-from-top duration-300">
                                       <div className="space-y-2">
                                         {subsection.content.map((item, itemIndex) => (
-                                          <div key={itemIndex} className="flex items-start gap-2">
-                                            <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
-                                            <div className="text-gray-700 dark:text-gray-200 text-base"
+                                          <div key={itemIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
+                                            <span className={`${subColors.textColor} flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform`}>•</span>
+                                            <div className={`${subColors.textColor} text-base pt-0.5 py-1`}
                                                  dangerouslySetInnerHTML={{ 
                                                    __html: item
                                                      .replace(/^-\s*/, '') // Remove leading dash and space
@@ -743,6 +1055,145 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                   </div>
                 )
               })}
+            </div>
+          )}
+
+          {/* Sources Section - last header */}
+          {sources && sources.length > 0 && (
+            <div className="space-y-4 mt-8">
+              <div className="relative">
+                <Button
+                  onClick={() => setExpandedSections(prev=>({ ...prev, 'sources': !prev['sources'] }))}
+                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-2xl border-2 bg-[#E0F2FE]/40 hover:bg-[#E0F2FE]/60 border-[#93C5FD]/50 transition-colors min-h-[75px] touch-manipulation"
+                  variant="ghost"
+                  size="lg"
+                >
+                  <div className="bg-[#93C5FD]/90 rounded-full p-3 flex-shrink-0">
+                    <BookOpen className="h-5 w-5 text-gray-900" />
+                  </div>
+                  <div className="flex-1 text-left min-w-0">
+                    <h3 className="text-sm sm:text-lg font-bold text-gray-900 break-words">
+                      Sources ({sources.length} sources)
+                    </h3>
+                  </div>
+                  <div className="flex-shrink-0">
+                    {expandedSections['sources'] ? (
+                      <Minus className="h-6 w-6 text-gray-500" />
+                    ) : (
+                      <Plus className="h-6 w-6 text-gray-500" />
+                    )}
+                  </div>
+                </Button>
+
+                {expandedSections['sources'] && (
+                  <div className="bg-[#E0F2FE]/30 rounded-lg p-4 space-y-4 animate-in slide-in-from-top duration-300 mb-4">
+                    {Object.entries(
+                      (sources || []).reduce((acc, source) => {
+                        const cat = source.category || 'Other'
+                        if (!acc[cat]) acc[cat] = [] as any[]
+                        (acc[cat] as any[]).push(source)
+                        return acc
+                      }, {} as Record<string, any[]>)
+                    )
+                    .sort(([,a], [,b]) => b.length - a.length)
+                    .map(([category, categorySources], index) => {
+                      const colors = [
+                        { bg: 'bg-[#FBF8CC]/40', hover: 'hover:bg-[#FBF8CC]/60', border: 'border-[#FBF8CC]/60' },
+                        { bg: 'bg-[#FDE4CF]/40', hover: 'hover:bg-[#FDE4CF]/60', border: 'border-[#FDE4CF]/60' },
+                        { bg: 'bg-[#FFCFD2]/40', hover: 'hover:bg-[#FFCFD2]/60', border: 'border-[#FFCFD2]/60' },
+                        { bg: 'bg-[#F1C0E8]/40', hover: 'hover:bg-[#F1C0E8]/60', border: 'border-[#F1C0E8]/60' },
+                        { bg: 'bg-[#CFBAF0]/40', hover: 'hover:bg-[#CFBAF0]/60', border: 'border-[#CFBAF0]/60' },
+                      ]
+                      const scheme = colors[index % colors.length]
+
+                      const normalized = (value: string) =>
+                        (value || '')
+                          .toLowerCase()
+                          .replace(/[_*`~]/g, '')
+                          .replace(/[^a-z0-9\s()&:+,-]/g, '')
+                          .replace(/\s+/g, ' ')
+                          .trim()
+
+                      const deduped = Object.values(
+                        (categorySources as any[]).reduce((acc, src) => {
+                          const key = `${normalized(src.title)}::${normalized(src.authors || '')}`
+                          if (!acc[key]) acc[key] = { ...src, _descriptions: [] as string[] }
+                          if (src.description) acc[key]._descriptions.push(src.description)
+                          return acc
+                        }, {} as Record<string, any>)
+                      ) as Array<any & { _descriptions: string[] }>
+
+                      return (
+                        <div key={category} className="space-y-2">
+                          <Button
+                            onClick={() => setExpandedSections(prev=>({ ...prev, [`src-cat-${category}`]: !prev[`src-cat-${category}`] }))}
+                            className={`w-full flex items-center justify-between p-4 rounded-xl ${scheme.bg} ${scheme.hover} border ${scheme.border} transition-all duration-300 shadow-sm`}
+                            variant="ghost"
+                            size="lg"
+                          >
+                            <h4 className="font-bold text-gray-900 text-base">
+                              {category} ({categorySources.length} {categorySources.length === 1 ? 'source' : 'sources'})
+                            </h4>
+                            {expandedSections[`src-cat-${category}`] ? (
+                              <Minus className="h-4 w-4 text-gray-600" />
+                            ) : (
+                              <Plus className="h-4 w-4 text-gray-600" />
+                            )}
+                          </Button>
+
+                          {expandedSections[`src-cat-${category}`] && (
+                            <div className={`pl-2 space-y-3 animate-in slide-in-from-top duration-200 ${scheme.bg} rounded-lg p-4 border ${scheme.border}`}>
+                              {deduped.map((source, sourceIndex) => (
+                                <div key={sourceIndex} className="border-l-3 border-gray-400/40 pl-4 py-2">
+                                  <div className="flex items-start gap-2">
+                                    <span className="text-gray-900 mt-1 flex-shrink-0">•</span>
+                                    <div>
+                                      <h5 className="font-semibold text-gray-900">
+                                        {(() => {
+                                          const rawTitle = (source.title || '').replace(/\*(.*?)\*/g, '$1').replace(/_(.*?)_/g, '$1')
+                                          const baseTitle = rawTitle || 'Title Not Available'
+                                          const titleYearMatch = (source.title || '').match(/\((19|20)\d{2}\)/)
+                                          const descYearMatch = (source.description || '').match(/\b(19|20)\d{2}\b/)
+                                          const yearText = titleYearMatch?.[0] || (descYearMatch ? ` (${descYearMatch[0]})` : '')
+                                          const displayTitle = baseTitle.includes('(') ? baseTitle : `${baseTitle}${yearText}`
+                                          const authors = (source.authors || '').replace(/"/g, '')
+                                          return (
+                                            <>
+                                              {displayTitle}
+                                              {authors && (
+                                                <span className="font-normal text-gray-600">{' by '}{authors}</span>
+                                              )}
+                                            </>
+                                          )
+                                        })()}
+                                      </h5>
+                                      {(() => {
+                                        const clean = (text: string) => (text || '')
+                                          .replace(/\*\*(.*?)\*\*/g, '$1')
+                                          .replace(/_(.*?)_/g, '$1')
+                                          .replace(/\s*—\s*/g, ' — ')
+                                          .replace(/"/g, '')
+                                          .trim()
+                                        const normalize = (s: string) => s.toLowerCase().replace(/\((19|20)\d{2}\)/g, '').replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim()
+                                        const baseTitleForCompare = clean((source.title || ''))
+                                        const uniqueDescriptions = Array.from(new Set(((source._descriptions as string[] | undefined) || [source.description as string]).map((d: string) => clean(d))))
+                                          .filter(Boolean)
+                                          .filter(d => normalize(d) !== normalize(baseTitleForCompare))
+                                        if (uniqueDescriptions.length === 0) return null
+                                        return (<p className="text-sm text-gray-700 leading-relaxed mt-1">{uniqueDescriptions.join(' • ')}</p>)
+                                      })()}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -846,6 +1297,15 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
           </div> {/* Close glassmorphism container */}
         </div>
       </div>
+      
+      {/* Share Modal */}
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        title={content?.loop_name || 'Complex Loop Page'}
+        url={typeof window !== 'undefined' ? window.location.href : ''}
+        description={`Get help with ${content?.loop_name?.toLowerCase() || 'this complex loop'} - ADHD-friendly strategies and support.`}
+      />
     </div>
   )
 }

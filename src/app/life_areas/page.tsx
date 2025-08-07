@@ -6,10 +6,16 @@ import { Button } from '@/components/ui/button'
 import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import React from 'react'
 
-// Tasks data with icons - updated from database (all 36 tasks)
+// Tasks data with icons - updated to ensure Brain is first, Sparkles is last, no duplicates
 const tasks = [
+  // Work & Study (Brain first as requested)
+  { name: 'Focus & Time', category: 'Work & Study', icon: Brain },
+  { name: 'Work Tasks', category: 'Work & Study', icon: Briefcase },
+  { name: 'Big Exam Prep (Long-Term Studying)', category: 'Work & Study', icon: GraduationCap },
+  { name: 'Staying on Top of Classwork', category: 'Work & Study', icon: Library },
+  
   // Home & Cleaning
-  { name: 'Cleaning', category: 'Home & Cleaning', icon: Sparkles },
+  { name: 'Cleaning', category: 'Home & Cleaning', icon: Brush },
   { name: 'Laundry', category: 'Home & Cleaning', icon: Shirt },
   { name: 'Dishes', category: 'Home & Cleaning', icon: Utensils },
   { name: 'Decluttering', category: 'Home & Cleaning', icon: PackageCheck },
@@ -18,7 +24,7 @@ const tasks = [
   { name: 'Minor Repairs', category: 'Home & Cleaning', icon: Wrench },
   
   // Health & Routines
-  { name: 'ADHD & Hygiene', category: 'Health & Routines', icon: Bath },
+  { name: 'Hygiene', category: 'Health & Routines', icon: Bath },
   { name: 'Morning Routine', category: 'Health & Routines', icon: Sun },
   { name: 'Getting Out the Door', category: 'Health & Routines', icon: DoorClosed },
   { name: 'Moving Your Body', category: 'Health & Routines', icon: Dumbbell },
@@ -27,42 +33,36 @@ const tasks = [
   
   // Food & Shopping
   { name: 'Meal Planning', category: 'Food & Shopping', icon: ClipboardList },
-  { name: 'Meal Prepping', category: 'Food & Shopping', icon: CookingPot },
+  { name: 'Meal Prepping', category: 'Food & Shopping', icon: Clock },
   { name: 'Grocery Shopping', category: 'Food & Shopping', icon: ShoppingCart },
   { name: 'Retail Shopping', category: 'Food & Shopping', icon: Store },
-  { name: 'Returning Items', category: 'Food & Shopping', icon: PackageCheck },
+  { name: 'Returning Items', category: 'Food & Shopping', icon: Wallet },
   
   // Planning & Organization
   { name: 'Planning & Scheduling', category: 'Planning & Organization', icon: Calendar },
-  { name: 'To-Do Lists', category: 'Planning & Organization', icon: ClipboardList },
+  { name: 'To-Do Lists', category: 'Planning & Organization', icon: FileText },
   { name: 'Bills & Money', category: 'Planning & Organization', icon: Receipt },
   { name: 'Budgeting & Tracking', category: 'Planning & Organization', icon: Calculator },
   { name: 'Paperwork', category: 'Planning & Organization', icon: ScrollText },
   { name: 'Filling Out Documents', category: 'Planning & Organization', icon: Pencil },
   { name: 'Reading Important Mail', category: 'Planning & Organization', icon: Mail },
   { name: 'Writing Emails', category: 'Planning & Organization', icon: MailPlus },
-  { name: 'Organization', category: 'Planning & Organization', icon: PackageCheck },
+  { name: 'Organization', category: 'Planning & Organization', icon: Target },
   { name: 'Making Phone Calls', category: 'Planning & Organization', icon: PhoneCall },
   { name: 'Following Up', category: 'Planning & Organization', icon: Bell },
-  { name: 'Scheduling Appointments', category: 'Planning & Organization', icon: Calendar },
+  { name: 'Scheduling Appointments', category: 'Planning & Organization', icon: BookOpen },
   { name: 'Medication Refills', category: 'Planning & Organization', icon: Pill },
   
-  // Work & Study
-  { name: 'Work Tasks', category: 'Work & Study', icon: Briefcase },
-  { name: 'Big Exam Prep (Long-Term Studying)', category: 'Work & Study', icon: GraduationCap },
-  { name: 'Staying on Top of Classwork', category: 'Work & Study', icon: Library },
-  { name: 'Focus & Time', category: 'Work & Study', icon: Brain },
-  
-  // Creative & Personal
-  { name: 'Creative Projects', category: 'Creative & Personal', icon: Palette }
+  // Creative & Personal (Sparkles last as requested)
+  { name: 'Creative Projects', category: 'Creative & Personal', icon: Sparkles }
 ]
 
 const categories = [
+  { name: 'Work & Study', color: 'from-purple-400 to-violet-500', count: 4 },
   { name: 'Home & Cleaning', color: 'from-green-400 to-emerald-500', count: 7 },
   { name: 'Health & Routines', color: 'from-teal-400 to-cyan-500', count: 6 },
   { name: 'Food & Shopping', color: 'from-orange-400 to-amber-500', count: 5 },
   { name: 'Planning & Organization', color: 'from-blue-400 to-indigo-500', count: 12 },
-  { name: 'Work & Study', color: 'from-purple-400 to-violet-500', count: 4 },
   { name: 'Creative & Personal', color: 'from-pink-400 to-rose-500', count: 1 },
   { name: 'View All', color: 'from-gray-400 to-gray-600', count: 36 }
 ]
@@ -78,7 +78,7 @@ const categoryColors = {
 
 export default function TasksPage() {
   const [selectedTask, setSelectedTask] = useState<string | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<string | null>('Home & Cleaning')
+  const [selectedCategory, setSelectedCategory] = useState<string | null>('Work & Study')
   const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false)
 
   // Read category from URL parameter on page load
@@ -88,7 +88,7 @@ export default function TasksPage() {
     if (categoryFromUrl) {
       const decodedCategory = decodeURIComponent(categoryFromUrl)
       // Check if the decoded category matches any of our known categories exactly
-      const categories = ['Home & Cleaning', 'Health & Routines', 'Food & Shopping', 'Planning & Organization', 'Work & Study', 'Creative & Personal', 'View All']
+      const categories = ['Work & Study', 'Home & Cleaning', 'Health & Routines', 'Food & Shopping', 'Planning & Organization', 'Creative & Personal', 'View All']
       const matchingCategory = categories.find(cat => cat === decodedCategory)
       if (matchingCategory) {
         setSelectedCategory(decodedCategory)
@@ -99,7 +99,15 @@ export default function TasksPage() {
   const handleTaskSelect = (task: string) => {
     setSelectedTask(task)
     // Navigate to individual task page with category parameter
-    const taskSlug = encodeURIComponent(task.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))
+    // Fix ampersand handling to avoid double dashes in URLs
+    const taskSlug = encodeURIComponent(
+      task
+        .toLowerCase()
+        .replace(/&/g, 'and') // Replace & with 'and' before other processing
+        .replace(/\s+/g, '-') // Replace spaces with dashes
+        .replace(/[^a-z0-9-]/g, '') // Remove special characters
+        .replace(/--+/g, '-') // Clean up any double dashes
+    )
     const categoryParam = selectedCategory ? `?category=${encodeURIComponent(selectedCategory)}` : ''
     window.location.href = `/life_areas/${taskSlug}${categoryParam}`
   }

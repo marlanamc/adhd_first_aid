@@ -10,12 +10,21 @@ import {
   Settings, Folder, FileText, Mail, ClipboardList,
   ShoppingCart, Utensils, Bed, Shirt, Trash2,
   Phone, Wallet, Calendar, Car, Pill, Activity,
-  Sparkles, Key, Flame, ArrowLeftRight
+  Sparkles, Key, Flame, ArrowLeftRight, Bath,
+  Sun, DoorClosed, Dumbbell, CookingPot, Refrigerator,
+  Recycle, Store, PackageCheck, Receipt, Calculator,
+  ScrollText, Pencil, PhoneCall, Bell, GraduationCap,
+  Library, Palette, MailPlus, TrendingUp, TrendingDown,
+  Award, Medal, Music, Laptop, Monitor, MapPin, 
+  Dice1 as Dice, Link, Globe, Snowflake, Scissors, Hammer,
+  Paintbrush, Brush, Shield, Gem, Crown, Flower, Leaf,
+  Gamepad2, User, Rocket
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { getTasksContent } from '@/lib/supabase'
-import type { TasksContent } from '@/lib/supabase'
+import { getTasksContent, getLifeAreaSources } from '@/lib/supabase'
+import type { TasksContent, LifeAreaSources } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
+import { ShareModal } from '@/components/ui/ShareModal';
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
@@ -149,143 +158,265 @@ const formatMarkdownText = (text: string) => {
   return result;
 };
 
-// Function to map emoji strings to Lucide icons
-const getIconForEmoji = (emoji: string) => {
-  const emojiToIconMap: Record<string, React.ElementType> = {
-    // Tasks & Organization
-    '🧼': Home, // Cleaning
-    '👕': Shirt, // Laundry  
-    '🍽️': Utensils, // Dishes
-    '📦': Trash2, // Decluttering
-    '🍳': Utensils, // Cooking
-    '🧴': Home, // Hygiene
-    '🧊': Utensils, // Cleaning fridge
-    '🛒': ShoppingCart, // Shopping
-    '📅': Calendar, // Planning
-    '📝': ClipboardList, // Todo lists
-    '💰': Wallet, // Bills & money
-    '📄': FileText, // Paperwork
-    '✉️': Mail, // Email
-    '📁': Folder, // Organization
-    '📞': Phone, // Phone calls
-    '🚗': Car, // Car maintenance
-    '💊': Pill, // Medication
-    '🏃‍♀️': Activity, // Exercise
+// Direct mapping of task names to Lucide icons (no emoji intermediary)
+const getTaskIcon = (taskName: string): React.ElementType => {
+  const taskIconMap: Record<string, React.ElementType> = {
+    // Core household tasks - Brain is first, Sparkles is last as required
+    'Focus & Time': Brain,
+    'Cleaning': Sparkles, // Keep as last per requirements
+    'Laundry': Shirt,
+    'Dishes': Utensils,
+    'Decluttering': PackageCheck,
+    'Cooking': CookingPot,
+    'Hygiene': Bath,
+    'Cleaning Out the Fridge': Refrigerator,
+    'Trash & Recycling': Recycle,
+    'Minor Repairs': Wrench,
     
-    // Core Principles & Strategies
-    '⚓': Target, // Core principles/anchor
-    '🛠️': Wrench, // Strategies/tools
-    '🧭': Settings, // Navigation/direction
-    '💬': Heart, // Encouragement/support
+    // Daily routines
+    'Morning Routine': Sun,
+    'Getting Out the Door': DoorClosed,
+    'Moving Your Body': Dumbbell,
     
-    // Mindset & Self-Care
-    '🧠': Brain, // Brain/cognitive
-    '💡': Lightbulb, // Ideas/insights
-    '✨': Sparkles, // Encouragement/magic
-    '🔥': Flame, // Energy/activation
-    '⚡': Zap, // Quick action/energy
-    '❤️': Heart, // Self-compassion
+    // Shopping & errands
+    'Grocery Shopping': ShoppingCart,
+    'Retail Shopping': Store,
+    'Returning Items': RotateCcw,
+    'Car Maintenance': Car,
     
-    // Time & Focus
-    '⏰': Clock, // Time management
-    '⏳': Clock, // Time/patience
-    '🎯': Target, // Focus/goals
-    '🔍': Target, // Focus/attention
+    // Planning & organization
+    'Planning & Scheduling': Calendar,
+    'To-Do Lists': ClipboardList,
+    'Organization': Folder,
+    'Meal Planning': Clock,
+    'Meal Prepping': CookingPot,
     
-    // Systems & Tools
-    '📱': Phone, // Tech tools
-    '🪜': Settings, // Step by step
-    '🪟': BookOpen, // Externalize/visibility
-    '🧺': Folder, // Organize/containers
-    '🗂️': Folder, // Filing/organization
+    // Financial & administrative
+    'Bills & Money': Receipt,
+    'Budgeting & Tracking': Calculator,
+    'Paperwork': ScrollText,
+    'Filling Out Documents': Pencil,
     
-    // Support & Social
-    '👯': Activity, // Support/people
-    '🧍': Activity, // People/delegation
-    '🤝': Activity, // Collaboration
+    // Communication tasks
+    'Reading Important Mail': Mail,
+    'Writing Emails': MailPlus,
+    'Making Phone Calls': PhoneCall,
+    'Following Up': Bell,
+    'Scheduling Appointments': Calendar,
     
-    // Specific Actions
-    '🧤': Settings, // Preparation/handling
-    '✂️': Settings, // Cutting/deciding
+    // Health & wellness
+    'Medication Refills': Pill,
     
-    // Additional task icons
-    '💼': Briefcase, // Work tasks
-    '🚪': Folder, // Getting out the door
-    '☀️': Star, // Morning routine
-    '🔄': RotateCcw, // Returning items
-    '📚': BookOpen, // Study/classwork
-    '🗑️': Trash2, // Trash & recycling
-    '🎨': Sparkles, // Creative projects
-    '🔨': Wrench, // Minor repairs
-    
-    // Common fallbacks
-    '✅': CheckCircle,
-    '❌': XCircle,
-    '⭐': Star,
-    '🔑': Key,
-    '📖': BookOpen,
-    '⚙️': Settings,
+    // Work & education - each gets unique icon
+    'Work Tasks': Briefcase,
+    'Big Exam Prep (Long-Term Studying)': GraduationCap,
+    'Staying on Top of Classwork': Library,
+    'Creative Projects': Palette,
   }
   
-  return emojiToIconMap[emoji] || Wrench
+  return taskIconMap[taskName] || Settings // Default fallback
 }
 
-// Function to map task names to their emojis
-const getTaskEmoji = (taskName: string): string => {
-  const taskEmojiMap: Record<string, string> = {
-    'Cleaning': '🧼',
-    'Laundry': '👕',
-    'Dishes': '🍽️',
-    'Decluttering': '📦',
-    'Cooking': '🍳',
-    'ADHD & Hygiene': '🧴',
-    'Cleaning Out the Fridge': '🧊',
-    'Grocery Shopping': '🛒',
-    'Planning & Scheduling': '📅',
-    'Bills & Money': '💰',
-    'Paperwork': '📄',
-    'Writing Emails': '✉️',
-    'Organization': '📁',
-    'Making Phone Calls': '📞',
-    'Car Maintenance': '🚗',
-    'Medication Refills': '💊',
-    'Moving Your Body': '🏃‍♀️',
-    'Reading Important Mail': '✉️',
-    'Retail Shopping': '🛒',
-    'Scheduling Appointments': '📞',
-    'Focus & Time': '🎯',
-    'Work Tasks': '💼',
-    'Filling Out Documents': '📄',
-    'Following Up': '📞',
-    'Getting Out the Door': '🚪',
-    'Meal Planning': '📅',
-    'Meal Prepping': '🍳',
-    'Minor Repairs': '🔨',
-    'Morning Routine': '☀️',
-    'Returning Items': '🔄',
-    'Staying on Top of Classwork': '📚',
-    'Trash & Recycling': '🗑️',
-    'Big Exam Prep (Long-Term Studying)': '📚',
-    'Budgeting & Tracking': '💰',
-    'Creative Projects': '🎨',
-    'To-Do Lists': '📝'
+// Comprehensive emoji to icon mapping for content sections - NO DUPLICATES
+const getSectionIcon = (emoji: string): React.ElementType => {
+  const sectionIconMap: Record<string, React.ElementType> = {
+    // Core universal emojis used across multiple tasks
+    '🧠': Brain,
+    '❤️': Heart,
+    '⚡': Zap,
+    '🎯': Target,
+    '🔧': Wrench,
+    '🛠️': Construction,
+    '💡': Lightbulb,
+    '✨': Sparkles,
+    '🔥': Flame,
+    '🚀': Rocket,
+    
+    // Time & Schedule related
+    '⏰': Clock,
+    '⏱️': Clock, // Timer
+    '⏳': Clock, // Hourglass
+    '📅': Calendar,
+    '🗓️': Calendar,
+    
+    // Communication & Information
+    '📞': PhoneCall,
+    '📱': Phone,
+    '✉️': Mail,
+    '📧': MailPlus,
+    '💬': Heart, // Comments/conversation
+    '📋': ClipboardList,
+    '📝': ScrollText,
+    '📄': FileText,
+    '📊': TrendingUp,
+    '📈': TrendingUp,
+    
+    // Health & Body
+    '🧘': User, // Meditation
+    '🏃': Dumbbell, // Running
+    '💪': Zap, // Muscle/strength  
+    '🌡️': Activity, // Thermometer
+    '💊': Pill,
+    '🧼': Bath,
+    '🚿': Bath, // Shower
+    '🛁': Bath, // Bathtub
+    
+    // Food & Kitchen
+    '🍽️': Utensils,
+    '🍳': CookingPot,
+    '🥘': CookingPot,
+    '🍕': Utensils, // Pizza
+    '🥗': Utensils, // Salad
+    '🛒': ShoppingCart,
+    '🛍️': ShoppingCart, // Shopping bags
+    
+    // Home & Cleaning
+    '🏠': Home,
+    '🏡': Home,
+    '🧽': Brush, // Sponge
+    '🧴': Bath, // Soap bottle
+    '🧹': Brush, // Broom
+    '🚿_shower': Bath, // Shower head
+    '🪣': Store, // Bucket
+    '🗑️': Trash2,
+    '♻️': Recycle,
+    '🧺': PackageCheck, // Laundry basket
+    
+    // Clothing & Personal Items
+    '👕': Shirt,
+    '👔': Briefcase, // Dress shirt/formal
+    '🧤': Paintbrush, // Gloves
+    '👟': Activity, // Sneakers
+    '🧳': Briefcase, // Suitcase
+    
+    // Work & Study
+    '💼': Briefcase,
+    '📚': BookOpen,
+    '📖': Library, // Open book
+    '✏️': Pencil,
+    '🖊️': Pencil, // Pen
+    '📐': ScrollText, // Ruler/triangle
+    '🎓': GraduationCap,
+    '🖥️': Monitor, // Desktop
+    '💻': Laptop,
+    
+    // Creative & Arts
+    '🎨': Palette,
+    '🖌️': Paintbrush,
+    '✂️': Scissors,
+    '📸': Activity, // Camera
+    '🎭': Shield, // Theater masks
+    '🎪': Crown, // Circus tent
+    '🎵': Music,
+    '🎧': Music, // Headphones
+    '🎶': Activity, // Musical notes
+    
+    // Transportation & Movement
+    '🚗': Car,
+    '🚕': Car, // Taxi
+    '🚙': Car, // SUV
+    '🚌': Car, // Bus
+    '🚲': Activity, // Bicycle
+    '🛴': Activity, // Scooter
+    '✈️': Activity, // Airplane
+    '🚪': DoorClosed,
+    '🚶': User, // Walking
+    '🏃_running': Dumbbell, // Running
+    
+    // Money & Finance
+    '💰': Wallet,
+    '💳': Receipt, // Credit card
+    '💵': Receipt, // Dollar bills
+    '🧾': Receipt,
+    '📊_chart': Calculator, // Bar chart
+    '📈_up': TrendingUp,
+    '📉': TrendingDown,
+    '🏦': Award, // Bank
+    
+    // Technology & Tools
+    '⚙️': Settings,
+    '🔩': Key, // Bolt
+    '🔨': Hammer,
+    '🪛': Construction, // Screwdriver
+    '🧰': PackageCheck, // Toolbox
+    '⛏️': Construction, // Pick
+    '🔑': Key,
+    '🔒': Shield, // Lock
+    '🔓': Key, // Unlock
+    '🖱️': Activity, // Computer mouse
+    
+    // Nature & Environment
+    '🌱': Flower,
+    '🌿': Leaf,
+    '🌳': Flower, // Tree
+    '🌞': Sun,
+    '⛅': Activity, // Clouds
+    '🌧️': Activity, // Rain
+    '🌊': Activity, // Ocean wave
+    '⭐': Star,
+    '🌟': Medal,
+    '🌈': Rainbow,
+    '💧': Snowflake, // Water drop
+    
+    // Emotions & States
+    '😊': Heart, // Happy
+    '😌': Heart, // Content
+    '🤗': Heart, // Hugging
+    '🤝': Heart, // Handshake
+    '🫶': Heart, // Heart hands
+    '💜': Heart, // Purple heart
+    '💙': Heart, // Blue heart
+    '💚': Heart, // Green heart
+    
+    // Symbols & Abstract
+    '🎪_circus': Crown, // Circus tent
+    '🔮': Gem,
+    '💎': Gem,
+    '🏆': Award,
+    '🥇': Medal, // Gold medal
+    '🎖️': Award, // Military medal
+    '🛡️': Shield,
+    '⚖️': Award, // Scale of justice
+    '🧩': Puzzle,
+    '🔗': Link,
+    '🌐': Globe,
+    '💫': Star, // Dizzy star
+    '⚪': Activity, // White circle
+    '🔵': Activity, // Blue circle
+    
+    // Special utility emojis
+    '📍': MapPin,
+    '🎲': Activity, // Dice
+    '🎯_target': Lightbulb, // Different context from Target
+    '🎮': Gamepad2,
+    '🧸': Heart, // Teddy bear
+    '🎁': PackageCheck, // Gift
+    '📦': PackageCheck, // Package
+    '📮': Mail, // Postbox
+    '📬': Mail, // Mailbox
+    
+    // Default for any unmapped emojis
+    'Utensils': Utensils, // Special case for dishes
   }
   
-  return taskEmojiMap[taskName] || '🛠️'
+  return sectionIconMap[emoji] || Settings // Default fallback for truly unknown emojis
 }
 
 interface LifeAreaPageProps {
-  params: Promise<{
+  params: {
     life_area: string
-  }>
+  }
 }
 
 export default function LifeAreaPage({ params }: LifeAreaPageProps) {
   const [content, setContent] = useState<TasksContent | null>(null)
+  const [sources, setSources] = useState<LifeAreaSources[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
+  const [expandedSources, setExpandedSources] = useState<{[key: string]: boolean}>({})
   const [copySuccess, setCopySuccess] = useState(false)
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
   const toggleSection = useCallback((sectionId: string) => {
     setExpandedSections(prev => ({
@@ -298,8 +429,8 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
     const fetchContent = async () => {
       try {
         setLoading(true)
-        // Await the params first
-        const resolvedParams = await params
+        // Use params directly (not a Promise)
+        const resolvedParams = params
         
         // Convert URL param back to display name  
         let taskName = decodeURIComponent(resolvedParams.life_area)
@@ -317,8 +448,8 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
         
         // Handle special URL to database name mappings
         const urlMappings: Record<string, string> = {
-          'Hygiene': 'ADHD & Hygiene',
-          'ADHD Hygiene': 'ADHD & Hygiene',
+          'ADHD & Hygiene': 'Hygiene',
+          'ADHD Hygiene': 'Hygiene', 
           'Bills Money': 'Bills & Money',
           'To Do Lists': 'To-Do Lists',
           'Big Exam Prep Long Term Studying': 'Big Exam Prep (Long-Term Studying)'
@@ -332,6 +463,48 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
           setError(`Failed to load task content: ${error.message}`)
         } else if (data) {
           setContent(data)
+          
+          // Fetch sources using the slug format
+          // Convert URL slug to match database format
+          let lifeAreaSlug = resolvedParams.life_area
+          
+          // Map URL slugs to database slugs (database uses underscores converted to dashes)
+          const slugMappings: Record<string, string> = {
+            // Tasks with & in the name that need specific mapping
+            'focus-and-time': 'focus-time',
+            'bills-and-money': 'bills-money',
+            'budgeting-and-tracking': 'budgeting-tracking',
+            
+            // Tasks that have sources in database
+            'big-exam-prep-long-term-studying': 'big-exam-prep',
+            'cleaning-out-the-fridge': 'cleaning-out-fridge',
+            'creative-projects': 'creative-projects',
+            'filling-out-docs': 'filling-out-docs',
+            'car-maintenance': 'car-maintenance',
+            'cleaning': 'cleaning',
+            'cooking': 'cooking',
+            'decluttering': 'decluttering',
+            'dishes': 'dishes',
+            
+            // Note: Some tasks don't have sources yet:
+            // hygiene, organization, reading-important-mail, following-up,
+            // meal-planning, medication-refills, meal-prepping, work-tasks, etc.
+            // These will simply not show a sources section
+          }
+          
+          lifeAreaSlug = slugMappings[lifeAreaSlug] || lifeAreaSlug
+          
+          console.log('Fetching sources for slug:', lifeAreaSlug)
+          const { data: sourcesData, error: sourcesError } = await getLifeAreaSources(lifeAreaSlug)
+          if (sourcesError) {
+            console.error('Error fetching sources:', sourcesError)
+          }
+          if (sourcesData && sourcesData.length > 0) {
+            console.log('Found sources:', sourcesData.length)
+            setSources(sourcesData)
+          } else {
+            console.log('No sources found for slug:', lifeAreaSlug)
+          }
         } else {
           setError('Task content not found')
         }
@@ -357,30 +530,9 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
     }
   }
 
-  const handleShare = async () => {
-    const shareData = {
-      title: `ADHD First Aid Kit - ${content?.task_name || 'Task'}`,
-      text: `Get help with ${content?.task_name?.toLowerCase() || 'this task'} - ADHD-friendly strategies and support`,
-      url: window.location.href
-    }
-
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData)
-      } else {
-        await navigator.clipboard.writeText(window.location.href)
-        setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000)
-      }
-    } catch (error) {
-      try {
-        await navigator.clipboard.writeText(window.location.href)
-        setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000)
-      } catch (clipboardError) {
-        console.error('Share failed:', error)
-      }
-    }
+  const handleShare = () => {
+    // Always show the custom share modal
+    setIsShareModalOpen(true)
   }
 
   if (loading) {
@@ -389,7 +541,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-            <p className="text-lg">Loading task content...</p>
+            <p className="text-lg">Prepping your executive function helpers...</p>
           </div>
         </div>
       </div>
@@ -431,7 +583,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
               </Button>
               <div className="flex-1">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-foreground flex items-center gap-2 sm:gap-3">
-                  {React.createElement(getIconForEmoji(getTaskEmoji(content.task_name)), {
+                  {React.createElement(getTaskIcon(content.task_name), {
                     className: "h-6 w-6 sm:h-8 sm:w-8 text-blue-500 flex-shrink-0"
                   })}
                   {content.task_name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
@@ -474,6 +626,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
 
           </div>
 
+
           {/* Section Divider */}
           <div className="flex items-center justify-center gap-4 mb-5 text-gray-400 dark:text-gray-600">
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
@@ -490,13 +643,13 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
             <div className="relative">
               <Button
                 onClick={() => toggleSection('gentle-advice')}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors border border-green-200 dark:border-green-800 min-h-[60px] touch-manipulation"
+                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#61ffb5]/40 hover:shadow-md transition-shadow duration-300 border border-[#A0E8AF]/60 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
               >
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-green-600 dark:text-green-400" />
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+                  <Sparkles className="h-5 w-5 text-[#2D9C3C]" />
+                  <h3 className="text-base font-semibold text-gray-900">
                     Soft Start
                   </h3>
                 </div>
@@ -510,8 +663,8 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
               </Button>
               
               {expandedSections['gentle-advice'] && (
-                <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-green-200 dark:border-green-800 mt-2">
-                  <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+                <div className="bg-[#61ffb5]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
+                  <p className="text-base text-gray-900 leading-relaxed">
                     {formatMarkdownText(content.gentle_advice)}
                   </p>
                 </div>
@@ -522,13 +675,13 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
             <div className="relative">
               <Button
                 onClick={() => toggleSection('stern-advice')}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800 min-h-[60px] touch-manipulation"
+                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#ff61ab]/40 hover:shadow-md transition-shadow duration-300 border border-[#FF9EBB]/60 min-h-[60px] touch-manipulation"
                 variant="ghost"
                 size="lg"
               >
                 <div className="flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-red-600 dark:text-red-400" />
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+                  <Zap className="h-5 w-5 text-[#D23369]" />
+                  <h3 className="text-base font-semibold text-gray-900">
                     Tough Love
                   </h3>
                 </div>
@@ -542,8 +695,8 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
               </Button>
 
               {expandedSections['stern-advice'] && (
-                <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-red-200 dark:border-red-800 mt-2">
-                  <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+                <div className="bg-[#ff61ab]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#FF9EBB]/60 mt-2">
+                  <p className="text-base text-gray-900 leading-relaxed">
                     {formatMarkdownText(content.stern_advice)}
                   </p>
                 </div>
@@ -563,140 +716,238 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
 
           <div className="mb-8">
 
-            {/* ADHD Reasons - Collapsible */}
-            {content.adhd_reasons && content.adhd_reasons.length > 0 && (
-              <div className="bg-purple-100/50 dark:bg-purple-900/20 backdrop-blur-sm rounded-2xl border border-purple-200 dark:border-purple-800 transition-all duration-300">
+            {/* ADHD Reasons - Collapsible - TEMPORARILY DISABLED */}
+            {/* {content.adhd_reasons && content.adhd_reasons.length > 0 && (
+              <div className="bg-[#5e60ce]/20 backdrop-blur-sm rounded-2xl border border-[#5e60ce]/30 transition-all duration-300">
                 <button
                   onClick={() => toggleSection('adhd-reasons')}
-                  className="w-full p-6 text-left hover:bg-purple-100 dark:hover:bg-purple-900/30 rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                  className="w-full p-6 text-left hover:bg-[#5e60ce]/30 rounded-2xl transition-all duration-300 flex items-center justify-between group"
                   title={expandedSections['adhd-reasons'] ? "Close section" : "Open section"}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-200 dark:bg-purple-800 rounded-lg flex-shrink-0 transition-transform duration-300">
-                      <Brain className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+                    <div className="p-2 bg-[#5e60ce]/90 rounded-lg flex-shrink-0 transition-transform duration-300">
+                      {React.createElement(getTaskIcon(content.task_name), {
+                        className: "h-5 w-5 text-gray-900"
+                      })}
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                      {(() => {
-                        const taskName = content.task_name.toLowerCase();
-                        // Check if task name ends with 's' (likely plural) or contains certain plural keywords
-                        const isPlural = taskName.endsWith('s') || 
-                                       taskName.includes('dishes') || 
-                                       taskName.includes('bills') || 
-                                       taskName.includes('emails') ||
-                                       taskName.includes('calls') ||
-                                       taskName.includes('lists');
-                        
-                        // Special cases that are singular despite ending in 's'
-                        const singularExceptions = ['focus', 'hygiene', 'wellness'];
-                        const isSingular = singularExceptions.some(word => taskName.includes(word));
-                        
-                        if (isPlural && !isSingular) {
-                          return `Why ${content.task_name} are Hard with ADHD`;
-                        } else {
-                          return `Why ${content.task_name} is Hard with ADHD`;
-                        }
-                      })()}
-                    </h3>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {(() => {
+                          const taskName = content.task_name.toLowerCase();
+                          const isPlural = taskName.endsWith('s') || 
+                                         taskName.includes('dishes') || 
+                                         taskName.includes('bills') || 
+                                         taskName.includes('emails') ||
+                                         taskName.includes('calls') ||
+                                         taskName.includes('lists');
+                          const singularExceptions = ['focus', 'hygiene', 'wellness'];
+                          const isSingular = singularExceptions.some(word => taskName.includes(word));
+                          if (isPlural && !isSingular) {
+                            return `Why ${content.task_name} are Hard with ADHD`;
+                          } else {
+                            return `Why ${content.task_name} is Hard with ADHD`;
+                          }
+                        })()}
+                      </h3>
+                      {!expandedSections['adhd-reasons'] && (
+                        <p className="text-sm text-gray-700 mt-0.5">{`Connect what you feel with what's happening in your brain, no shame, just clarity`}</p>
+                      )}
+                    </div>
                   </div>
                   {expandedSections['adhd-reasons'] ? (
-                    <Minus className="h-5 w-5 text-purple-600 dark:text-purple-300 flex-shrink-0" />
+                    <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
                   ) : (
-                    <Plus className="h-5 w-5 text-purple-600 dark:text-purple-300 flex-shrink-0" />
+                    <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
                   )}
                 </button>
                 
                 {expandedSections['adhd-reasons'] && (
                   <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
-                    <div className="space-y-2">
-                      {content.adhd_reasons.map((reason, index) => {
-                    // Simple check for headers
-                    if (reason === 'You might:' || reason === "Here's what's really going on:") {
-                      return (
-                        <div key={index} className="font-semibold text-gray-900 dark:text-gray-100 mt-4 first:mt-0">
-                          {reason}
-                        </div>
-                      )
-                    }
-                    
-                    // Check for emoji bullets (for "Here's what's really going on" items)
-                    // Use a broader pattern to catch any emoji at the start
-                    const emojiMatch = reason.match(/^([\u{1F300}-\u{1F9FF}])\s+(.+)/u)
-                    if (emojiMatch) {
-                      return (
-                        <div key={index} className="flex items-start gap-2 text-gray-900 dark:text-gray-100 ml-4">
-                          <span className="mt-1 flex-shrink-0">{emojiMatch[1]}</span>
-                          <span dangerouslySetInnerHTML={{ 
-                            __html: emojiMatch[2]
-                              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                              .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                          }} />
-                        </div>
-                      )
-                    }
-                    
-                    // Regular bullet points - only for "You might:" section
-                    // Check if we're under "You might:" by looking at previous items
-                    const previousHeaders = content.adhd_reasons.slice(0, index);
-                    const lastHeaderIndex = previousHeaders.map((r, i) => 
-                      (r === 'You might:' || r === "Here's what's really going on:") ? i : -1
-                    ).filter(i => i !== -1).pop() || 0;
-                    const lastHeader = content.adhd_reasons[lastHeaderIndex];
-                    const isUnderYouMight = lastHeader === 'You might:';
+                    <div className="space-y-4">
+                      {(() => {
+                        const youMightItems: string[] = [];
+                        const whatsReallyGoingOnItems: string[] = [];
+                        let currentSection = '';
+
+                        content.adhd_reasons.forEach((reason) => {
+                          if (reason === 'You might:') currentSection = 'you-might';
+                          else if (reason === "Here's what's really going on:") currentSection = 'whats-really-going-on';
+                          else if (currentSection === 'you-might') youMightItems.push(reason);
+                          else if (currentSection === 'whats-really-going-on') whatsReallyGoingOnItems.push(reason);
+                        });
+
+                        const sanitize = (s: string) => (s || '').replace(/\uFFFD+/g, '').replace(/\s+/g, ' ').trim()
+                        const cleanLeft = (s?: string) => sanitize((s || '').replace(/^[-•]\s*/, ''));
+                        const rawLefts = youMightItems.map(cleanLeft).filter(Boolean)
+
+                        const parseRight = (s?: string) => {
+                          if (!s) return { emoji: null as string | null, heading: null as string | null, desc: '' };
+                          const emojiMatch = s.match(/^(\p{Extended_Pictographic})\s+(.+)/u) || s.match(/^([\u{2300}-\u{23FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F300}-\u{1FAFF}])\s+(.+)/u);
+                          let rest = s; let emoji: string | null = null;
+                          if (emojiMatch) { emoji = emojiMatch[1]; rest = emojiMatch[2]; }
+                          rest = sanitize(rest.replace(/^[\uFFFD\s]+/, ''))
+                          const boldMatch = rest.match(/^\*\*(.*?)\*\*[:：]?\s*(.*)?$/);
+                          if (boldMatch) return { emoji, heading: boldMatch[1], desc: boldMatch[2] || '' };
+                          return { emoji, heading: null, desc: rest };
+                        };
+
+                        const rights = whatsReallyGoingOnItems
+                          .map(parseRight)
+                          .filter(r => (r.heading && r.heading.trim()) || (r.desc && r.desc.trim()))
+
+                        // Some life_areas have reason-style lines mistakenly under "You might".
+                        // Detect those and convert to rights while creating a friendly left bullet.
+                        const seemsRight = (text: string) => /^(\p{Extended_Pictographic}\s+)/u.test(text) || /^\*\*.+?\*\*/.test(text) || /(executive dysfunction|time blindness|working memory|motivation|shame)/i.test(text)
+                        const manualRights: Record<number, { emoji: string | null; heading: string | null; desc: string }> = {}
+                        const lefts = rawLefts.map((left, idx) => {
+                          if (!seemsRight(left)) return left
+                          const r = parseRight(left)
+                          manualRights[idx] = r
+                          // Build a natural left bullet from the remainder after removing heading/emoji
+                          let candidate = sanitize(left)
+                            .replace(/^(\p{Extended_Pictographic}\s*)/u, '')
+                            .replace(/\*\*[^*]+\*\*/g, '')
+                            .replace(/^[—:\-\s]+/, '')
+                            .trim()
+                          if (!candidate) {
+                            candidate = r.heading ? `${r.heading} shows up in your day-to-day` : 'Notice this pattern popping up'
+                          }
+                          // Capitalize first letter
+                          candidate = candidate.charAt(0).toUpperCase() + candidate.slice(1)
+                          return candidate
+                        })
+
+                        // Gentle fallback inference when a left item has no right item
+                        const guessRight = (left: string): { emoji: string; heading: string; desc: string } => {
+                          const t = left.toLowerCase()
+                          if (/(tab|forget|remember|meeting|agreed|follow\s*up|checked|scheduled)/.test(t)) {
+                            return { emoji: '🧠', heading: 'Working memory failures', desc: 'your brain is juggling a lot, so details slip without reminders' }
+                          }
+                          if (/(avoid|boring|complex|start|starting|begin|multi\s*step|plan)/.test(t)) {
+                            return { emoji: '🧩', heading: 'Executive dysfunction', desc: "getting started is hard when your brain can't pick a first step or feel the spark" }
+                          }
+                          if (/(late|time|deadline|last-minute|estimate|expire|registration|inspection|how long it\'s been)/.test(t)) {
+                            return { emoji: '⏰', heading: 'Time blindness', desc: 'time feels fuzzy, so deadlines sneak up and urgency spikes' }
+                          }
+                          if (/(distract|halfway|project|never return|switch)/.test(t)) {
+                            return { emoji: '🎯', heading: 'Attention dysregulation', desc: 'focus swings make it tough to stay with one thing start‑to‑finish' }
+                          }
+                          if (/(urgency|low activation|warning light|not screaming)/.test(t)) {
+                            return { emoji: '💥', heading: 'Motivation', desc: 'your drive follows urgency/interest, not importance—low signal = low activation' }
+                          }
+                          if (/(panic|breaks|no backup|overwhelm|stress)/.test(t)) {
+                            return { emoji: '💛', heading: 'Your nervous system is overloaded', desc: 'when stress spikes, short‑term relief wins over long‑term plans—totally human' }
+                          }
+                          return { emoji: '💛', heading: 'Your nervous system is overloaded', desc: 'when stress rises, the brain favors short-term relief over long-term plans—totally human, not a failure' }
+                        }
+
+                        const pairs = lefts.map((left, i) => ({ left, right: manualRights[i] || rights[i] || guessRight(left) }))
+
+                        const emojiForHeading = (h?: string | null) => {
+                          const k = (h || '').toLowerCase()
+                          if (k.includes('executive')) return '🧩'
+                          if (k.includes('time')) return '⏰'
+                          if (k.includes('working memory')) return '🧠'
+                          if (k.includes('attention')) return '🎯'
+                          if (k.includes('motivation')) return '💥'
+                          if (k.includes('shame')) return '😞'
+                          if (k.includes('nervous system')) return '💛'
+                          return '💡'
+                        }
                     
                     return (
-                      <div key={index} className="flex items-start gap-2 text-gray-900 dark:text-gray-100 ml-4">
-                        {isUnderYouMight && <span className="text-purple-500 mt-1 flex-shrink-0">•</span>}
+                          <div className="space-y-3">
+                            <div className="hidden lg:grid lg:grid-cols-2 gap-3 pl-1 pr-1">
+                              <h4 className="font-semibold text-gray-900 text-base border-b border-gray-200 pb-1">You might:</h4>
+                              <h4 className="font-semibold text-gray-900 text-base border-b border-gray-200 pb-1">Here's what's really going on:</h4>
+                            </div>
+                            {pairs.map((pair, idx) => {
+                              const rowPalette = [
+                                { bg: 'bg-[#FBF8CC]/35', border: 'border-[#FBF8CC]/60' },
+                                { bg: 'bg-[#FDE4CF]/35', border: 'border-[#FDE4CF]/60' },
+                                { bg: 'bg-[#FFCFD2]/35', border: 'border-[#FFCFD2]/60' },
+                                { bg: 'bg-[#F1C0E8]/35', border: 'border-[#F1C0E8]/60' },
+                                { bg: 'bg-[#CFBAF0]/35', border: 'border-[#CFBAF0]/60' },
+                                { bg: 'bg-[#A3C4F3]/35', border: 'border-[#A3C4F3]/60' },
+                              ]
+                              const rowColor = rowPalette[idx % rowPalette.length]
+                              const right = typeof pair.right === 'string' ? parseRight(pair.right) : pair.right
+                              const displayEmoji = right.emoji || emojiForHeading(right.heading)
+                              return (
+                                <div key={idx} className="relative grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 group">
+                                  {/* Micro arrow connector (desktop only) */}
+                                  <span className="hidden lg:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-gray-500 select-none">→</span>
+                                  <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
+                                    <span className="text-blue-600 flex-shrink-0 translate-y-[2px] text-base leading-none w-4 text-center">•</span>
+                                    <span className="text-gray-900 text-[15px] md:text-[16px] leading-[1.7] pl-0.5">{pair.left}</span>
+                                  </div>
+                                  <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
+                                    <span className="text-lg w-5 text-center translate-y-[1px] flex-shrink-0">{displayEmoji}</span>
+                                    <div className="text-gray-800 text-[15px] md:text-[16px] leading-[1.7]">
+                                      {right.heading ? (
+                                        <>
+                                          <strong className="text-gray-900">{right.heading}</strong>
+                                          {right.desc && <span className="text-gray-700">: {right.desc}</span>}
+                                        </>
+                                      ) : (
                         <span dangerouslySetInnerHTML={{ 
-                          __html: reason
+                                          __html: (right.desc || '')
                             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                             .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                                            .replace(/_(.*?)_/g, '<em>$1</em>')
                         }} />
+                                      )}
                       </div>
-                    )
-                  })}
+                                </div>
+                              )
+                            })}
+                          </div>
+                        );
+                      })()}
                     </div>
                   </div>
                 )}
               </div>
-            )}
+            )} */}
           </div>
+
 
           {/* Content Sections */}
           {content.content_sections && content.content_sections.length > 0 && (
             <div className="space-y-4">
               {content.content_sections.map((section, index) => {
                 const colorSchemes = [
-                  { bg: 'bg-blue-100/50', hover: 'hover:bg-blue-100', dark: 'dark:bg-blue-900/20 dark:hover:bg-blue-900/30', border: 'border-blue-200 dark:border-blue-800', iconBg: 'bg-blue-200 dark:bg-blue-800', bulletColor: 'text-blue-600 dark:text-blue-400', calloutBorder: 'border-blue-300 dark:border-blue-600', calloutBg: 'bg-blue-50 dark:bg-blue-800/50' },
-                  { bg: 'bg-green-100/50', hover: 'hover:bg-green-100', dark: 'dark:bg-green-900/20 dark:hover:bg-green-900/30', border: 'border-green-200 dark:border-green-800', iconBg: 'bg-green-200 dark:bg-green-800', bulletColor: 'text-green-600 dark:text-green-400', calloutBorder: 'border-green-300 dark:border-green-600', calloutBg: 'bg-green-50 dark:bg-green-800/50' },
-                  { bg: 'bg-yellow-100/50', hover: 'hover:bg-yellow-100', dark: 'dark:bg-yellow-900/20 dark:hover:bg-yellow-900/30', border: 'border-yellow-200 dark:border-yellow-800', iconBg: 'bg-yellow-200 dark:bg-yellow-800', bulletColor: 'text-yellow-600 dark:text-yellow-400', calloutBorder: 'border-yellow-300 dark:border-yellow-600', calloutBg: 'bg-yellow-50 dark:bg-yellow-800/50' },
-                  { bg: 'bg-orange-100/50', hover: 'hover:bg-orange-100', dark: 'dark:bg-orange-900/20 dark:hover:bg-orange-900/30', border: 'border-orange-200 dark:border-orange-800', iconBg: 'bg-orange-200 dark:bg-orange-800', bulletColor: 'text-orange-600 dark:text-orange-400', calloutBorder: 'border-orange-300 dark:border-orange-600', calloutBg: 'bg-orange-50 dark:bg-orange-800/50' },
-                  { bg: 'bg-pink-100/50', hover: 'hover:bg-pink-100', dark: 'dark:bg-pink-900/20 dark:hover:bg-pink-900/30', border: 'border-pink-200 dark:border-pink-800', iconBg: 'bg-pink-200 dark:bg-pink-800', bulletColor: 'text-pink-600 dark:text-pink-400', calloutBorder: 'border-pink-300 dark:border-pink-600', calloutBg: 'bg-pink-50 dark:bg-pink-800/50' }
+                  { bg: 'bg-[#5390d9]/30', hover: 'hover:bg-[#5390d9]/60', border: 'border-[#5390d9]/50', iconBg: 'bg-[#5390d9]/90'},
+                  { bg: 'bg-[#4ea8de]/30', hover: 'hover:bg-[#4ea8de]/60', border: 'border-[#4ea8de]/50', iconBg: 'bg-[#4ea8de]/90' },
+                  { bg: 'bg-[#56cfe1]/30', hover: 'hover:bg-[#56cfe1]/60', border: 'border-[#56cfe1]/50', iconBg: 'bg-[#56cfe1]/90' },
+                  { bg: 'bg-[#64dfdf]/30', hover: 'hover:bg-[#64dfdf]/60', border: 'border-[#64dfdf]/50', iconBg: 'bg-[#64dfdf]/90' },
+                  { bg: 'bg-[#80ffdb]/30', hover: 'hover:bg-[#80ffdb]/60', border: 'border-[#80ffdb]/50', iconBg: 'bg-[#80ffdb]/90' }
                 ];
                 
                 const colors = colorSchemes[index % colorSchemes.length];
-                const IconComponent = getIconForEmoji(section.emoji);
+                const IconComponent = getSectionIcon(section.emoji);
                 const sectionId = `section-${index}`;
                 const isExpanded = expandedSections[sectionId];
                 
 
 
                 return (
-                  <div key={index} className={`${colors.bg} ${colors.dark} backdrop-blur-sm rounded-2xl border ${colors.border} transition-all duration-300`}>
+                  <div key={index} className={`${colors.bg} backdrop-blur-sm rounded-2xl border-2 ${colors.border} transition-all duration-300 group/section`}>
                     <button
                       type="button"
                       onClick={(e) => {
                         e.preventDefault();
                         toggleSection(sectionId);
                       }}
-                      className={`w-full p-6 text-left ${colors.hover} ${colors.dark} rounded-2xl transition-all duration-300 flex items-center justify-between group`}
+                      className={`w-full p-6 text-left ${colors.hover} rounded-2xl transition-all duration-300 flex items-center justify-between group relative`}
                       title={isExpanded ? "Close section" : "Open section"}
                     >
-                      <div className="flex items-center gap-3">
-                        <div className={`p-2 ${colors.iconBg} rounded-lg flex-shrink-0 transition-transform duration-300 ${isExpanded ? 'scale-110' : 'group-hover:scale-105'}`}>
-                          <IconComponent className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+                      <div className="flex items-center gap-4">
+                        <div className={`p-2.5 ${colors.iconBg} rounded-xl flex-shrink-0 transition-transform duration-300 ${isExpanded ? 'scale-110' : 'group-hover:scale-105'} shadow-sm`}>
+                          <IconComponent className="h-6 w-6 text-gray-900" />
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                          <h3 className="text-lg font-semibold text-gray-900 mb-1">
                             <div dangerouslySetInnerHTML={{ 
                               __html: section.title
                                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -704,12 +955,28 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                 .replace(/_(.*?)_/g, '<em>$1</em>')
                             }} />
                           </h3>
+                          {!isExpanded && (
+                            <p className="text-sm text-gray-600 group-hover/section:text-gray-900 transition-colors">
+                              {/* Simple, ADHD‑friendly subtitles using the section title */}
+                              {(() => {
+                                const t = section.title.toLowerCase()
+                                if (t.includes('core principles')) return 'The few big ideas to keep you steady when your brain spirals'
+                                if (t.includes('strategies')) return 'Tiny, do‑able moves to get this task started now'
+                                if (t.includes('mindset')) return 'Gentle reframes that lower pressure and unlock action'
+                                if (t.includes('encouragement')) return 'A quick pep talk to take with you when it’s tough'
+                                if (t.includes('tools')) return 'Practical helpers you can grab fast when you need them'
+                                if (t.includes('examples')) return 'Real‑life patterns and how people shift them'
+                                if (t.includes('checklist')) return 'A simple list so your brain doesn’t have to remember it all'
+                                return 'Open for a quick, plain‑language guide to help you move forward'
+                              })()}
+                            </p>
+                          )}
                         </div>
                       </div>
                       {isExpanded ? (
-                        <Minus className="h-5 w-5 text-gray-600 dark:text-gray-300 flex-shrink-0" />
+                        <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
                       ) : (
-                        <Plus className="h-5 w-5 text-gray-600 dark:text-gray-300 flex-shrink-0" />
+                        <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
                       )}
                     </button>
                     
@@ -717,7 +984,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                       <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
                         {/* Section content */}
                         {section.content && section.content.length > 0 && (
-                          <div className="space-y-3 mb-4">
+                          <div className="space-y-4 mb-4 relative before:absolute before:left-3 before:top-0 before:bottom-0 before:w-px before:bg-gray-200">
                             {(() => {
                               const groupedContent: Array<{type: 'quote', items: string[]} | {type: 'bullet', item: string}> = [];
                               let currentQuoteGroup: string[] = [];
@@ -746,9 +1013,10 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                 if (group.type === 'quote') {
                                   // Render grouped quotes in one box
                                   return (
-                                    <div key={groupIndex} className={`border-l-4 ${colors.calloutBorder} pl-4 py-3 ${colors.calloutBg} rounded-r-lg space-y-2`}>
+                                    <div key={groupIndex} className={`border-l-4 ${colors.border} ml-6 pl-4 py-3 ${colors.bg.replace('/40', '/10')} rounded-lg space-y-2 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 hover:shadow-sm transition-shadow group/quote`}>
+                                      <div className={`absolute -left-[1.4rem] top-1/2 -translate-y-1/2 w-3 h-3 ${colors.iconBg} rounded-full transition-transform group-hover/quote:scale-110`} />
                                       {group.items.map((item, itemIndex) => (
-                                        <div key={itemIndex} className="text-gray-700 dark:text-gray-200 italic"
+                                        <div key={itemIndex} className="text-gray-900"
                                              dangerouslySetInnerHTML={{ 
                                                __html: item.replace('> ', '')
                                                  .replace(/^-\s*(\d+\.\s*)?/, '')
@@ -763,9 +1031,9 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                 } else {
                                   // Regular bullet points
                                   return (
-                                    <div key={groupIndex} className="flex items-start gap-2">
-                                      <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
-                                      <div className="text-gray-700 dark:text-gray-200"
+                                    <div key={groupIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
+                                      <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform">•</span>
+                                      <div className="text-gray-900 pt-0.5 py-1"
                                            dangerouslySetInnerHTML={{ 
                                              __html: group.item.replace(/^-\s*(\d+\.\s*)?/, '')
                                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -785,24 +1053,42 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                         {section.subsections && section.subsections.length > 0 && (
                           <div className="space-y-4">
                             {section.subsections.map((subsection, subIndex) => {
-                              const SubIconComponent = getIconForEmoji(subsection.emoji);
+                              const SubIconComponent = getSectionIcon(subsection.emoji);
                               const subsectionId = `subsection-${index}-${subIndex}`;
                               const isSubExpanded = expandedSections[subsectionId];
                               
+                              // Gentle color rotation using existing brand palette - more opaque and ADHD-friendly
+                              const colorRotation = [
+                                { bg: 'bg-[#FBF8CC]/80', hover: 'hover:bg-[#FBF8CC]', text: 'text-gray-900', border: 'border-[#FBF8CC]/30', iconBg: 'bg-[#FBF8CC]', textColor: 'text-gray-900' }, // Lemon Chiffon
+                                { bg: 'bg-[#FDE4CF]/80', hover: 'hover:bg-[#FDE4CF]', text: 'text-gray-900', border: 'border-[#FDE4CF]/30', iconBg: 'bg-[#FDE4CF]', textColor: 'text-gray-900' }, // Champagne Pink
+                                { bg: 'bg-[#FFCFD2]/80', hover: 'hover:bg-[#FFCFD2]', text: 'text-gray-900', border: 'border-[#FFCFD2]/30', iconBg: 'bg-[#FFCFD2]', textColor: 'text-gray-900' }, // Baby Pink
+                                { bg: 'bg-[#F1C0E8]/80', hover: 'hover:bg-[#F1C0E8]', text: 'text-gray-900', border: 'border-[#F1C0E8]/30', iconBg: 'bg-[#F1C0E8]', textColor: 'text-gray-900' }, // Pink Lavender
+                                { bg: 'bg-[#CFBAF0]/80', hover: 'hover:bg-[#CFBAF0]', text: 'text-gray-900', border: 'border-[#CFBAF0]/30', iconBg: 'bg-[#CFBAF0]', textColor: 'text-gray-900' }, // Lavender Blue
+                                { bg: 'bg-[#A3C4F3]/80', hover: 'hover:bg-[#A3C4F3]', text: 'text-gray-900', border: 'border-[#A3C4F3]/30', iconBg: 'bg-[#A3C4F3]', textColor: 'text-gray-900' }, // Baby Blue Eyes
+                                { bg: 'bg-[#90DBF4]/80', hover: 'hover:bg-[#90DBF4]', text: 'text-gray-900', border: 'border-[#90DBF4]/30', iconBg: 'bg-[#90DBF4]', textColor: 'text-gray-900' }, // Sky Blue
+                                { bg: 'bg-[#8EECF5]/80', hover: 'hover:bg-[#8EECF5]', text: 'text-gray-900', border: 'border-[#8EECF5]/30', iconBg: 'bg-[#8EECF5]', textColor: 'text-gray-900' }, // Electric Blue
+                                { bg: 'bg-[#98F5E1]/80', hover: 'hover:bg-[#98F5E1]', text: 'text-gray-900', border: 'border-[#98F5E1]/30', iconBg: 'bg-[#98F5E1]', textColor: 'text-gray-900' }, // Magic Mint
+                                { bg: 'bg-[#B9FBC0]/80', hover: 'hover:bg-[#B9FBC0]', text: 'text-gray-900', border: 'border-[#B9FBC0]/30', iconBg: 'bg-[#B9FBC0]', textColor: 'text-gray-900' } // Granny Smith Apple
+                              ];
+                              
+                              const subColors = colorRotation[subIndex % colorRotation.length];
+                              
                               return (
-                                <div key={subIndex} className="bg-white/40 dark:bg-gray-800/40 rounded-xl">
+                                <div key={subIndex} className={`${subColors.bg.replace('/90', '/20')} backdrop-blur-sm rounded-xl border ${subColors.border.replace('/50', '/30')} transition-all duration-300`}>
                                   <button
                                     type="button"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       toggleSection(subsectionId);
                                     }}
-                                    className="w-full p-4 text-left hover:bg-white/60 dark:hover:bg-gray-700/60 rounded-xl transition-all duration-300 flex items-center justify-between group"
+                                    className={`w-full p-4 text-left ${subColors.hover} rounded-xl transition-all duration-300 flex items-center justify-between group`}
                                     title={isSubExpanded ? "Close section" : "Open section"}
                                   >
                                     <div className="flex items-center gap-2">
-                                      <SubIconComponent className="h-4 w-4 text-gray-700 dark:text-gray-200" />
-                                      <h4 className="text-base font-semibold text-gray-800 dark:text-gray-100">
+                                      <div className={`p-1.5 ${subColors.iconBg} rounded-md flex-shrink-0 transition-transform duration-300 ${isSubExpanded ? 'scale-110' : 'group-hover:scale-105'}`}>
+                                        <SubIconComponent className="h-4 w-4 text-gray-900" />
+                                      </div>
+                                      <h4 className={`text-lg font-semibold ${subColors.textColor}`}>
                                         <div dangerouslySetInnerHTML={{ 
                                           __html: subsection.title
                                             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -812,9 +1098,9 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                       </h4>
                                     </div>
                                     {isSubExpanded ? (
-                                      <Minus className="h-4 w-4 text-gray-600 dark:text-gray-300 flex-shrink-0" />
+                                      <Minus className={`h-4 w-4 ${subColors.textColor} flex-shrink-0 opacity-70`} />
                                     ) : (
-                                      <Plus className="h-4 w-4 text-gray-600 dark:text-gray-300 flex-shrink-0" />
+                                      <Plus className={`h-4 w-4 ${subColors.textColor} flex-shrink-0 opacity-70`} />
                                     )}
                                   </button>
                                   
@@ -823,8 +1109,8 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                       <div className="space-y-2">
                                         {subsection.content.map((item, itemIndex) => (
                                           <div key={itemIndex} className="flex items-start gap-2">
-                                            <span className={`${colors.bulletColor} mt-1 flex-shrink-0 text-sm`}>•</span>
-                                            <div className="text-gray-600 dark:text-gray-300 text-sm"
+                                            <span className={`${subColors.textColor} mt-1 flex-shrink-0 opacity-80`}>•</span>
+                                            <div className={`${subColors.textColor} opacity-90`}
                                                  dangerouslySetInnerHTML={{ 
                                                    __html: item.replace(/^-\s*(\d+\.\s*)?/, '')
                                                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -847,6 +1133,182 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                   </div>
                 )
               })}
+            </div>
+          )}
+
+          {/* Sources Section - Positioned right after content sections */}
+          {sources && sources.length > 0 && (
+            <div className="space-y-4 mt-8">
+              <div className="relative">
+                <Button
+                  onClick={() => toggleSection('sources')}
+                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-2xl border-2 
+                            bg-[#f1e4f3]/30 hover:bg-[#f1e4f3]/60 border-[#f1e4f3]/50 
+                            transition-colors min-h-[75px] touch-manipulation"
+                  variant="ghost"
+                  size="lg"
+                >
+                  <div className="bg-[#f1e4f3]/90 rounded-full p-3 flex-shrink-0">
+                    <BookOpen className="h-5 w-5 text-gray-900" />
+                  </div>
+                  <div className="flex-1 text-left min-w-0">
+                    <h3 className="text-sm sm:text-lg font-bold text-gray-900 break-words">
+                      Sources ({sources.length} sources)
+                    </h3>
+                  </div>
+                  <div className="flex-shrink-0">
+                    {expandedSections['sources'] ? (
+                      <Minus className="h-6 w-6 text-gray-500" />
+                    ) : (
+                      <Plus className="h-6 w-6 text-gray-500" />
+                    )}
+                  </div>
+                </Button>
+                
+                {expandedSections['sources'] && (
+                  <div className="bg-[#f1e4f3]/20 rounded-lg p-4 space-y-4 animate-in slide-in-from-top duration-300 mb-4">
+                    {/* Group sources by category and sort by count (descending) */}
+                    {Object.entries(
+                      sources.reduce((acc, source) => {
+                        const category = source.category || 'Other'
+                        if (!acc[category]) acc[category] = []
+                        acc[category].push(source)
+                        return acc
+                      }, {} as Record<string, typeof sources>)
+                    )
+                    .sort(([,a], [,b]) => b.length - a.length) // Sort by count descending
+                    .map(([category, categorySources], index) => {
+                      // Color palette for category headers (matching feelings style)
+                      const colors = [
+                        { bg: 'bg-[#FBF8CC]/40', hover: 'hover:bg-[#FBF8CC]/60', border: 'border-[#FBF8CC]/60', iconBg: 'bg-[#FBF8CC]/90' }, // Lemon Chiffon
+                        { bg: 'bg-[#FDE4CF]/40', hover: 'hover:bg-[#FDE4CF]/60', border: 'border-[#FDE4CF]/60', iconBg: 'bg-[#FDE4CF]/90' }, // Champagne Pink
+                        { bg: 'bg-[#FFCFD2]/40', hover: 'hover:bg-[#FFCFD2]/60', border: 'border-[#FFCFD2]/60', iconBg: 'bg-[#FFCFD2]/90' }, // Baby Pink
+                        { bg: 'bg-[#F1C0E8]/40', hover: 'hover:bg-[#F1C0E8]/60', border: 'border-[#F1C0E8]/60', iconBg: 'bg-[#F1C0E8]/90' }, // Pink Lavender
+                        { bg: 'bg-[#CFBAF0]/40', hover: 'hover:bg-[#CFBAF0]/60', border: 'border-[#CFBAF0]/60', iconBg: 'bg-[#CFBAF0]/90' }, // Lavender Blue
+                        { bg: 'bg-[#A3C4F3]/40', hover: 'hover:bg-[#A3C4F3]/60', border: 'border-[#A3C4F3]/60', iconBg: 'bg-[#A3C4F3]/90' }, // Baby Blue Eyes
+                        { bg: 'bg-[#90DBF4]/40', hover: 'hover:bg-[#90DBF4]/60', border: 'border-[#90DBF4]/60', iconBg: 'bg-[#90DBF4]/90' }, // Sky Blue
+                        { bg: 'bg-[#8EECF5]/40', hover: 'hover:bg-[#8EECF5]/60', border: 'border-[#8EECF5]/60', iconBg: 'bg-[#8EECF5]/90' }, // Electric Blue
+                        { bg: 'bg-[#98F5E1]/40', hover: 'hover:bg-[#98F5E1]/60', border: 'border-[#98F5E1]/60', iconBg: 'bg-[#98F5E1]/90' }, // Magic Mint
+                        { bg: 'bg-[#B9FBC0]/40', hover: 'hover:bg-[#B9FBC0]/60', border: 'border-[#B9FBC0]/60', iconBg: 'bg-[#B9FBC0]/90' }  // Granny Smith Apple
+                      ]
+                      const colorScheme = colors[index % colors.length]
+                      
+                      // Deduplicate sources within a category by normalized title+authors
+                      const normalized = (value: string) =>
+                        (value || '')
+                          .toLowerCase()
+                          .replace(/[_*`~]/g, '')
+                          .replace(/[^a-z0-9\s()&:+,-]/g, '')
+                          .replace(/\s+/g, ' ')
+                          .trim();
+
+                      const deduped = Object.values(
+                        (categorySources as any[]).reduce((acc, src) => {
+                          const key = `${normalized(src.title)}::${normalized(src.authors)}`;
+                          if (!acc[key]) {
+                            acc[key] = { ...src, _descriptions: [] as string[] };
+                          }
+                          if (src.description) acc[key]._descriptions.push(src.description);
+                          return acc;
+                        }, {} as Record<string, any>)
+                      ) as Array<any & { _descriptions: string[] }>;
+                      
+                      return (
+                        <div key={category} className="space-y-2">
+                          <Button
+                            onClick={() => toggleSection(`source-category-${category}`)}
+                            className={`w-full flex items-center justify-between p-4 rounded-xl ${colorScheme.bg} ${colorScheme.hover} border ${colorScheme.border} transition-all duration-300 shadow-sm`}
+                            variant="ghost"
+                            size="lg"
+                          >
+                            <h4 className="font-bold text-gray-900 text-base">
+                              {category} ({categorySources.length} {categorySources.length === 1 ? 'source' : 'sources'})
+                            </h4>
+                            {expandedSections[`source-category-${category}`] ? (
+                              <Minus className="h-4 w-4 text-gray-600" />
+                            ) : (
+                              <Plus className="h-4 w-4 text-gray-600" />
+                            )}
+                          </Button>
+                          
+                          {expandedSections[`source-category-${category}`] && (
+                            <div className={`pl-2 space-y-3 animate-in slide-in-from-top duration-200 ${colorScheme.bg} rounded-lg p-4 border ${colorScheme.border}`}>
+                              {deduped.map((source, sourceIndex) => (
+                                <div key={sourceIndex} className="border-l-3 border-gray-400/40 pl-4 py-2">
+                                  <div className="flex items-start gap-2">
+                                    <span className="text-gray-900 mt-1 flex-shrink-0">•</span>
+                                    <div>
+                                      <h5 className="font-semibold text-gray-900">
+                                        {(() => {
+                                          // Title and optional year (clean markdown italics from title)
+                                          const rawTitle = (source.title || '').replace(/\*(.*?)\*/g, '$1').replace(/_(.*?)_/g, '$1');
+                                          const baseTitle = rawTitle || 'Title Not Available';
+                                          const titleYearMatch = (source.title || '').match(/\((19|20)\d{2}\)/);
+                                          const descYearMatch = (source.description || '').match(/\b(19|20)\d{2}\b/);
+                                          const yearText = titleYearMatch?.[0] || (descYearMatch ? ` (${descYearMatch[0]})` : '');
+                                          const displayTitle = baseTitle.includes('(') ? baseTitle : `${baseTitle}${yearText}`;
+
+                                          // Authors (clean stray quotes)
+                                          const authors = (source.authors || '').replace(/"/g, '');
+
+                                          // Format: "Book Title (Year) by Authors"
+                                          return (
+                                            <>
+                                              {displayTitle}
+                                              {authors && (
+                                                <span className="font-normal text-gray-600">
+                                                  {' by '}{authors}
+                                                </span>
+                                              )}
+                                            </>
+                                          );
+                                        })()}
+                                      </h5>
+                                      {(() => {
+                                        const clean = (text: string) =>
+                                          (text || '')
+                                            .replace(/\*\*(.*?)\*\*/g, '$1')
+                                            .replace(/_(.*?)_/g, '$1')
+                                            .replace(/\s*—\s*/g, ' — ')
+                                            .replace(/"/g, '')
+                                            .trim();
+                                        const normalize = (s: string) =>
+                                          s
+                                            .toLowerCase()
+                                            .replace(/\((19|20)\d{2}\)/g, '') // strip years
+                                            .replace(/[^a-z0-9\s]/g, '')
+                                            .replace(/\s+/g, ' ')
+                                            .trim();
+
+                                        const baseTitleForCompare = clean((source.title || ''));
+                                        const uniqueDescriptions = Array.from(
+                                          new Set(((source._descriptions as string[] | undefined) || [source.description as string])
+                                            .map((d: string) => clean(d)))
+                                        )
+                                          .filter(Boolean)
+                                          // drop descriptions that are just the title repeated
+                                          .filter(d => normalize(d) !== normalize(baseTitleForCompare));
+
+                                        if (uniqueDescriptions.length === 0) return null;
+
+                                        return (
+                                      <p className="text-sm text-gray-700 leading-relaxed mt-1">
+                                            {uniqueDescriptions.join(' • ')}
+                                          </p>
+                                        );
+                                      })()}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -950,6 +1412,15 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
           </div> {/* Close glassmorphism container */}
         </div>
       </div>
+      
+      {/* Share Modal */}
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        title={content?.task_name || 'Task Page'}
+        url={typeof window !== 'undefined' ? window.location.href : ''}
+        description={`Get help with ${content?.task_name?.toLowerCase() || 'this task'} - ADHD-friendly strategies and support.`}
+      />
     </div>
   )
 }

@@ -17,114 +17,112 @@ import {
   Stethoscope, Laptop, Handshake,
   UserPlus, DollarSign, Sprout,
   Network, Timer, Building2,
-  Building, Link, ArrowLeftRight
+  Building, Link, ArrowLeftRight, Baby,
+  UserCog, Fingerprint, ClipboardPlus,
+  BrainCircuit, HeartPulse, UserX,
+  UserMinus, BanknoteX, GraduationCap,
+  Mail, Receipt, Car, ShoppingCart, CookingPot,
+  Shirt, Bath, PhoneCall, Trash2, Hammer,
+  Medal, TrendingUp, Rocket, ScrollText,
+  CircleDashed, Calendar, Phone
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { getIdentitiesContent } from '@/lib/supabase'
+import { getIdentitiesContent, getIdentitySources } from '@/lib/supabase'
 import type { IdentitiesContent } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
+import { ShareModal } from '@/components/ui/ShareModal';
 
-// Function to map emoji strings to Lucide icons
-const getIconForEmoji = (emoji: string) => {
-  const emojiToIconMap: Record<string, React.ElementType> = {
-    // Time & Organization
+// Simple emoji to icon mapping for content sections
+const getSectionIcon = (emoji: string): React.ElementType => {
+  const sectionIconMap: Record<string, React.ElementType> = {
+    // Core section emojis - ensuring uniqueness across all identities
+    '🧠': Brain,
+    '⚡': Zap,
+    '✨': Sparkles,
+    '🎯': Target,
+    '🔥': Flame,
+    '💡': Lightbulb,
     '⏰': Timer,
     '🕐': Clock,
+    '📅': Calendar,
+    '🛠️': Wrench,
+    '📱': Phone,
+    '🏠': Home,
+    '💼': Briefcase,
+    '📚': BookOpen,
+    '🎨': Palette,
+    '🎵': Music,
+    '📸': Camera,
+    '💻': Code,
+    '🚗': Car,
+    '🛒': ShoppingCart,
+    '🍳': CookingPot,
+    '👕': Shirt,
+    '🧼': Bath,
+    '📞': PhoneCall,
+    '✉️': Mail,
+    '💰': Receipt,
+    '📄': FileText,
+    '🗑️': Trash2,
+    '🔧': Hammer,
+    '⚙️': Settings,
+    '🏆': Award,
+    '🌟': Star,
+    '⭐': Medal,
+    '🌈': Rainbow,
+    '📊': Activity,
+    '📈': TrendingUp,
+    '🚀': Rocket,
+    '🧩': Puzzle,
+    '🔗': Link,
+    '🌐': Network,
+    '🌱': Sprout,
+    '🛡️': Shield,
+    '🔑': Key,
+    '🧭': Compass,
+    '🗺️': Map,
+    '🛤️': Route,
+    '👥': Users,
+    '🤝': Handshake,
+    '🫂': UserPlus,
+    '🧑‍⚕️': Stethoscope,
+    '🧑‍💻': Laptop,
+    '🎓': GraduationCap,
+    '📢': Megaphone,
+    '🗣️': MessageCircle,
+    '📝': PenTool,
+    '🧾': ScrollText,
+    '🔁': Repeat,
+    '🔄': RotateCcw,
+    '🔍': Search,
+    '📉': TrendingDown,
+    '💸': DollarSign,
+    '🌊': Waves,
+    '❤️‍🩹': HeartHandshake,
+    '❤️': Heart,
+    '💖': HeartPulse,
+    '💢': Flame,
+    '😵‍💫': CircleDashed,
+    '💬': MessageCircle,
+    '💪': Building2,
+    '🌍': Globe,
+    '🧘': Activity,
+    '🧘‍♀️': Building,
+    '🧱': Construction,
+    '⛓️': Link,
+    '🚧': AlertTriangle,
     '⚖️': Scale,
     '⚠️': AlertTriangle,
     '✅': CheckCircle,
     '❌': XCircle,
     '✋': Hand,
     '✍️': PenTool,
-    
-    // Emotional & Mental States
-    '🌊': Waves,
-    '🧠': Brain,
-    '❤️‍🩹': HeartHandshake,
-    '❤️': Heart,
-    '💖': Heart,
-    '💢': Flame,
-    '😵‍💫': Brain, // Using brain for confusion/overwhelm
-    '💬': MessageCircle,
-    
-    // Energy & Action
-    '⚡': Zap,
-    '💪': Building2, // Using building for strength metaphor
-    '🔥': Flame,
-    '✨': Sparkles,
-    '🌱': Sprout,
-    '🚀': Zap,
-    '🌟': Star,
-    '⭐': Star,
-    
-    // Tools & Resources
-    '🛠️': Wrench,
-    '🛡️': Shield,
-    '🗂️': Folder,
-    '🧰': Database,
-    '🔑': Key,
-    '🧭': Compass,
-    '🗺️': Map,
-    '🛤️': Route,
-    '⚙️': Settings,
-    
-    // Social & Support
-    '👥': Users,
-    '🤝': Handshake,
-    '🫂': UserPlus,
-    '🧑‍⚕️': Stethoscope,
-    '🧑‍💻': Laptop,
-    
-    // Learning & Growth
-    '📚': BookOpen,
-    '🎓': School,
-    '📢': Megaphone,
-    '🗣️': MessageCircle,
-    '📝': FileText,
-    '🧾': FileText,
-    '💡': Lightbulb,
-    '🎯': Target,
-    
-    // Systems & Processes
-    '🔁': Repeat,
-    '🔄': RotateCcw,
-    '🌐': Network,
-    '🔍': Search,
-    '📉': TrendingDown,
-    '💸': DollarSign,
-    
-    // Spaces & Environment
-    '🏠': Home,
-    '💼': Briefcase,
-    '🌍': Globe,
-    '🧘': Building, // Meditation space
-    '🧘‍♀️': Building,
-    
-    // Creative & Expression
-    '🎨': Palette,
-    '🎵': Music,
-    '📸': Camera,
-    '💻': Code,
-    '📊': Activity,
-    
-    // Challenges & Barriers
-    '🧱': Construction, // Building/barriers
-    '⛓️': Link, // Using link for chains
-    '🚧': Construction,
-    
-    // Achievement & Success
-    '🏆': Award,
-    '✨': Sparkles,
-    '🌟': Star,
-    
-    // Default fallback
     '💭': Brain,
-    '📝': BookOpen,
-    '🔸': Lightbulb
-  };
+    '🔸': Lightbulb,
+  }
   
-  return emojiToIconMap[emoji] || Lightbulb; // Default to Lightbulb if emoji not found
-};
+  return sectionIconMap[emoji] || Lightbulb // Default fallback
+}
 
 // Function to convert markdown-style formatting to JSX, including callout boxes
 const formatMarkdownText = (text: string, colorScheme?: any) => {
@@ -405,6 +403,8 @@ export default function IdentityPage({ params }: IdentityPageProps) {
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
   const [hoveredSection, setHoveredSection] = useState<string | null>(null)
   const [copySuccess, setCopySuccess] = useState(false)
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [sources, setSources] = useState<Array<{ id: number; identity_slug: string; category: string; title: string; authors: string | null; description: string }> | null>(null)
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
@@ -469,6 +469,12 @@ export default function IdentityPage({ params }: IdentityPageProps) {
         }
 
         setContent(data)
+        // Fetch sources using slug from URL
+        const identitySlug = resolvedParams.identity
+        const { data: srcData, error: srcError } = await getIdentitySources(identitySlug)
+        if (!srcError && srcData && srcData.length > 0) {
+          setSources(srcData as any)
+        }
       } catch (err) {
         setError('Failed to load identity content.')
         console.error('Error loading identity content:', err)
@@ -499,70 +505,45 @@ export default function IdentityPage({ params }: IdentityPageProps) {
     }
   }
 
-  const handleShare = async () => {
-    const cleanName = content?.identity_name?.replace(/^(The |ADHD Identity Guide: The |ADHD Identity Guide: )/, '') || content?.identity_name
-    const shareData = {
-      title: `ADHD First Aid Kit - ${cleanName}`,
-      text: `Get support for ADHD as "${cleanName}" - ADHD-friendly strategies and guidance`,
-      url: window.location.href
-    }
-
-    try {
-      // Check if native sharing is available and supported
-      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-        await navigator.share(shareData)
-      } else {
-        // Fallback to clipboard with better feedback
-        await navigator.clipboard.writeText(window.location.href)
-        setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000) // Reset after 2 seconds
-      }
-    } catch (error) {
-      // Fallback to clipboard if share fails
-      try {
-        await navigator.clipboard.writeText(window.location.href)
-        setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000) // Reset after 2 seconds
-      } catch (clipboardError) {
-        console.error('Share failed:', error)
-      }
-    }
+  const handleShare = () => {
+    // Always show the custom share modal
+    setIsShareModalOpen(true)
   }
 
-  // Icon mapping for identities
+  // Icon mapping for identities - updated to match category page icons
   const IDENTITY_ICONS: Record<string, React.ElementType> = {
-    "The Recently Diagnosed": Brain,
-    "The AuDHD Individual": Rainbow,
-    "The Breadwinner": Construction,
-    "The Burned Out Professional": Construction,
-    "The Creative": Heart,
-    "The Entrepreneur": Construction,
-    "The Immigrant": Heart,
-    "The Job Seeker": Construction,
-    "The Low-Income Individual": Heart,
+    "The Parent": Baby,
+    "ADHD Identity Guide: The Parent of a Child with ADHD": UserCog,
+    "The Overly Responsible Sibling": UserPlus,
+    "The Solo Household Manager": Home,
+    "The Caretaker": HeartHandshake,
+    "The Job Seeker": Building,
+    "The Burned Out Professional": Flame,
+    "The Working Multiple Jobs": Briefcase,
+    "The Entrepreneur": Lightbulb,
+    "The Breadwinner": Award,
     "The Neurodivergent Adult": Brain,
-    "The Individual Without a Support System": Heart,
-    "The Overly Responsible Sibling": Heart,
-    "The Parent": Heart,
-    "ADHD Identity Guide: The Parent of a Child with ADHD": Heart,
+    "The Recently Diagnosed": ClipboardPlus,
+    "The AuDHD Individual": Fingerprint,
+    "The Sick or Chronically Ill": HeartPulse,
+    "The Grieving or Emotionally Raw Individual": UserX,
     "ADHD Identity Guide: Queer & Trans": Rainbow,
-    "ADHD Identity Guide: The Recovering Perfectionist": Heart,
-    "The Sick or Chronically Ill": Heart,
-    "The Solo Household Manager": Construction,
-    "The Student": Brain,
-    "The Working Multiple Jobs": Construction,
-    "The Grieving or Emotionally Raw Individual": Heart,
-    "The BIPOC Individual": Heart,
-    "The Caretaker": Heart
+    "The Immigrant": Globe,
+    "The Individual Without a Support System": UserMinus,
+    "The Low-Income Individual": BanknoteX,
+    "The BIPOC Individual": Users,
+    "The Student": GraduationCap,
+    "The Creative": Sparkles,
+    "ADHD Identity Guide: The Recovering Perfectionist": Target
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#a18cd1] via-[#b19cd9] to-[#dec6f7] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-            <p className="text-lg">Loading identity content...</p>
+            <p className="text-lg">Finding strategies that fit your life...</p>
           </div>
         </div>
       </div>
@@ -571,7 +552,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
 
   if (error || !content) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#e0aaff] via-[#c77dff] to-[#9d4edd] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
+      <div className="min-h-screen bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
         <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-10 shadow-lg">
             <div className="flex items-center gap-4 mb-5">
@@ -608,7 +589,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e0aaff] via-[#c77dff] to-[#9d4edd] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
@@ -777,6 +758,136 @@ export default function IdentityPage({ params }: IdentityPageProps) {
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
           </div>
 
+          {/* ADHD Reasons - Paired two-column like complex_loops */}
+          {content.adhd_reasons && content.adhd_reasons.length > 0 && (
+            <div className="bg-purple-100/40 dark:bg-purple-900/20 backdrop-blur-sm rounded-2xl border border-purple-200 dark:border-purple-800 transition-all duration-300 mb-8">
+              <button
+                onClick={() => toggleSection('adhd-reasons')}
+                className="w-full p-6 text-left hover:bg-purple-100/60 dark:hover:bg-purple-900/30 rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                title={expandedSections['adhd-reasons'] ? 'Close section' : 'Open section'}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-purple-300/80 dark:bg-purple-700/80 rounded-lg flex-shrink-0 transition-transform duration-300">
+                    <Brain className="h-5 w-5 text-gray-900" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900">Why this can be hard with ADHD</h3>
+                </div>
+                {expandedSections['adhd-reasons'] ? (
+                  <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
+                ) : (
+                  <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
+                )}
+              </button>
+              {expandedSections['adhd-reasons'] && (
+                <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
+                  <div className="space-y-4">
+                    {(() => {
+                      const youMight: string[] = []
+                      const whatsGoingOn: string[] = []
+                      let current = ''
+                      content.adhd_reasons.forEach((r) => {
+                        if (r === 'You might:') current = 'left'
+                        else if (r === "Here's what's really going on:") current = 'right'
+                        else if (current === 'left') youMight.push(r)
+                        else if (current === 'right') whatsGoingOn.push(r)
+                      })
+                      const sanitize = (s: string) => (s || '').replace(/\uFFFD+/g, '').replace(/\s+/g, ' ').trim()
+                      const cleanLeft = (s?: string) => sanitize((s || '').replace(/^[-•]\s*/, ''))
+                      const rawLefts = youMight.map(cleanLeft).filter(Boolean)
+                      const parseRight = (s?: string) => {
+                        if (!s) return { emoji: null as string | null, heading: null as string | null, desc: '' }
+                        const emojiMatch = s.match(/^(\p{Extended_Pictographic})\s+(.+)/u) || s.match(/^([\u{2300}-\u{23FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F300}-\u{1FAFF}])\s+(.+)/u)
+                        let rest = s; let emoji: string | null = null
+                        if (emojiMatch) { emoji = emojiMatch[1]; rest = emojiMatch[2] }
+                        rest = sanitize(rest.replace(/^[\uFFFD\s]+/, ''))
+                        const boldMatch = rest.match(/^\*\*(.*?)\*\*[:：]?\s*(.*)?$/)
+                        if (boldMatch) return { emoji, heading: boldMatch[1], desc: boldMatch[2] || '' }
+                        return { emoji, heading: null, desc: rest }
+                      }
+                      const rights = whatsGoingOn.map(parseRight).filter(r => (r.heading && r.heading.trim()) || (r.desc && r.desc.trim()))
+                      const seemsRight = (text: string) => /^(\p{Extended_Pictographic}\s+)/u.test(text) || /^\*\*.+?\*\*/.test(text) || /(executive dysfunction|time blindness|working memory|motivation|shame)/i.test(text)
+                      const manualRights: Record<number, { emoji: string | null; heading: string | null; desc: string }> = {}
+                      const lefts = rawLefts.map((left, idx) => {
+                        if (!seemsRight(left)) return left
+                        const r = parseRight(left)
+                        manualRights[idx] = r
+                        let candidate = sanitize(left)
+                          .replace(/^(\p{Extended_Pictographic}\s*)/u, '')
+                          .replace(/\*\*[^*]+\*\*/g, '')
+                          .replace(/^[—:\-\s]+/, '')
+                          .trim()
+                        if (!candidate) candidate = r.heading ? `${r.heading} shows up in your day-to-day` : 'Notice this pattern popping up'
+                        return candidate.charAt(0).toUpperCase() + candidate.slice(1)
+                      })
+                      const emojiForHeading = (h?: string | null) => {
+                        const k = (h || '').toLowerCase()
+                        if (k.includes('executive')) return '🧩'
+                        if (k.includes('time')) return '⏰'
+                        if (k.includes('working memory')) return '🧠'
+                        if (k.includes('attention')) return '🎯'
+                        if (k.includes('motivation')) return '💥'
+                        if (k.includes('shame')) return '😞'
+                        if (k.includes('nervous system')) return '💛'
+                        return '💡'
+                      }
+                      const pairs = lefts.map((left, i) => ({ left, right: manualRights[i] || rights[i] || { emoji: '💡', heading: 'Context matters', desc: 'your brain is adapting to stressors; gentle supports help shift the pattern' } }))
+                      return (
+                        <div className="space-y-3">
+                          <div className="hidden lg:grid lg:grid-cols-2 gap-3 pl-1 pr-1">
+                            <h4 className="font-semibold text-gray-900 text-base border-b border-gray-200 pb-1">You might:</h4>
+                            <h4 className="font-semibold text-gray-900 text-base border-b border-gray-200 pb-1">Here's what's really going on:</h4>
+                          </div>
+                          {pairs.map((pair, idx) => {
+                            const rowPalette = [
+                              { bg: 'bg-[#FBF8CC]/35', border: 'border-[#FBF8CC]/60' },
+                              { bg: 'bg-[#FDE4CF]/35', border: 'border-[#FDE4CF]/60' },
+                              { bg: 'bg-[#FFCFD2]/35', border: 'border-[#FFCFD2]/60' },
+                              { bg: 'bg-[#F1C0E8]/35', border: 'border-[#F1C0E8]/60' },
+                              { bg: 'bg-[#CFBAF0]/35', border: 'border-[#CFBAF0]/60' },
+                              { bg: 'bg-[#A3C4F3]/35', border: 'border-[#A3C4F3]/60' },
+                            ]
+                            const rowColor = rowPalette[idx % rowPalette.length]
+                            const right = typeof pair.right === 'string' ? parseRight(pair.right) : pair.right
+                            const displayEmoji = right.emoji || emojiForHeading(right.heading)
+                            return (
+                              <div key={idx} className="relative grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 group">
+                                <span className="hidden lg:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-gray-500 select-none">→</span>
+                                <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
+                                  <span className="text-purple-600 flex-shrink-0 translate-y-[2px] text-base leading-none w-4 text-center">•</span>
+                                  <span className="text-gray-900 text-[15px] md:text-[16px] leading-[1.7] pl-0.5">{pair.left}</span>
+                                </div>
+                                <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
+                                  <span className="text-lg w-5 text-center translate-y-[1px] flex-shrink-0">{displayEmoji}</span>
+                                  <div className="text-gray-800 text-[15px] md:text-[16px] leading-[1.7]">
+                                    {right.heading ? (
+                                      <>
+                                        <strong className="text-gray-900">{right.heading}</strong>
+                                        {right.desc && <span className="text-gray-700">: {right.desc}</span>}
+                                      </>
+                                    ) : (
+                                      <span
+                                        dangerouslySetInnerHTML={{
+                                          __html: (right.desc || '')
+                                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                                            .replace(/_(.*?)_/g, '<em>$1</em>')
+                                        }}
+                                      />
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )
+                    })()}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Content Sections with nested toggles */}
           {content.content_sections && content.content_sections.length > 0 && (
             <div className="space-y-4">
@@ -804,7 +915,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                       size="lg"
                     >
                       <div className={`${colors.iconBg} rounded-full p-3 flex-shrink-0`}>
-                        {React.createElement(getIconForEmoji(section.emoji), {
+                        {React.createElement(getSectionIcon(section.emoji), {
                           className: "h-6 w-6 text-gray-700 dark:text-gray-300"
                         })}
                       </div>
@@ -910,7 +1021,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                   variant="ghost"
                                   size="sm"
                                 >
-                                  {React.createElement(getIconForEmoji(subsection.emoji), {
+                                  {React.createElement(getSectionIcon(subsection.emoji), {
                                     className: "h-5 w-5 text-gray-600 dark:text-gray-400"
                                   })}
                                   <div className="flex-1 text-left">
@@ -1002,6 +1113,138 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                   </div>
                 );
               })}
+            </div>
+          )}
+
+          {/* Sources Section - last header */}
+          {sources && sources.length > 0 && (
+            <div className="space-y-4 mt-8">
+              <div className="relative">
+                <Button
+                  onClick={() => setExpandedSections(prev=>({ ...prev, 'sources': !prev['sources'] }))}
+                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-2xl border-2 bg-[#F3E8FF]/40 hover:bg-[#F3E8FF]/60 border-[#D8B4FE]/50 transition-colors min-h-[75px] touch-manipulation"
+                  variant="ghost"
+                  size="lg"
+                >
+                  <div className="bg-[#D8B4FE]/90 rounded-full p-3 flex-shrink-0">
+                    <BookOpen className="h-5 w-5 text-gray-900" />
+                  </div>
+                  <div className="flex-1 text-left min-w-0">
+                    <h3 className="text-sm sm:text-lg font-bold text-gray-900 break-words">
+                      Sources ({sources.length} sources)
+                    </h3>
+                  </div>
+                  <div className="flex-shrink-0">
+                    {expandedSections['sources'] ? (
+                      <Minus className="h-6 w-6 text-gray-500" />
+                    ) : (
+                      <Plus className="h-6 w-6 text-gray-500" />
+                    )}
+                  </div>
+                </Button>
+
+                {expandedSections['sources'] && (
+                  <div className="bg-[#F3E8FF]/30 rounded-lg p-4 space-y-4 animate-in slide-in-from-top duration-300 mb-4">
+                    {Object.entries(
+                      (sources || []).reduce((acc, source) => {
+                        const cat = source.category || 'Other'
+                        if (!acc[cat]) acc[cat] = [] as any[]
+                        (acc[cat] as any[]).push(source)
+                        return acc
+                      }, {} as Record<string, any[]>)
+                    )
+                    .sort(([,a], [,b]) => b.length - a.length)
+                    .map(([category, categorySources], index) => {
+                      const colors = [
+                        { bg: 'bg-[#FBF8CC]/40', hover: 'hover:bg-[#FBF8CC]/60', border: 'border-[#FBF8CC]/60' },
+                        { bg: 'bg-[#FDE4CF]/40', hover: 'hover:bg-[#FDE4CF]/60', border: 'border-[#FDE4CF]/60' },
+                        { bg: 'bg-[#FFCFD2]/40', hover: 'hover:bg-[#FFCFD2]/60', border: 'border-[#FFCFD2]/60' },
+                        { bg: 'bg-[#F1C0E8]/40', hover: 'hover:bg-[#F1C0E8]/60', border: 'border-[#F1C0E8]/60' },
+                        { bg: 'bg-[#CFBAF0]/40', hover: 'hover:bg-[#CFBAF0]/60', border: 'border-[#CFBAF0]/60' },
+                      ]
+                      const scheme = colors[index % colors.length]
+
+                      const normalized = (value: string) =>
+                        (value || '')
+                          .toLowerCase()
+                          .replace(/[_*`~]/g, '')
+                          .replace(/[^a-z0-9\s()&:+,-]/g, '')
+                          .replace(/\s+/g, ' ')
+                          .trim()
+
+                      const deduped = Object.values(
+                        (categorySources as any[]).reduce((acc, src) => {
+                          const key = `${normalized(src.title)}::${normalized(src.authors || '')}`
+                          if (!acc[key]) acc[key] = { ...src, _descriptions: [] as string[] }
+                          if (src.description) acc[key]._descriptions.push(src.description)
+                          return acc
+                        }, {} as Record<string, any>)
+                      ) as Array<any & { _descriptions: string[] }>
+
+                      return (
+                        <div key={category} className="space-y-2">
+                          <Button
+                            onClick={() => setExpandedSections(prev=>({ ...prev, [`src-cat-${category}`]: !prev[`src-cat-${category}`] }))}
+                            className={`w-full flex items-center justify-between p-4 rounded-xl ${scheme.bg} ${scheme.hover} border ${scheme.border} transition-all duration-300 shadow-sm`}
+                            variant="ghost"
+                            size="lg"
+                          >
+                            <h4 className="font-bold text-gray-900 text-base">
+                              {category} ({(categorySources as any[]).length} {(categorySources as any[]).length === 1 ? 'source' : 'sources'})
+                            </h4>
+                            {expandedSections[`src-cat-${category}`] ? (
+                              <Minus className="h-4 w-4 text-gray-600" />
+                            ) : (
+                              <Plus className="h-4 w-4 text-gray-600" />
+                            )}
+                          </Button>
+
+                          {expandedSections[`src-cat-${category}`] && (
+                            <div className={`pl-2 space-y-3 animate-in slide-in-from-top duration-200 ${scheme.bg} rounded-lg p-4 border ${scheme.border}`}>
+                              {deduped.map((source, sourceIndex) => (
+                                <div key={sourceIndex} className="border-l-3 border-gray-400/40 pl-4 py-2">
+                                  <div className="flex items-start gap-2">
+                                    <span className="text-gray-900 mt-1 flex-shrink-0">•</span>
+                                    <div>
+                                      <h5 className="font-semibold text-gray-900">
+                                        {(() => {
+                                          const rawTitle = (source.title || '').replace(/\*(.*?)\*/g, '$1').replace(/_(.*?)_/g, '$1')
+                                          const baseTitle = rawTitle || 'Title Not Available'
+                                          const titleYearMatch = (source.title || '').match(/\((19|20)\d{2}\)/)
+                                          const descYearMatch = (source.description || '').match(/\b(19|20)\d{2}\b/)
+                                          const yearText = titleYearMatch?.[0] || (descYearMatch ? ` (${descYearMatch[0]})` : '')
+                                          const displayTitle = baseTitle.includes('(') ? baseTitle : `${baseTitle}${yearText}`
+                                          const authors = (source.authors || '').replace(/"/g, '')
+                                          return (<>{displayTitle}{authors && (<span className="font-normal text-gray-600">{' by '}{authors}</span>)}</>)
+                                        })()}
+                                      </h5>
+                                      {(() => {
+                                        const clean = (text: string) => (text || '')
+                                          .replace(/\*\*(.*?)\*\*/g, '$1')
+                                          .replace(/_(.*?)_/g, '$1')
+                                          .replace(/\s*—\s*/g, ' — ')
+                                          .replace(/"/g, '')
+                                          .trim()
+                                        const normalize = (s: string) => s.toLowerCase().replace(/\((19|20)\d{2}\)/g, '').replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim()
+                                        const baseTitleForCompare = clean((source.title || ''))
+                                        const uniqueDescriptions = Array.from(new Set(((source._descriptions as string[] | undefined) || [source.description as string]).map((d: string) => clean(d))))
+                                          .filter(Boolean)
+                                          .filter(d => normalize(d) !== normalize(baseTitleForCompare))
+                                        if (uniqueDescriptions.length === 0) return null
+                                        return (<p className="text-sm text-gray-700 leading-relaxed mt-1">{uniqueDescriptions.join(' • ')}</p>)
+                                      })()}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -1107,6 +1350,15 @@ export default function IdentityPage({ params }: IdentityPageProps) {
           </div> {/* Close glassmorphism container */}
         </div>
       </div>
+      
+      {/* Share Modal */}
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        title={content?.identity_name?.replace(/^(The |ADHD Identity Guide: The |ADHD Identity Guide: )/, '') || content?.identity_name || 'Identity Page'}
+        url={typeof window !== 'undefined' ? window.location.href : ''}
+        description={`Get ADHD support as "${content?.identity_name?.replace(/^(The |ADHD Identity Guide: The |ADHD Identity Guide: )/, '') || content?.identity_name}" - ADHD-friendly strategies and guidance.`}
+      />
     </div>
   )
 }
