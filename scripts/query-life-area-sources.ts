@@ -35,7 +35,7 @@ async function main() {
   }
 
   for (const row of data) {
-    console.log(`- [${row.category}] ${row.title} — ${row.authors || ''}`)
+    console.log(`- (${row.id}) [${row.category}] ${row.title} — ${row.authors || ''}`)
   }
 }
 

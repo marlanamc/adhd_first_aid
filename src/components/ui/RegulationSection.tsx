@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Minus, Sparkles, Wind, Eye, Home, Heart, Brain, Clock, CheckCircle, X, Monitor, Lightbulb, Volume2, Thermometer, Zap, HandIcon, Droplets, WindowIcon, Activity, Footprints, RotateCcw, Target, Lightbulb as BulbIcon, Star } from 'lucide-react'
+import { Plus, Minus, Sparkles, Wind, Eye, Home, Heart, Brain, Clock, CheckCircle, X, Monitor, Lightbulb, Volume2, Thermometer, Zap, HandIcon, Droplets, Activity, Footprints, RotateCcw, Target, Lightbulb as BulbIcon, Star } from 'lucide-react'
 
 interface RegulationSectionProps {
   barrierType?: string
@@ -351,9 +351,9 @@ export default function RegulationSection({
                 
                 <button className="group bg-slate-50/80 dark:bg-slate-700/30 p-4 rounded-xl border border-slate-200 dark:border-slate-600 hover:bg-slate-100/80 dark:hover:bg-slate-700/50 transition-all">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-600 flex items-center justify-center">
-                      <WindowIcon className="h-4 w-4 text-slate-600 dark:text-slate-300" />
-                    </div>
+                      <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-600 flex items-center justify-center">
+                        <Monitor className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                      </div>
                     <span className="font-medium text-slate-800 dark:text-slate-200 text-sm">Look Outside</span>
                   </div>
                 </button>

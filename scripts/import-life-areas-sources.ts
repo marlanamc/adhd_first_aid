@@ -140,8 +140,17 @@ function extractSourcesFromMarkdown(md: string): Array<{ title: string; authors?
   for (let i=0;i<lines.length;i++){
     const line = lines[i]
     if (/^\s*---+\s*$/.test(line)) { lastItem = null; continue }
-    const h3 = line.match(/^\s*###\s+(.+)$/)
-    if (h3){ currentCategory = cleanCategory(h3[1]); lastItem = null; continue }
+    // Treat both ## and ### as category headings, but skip top-level "Sources for" headings
+    const heading = line.match(/^\s*##{1,3}\s+(.+)$/)
+    if (heading){
+      const text = normalize(heading[1])
+      const isTopSourcesHeader = /\bsources\b/i.test(text) && i < 5
+      if (!isTopSourcesHeader) {
+        currentCategory = cleanCategory(text)
+      }
+      lastItem = null
+      continue
+    }
 
     // Support bold title on its own line (followed by author/year or description lines)
     const boldTitle = line.match(/^\s*\*\*(.+?)\*\*\s*$/)

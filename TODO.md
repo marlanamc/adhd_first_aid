@@ -1,8 +1,8 @@
-### Tomorrow — Website To‑Do (high‑impact, step‑by‑step)
+### Sat, August 9th — Website To‑Do (high‑impact, step‑by‑step)
 
-- [ ] Prep (10 min)
-  - [ ] Pull latest, clear cache, verify local build runs clean
-  - [ ] Create a fresh `content-review` branch
+- [X] Prep (10 min)
+  - [X] Pull latest, clear cache, verify local build runs clean
+  - [X] Create a fresh `content-review` branch
 
 - [ ] Content audit: life_areas
   - [ ] Read each page against its source file; flag inaccuracies/duplicates

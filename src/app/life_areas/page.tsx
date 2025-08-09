@@ -124,7 +124,7 @@ export default function TasksPage() {
     : []
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-12">
@@ -238,7 +238,7 @@ export default function TasksPage() {
             <div className="mb-4 flex justify-center">
               <Button
                 onClick={() => setIsSuggestModalOpen(true)}
-                className="group relative px-4 py-2 bg-gradient-to-r from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] hover:from-[#cdf672] hover:via-[#a9f1e3] hover:to-[#88cfed] text-gray-800 font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-0 text-sm"
+                className="group relative px-4 py-2 bg-gradient-to-r from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] hover:from-[#95dfae] hover:via-[#a9f1e3] hover:to-[#88cfed] text-gray-800 font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-0 text-sm"
               >
                 <div className="flex items-center gap-2">
                   <div className="p-1 bg-white/30 rounded-md group-hover:bg-white/40 transition-colors">

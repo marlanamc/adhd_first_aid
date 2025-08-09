@@ -185,6 +185,8 @@ export interface IdentitiesContent {
   intro_paragraph: string;
   gentle_advice: string;
   stern_advice: string;
+  // Optional field for parity with other content types
+  adhd_reasons?: string[];
   content_sections: IdentityContentSection[];
   created_at: string;
   updated_at: string;

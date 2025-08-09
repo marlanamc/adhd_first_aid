@@ -62,7 +62,7 @@ export default function TaskBarrierPage() {
 
         const { data: barriersData, error: barriersError } = await supabase
           .from('barriers')
-          .select('name, emoji, color, category, hover_description')
+          .select('id, name, emoji, color, category, hover_description')
           .in('id', barrierIds)
 
         if (barriersError) {
@@ -70,7 +70,7 @@ export default function TaskBarrierPage() {
           return
         }
 
-        setBarriers(barriersData || [])
+        setBarriers((barriersData as Barrier[]) || [])
       } catch (err) {
         console.error('Error fetching barriers:', err)
       } finally {

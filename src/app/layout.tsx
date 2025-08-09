@@ -54,7 +54,9 @@ export default function RootLayout({
   const router = useRouter()
   const pathname = usePathname()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [pageType, setPageType] = useState('home')
+  const [pageType, setPageType] = useState<
+    'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' | 'identity' | 'guide' | 'script' | 'quiz' | 'resource'
+  >('home')
 
   // Update pageType when URL changes
   useEffect(() => {

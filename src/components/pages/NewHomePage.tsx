@@ -48,7 +48,7 @@ const topCategories = [
     title: 'What do you need help with?',
     subtitle: 'Get specific guidance',
     icon: Wrench,
-    color: 'bg-gradient-to-br from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] dark:from-[#5B7A52] dark:via-[#527A7A] dark:to-[#526B7A]',
+    color: 'bg-gradient-to-br from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] dark:from-[#5B7A52] dark:via-[#527A7A] dark:to-[#526B7A]',
     examples: ['Cleaning', 'Friendships', 'Cooking']
   },
   {

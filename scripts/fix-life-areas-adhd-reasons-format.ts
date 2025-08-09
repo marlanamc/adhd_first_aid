@@ -35,7 +35,7 @@ async function fixLifeAreasADHDReasonsFormat() {
     }
     
     // Find the separator index
-    const separatorIndex = task.adhd_reasons.findIndex(reason => 
+    const separatorIndex = (task.adhd_reasons as string[]).findIndex((reason: string) => 
       reason === "Here's what's really going on:"
     );
     

@@ -14,7 +14,7 @@ interface HeaderProps {
   pageType?: 'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' | 'identity' | 'guide' | 'script' | 'quiz' | 'resource'
 }
 
-const getLogoColor = (pageType?: string, isDark: boolean) => {
+const getLogoColor = (pageType: string | undefined, isDark: boolean) => {
   switch (pageType) {
     // Main content types
     case 'barrier':

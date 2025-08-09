@@ -1,6 +1,7 @@
 'use client'
 
 import { ArrowLeft, FileText, Info, Lightbulb, AlertTriangle, Zap, Code, Quote } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { type Guide } from '@/lib/markdown'
 import ReactMarkdown from 'react-markdown'
@@ -67,7 +68,7 @@ export default function GuideClient({ guide }: GuideClientProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e8f1ff] via-[#f5efff] to-[#fef6ee] dark:from-[#0a0f1a] dark:via-[#0c1423] dark:to-[#0f182a] relative">
+    <div className="min-h-screen bg-[#CAE5FF] dark:from-[#0a0f1a] dark:via-[#0c1423] dark:to-[#0f182a] relative">
 
       <div className="max-w-4xl mx-auto px-4 py-6 pt-20">
         {/* Header */}
@@ -265,7 +266,15 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   const textContent = extractText(children)
                   
                   // Callout configurations matching Obsidian style
-                  const calloutTypes = {
+                  type CalloutTypeKey = 'note' | 'info' | 'tip' | 'warning' | 'danger' | 'example'
+                  interface CalloutConfig {
+                    icon: LucideIcon
+                    color: string
+                    bg: string
+                    border: string
+                    iconColor: string
+                  }
+                  const calloutTypes: Record<CalloutTypeKey, CalloutConfig> = {
                     note: { 
                       icon: FileText, 
                       color: 'blue',
@@ -325,7 +334,7 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   let calloutTitle = 'Quote'
                   
                   if (calloutMatch) {
-                    const type = calloutMatch[1].toLowerCase()
+                    const type = calloutMatch[1].toLowerCase() as CalloutTypeKey
                     calloutType = calloutTypes[type] || defaultCallout
                     calloutTitle = type.charAt(0).toUpperCase() + type.slice(1)
                   }

@@ -1,7 +1,24 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { 
+  ArrowLeft, 
+  Brain, 
+  Heart, 
+  Lightbulb, 
+  BookOpen, 
+  Users, 
+  Shield, 
+  Sparkles,
+  Target,
+  Zap,
+  Compass,
+  Puzzle,
+  Clock,
+  FileText,
+  Settings,
+  HelpCircle
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { type GuideMetadata } from '@/lib/markdown'
 
@@ -12,6 +29,32 @@ interface GuidesClientProps {
     color: string
     count: number
   }>
+}
+
+// Map guide titles or categories to appropriate Lucide icons
+const getGuideIcon = (guide: GuideMetadata) => {
+  const title = guide.title.toLowerCase()
+  const category = guide.category?.toLowerCase() || ''
+  
+  // Map based on keywords in title or category
+  if (title.includes('adhd') || title.includes('attention')) return Brain
+  if (title.includes('medication') || category.includes('medication')) return Heart
+  if (title.includes('decision') || category.includes('decision')) return Compass
+  if (title.includes('behavior') || category.includes('behavior')) return Target
+  if (title.includes('support') || category.includes('support')) return Users
+  if (title.includes('shame') || category.includes('shame')) return Shield
+  if (title.includes('mindset')) return Sparkles
+  if (title.includes('priorit')) return Zap
+  if (title.includes('psycho') || title.includes('education')) return BookOpen
+  if (title.includes('intersect')) return Puzzle
+  if (title.includes('environment')) return Settings
+  if (title.includes('task')) return FileText
+  if (title.includes('health') || title.includes('supplement')) return Heart
+  if (title.includes('sensory')) return Lightbulb
+  if (title.includes('time')) return Clock
+  
+  // Default icon
+  return HelpCircle
 }
 
 export default function GuidesClient({ guides, categories }: GuidesClientProps) {
@@ -36,7 +79,7 @@ export default function GuidesClient({ guides, categories }: GuidesClientProps) 
     : []
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e8f1ff] via-[#f5efff] to-[#fef6ee] dark:from-[#0a0f1a] dark:via-[#0c1423] dark:to-[#0f182a] relative">
+    <div className="min-h-screen bg-[#CAE5FF] dark:from-[#0a0f1a] dark:via-[#0c1423] dark:to-[#0f182a] relative">
       <div className="max-w-5xl mx-auto px-4 py-6 pt-20">
         {/* Header */}
         <div className="mb-8">
@@ -106,49 +149,37 @@ export default function GuidesClient({ guides, categories }: GuidesClientProps) 
             </h2>
             
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filteredGuides.map((guide) => (
-                <div
-                  key={guide.slug}
-                  onClick={() => handleGuideSelect(guide)}
-                  className={`
-                    group cursor-pointer transform transition-all duration-200 ease-out
-                    hover:scale-105 hover:-translate-y-1
-                    ${selectedGuide === guide.title ? 'scale-105 -translate-y-1' : ''}
-                  `}
-                >
-                  <div className="bg-white/30 dark:bg-white/10 backdrop-blur-md rounded-xl p-4 
-                                shadow-lg hover:shadow-xl transition-all duration-200
-                                group-hover:bg-white/40 dark:group-hover:bg-white/15
-                                h-44 flex flex-col justify-between
-                                border border-white/20 dark:border-white/10">
-                    
-                    <div className="flex flex-col items-center text-center flex-1">
-                      {/* Emoji */}
-                      <div className="text-2xl mb-2 transition-all duration-200 group-hover:scale-110">
-                        {guide.emoji}
+              {filteredGuides.map((guide) => {
+                const IconComponent = getGuideIcon(guide)
+                return (
+                  <div
+                    key={guide.slug}
+                    onClick={() => handleGuideSelect(guide)}
+                    className={`
+                      group cursor-pointer transform transition-all duration-200 ease-out
+                      hover:scale-105 hover:-translate-y-1
+                      ${selectedGuide === guide.title ? 'scale-105 -translate-y-1' : ''}
+                    `}
+                  >
+                    <div className="bg-white/30 dark:bg-white/10 backdrop-blur-md rounded-xl p-6 
+                                  shadow-lg hover:shadow-xl transition-all duration-200
+                                  group-hover:bg-white/40 dark:group-hover:bg-white/15
+                                  h-40 flex flex-col items-center justify-center
+                                  border border-white/20 dark:border-white/10">
+                      
+                      {/* Lucide Icon */}
+                      <div className="mb-4 p-3 bg-white/20 dark:bg-white/10 rounded-lg transition-all duration-200 group-hover:scale-110">
+                        <IconComponent className="h-8 w-8 text-gray-900 dark:text-white" />
                       </div>
                       
                       {/* Guide Title */}
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 leading-tight line-clamp-2">
+                      <h3 className="text-base font-semibold text-gray-900 dark:text-white text-center leading-tight line-clamp-2 px-2">
                         {guide.title}
                       </h3>
-                      
-                      {/* Description */}
-                      <p className="text-xs text-gray-700 dark:text-gray-300 mb-2 line-clamp-2 flex-1">
-                        {guide.description}
-                      </p>
-                    </div>
-                    
-                    {/* Footer with read time and difficulty */}
-                    <div className="flex justify-between items-center text-xs text-gray-600 dark:text-gray-400 pt-2 border-t border-white/20 dark:border-white/10">
-                      <span className="bg-white/30 dark:bg-white/20 px-2 py-1 rounded-full text-[10px]">
-                        {guide.difficulty}
-                      </span>
-                      <span className="text-[10px]">{guide.readTime}</span>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         )}

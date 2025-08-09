@@ -72,14 +72,14 @@ export function SuggestionButton({
       bgTo: 'to-[#c0f5a3]/20',
     },
     tasks: {
-      // Matches homepage: from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4]
-      from: 'from-[#d4fc79]',
+      // Requested life_areas gradient
+      from: 'from-[#9ee5b5]',
       via: 'via-[#b0f4ea]',
       to: 'to-[#8fd3f4]',
-      hoverFrom: 'hover:from-[#cdfb72]',
+      hoverFrom: 'hover:from-[#95dfae]',
       hoverVia: 'hover:via-[#a9f2e7]',
       hoverTo: 'hover:to-[#88cff1]',
-      bgFrom: 'from-[#d4fc79]/20',
+      bgFrom: 'from-[#9ee5b5]/20',
       bgVia: 'via-[#b0f4ea]/20',
       bgTo: 'to-[#8fd3f4]/20',
     },
