@@ -403,9 +403,9 @@ const getSectionIcon = (emoji: string): React.ElementType => {
 }
 
 interface LifeAreaPageProps {
-  params: {
+  params: Promise<{
     life_area: string
-  }
+  }>
 }
 
 export default function LifeAreaPage({ params }: LifeAreaPageProps) {
@@ -413,7 +413,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
   const [sources, setSources] = useState<LifeAreaSources[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
+  const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({ 'adhd-reasons': true })
   const [expandedSources, setExpandedSources] = useState<{[key: string]: boolean}>({})
   const [copySuccess, setCopySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
@@ -429,8 +429,8 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
     const fetchContent = async () => {
       try {
         setLoading(true)
-        // Use params directly (not a Promise)
-        const resolvedParams = params
+        // Await params since it's now a Promise in Next.js 15
+        const resolvedParams = await params
         
         // Convert URL param back to display name  
         let taskName = decodeURIComponent(resolvedParams.life_area)
@@ -467,43 +467,77 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
           // Fetch sources using the slug format
           // Convert URL slug to match database format
           let lifeAreaSlug = resolvedParams.life_area
-          
-          // Map URL slugs to database slugs (database uses underscores converted to dashes)
+
+          // Map URL slugs to preferred base slug first
           const slugMappings: Record<string, string> = {
-            // Tasks with & in the name that need specific mapping
             'focus-and-time': 'focus-time',
             'bills-and-money': 'bills-money',
             'budgeting-and-tracking': 'budgeting-tracking',
-            
-            // Tasks that have sources in database
             'big-exam-prep-long-term-studying': 'big-exam-prep',
             'cleaning-out-the-fridge': 'cleaning-out-fridge',
-            'creative-projects': 'creative-projects',
-            'filling-out-docs': 'filling-out-docs',
-            'car-maintenance': 'car-maintenance',
-            'cleaning': 'cleaning',
-            'cooking': 'cooking',
-            'decluttering': 'decluttering',
-            'dishes': 'dishes',
-            
-            // Note: Some tasks don't have sources yet:
-            // hygiene, organization, reading-important-mail, following-up,
-            // meal-planning, medication-refills, meal-prepping, work-tasks, etc.
-            // These will simply not show a sources section
+            'filling-out-documents': 'filling-out-docs',
+            'to-do-lists': 'todo-lists',
+            'trash-and-recycling': 'trash-recycling',
+            'planning-and-scheduling': 'planning-scheduling',
           }
-          
-          lifeAreaSlug = slugMappings[lifeAreaSlug] || lifeAreaSlug
-          
-          console.log('Fetching sources for slug:', lifeAreaSlug)
-          const { data: sourcesData, error: sourcesError } = await getLifeAreaSources(lifeAreaSlug)
-          if (sourcesError) {
-            console.error('Error fetching sources:', sourcesError)
+
+          const baseSlug = slugMappings[lifeAreaSlug] || lifeAreaSlug
+
+          // Generate candidate variations to robustly match stored slugs
+          const generateCandidates = (slug: string): string[] => {
+            const variants = new Set<string>()
+            const add = (s: string) => variants.add(s.replace(/--+/g, '-').replace(/^-+|-+$/g, ''))
+
+            add(slug)
+            // Common article/connector cleanup
+            add(slug.replace(/-and-/g, '-'))
+            add(slug.replace(/-the-/g, '-'))
+            add(slug.replace(/-of-/g, '-'))
+            add(slug.replace(/-on-/g, '-'))
+            // docs/documents
+            add(slug.replace(/documents/g, 'docs'))
+            add(slug.replace(/docs/g, 'documents'))
+            // to-do/todo
+            add(slug.replace(/to-do/g, 'todo'))
+            add(slug.replace(/todo/g, 'to-do'))
+            // trash & recycling
+            add(slug.replace(/trash-and-recycling/g, 'trash-recycling'))
+            // underscores variant (just in case)
+            add(slug.replace(/-/g, '_'))
+
+            // Token-based simplifications: last word and last two words
+            const tokens = slug.split('-').filter(Boolean)
+            if (tokens.length > 0) add(tokens[tokens.length - 1])
+            if (tokens.length > 1) add(tokens.slice(-2).join('-'))
+
+            return Array.from(variants)
           }
-          if (sourcesData && sourcesData.length > 0) {
-            console.log('Found sources:', sourcesData.length)
-            setSources(sourcesData)
+
+          const candidateSlugs = Array.from(new Set([
+            ...generateCandidates(baseSlug),
+            // also try candidates from the original route slug
+            ...generateCandidates(lifeAreaSlug),
+          ]))
+
+          console.log('Trying life area source slugs:', candidateSlugs)
+          let foundSources: LifeAreaSources[] | null = null
+          for (const candidate of candidateSlugs) {
+            const { data: tryData, error: tryError } = await getLifeAreaSources(candidate)
+            if (tryError) {
+              console.error('Error fetching sources for', candidate, tryError)
+              continue
+            }
+            if (tryData && tryData.length > 0) {
+              foundSources = tryData
+              break
+            }
+          }
+
+          if (foundSources) {
+            console.log('Found sources:', foundSources.length)
+            setSources(foundSources)
           } else {
-            console.log('No sources found for slug:', lifeAreaSlug)
+            console.log('No sources found for any candidate slugs')
           }
         } else {
           setError('Task content not found')
@@ -714,202 +748,179 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
           </div>
 
-          <div className="mb-8">
-
-            {/* ADHD Reasons - Collapsible - TEMPORARILY DISABLED */}
-            {/* {content.adhd_reasons && content.adhd_reasons.length > 0 && (
-              <div className="bg-[#5e60ce]/20 backdrop-blur-sm rounded-2xl border border-[#5e60ce]/30 transition-all duration-300">
-                <button
-                  onClick={() => toggleSection('adhd-reasons')}
-                  className="w-full p-6 text-left hover:bg-[#5e60ce]/30 rounded-2xl transition-all duration-300 flex items-center justify-between group"
-                  title={expandedSections['adhd-reasons'] ? "Close section" : "Open section"}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-[#5e60ce]/90 rounded-lg flex-shrink-0 transition-transform duration-300">
-                      {React.createElement(getTaskIcon(content.task_name), {
-                        className: "h-5 w-5 text-gray-900"
-                      })}
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {(() => {
-                          const taskName = content.task_name.toLowerCase();
-                          const isPlural = taskName.endsWith('s') || 
-                                         taskName.includes('dishes') || 
-                                         taskName.includes('bills') || 
-                                         taskName.includes('emails') ||
-                                         taskName.includes('calls') ||
-                                         taskName.includes('lists');
-                          const singularExceptions = ['focus', 'hygiene', 'wellness'];
-                          const isSingular = singularExceptions.some(word => taskName.includes(word));
-                          if (isPlural && !isSingular) {
-                            return `Why ${content.task_name} are Hard with ADHD`;
-                          } else {
-                            return `Why ${content.task_name} is Hard with ADHD`;
-                          }
-                        })()}
-                      </h3>
-                      {!expandedSections['adhd-reasons'] && (
-                        <p className="text-sm text-gray-700 mt-0.5">{`Connect what you feel with what's happening in your brain, no shame, just clarity`}</p>
-                      )}
-                    </div>
+          {/* ADHD Reasons - paired layout (same as complex_loops) */}
+          {content.adhd_reasons && content.adhd_reasons.length > 0 && (
+            <div className="bg-[#5e60ce]/20 backdrop-blur-sm rounded-2xl border border-[#5e60ce]/30 transition-all duration-300 mb-8">
+              <button
+                onClick={() => toggleSection('adhd-reasons')}
+                className="w-full p-6 text-left hover:bg-[#5e60ce]/30 rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                title={expandedSections['adhd-reasons'] ? 'Close section' : 'Open section'}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-[#5e60ce]/90 rounded-lg flex-shrink-0 transition-transform duration-300">
+                    <Brain className="h-5 w-5 text-gray-900" />
                   </div>
-                  {expandedSections['adhd-reasons'] ? (
-                    <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
-                  ) : (
-                    <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
-                  )}
-                </button>
-                
-                {expandedSections['adhd-reasons'] && (
-                  <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
-                    <div className="space-y-4">
-                      {(() => {
-                        const youMightItems: string[] = [];
-                        const whatsReallyGoingOnItems: string[] = [];
-                        let currentSection = '';
-
-                        content.adhd_reasons.forEach((reason) => {
-                          if (reason === 'You might:') currentSection = 'you-might';
-                          else if (reason === "Here's what's really going on:") currentSection = 'whats-really-going-on';
-                          else if (currentSection === 'you-might') youMightItems.push(reason);
-                          else if (currentSection === 'whats-really-going-on') whatsReallyGoingOnItems.push(reason);
-                        });
-
-                        const sanitize = (s: string) => (s || '').replace(/\uFFFD+/g, '').replace(/\s+/g, ' ').trim()
-                        const cleanLeft = (s?: string) => sanitize((s || '').replace(/^[-•]\s*/, ''));
-                        const rawLefts = youMightItems.map(cleanLeft).filter(Boolean)
-
-                        const parseRight = (s?: string) => {
-                          if (!s) return { emoji: null as string | null, heading: null as string | null, desc: '' };
-                          const emojiMatch = s.match(/^(\p{Extended_Pictographic})\s+(.+)/u) || s.match(/^([\u{2300}-\u{23FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F300}-\u{1FAFF}])\s+(.+)/u);
-                          let rest = s; let emoji: string | null = null;
-                          if (emojiMatch) { emoji = emojiMatch[1]; rest = emojiMatch[2]; }
-                          rest = sanitize(rest.replace(/^[\uFFFD\s]+/, ''))
-                          const boldMatch = rest.match(/^\*\*(.*?)\*\*[:：]?\s*(.*)?$/);
-                          if (boldMatch) return { emoji, heading: boldMatch[1], desc: boldMatch[2] || '' };
-                          return { emoji, heading: null, desc: rest };
-                        };
-
-                        const rights = whatsReallyGoingOnItems
-                          .map(parseRight)
-                          .filter(r => (r.heading && r.heading.trim()) || (r.desc && r.desc.trim()))
-
-                        // Some life_areas have reason-style lines mistakenly under "You might".
-                        // Detect those and convert to rights while creating a friendly left bullet.
-                        const seemsRight = (text: string) => /^(\p{Extended_Pictographic}\s+)/u.test(text) || /^\*\*.+?\*\*/.test(text) || /(executive dysfunction|time blindness|working memory|motivation|shame)/i.test(text)
-                        const manualRights: Record<number, { emoji: string | null; heading: string | null; desc: string }> = {}
-                        const lefts = rawLefts.map((left, idx) => {
-                          if (!seemsRight(left)) return left
-                          const r = parseRight(left)
-                          manualRights[idx] = r
-                          // Build a natural left bullet from the remainder after removing heading/emoji
-                          let candidate = sanitize(left)
-                            .replace(/^(\p{Extended_Pictographic}\s*)/u, '')
-                            .replace(/\*\*[^*]+\*\*/g, '')
-                            .replace(/^[—:\-\s]+/, '')
-                            .trim()
-                          if (!candidate) {
-                            candidate = r.heading ? `${r.heading} shows up in your day-to-day` : 'Notice this pattern popping up'
-                          }
-                          // Capitalize first letter
-                          candidate = candidate.charAt(0).toUpperCase() + candidate.slice(1)
-                          return candidate
-                        })
-
-                        // Gentle fallback inference when a left item has no right item
-                        const guessRight = (left: string): { emoji: string; heading: string; desc: string } => {
-                          const t = left.toLowerCase()
-                          if (/(tab|forget|remember|meeting|agreed|follow\s*up|checked|scheduled)/.test(t)) {
-                            return { emoji: '🧠', heading: 'Working memory failures', desc: 'your brain is juggling a lot, so details slip without reminders' }
-                          }
-                          if (/(avoid|boring|complex|start|starting|begin|multi\s*step|plan)/.test(t)) {
-                            return { emoji: '🧩', heading: 'Executive dysfunction', desc: "getting started is hard when your brain can't pick a first step or feel the spark" }
-                          }
-                          if (/(late|time|deadline|last-minute|estimate|expire|registration|inspection|how long it\'s been)/.test(t)) {
-                            return { emoji: '⏰', heading: 'Time blindness', desc: 'time feels fuzzy, so deadlines sneak up and urgency spikes' }
-                          }
-                          if (/(distract|halfway|project|never return|switch)/.test(t)) {
-                            return { emoji: '🎯', heading: 'Attention dysregulation', desc: 'focus swings make it tough to stay with one thing start‑to‑finish' }
-                          }
-                          if (/(urgency|low activation|warning light|not screaming)/.test(t)) {
-                            return { emoji: '💥', heading: 'Motivation', desc: 'your drive follows urgency/interest, not importance—low signal = low activation' }
-                          }
-                          if (/(panic|breaks|no backup|overwhelm|stress)/.test(t)) {
-                            return { emoji: '💛', heading: 'Your nervous system is overloaded', desc: 'when stress spikes, short‑term relief wins over long‑term plans—totally human' }
-                          }
-                          return { emoji: '💛', heading: 'Your nervous system is overloaded', desc: 'when stress rises, the brain favors short-term relief over long-term plans—totally human, not a failure' }
-                        }
-
-                        const pairs = lefts.map((left, i) => ({ left, right: manualRights[i] || rights[i] || guessRight(left) }))
-
-                        const emojiForHeading = (h?: string | null) => {
-                          const k = (h || '').toLowerCase()
-                          if (k.includes('executive')) return '🧩'
-                          if (k.includes('time')) return '⏰'
-                          if (k.includes('working memory')) return '🧠'
-                          if (k.includes('attention')) return '🎯'
-                          if (k.includes('motivation')) return '💥'
-                          if (k.includes('shame')) return '😞'
-                          if (k.includes('nervous system')) return '💛'
-                          return '💡'
-                        }
-                    
-                    return (
-                          <div className="space-y-3">
-                            <div className="hidden lg:grid lg:grid-cols-2 gap-3 pl-1 pr-1">
-                              <h4 className="font-semibold text-gray-900 text-base border-b border-gray-200 pb-1">You might:</h4>
-                              <h4 className="font-semibold text-gray-900 text-base border-b border-gray-200 pb-1">Here's what's really going on:</h4>
-                            </div>
-                            {pairs.map((pair, idx) => {
-                              const rowPalette = [
-                                { bg: 'bg-[#FBF8CC]/35', border: 'border-[#FBF8CC]/60' },
-                                { bg: 'bg-[#FDE4CF]/35', border: 'border-[#FDE4CF]/60' },
-                                { bg: 'bg-[#FFCFD2]/35', border: 'border-[#FFCFD2]/60' },
-                                { bg: 'bg-[#F1C0E8]/35', border: 'border-[#F1C0E8]/60' },
-                                { bg: 'bg-[#CFBAF0]/35', border: 'border-[#CFBAF0]/60' },
-                                { bg: 'bg-[#A3C4F3]/35', border: 'border-[#A3C4F3]/60' },
-                              ]
-                              const rowColor = rowPalette[idx % rowPalette.length]
-                              const right = typeof pair.right === 'string' ? parseRight(pair.right) : pair.right
-                              const displayEmoji = right.emoji || emojiForHeading(right.heading)
-                              return (
-                                <div key={idx} className="relative grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 group">
-                                  {/* Micro arrow connector (desktop only) */}
-                                  <span className="hidden lg:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-gray-500 select-none">→</span>
-                                  <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
-                                    <span className="text-blue-600 flex-shrink-0 translate-y-[2px] text-base leading-none w-4 text-center">•</span>
-                                    <span className="text-gray-900 text-[15px] md:text-[16px] leading-[1.7] pl-0.5">{pair.left}</span>
-                                  </div>
-                                  <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
-                                    <span className="text-lg w-5 text-center translate-y-[1px] flex-shrink-0">{displayEmoji}</span>
-                                    <div className="text-gray-800 text-[15px] md:text-[16px] leading-[1.7]">
-                                      {right.heading ? (
-                                        <>
-                                          <strong className="text-gray-900">{right.heading}</strong>
-                                          {right.desc && <span className="text-gray-700">: {right.desc}</span>}
-                                        </>
-                                      ) : (
-                        <span dangerouslySetInnerHTML={{ 
-                                          __html: (right.desc || '')
-                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                            .replace(/_(.*?)_/g, '<em>$1</em>')
-                        }} />
-                                      )}
-                      </div>
-                                </div>
-                              )
-                            })}
-                          </div>
-                        );
-                      })()}
-                    </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Why {content.task_name} is Hard with ADHD
+                    </h3>
+                    {!expandedSections['adhd-reasons'] && (
+                      <p className="text-sm text-gray-700 mt-0.5">Connect what you feel with what’s happening in your brain, no shame, just clarity</p>
+                    )}
                   </div>
+                </div>
+                {expandedSections['adhd-reasons'] ? (
+                  <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
+                ) : (
+                  <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
                 )}
-              </div>
-            )} */}
-          </div>
+              </button>
+
+              {expandedSections['adhd-reasons'] && (
+                <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
+                  <div className="space-y-4">
+                    {(() => {
+                      const youMightItems: string[] = []
+                      const whatsReallyGoingOnItems: string[] = []
+                      let currentSection = ''
+
+                      content.adhd_reasons.forEach((reason) => {
+                        if (reason === 'You might:') currentSection = 'you-might'
+                        else if (reason === "Here's what's really going on:") currentSection = 'whats-really-going-on'
+                        else if (currentSection === 'you-might') youMightItems.push(reason)
+                        else if (currentSection === 'whats-really-going-on') whatsReallyGoingOnItems.push(reason)
+                      })
+
+                      const sanitize = (s: string) => (s || '').replace(/\uFFFD+/g, '').replace(/\s+/g, ' ').trim()
+                      const cleanLeft = (s?: string) => sanitize((s || '').replace(/^[-•]\s*/, ''))
+                      const rawLefts = youMightItems.map(cleanLeft).filter(Boolean)
+
+                      const parseRight = (s?: string) => {
+                        if (!s) return { emoji: null as string | null, heading: null as string | null, desc: '' }
+                        const emojiMatch = s.match(/^(\p{Extended_Pictographic})\s+(.+)/u) || s.match(/^([\u{2300}-\u{23FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F300}-\u{1FAFF}])\s+(.+)/u)
+                        let rest = s; let emoji: string | null = null
+                        if (emojiMatch) { emoji = emojiMatch[1]; rest = emojiMatch[2] }
+                        rest = sanitize(rest.replace(/^[\uFFFD\s]+/, ''))
+                        const boldMatch = rest.match(/^\*\*(.*?)\*\*[:：]?\s*(.*)?$/)
+                        if (boldMatch) return { emoji, heading: boldMatch[1], desc: boldMatch[2] || '' }
+                        return { emoji, heading: null, desc: rest }
+                      }
+
+                      const rights = whatsReallyGoingOnItems
+                        .map(parseRight)
+                        .filter(r => (r.heading && r.heading.trim()) || (r.desc && r.desc.trim()))
+
+                      const seemsRight = (text: string) => /^(\p{Extended_Pictographic}\s+)/u.test(text) || /^\*\*.+?\*\*/.test(text) || /(executive dysfunction|time blindness|working memory|motivation|shame)/i.test(text)
+                      const manualRights: Record<number, { emoji: string | null; heading: string | null; desc: string }> = {}
+                      const lefts = rawLefts.map((left, idx) => {
+                        if (!seemsRight(left)) return left
+                        const r = parseRight(left)
+                        manualRights[idx] = r
+                        let candidate = sanitize(left)
+                          .replace(/^(\p{Extended_Pictographic}\s*)/u, '')
+                          .replace(/\*\*[^*]+\*\*/g, '')
+                          .replace(/^[—:\-\s]+/, '')
+                          .trim()
+                        if (!candidate) {
+                          candidate = r.heading ? `${r.heading} shows up in your day-to-day` : 'Notice this pattern popping up'
+                        }
+                        candidate = candidate.charAt(0).toUpperCase() + candidate.slice(1)
+                        return candidate
+                      })
+
+                      const guessRight = (left: string): { emoji: string; heading: string; desc: string } => {
+                        const t = left.toLowerCase()
+                        if (/(tab|forget|remember|meeting|agreed|follow\s*up|checked|scheduled)/.test(t)) {
+                          return { emoji: '🧠', heading: 'Working memory failures', desc: 'your brain is juggling a lot, so details slip without reminders' }
+                        }
+                        if (/(avoid|boring|complex|start|starting|begin|multi\s*step|plan)/.test(t)) {
+                          return { emoji: '🧩', heading: 'Executive dysfunction', desc: "getting started is hard when your brain can't pick a first step or feel the spark" }
+                        }
+                        if (/(late|time|deadline|last-minute|estimate|expire|registration|inspection|how long it's been)/.test(t)) {
+                          return { emoji: '⏰', heading: 'Time blindness', desc: 'time feels fuzzy, so deadlines sneak up and urgency spikes' }
+                        }
+                        if (/(distract|halfway|project|never return|switch)/.test(t)) {
+                          return { emoji: '🎯', heading: 'Attention dysregulation', desc: 'focus swings make it tough to stay with one thing start‑to‑finish' }
+                        }
+                        if (/(urgency|low activation|warning light|not screaming)/.test(t)) {
+                          return { emoji: '💥', heading: 'Motivation', desc: 'your drive follows urgency/interest, not importance—low signal = low activation' }
+                        }
+                        if (/(panic|breaks|no backup|overwhelm|stress)/.test(t)) {
+                          return { emoji: '💛', heading: 'Your nervous system is overloaded', desc: 'when stress spikes, short‑term relief wins over long‑term plans—totally human' }
+                        }
+                        return { emoji: '💡', heading: 'Context matters', desc: 'your brain is adapting to stressors; gentle supports help shift the pattern' }
+                      }
+
+                      const pairs = lefts.map((left, i) => ({ left, right: manualRights[i] || rights[i] || guessRight(left) }))
+
+                      const emojiForHeading = (h?: string | null) => {
+                        const k = (h || '').toLowerCase()
+                        if (k.includes('executive')) return '🧩'
+                        if (k.includes('time')) return '⏰'
+                        if (k.includes('working memory')) return '🧠'
+                        if (k.includes('attention')) return '🎯'
+                        if (k.includes('motivation')) return '💥'
+                        if (k.includes('shame')) return '😞'
+                        if (k.includes('nervous system')) return '💛'
+                        return '💡'
+                      }
+
+                      return (
+                        <div className="space-y-3">
+                          <div className="hidden lg:grid lg:grid-cols-2 gap-3 pl-1 pr-1">
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base border-b border-gray-200 pb-1">You might:</h4>
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base border-b border-gray-200 pb-1">Here's what's really going on:</h4>
+                          </div>
+                          {pairs.map((pair, idx) => {
+                            const rowPalette = [
+                              { bg: 'bg-[#FBF8CC]/35', border: 'border-[#FBF8CC]/60' },
+                              { bg: 'bg-[#FDE4CF]/35', border: 'border-[#FDE4CF]/60' },
+                              { bg: 'bg-[#FFCFD2]/35', border: 'border-[#FFCFD2]/60' },
+                              { bg: 'bg-[#F1C0E8]/35', border: 'border-[#F1C0E8]/60' },
+                              { bg: 'bg-[#CFBAF0]/35', border: 'border-[#CFBAF0]/60' },
+                              { bg: 'bg-[#A3C4F3]/35', border: 'border-[#A3C4F3]/60' },
+                            ]
+                            const rowColor = rowPalette[idx % rowPalette.length]
+                            const right = typeof pair.right === 'string' ? parseRight(pair.right) : pair.right
+                            const displayEmoji = right.emoji || emojiForHeading(right.heading)
+                            return (
+                              <div key={idx} className="relative grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 group">
+                                <span className="hidden lg:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-gray-500 select-none">→</span>
+                                <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
+                                  <span className="text-blue-600 flex-shrink-0 translate-y-[2px] text-base leading-none w-4 text-center">•</span>
+                                  <span className="text-gray-900 text-[15px] md:text-[16px] leading-[1.7] pl-0.5">{pair.left}</span>
+                                </div>
+                                <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
+                                  <span className="text-lg w-5 text-center translate-y-[1px] flex-shrink-0">{displayEmoji}</span>
+                                  <div className="text-gray-800 text-[15px] md:text-[16px] leading-[1.7]">
+                                    {right.heading ? (
+                                      <>
+                                        <strong className="text-gray-900">{right.heading}</strong>
+                                        {right.desc && <span className="text-gray-700">: {right.desc}</span>}
+                                      </>
+                                    ) : (
+                                      <span
+                                        dangerouslySetInnerHTML={{
+                                          __html: (right.desc || '')
+                                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                                            .replace(/_(.*?)_/g, '<em>$1</em>')
+                                        }}
+                                      />
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )
+                    })()}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
 
           {/* Content Sections */}

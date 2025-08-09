@@ -16,6 +16,7 @@ import type { FeelingsContent, FeelingSources } from '@/lib/supabase'
 import { StepIcon } from '@/components/ui/StepIcon';
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
+import FeelingActions from '@/components/feelings/FeelingActions'
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
@@ -392,7 +393,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   {content?.feeling_name}
                 </h1>
               </div>
-              <div className="relative">
+              <div className="relative flex items-center gap-2">
                 <Button
                   variant="ghost"
                   size="default"
@@ -402,6 +403,13 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 >
                   <Share2 className="h-5 w-5" />
                 </Button>
+                {/* Permanent actions */}
+                <FeelingActions
+                  slug={resolvedParams.feeling}
+                  summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : `<ul><li>Step away for 60–120s; breathe 4–6 times</li><li>Lower input: silence phone; reduce tabs</li><li>Pick 1 tiny task; 2‑minute timer; start</li></ul>`}
+                  content={content}
+                  sources={sources}
+                />
                 {copySuccess && (
                   <div className="absolute -top-8 right-0 bg-green-600 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap z-50">
                     Link copied!
@@ -412,7 +420,8 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
             {/* Intro Paragraph - with pink border like screenshot */}
             <div 
-              className="border-l-4 border-pink-400 bg-pink-50/50 dark:bg-pink-900/10 pl-5 py-4 mb-7 rounded-r-lg"
+              id="tldr"
+              className="guide-section border-l-4 border-pink-400 bg-pink-50/50 dark:bg-pink-900/10 pl-5 py-4 mb-7 rounded-r-lg"
             >
               <p className="text-base md:text-lg text-foreground leading-relaxed">
                 {content?.intro_paragraph && formatMarkdownText(content.intro_paragraph)}
@@ -434,7 +443,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           {/* Side-by-Side Toggle Boxes */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {/* Left Box - Soft Start */}
-            <div className="relative">
+            <section id="gentle" className="guide-section relative">
               <Button
                 onClick={() => toggleSection('gentle')}
                 onMouseEnter={() => setHoveredSection('gentle')}
@@ -473,10 +482,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   </p>
                 </div>
               )}
-            </div>
+            </section>
 
             {/* Right Box - Tough Love */}
-            <div className="relative">
+            <section id="stern" className="guide-section relative">
               <Button
                 onClick={() => toggleSection('stern')}
                 onMouseEnter={() => setHoveredSection('stern')}
@@ -515,7 +524,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   </p>
                 </div>
               )}
-            </div>
+            </section>
           </div>
 
           {/* Gentle guidance note - moved before ADHD reasons section */}
@@ -529,7 +538,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           </div>
 
           {/* Why ADHD Makes [Feeling] Worse Section */}
-          <div className="relative mb-4">
+          <section id="adhd_reasons" className="guide-section relative mb-4">
             <Button
               onClick={() => toggleSection('adhd_reasons')}
               onMouseEnter={() => setHoveredSection('adhd_reasons')}
@@ -649,7 +658,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 </ul>
               </div>
             )}
-          </div>
+          </section>
 
           {/* Step-by-Step Sections with different colors */}
           {content.step_sections && content.step_sections.length > 0 && (
@@ -666,7 +675,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 const colors = colorSchemes[index % colorSchemes.length];
                 
                 return (
-                  <div key={index} className="relative">
+                  <section key={index} id={`step_${index}`} className="guide-section relative">
                     <Button
                       onClick={() => toggleSection(`step_${index}`)}
                       onMouseEnter={() => setHoveredSection(`step_${index}`)}
@@ -746,7 +755,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                         </div>
                       </div>
                     )}
-                  </div>
+                  </section>
                 );
               })}
             </div>
@@ -755,7 +764,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           {/* Sources Section */}
           {sources && sources.length > 0 && (
             <div className="space-y-4">
-              <div className="relative">
+              <section id="sources" className="guide-section relative">
                 <Button
                   onClick={() => toggleSection('sources')}
                   className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-[#CEFFF2]/20 hover:bg-[#CEFFF2]/30 transition-colors min-h-[75px] touch-manipulation"
@@ -857,7 +866,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                     })}
                   </div>
                 )}
-              </div>
+              </section>
             </div>
           )}
 

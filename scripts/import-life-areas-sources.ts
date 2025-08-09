@@ -40,8 +40,24 @@ function parseCSVLine(line: string): string[] {
 
 // --- Load formatted bibliography (authoritative allowlist)
 type BibEntry = { title: string; authors: string; year?: string }
+function getArgValue(flag: string): string | undefined {
+  const ix = process.argv.indexOf(flag)
+  if (ix !== -1 && ix + 1 < process.argv.length) return process.argv[ix + 1]
+  const pref = flag + '='
+  const found = process.argv.find(a => a.startsWith(pref))
+  if (found) return found.slice(pref.length)
+  return undefined
+}
+
 function loadBibliography(): Map<string, BibEntry> {
-  const file = path.join(process.cwd(), 'Formatted_ADHD_Source_Bibliography.csv')
+  const envPath = process.env.LAAK_BIBLIO_PATH || process.env.BIBLIO_PATH
+  const argPath = getArgValue('--bib')
+  const primary = envPath || argPath || path.join(process.cwd(), 'Formatted_ADHD_Source_Bibliography.csv')
+  const fallback = path.join(process.cwd(), 'archive', 'docs', 'Formatted_ADHD_Source_Bibliography.csv')
+  const file = fs.existsSync(primary) ? primary : fallback
+  if (!fs.existsSync(file)) {
+    throw new Error(`Formatted_ADHD_Source_Bibliography.csv not found. Looked in: \n- ${primary}\n- ${fallback}`)
+  }
   const lines = fs.readFileSync(file, 'utf8').split(/\r?\n/).slice(1).filter(Boolean)
   const map = new Map<string, BibEntry>()
   for (const ln of lines) {
@@ -118,25 +134,44 @@ function extractSourcesFromMarkdown(md: string): Array<{ title: string; authors?
 
   const cleanCategory = (s: string) =>
     normalize(s.replace(/^###\s*/, ''))
-      .replace(/^[^A-Za-z0-9]+/, '') // drop leading emoji/symbols
+      .replace(/^[^A-Za-z0-9]+/, '')
       .trim()
 
   for (let i=0;i<lines.length;i++){
     const line = lines[i]
-    // Horizontal rule or empty line: stop description carryover
     if (/^\s*---+\s*$/.test(line)) { lastItem = null; continue }
-    // Category heading
     const h3 = line.match(/^\s*###\s+(.+)$/)
-    if (h3){
-      currentCategory = cleanCategory(h3[1])
-      lastItem = null
+    if (h3){ currentCategory = cleanCategory(h3[1]); lastItem = null; continue }
+
+    // Support bold title on its own line (followed by author/year or description lines)
+    const boldTitle = line.match(/^\s*\*\*(.+?)\*\*\s*$/)
+    if (boldTitle){
+      lastItem = { title: normalize(boldTitle[1]), category: currentCategory }
+      items.push(lastItem)
       continue
     }
+
+    // Support one-line Title — Authors (Year) pattern (with or without italics)
+    const emDashSplit = line.match(/^\s*\*\*(.+?)\*\*\s+[—-]\s+_?(.+?)_?\s*$/)
+    if (emDashSplit){
+      const title = normalize(emDashSplit[1])
+      let authors = normalize(emDashSplit[2])
+      // Remove trailing year in authors if present and append to title
+      const yr = authors.match(/\((19|20)\d{2}\)/)
+      let finalTitle = title
+      if (yr) {
+        finalTitle = `${title} ${yr[0]}`
+        authors = authors.replace(yr[0], '').trim()
+      }
+      lastItem = { title: finalTitle, authors, category: currentCategory }
+      items.push(lastItem)
+      continue
+    }
+
     // bullet line like: - Title by Authors
     const bullet = line.match(/^\s*[-*]\s+(.*)$/)
     if (bullet){
       const raw = bullet[1].trim()
-      // Pattern 0: **Author(s).** _Title_
       const authorTitleMatch = raw.match(/\*\*(.+?)\*\*\.?\s+_(.+?)_/)
       if (authorTitleMatch){
         const authors = authorTitleMatch[1].trim()
@@ -145,7 +180,6 @@ function extractSourcesFromMarkdown(md: string): Array<{ title: string; authors?
         items.push(lastItem)
         continue
       }
-      // Try pattern 1: Title by Authors
       let title: string | undefined
       let authors: string | undefined
       const byIdx = raw.toLowerCase().lastIndexOf(' by ')
@@ -153,35 +187,44 @@ function extractSourcesFromMarkdown(md: string): Array<{ title: string; authors?
         title = raw.slice(0, byIdx).trim()
         authors = raw.slice(byIdx + 4).trim()
       } else {
-        // Try pattern 2: Authors. Title
         const dotSplit = raw.split(/\.\s+/, 2)
         if (dotSplit.length === 2){
           const left = dotSplit[0].trim()
           const right = dotSplit[1].trim()
-          // Heuristic: left looks like authors if contains comma/&/and and not 'guide/method/adhd' keywords
           if (/(,|&| and )/i.test(left)){
             authors = left
             title = right
           }
         }
       }
-      // Normalize and basic cleanup
       if (title){ title = title.replace(/[.]+$/,'').trim() }
       if (authors){ authors = authors.replace(/[.]+$/,'').trim() }
-      // Only push if we have at least a plausible title
       if (title){
         lastItem = { title: normalize(title), authors: authors ? normalize(authors) : undefined, category: currentCategory }
         items.push(lastItem)
       } else {
-        lastItem = null // not a source-like bullet
+        lastItem = null
       }
       continue
     }
-    // description line following a bullet
+
+    // Authors line directly following a bold title
+    if (lastItem && !lastItem.authors){
+      const authorLine = line.match(/^\s*([^\(]+?)(?:\s*\((19|20)\d{2}|Undated\))?\s*$/)
+      if (authorLine && authorLine[1] && !/^##/.test(authorLine[1]) && !/^\*\*/.test(authorLine[1])){
+        const authors = normalize(authorLine[1])
+        if (authors && /[,;&]/.test(authors)){
+          lastItem.authors = authors
+          continue
+        }
+      }
+    }
+
+    // description line
     if (lastItem && line.trim() && !/^\s*[-*]\s+/.test(line)){
-      // stop if a new category starts sneaking in the same paragraph
       if (/^\s*###\s+/.test(line)) { lastItem = null; continue }
-      lastItem.description = normalize((lastItem.description ? lastItem.description + ' ' : '') + line.trim())
+      const cleaned = line.replace(/^\s*➤\s*/, '')
+      lastItem.description = normalize((lastItem.description ? lastItem.description + ' ' : '') + cleaned.trim())
     }
   }
   return items
@@ -196,8 +239,21 @@ function toSentences(text: string, max=2){
 async function main(){
   console.log(`📥 Import life_areas_sources ${APPLY?'(apply)':'(dry-run)'} — only titles in formatted bibliography will be imported`)
 
-  const mdDir = path.join(process.cwd(), 'life_areas_sources')
-  const files = fs.readdirSync(mdDir).filter(f=>f.endsWith('.md') && f !== 'Task_sources.md')
+  const dirEnv = process.env.LAAK_LIFE_AREAS_SOURCES_DIR || process.env.LIFE_AREAS_SOURCES_DIR
+  const dirArg = getArgValue('--dir')
+  const mdDir = dirEnv || dirArg || path.join(process.cwd(), 'life_areas_sources')
+  if (!fs.existsSync(mdDir)) {
+    throw new Error(`life_areas_sources directory not found at ${mdDir}.\nProvide via --dir /absolute/path or set env LAAK_LIFE_AREAS_SOURCES_DIR.`)
+  }
+  let files = fs.readdirSync(mdDir).filter(f=>f.endsWith('.md') && f !== 'Task_sources.md')
+  const only = getArgValue('--only')
+  if (only) {
+    const base = only.endsWith('.md') ? only : `${only}.md`
+    files = files.filter(f => f === base)
+    if (files.length === 0) {
+      throw new Error(`--only specified '${only}' but file not found in ${mdDir}`)
+    }
+  }
 
   const toInsert: any[] = []
 
@@ -205,6 +261,13 @@ async function main(){
     const life_area_slug = file.replace(/\.md$/,'').replace(/_/g,'-')
     const md = fs.readFileSync(path.join(mdDir, file),'utf8')
     const items = extractSourcesFromMarkdown(md)
+
+    const humanizeSlug = (slug: string) => {
+      const words = slug.split('-').filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      // specific niceties
+      const text = words.join(' ').replace(/\bTodo\b/g, 'To-Do').replace(/\bAnd\b/g, '&')
+      return text
+    }
 
     for (const it of items){
       const bib = fuzzyFindBibByTitle(it.title)
@@ -215,6 +278,8 @@ async function main(){
       }
       // page-specific description
       const summary = toSentences(it.description || '')
+      const fallback = `Used on this page to support ADHD-friendly strategies for ${humanizeSlug(life_area_slug)}.`
+      const finalDescription = summary && summary.trim().length > 0 ? summary : fallback
       // ensure year appears after title
       const titleHasYear = /\((19|20)\d{2}\)/.test(bib.title)
       const titleWithYear = titleHasYear || !bib.year ? bib.title : `${bib.title} (${bib.year})`
@@ -223,7 +288,7 @@ async function main(){
         category: it.category || '',
         title: titleWithYear,
         authors: bib.authors,
-        description: summary || undefined,
+        description: finalDescription,
       })
     }
   }

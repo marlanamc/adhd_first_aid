@@ -1,48 +1,14 @@
-import { ArrowLeft, BookOpen } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { getAllGuides, type GuideMetadata } from '@/lib/markdown'
 import GuidesClient from './GuidesClient'
 
 // Server-side guide loading
 async function getGuides(): Promise<GuideMetadata[]> {
   try {
-    const allGuides = getAllGuides()
-    return allGuides
+    return getAllGuides()
   } catch (error) {
     console.error('Error loading guides:', error)
-    // Fallback sample data
-    return [
-      {
-        title: 'Habit Stacking vs Habit Bundling',
-        category: 'Task Help',
-        emoji: '🔗',
-        slug: 'habit-stacking-vs-bundling',
-        description: 'Learn the difference between these two powerful ADHD-friendly habit techniques',
-        tags: ['habits', 'productivity'],
-        difficulty: 'beginner' as const,
-        readTime: '5 min'
-      },
-      {
-        title: 'Cognitive & Overload Guide',
-        category: 'Feelings Support',
-        emoji: '😶‍🌫️',
-        slug: 'mentalfog',
-        description: 'Navigate cognitive challenges and overwhelm with practical ADHD-friendly strategies',
-        tags: ['feelings', 'overwhelm', 'executive function'],
-        difficulty: 'beginner' as const,
-        readTime: '5 min'
-      },
-      {
-        title: 'Dysregulation & Shutdown Guide',
-        category: 'Feelings Support',
-        emoji: '🧯',
-        slug: 'dysregulation',
-        description: 'Navigate emotional overwhelm and nervous system shutdown with compassionate ADHD-friendly strategies',
-        tags: ['feelings', 'regulation', 'nervous system'],
-        difficulty: 'beginner' as const,
-        readTime: '6 min'
-      }
-    ]
+
+    return []
   }
 }
 
@@ -65,20 +31,25 @@ const categoryColors = {
   'Whole-Person Care': 'from-rose-400 to-pink-500'
 }
 
-const categories = [
-  { name: 'Medication Support', color: 'from-blue-400 to-cyan-500', count: 0 },
-  { name: 'Support Systems', color: 'from-purple-400 to-indigo-500', count: 0 },
-  { name: 'Task Help', color: 'from-green-400 to-emerald-500', count: 1 },
-  { name: 'Shame and Emotions', color: 'from-pink-400 to-rose-500', count: 0 },
-  { name: 'Feelings Support', color: 'from-rose-400 to-pink-500', count: 2 },
-  { name: 'Barriers Support', color: 'from-orange-400 to-amber-500', count: 0 },
-  { name: 'Tasks Support', color: 'from-teal-400 to-cyan-500', count: 0 },
-  { name: 'Identities Support', color: 'from-violet-400 to-purple-500', count: 0 },
-  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 3 }
-]
+function buildCategories(guides: GuideMetadata[]) {
+  const counts = new Map<string, number>()
+  for (const g of guides) {
+    const name = g.category || 'Uncategorized'
+    counts.set(name, (counts.get(name) || 0) + 1)
+  }
+  const list = Array.from(counts.entries())
+    .map(([name, count]) => ({
+      name,
+      color: (categoryColors as Record<string, string>)[name] || 'from-gray-400 to-gray-600',
+      count
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name))
+  list.push({ name: 'View All', color: 'from-gray-400 to-gray-600', count: guides.length })
+  return list
+}
 
 export default async function GuidesPage() {
   const guides = await getGuides()
-  
+  const categories = buildCategories(guides)
   return <GuidesClient guides={guides} categories={categories} />
 }

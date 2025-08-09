@@ -14,8 +14,10 @@ import { Button } from '@/components/ui/button'
 import { getBarriersContent, getBarrierSources } from '@/lib/supabase'
 import type { BarriersContent, BarrierSources } from '@/lib/supabase'
 import { StepIcon } from '@/components/ui/StepIcon';
+import BarrierActions from '@/components/barriers/BarrierActions'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { Header } from '@/components/layout/Header';
+import { ShareModal } from '@/components/ui/ShareModal';
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
@@ -153,6 +155,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
   const [hoveredSection, setHoveredSection] = useState<string | null>(null)
   const [copySuccess, setCopySuccess] = useState(false)
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
@@ -251,33 +254,8 @@ export default function BarrierPage({ params }: BarrierPageProps) {
     }
   }
 
-  const handleShare = async () => {
-    const shareData = {
-      title: `ADHD First Aid Kit - ${content?.barrier_name}`,
-      text: `Get help overcoming the barrier "${content?.barrier_name}" - ADHD-friendly strategies and support`,
-      url: window.location.href
-    }
-
-    try {
-      // Check if native sharing is available and supported
-      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-        await navigator.share(shareData)
-      } else {
-        // Fallback to clipboard with better feedback
-        await navigator.clipboard.writeText(window.location.href)
-        setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000) // Reset after 2 seconds
-      }
-    } catch (error) {
-      // Fallback to clipboard if share fails
-      try {
-        await navigator.clipboard.writeText(window.location.href)
-        setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000) // Reset after 2 seconds
-      } catch (clipboardError) {
-        console.error('Share failed:', error)
-      }
-    }
+  const handleShare = () => {
+    setIsShareModalOpen(true)
   }
 
   // Icon mapping for barriers
@@ -378,7 +356,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                   {content?.barrier_name}
                 </h1>
               </div>
-              <div className="relative">
+              <div className="relative flex items-center gap-2">
                 <Button
                   variant="ghost"
                   size="default"
@@ -388,6 +366,12 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                 >
                   <Share2 className="h-5 w-5" />
                 </Button>
+                <BarrierActions
+                  slug={resolvedParams.barrier}
+                  summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : ''}
+                  content={content}
+                  sources={sources}
+                />
                 {copySuccess && (
                   <div className="absolute -top-8 right-0 bg-green-600 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap z-50">
                     Link copied!
@@ -851,6 +835,14 @@ export default function BarrierPage({ params }: BarrierPageProps) {
           </div> {/* Close glassmorphism container */}
         </div>
       </div>
+      {/* Share Modal */}
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        title={content?.barrier_name || 'Barrier Page'}
+        url={typeof window !== 'undefined' ? window.location.href : ''}
+        description={`Get help overcoming "${content?.barrier_name}" - ADHD-friendly strategies and support.`}
+      />
     </div>
   )
 }

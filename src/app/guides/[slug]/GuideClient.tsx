@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { ArrowLeft, Clock, Tag, Target, CheckCircle, Circle, FileText, Info, Lightbulb, AlertTriangle, X, Zap, Bug, Code, Quote } from 'lucide-react'
+import { ArrowLeft, FileText, Info, Lightbulb, AlertTriangle, Zap, Code, Quote } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { type Guide } from '@/lib/markdown'
 import ReactMarkdown from 'react-markdown'
@@ -12,44 +11,20 @@ interface GuideClientProps {
 }
 
 export default function GuideClient({ guide }: GuideClientProps) {
-  const [completedSections, setCompletedSections] = useState<Set<string>>(new Set())
-  const [scrollProgress, setScrollProgress] = useState(0)
 
-  const toggleSectionComplete = (sectionId: string) => {
-    setCompletedSections(prev => {
-      const newSet = new Set(prev)
-      if (newSet.has(sectionId)) {
-        newSet.delete(sectionId)
-      } else {
-        newSet.add(sectionId)
-      }
-      return newSet
-    })
-  }
+  // Minimal reading experience – no section checklist/TOC
 
-  const scrollToSection = (sectionIndex: number) => {
-    const headers = document.querySelectorAll('h2, h3')
-    if (headers[sectionIndex]) {
-      headers[sectionIndex].scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start'
-      })
-      // Also mark as completed when clicked
-      toggleSectionComplete(`section-${sectionIndex}`)
-    }
-  }
+  // No reading progress bar for a clean, minimal reading experience
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const scrollPercent = (scrollTop / docHeight) * 100
-      setScrollProgress(Math.min(100, Math.max(0, scrollPercent)))
-    }
+  // Utilities to build a dynamic table of contents and stable heading anchors
+  const slugify = (text: string): string =>
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-')
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  // Anchor ids are added to headings, but we don't render a sidebar TOC
 
   const goBack = () => {
     window.history.back()
@@ -65,32 +40,36 @@ export default function GuideClient({ guide }: GuideClientProps) {
 
   const processedContent = processCallouts(guide.content)
 
-  return (
-    <div className="min-h-screen bg-[#CAE5FF] dark:bg-[#2B4365] relative">
-      {/* Floating Table of Contents */}
-      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-10 hidden lg:block">
-        <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-xl p-4 shadow-lg border border-white/20 max-w-xs">
-          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Quick Navigation</h4>
-          <div className="space-y-2 text-xs">
-            {['What It Feels Like', 'Why It Happens', 'Soothe the Storm', 'Build Stronger Base', 'Reflect & Adjust'].map((section, index) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(index)}
-                className="flex items-center gap-2 w-full text-left p-2 rounded-md hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors"
-              >
-                {completedSections.has(`section-${index}`) ? (
-                  <CheckCircle className="h-3 w-3 text-green-500 flex-shrink-0" />
-                ) : (
-                  <Circle className="h-3 w-3 text-gray-400 flex-shrink-0" />
-                )}
-                <span className="text-gray-700 dark:text-gray-300">{section}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+  // Simple auto-bolding to improve scan-ability for plain-text paragraphs/list items
+  const escapeHtml = (s: string) => s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
 
-      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+  const emphasizeFirstClause = (text: string): string => {
+    const trimmed = text.trim()
+    // Prefer clause before em dash / colon / hyphen
+    const match = /^(.{8,120}?)(\s[—\-:]\s|:|—)\s*(.*)$/.exec(trimmed)
+    if (match) {
+      const lead = escapeHtml(match[1])
+      const sep = match[2].trim()
+      const rest = escapeHtml(match[3])
+      return `<strong>${lead}</strong> ${sep} ${rest}`
+    }
+    // Otherwise, bold first sentence if reasonably short
+    const sentence = /^(.*?[\.\!\?])(\s|$)/.exec(trimmed)
+    if (sentence && sentence[1].length >= 24 && sentence[1].length <= 140) {
+      const lead = escapeHtml(sentence[1])
+      const rest = escapeHtml(trimmed.slice(sentence[1].length))
+      return `<strong>${lead}</strong>${rest}`
+    }
+    return escapeHtml(trimmed)
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#e8f1ff] via-[#f5efff] to-[#fef6ee] dark:from-[#0a0f1a] dark:via-[#0c1423] dark:to-[#0f182a] relative">
+
+      <div className="max-w-4xl mx-auto px-4 py-6 pt-20">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-6">
@@ -103,130 +82,165 @@ export default function GuideClient({ guide }: GuideClientProps) {
             </Button>
             <div className="flex-1">
               <div className="text-center">
-                <div className="text-4xl mb-2">{guide.emoji}</div>
-                <h1 className="text-2xl md:text-3xl font-serif font-bold text-black dark:text-white mb-2">
+                <div className="text-4xl mb-2 drop-shadow-sm">{guide.emoji}</div>
+                <h1 className="text-2xl md:text-3xl font-serif font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
                   {guide.title}
                 </h1>
-                <p className="text-black/70 dark:text-white/70 text-sm">
+                <p className="text-gray-700 dark:text-white/70 text-sm md:text-[15px] max-w-3xl mx-auto">
                   {guide.description}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Guide Metadata */}
-          <div className="bg-white/20 backdrop-blur-md rounded-xl p-4 border border-white/10 mb-8">
-            <div className="flex flex-wrap gap-4 justify-center text-sm">
-              <div className="flex items-center gap-2 text-black dark:text-white">
-                <Clock className="h-4 w-4" />
-                {guide.readTime}
-              </div>
-              <div className="flex items-center gap-2 text-black dark:text-white">
-                <Target className="h-4 w-4" />
-                {guide.difficulty}
-              </div>
-              <div className="flex items-center gap-2 text-black dark:text-white">
-                <Tag className="h-4 w-4" />
-                {guide.category}
-              </div>
-            </div>
-            {guide.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-3 justify-center">
+          {/* Minimal meta chips removed for focus; keep tags only if present */}
+          {guide.tags.length > 0 && (
+            <div className="mb-6">
+              <div className="flex flex-wrap gap-2 justify-center">
                 {guide.tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="bg-white/20 text-black dark:text-white px-2 py-1 rounded-full text-xs"
+                    className="bg-white/60 dark:bg-gray-800 text-black dark:text-white px-2 py-1 rounded-full text-[10px] md:text-xs border border-white/40 dark:border-gray-700"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
-        {/* Sticky Progress Tracker */}
-        <div className="sticky top-20 z-20 mb-6">
-          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-xl p-4 border border-white/20 shadow-lg">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-black dark:text-white">Reading Progress</h3>
-              <span className="text-xs text-black/70 dark:text-white/70">
-                {Math.round(scrollProgress)}%
-              </span>
-            </div>
-            <div className="w-full bg-white/20 rounded-full h-2">
-              <div 
-                className="bg-green-500 h-2 rounded-full transition-all duration-150"
-                style={{ width: `${scrollProgress}%` }}
-              />
-            </div>
-          </div>
-        </div>
+        {/* Progress bar removed for distraction-free reading */}
+
+        {/* Name timeline removed per request */}
 
         {/* Guide Content */}
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl p-8 shadow-lg border border-white/10">
-          <div className="prose prose-lg max-w-none">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-white/20 dark:border-gray-800">
+          {/* Quick Summary as colorful cards, if present */}
+          {(() => {
+            const lines = guide.content.split(/\r?\n/)
+            const startIdx = lines.findIndex(l => /^##\s+Quick Summary/i.test(l))
+            if (startIdx === -1) return null
+            const bullets: string[] = []
+            for (let i = startIdx + 1; i < lines.length; i += 1) {
+              const line = lines[i]
+              if (/^##\s+/.test(line)) break
+              const m = /^-\s+(.+)$/.exec(line)
+              if (m) bullets.push(m[1])
+            }
+            if (bullets.length === 0) return null
+            const palette = [
+              { bg: 'from-[#E0F7FA] to-[#E8F5E9] dark:from-teal-900/30 dark:to-emerald-900/30', border: 'border-teal-200 dark:border-teal-800/60', dot: 'bg-teal-600 dark:bg-teal-400' },
+              { bg: 'from-[#FFF3E0] to-[#FCE4EC] dark:from-amber-900/30 dark:to-rose-900/30', border: 'border-amber-200 dark:border-amber-800/60', dot: 'bg-amber-600 dark:bg-amber-400' },
+              { bg: 'from-[#EDE7F6] to-[#E3F2FD] dark:from-indigo-900/30 dark:to-blue-900/30', border: 'border-indigo-200 dark:border-indigo-800/60', dot: 'bg-indigo-600 dark:bg-indigo-400' },
+              { bg: 'from-[#F1F8E9] to-[#E8EAF6] dark:from-lime-900/30 dark:to-indigo-900/30', border: 'border-lime-200 dark:border-lime-800/60', dot: 'bg-lime-600 dark:bg-lime-400' }
+            ]
+            return (
+              <div className="mb-6">
+                <div className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">Quick Summary</div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {bullets.map((b, i) => {
+                    const c = palette[i % palette.length]
+                    return (
+                      <div key={i} className={`rounded-xl p-4 bg-gradient-to-br ${c.bg} border ${c.border}`}>
+                        <div className="flex items-start gap-3">
+                          <div className={`w-2 h-2 ${c.dot} rounded-full mt-2 flex-shrink-0`} />
+                          <div className="text-[13px] leading-relaxed text-gray-800 dark:text-gray-100" dangerouslySetInnerHTML={{ __html: emphasizeFirstClause(b) }} />
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })()}
+          <div className="prose max-w-none leading-relaxed">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
-                h1: ({children}) => (
-                  <h1 className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-white first:mt-0">
+                h1: ({ children }) => (
+                  <h1 className="text-2xl md:text-3xl font-bold mt-8 mb-4 text-gray-900 dark:text-white first:mt-0 tracking-tight">
                     {children}
                   </h1>
                 ),
-                h2: ({children}) => (
-                  <div className="mt-8 mb-6">
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white bg-gradient-to-r from-blue-500/15 to-purple-500/15 p-5 rounded-xl border-l-4 border-blue-500 shadow-sm hover:shadow-md transition-shadow scroll-mt-28">
-                      {children}
+                h2: ({ children }) => {
+                  const text = Array.isArray(children) ? children.join('') : String(children) || ''
+                  const id = slugify(String(text))
+                  return (
+                    <h2 id={id} className="mt-9 mb-3 scroll-mt-28 text-xl md:text-[20px] font-bold text-gray-900 dark:text-gray-50">
+                      <a href={`#${id}`} className="no-underline hover:underline decoration-2 underline-offset-[6px]">
+                        {children}
+                      </a>
                     </h2>
-                  </div>
-                ),
-                h3: ({children}) => (
-                  <div className="mt-6 mb-4">
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 bg-gradient-to-r from-green-500/10 to-teal-500/10 p-4 rounded-lg border-l-3 border-green-500 shadow-sm">
-                      {children}
+                  )
+                },
+                h3: ({ children }) => {
+                  const text = Array.isArray(children) ? children.join('') : String(children) || ''
+                  const id = slugify(String(text))
+                  return (
+                    <h3 id={id} className="mt-5 mb-2 scroll-mt-28 text-lg font-semibold text-gray-800 dark:text-gray-100">
+                      <a href={`#${id}`} className="no-underline hover:underline decoration-2 underline-offset-[6px]">
+                        {children}
+                      </a>
                     </h3>
-                  </div>
-                ),
+                  )
+                },
                 p: ({children}) => {
                   const text = typeof children === 'string' ? children : ''
                   const isActionItem = text.includes('✅') || text.includes('❌')
                   
                   if (isActionItem) {
                     return (
-                      <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-l-4 border-yellow-400">
-                        <p className="text-gray-800 dark:text-gray-200 leading-relaxed font-medium">
+                      <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/30 dark:to-amber-900/30 border-l-4 border-yellow-400 dark:border-yellow-700">
+                        <p className="text-gray-800 dark:text-gray-100 leading-relaxed font-medium text-sm md:text-[15px]">
                           {children}
                         </p>
                       </div>
                     )
                   }
                   
-                  return (
-                    <p className="mb-4 text-gray-800 dark:text-gray-200 leading-relaxed">
-                      {children}
-                    </p>
-                  )
+                  // Auto emphasize for plain text strings; otherwise render children as usual
+                  if (typeof children === 'string') {
+                    return (
+                      <p
+                        className="mb-3 text-gray-800 dark:text-gray-100 leading-relaxed text-sm md:text-[15px]"
+                        dangerouslySetInnerHTML={{ __html: emphasizeFirstClause(children as string) }}
+                      />
+                    )
+                  }
+                  return <p className="mb-3 text-gray-800 dark:text-gray-100 leading-relaxed text-sm md:text-[15px]">{children}</p>
                 },
                 ul: ({children}) => (
-                  <ul className="mb-6 space-y-4 list-none">
+                  <ul className="mb-5 space-y-2.5 list-none">
                     {children}
                   </ul>
                 ),
-                li: ({children}) => (
-                  <li className="text-gray-800 dark:text-gray-200 mb-4 pl-0">
-                    <div className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-black dark:bg-white rounded-full mt-1.5 flex-shrink-0"></div>
-                      <div className="leading-relaxed">{children}</div>
-                    </div>
-                  </li>
+                li: ({children}) => {
+                  const text = typeof children === 'string' ? children : ''
+                  return (
+                    <li className="text-gray-800 dark:text-gray-100 mb-2.5 pl-0 text-sm md:text-[15px]">
+                      <div className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 bg-blue-600/70 dark:bg-blue-300 rounded-full mt-2 flex-shrink-0"></div>
+                        {typeof children === 'string' ? (
+                          <span className="leading-relaxed" dangerouslySetInnerHTML={{ __html: emphasizeFirstClause(text) }} />
+                        ) : (
+                          <div className="leading-relaxed">{children}</div>
+                        )}
+                      </div>
+                    </li>
+                  )
+                },
+                a: ({ children, href }) => (
+                  <a href={href} className="text-blue-700 dark:text-blue-300 underline-offset-2 hover:underline">
+                    {children}
+                  </a>
                 ),
                 strong: ({children}) => {
                   const text = typeof children === 'string' ? children : ''
                   const isKeyTerm = text.includes('ADHD') || text.includes('Executive') || text.includes('Working Memory') || text.includes('Attention')
                   
                   return (
-                    <strong className={`font-semibold ${isKeyTerm ? 'text-blue-700 dark:text-blue-300 bg-blue-100/50 dark:bg-blue-900/30 px-1 py-0.5 rounded' : 'text-gray-900 dark:text-white'}`}>
+                    <strong className={`font-semibold ${isKeyTerm ? 'text-blue-800 dark:text-blue-200 bg-blue-100/70 dark:bg-blue-900/40 px-1 py-0.5 rounded' : 'text-gray-900 dark:text-gray-50'}`}>
                       {children}
                     </strong>
                   )
@@ -238,10 +252,13 @@ export default function GuideClient({ guide }: GuideClientProps) {
                 ),
                 blockquote: ({children}) => {
                   // Recursively extract text content from React children
-                  const extractText = (node: any): string => {
+                  const extractText = (node: unknown): string => {
                     if (typeof node === 'string') return node
                     if (Array.isArray(node)) return node.map(extractText).join('')
-                    if (node?.props?.children) return extractText(node.props.children)
+                    if (node && typeof node === 'object' && 'props' in node && 
+                        node.props && typeof node.props === 'object' && 'children' in node.props) {
+                      return extractText(node.props.children)
+                    }
                     return ''
                   }
                   
@@ -297,9 +314,9 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   const defaultCallout = {
                     icon: Quote,
                     color: 'gray',
-                    bg: 'from-gray-50 to-gray-100 dark:from-gray-700/20 dark:to-gray-600/20',
-                    border: 'border-gray-400',
-                    iconColor: 'text-gray-500'
+                    bg: 'from-gray-50 to-gray-100 dark:from-gray-800/40 dark:to-gray-700/40',
+                    border: 'border-gray-400 dark:border-gray-700',
+                    iconColor: 'text-gray-500 dark:text-gray-300'
                   }
                   
                   // Check for our special callout marker
@@ -318,14 +335,14 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   return (
                     <div className="mb-6">
                       <div className={`bg-gradient-to-r ${calloutType.bg} border-l-4 ${calloutType.border} rounded-r-lg overflow-hidden shadow-sm`}>
-                        <div className={`flex items-center gap-3 px-4 py-3 bg-white/40 dark:bg-gray-800/40`}>
+                        <div className={`flex items-center gap-3 px-4 py-3 bg-white/60 dark:bg-gray-900/70`}>
                           <IconComponent className={`h-5 w-5 ${calloutType.iconColor} flex-shrink-0`} />
-                          <span className="font-semibold text-gray-800 dark:text-gray-200">
+                          <span className="font-semibold text-gray-800 dark:text-gray-100">
                             {calloutTitle}
                           </span>
                         </div>
                         <div className="px-4 py-4">
-                          <div className="text-gray-700 dark:text-gray-300 leading-relaxed [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">
+                          <div className="text-gray-700 dark:text-gray-100 leading-relaxed [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">
                             {calloutMatch ? 
                               textContent.replace(/__CALLOUT_(NOTE|INFO|TIP|WARNING|DANGER|EXAMPLE)__\s*/i, '').trim()
                               : children
@@ -354,10 +371,10 @@ export default function GuideClient({ guide }: GuideClientProps) {
         </div>
 
         {/* Navigation Footer */}
-        <div className="text-center mt-8">
+        <div className="text-center mt-6">
           <Button 
             onClick={goBack}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Guides
