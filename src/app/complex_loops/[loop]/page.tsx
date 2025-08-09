@@ -24,6 +24,9 @@ import { Button } from '@/components/ui/button'
 import { getComplexLoopsContent, getComplexLoopSources } from '@/lib/supabase'
 import type { ComplexLoopsContent } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
+import AdhdReasonsThreeCol, { type Row as AdhdRow } from '@/components/ui/AdhdReasonsThreeCol'
+import CorePrinciplesCondensed from '@/components/ui/CorePrinciplesCondensed'
+import StudyPainpointsGrid from '@/components/ui/StudyPainpointsGrid'
 import { ShareModal } from '@/components/ui/ShareModal';
 
 // Short, ADHD‑friendly subtitles for section headers
@@ -687,36 +690,32 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
 
           <div className="mb-8">
 
-            {/* ADHD Reasons - Collapsible */}
+            {/* ADHD Reasons - life_areas style */}
             {content.adhd_reasons && content.adhd_reasons.length > 0 && (
-              <div className="bg-[#5e60ce]/20 backdrop-blur-sm rounded-2xl border border-[#5e60ce]/30 transition-all duration-300 mb-8">
+              <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border border-[#FBF8CC]">
                 <button
                   onClick={() => toggleSection('adhd-reasons')}
-                  className="w-full p-6 text-left hover:bg-[#5e60ce]/30 rounded-2xl transition-all duration-300 flex items-center justify-between group"
-                  title={expandedSections['adhd-reasons'] ? "Close section" : "Open section"}
+                  className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                  title={expandedSections['adhd-reasons'] ? 'Close section' : 'Open section'}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-[#5e60ce]/90 rounded-lg flex-shrink-0 transition-transform duration-300">
+                    <div className="p-2 bg-[#FBF8CC] rounded-lg flex-shrink-0">
                       <Brain className="h-5 w-5 text-gray-900" />
                     </div>
                     <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Why {content.loop_name} is Hard with ADHD
-                    </h3>
-                      {!expandedSections['adhd-reasons'] && (
-                        <p className="text-sm text-gray-700 mt-0.5">{getSectionSubtitle('Why this is hard with ADHD')}</p>
-                      )}
+                      <h3 className="text-lg md:text-xl font-bold text-gray-900">Why {content.loop_name} is Hard with ADHD</h3>
+                      <p className="text-sm text-gray-700 mt-0.5">Connect what you feel with what’s happening in your brain, no shame, just clarity</p>
                     </div>
                   </div>
                   {expandedSections['adhd-reasons'] ? (
-                    <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
+                    <Minus className="h-5 w-5 text-black flex-shrink-0" />
                   ) : (
-                    <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
+                    <Plus className="h-5 w-5 text-black flex-shrink-0" />
                   )}
                 </button>
                 
                 {expandedSections['adhd-reasons'] && (
-                  <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
+                  <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#D9D9FF] bg-white">
                     <div className="space-y-4">
                       {(() => {
                         const youMightItems: string[] = []
@@ -792,68 +791,123 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
 
                         const pairs = lefts.map((left, i) => ({ left, right: manualRights[i] || rights[i] || guessRight(left) }))
 
-                        const emojiForHeading = (h?: string | null) => {
+                        const toLeftMicro = (text: string, index: number) => {
+                          const t = text.toLowerCase()
+                          if (/(struggle|hard|difficult)\s+to\s+start|getting\s+started/.test(t)) return { label: 'Struggle to start', text, emoji: '🧊' }
+                          if (/avoid(ing)?\s+starting/.test(t)) return { label: 'Avoid starting', text, emoji: '🚧' }
+                          if (/perfect(ing)?|polish|refine/.test(t)) return { label: 'Perfecting for hours', text, emoji: '🧵' }
+                          if (/keep\s+tweak|tweak(ing)?/.test(t)) return { label: 'Keep tweaking', text, emoji: '🔧' }
+                          if (/trash|delete|throw\s+away/.test(t)) return { label: 'Trash what you started', text, emoji: '🗑️' }
+                          if (/hyperfocus/.test(t)) return { label: 'Hyperfocus for hours', text, emoji: '🔭' }
+                          if (/(running|always).*late|late\b/.test(t)) return { label: 'Running late', text, emoji: '⏱️' }
+                          if (/guilt|shame/.test(t)) return { label: 'Guilt or shame', text, emoji: '😔' }
+                          if (/re-?read/.test(t)) return { label: 'Lost in the page', text: 'Re-read the same page and don’t remember it later', emoji: '📖' }
+                          if (/freeze/.test(t) || (/plan/.test(t) && /start/.test(t))) return { label: 'Freeze at the start', text: 'Plan, then freeze at start', emoji: '🧊' }
+                          if (/tabs?|browser|doomscroll|scroll|youtube|tiktok|twitter|instagram|reddit/.test(t)) return { label: 'Stuck in tabs', text: 'Browser tabs and feeds pull you away', emoji: '💻' }
+                          if (/lose\s*track|what\s*comes\s*next|materials/.test(t)) return { label: 'Misplaced next step', text: 'Lose track of materials/next step', emoji: '🗂️' }
+                          if (/forget/.test(t)) return { label: 'Forget what you studied', text, emoji: '🧠' }
+                          if (/energy|interest|crash/.test(t)) return { label: 'Energy crash', text, emoji: '🔋' }
+                          if (/plan(ning)?\s+but\s+not\s+doing|loop of planning/.test(t)) return { label: 'Planning loop', text, emoji: '🗺️' }
+                          if (/overwhelm/.test(t)) return { label: 'Overwhelmed', text, emoji: '🌊' }
+                          if (/anxiety|nervous/.test(t)) return { label: 'Anxious to start', text, emoji: '😰' }
+                          if (/distract|notification|ping/.test(t)) return { label: 'Started… then wandered off', text: 'Got sidetracked halfway and never came back', emoji: '🔔' }
+                          const fallback = ['✨','🧭','📌','🔁','🧿','🪄','🪁']
+                          const label = text.split(/[,.]/)[0].split(/\s+/).slice(0, 4).join(' ')
+                          return { label: label.charAt(0).toUpperCase() + label.slice(1), text, emoji: fallback[index % fallback.length] }
+                        }
+
+                        const rightEmojiFor = (h?: string | null, index?: number) => {
                           const k = (h || '').toLowerCase()
                           if (k.includes('executive')) return '🧩'
-                          if (k.includes('time')) return '⏰'
                           if (k.includes('working memory')) return '🧠'
+                          if (k.includes('time')) return '⏰'
                           if (k.includes('attention')) return '🎯'
-                          if (k.includes('motivation')) return '💥'
-                          if (k.includes('shame')) return '😞'
-                          if (k.includes('nervous system')) return '💛'
-                          return '💡'
+                          if (k.includes('motivation')) return '🔥'
+                          if (k.includes('nervous system')) return '⚡'
+                          if (k.includes('all-or-nothing')) return '⚖️'
+                          if (k.includes('rsd') || k.includes('judgment')) return '😣'
+                          if (k.includes('perfection')) return '🪞'
+                          if (k.includes('hyperfocus')) return '🔭'
+                          if (k.includes('avoid')) return '🚫'
+                          if (k.includes('rumination')) return '♻️'
+                          if (k.includes('dopamine')) return '🧪'
+                          const fallback = ['💡','🔎','🧭','🪄','🌱','🔁','🧿']
+                          return fallback[(index || 0) % fallback.length]
                         }
-                                    
-                                      return (
-                          <div className="space-y-3">
-                            <div className="hidden lg:grid lg:grid-cols-2 gap-3 pl-1 pr-1">
-                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base border-b border-gray-200 pb-1">You might:</h4>
-                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base border-b border-gray-200 pb-1">Here's what's really going on:</h4>
-                                              </div>
-                            {pairs.map((pair, idx) => {
-                              const rowPalette = [
-                                { bg: 'bg-[#FBF8CC]/35', border: 'border-[#FBF8CC]/60' },
-                                { bg: 'bg-[#FDE4CF]/35', border: 'border-[#FDE4CF]/60' },
-                                { bg: 'bg-[#FFCFD2]/35', border: 'border-[#FFCFD2]/60' },
-                                { bg: 'bg-[#F1C0E8]/35', border: 'border-[#F1C0E8]/60' },
-                                { bg: 'bg-[#CFBAF0]/35', border: 'border-[#CFBAF0]/60' },
-                                { bg: 'bg-[#A3C4F3]/35', border: 'border-[#A3C4F3]/60' },
-                              ]
-                              const rowColor = rowPalette[idx % rowPalette.length]
-                              const right = typeof pair.right === 'string' ? parseRight(pair.right) : pair.right
-                              const displayEmoji = right.emoji || emojiForHeading(right.heading)
-                              return (
-                                <div key={idx} className="relative grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 group">
-                                  <span className="hidden lg:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-gray-500 select-none">→</span>
-                                  <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
-                                    <span className="text-blue-600 flex-shrink-0 translate-y-[2px] text-base leading-none w-4 text-center">•</span>
-                                    <span className="text-gray-900 text-[15px] md:text-[16px] leading-[1.7] pl-0.5">{pair.left}</span>
-                                  </div>
-                                  <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
-                                    <span className="text-lg w-5 text-center translate-y-[1px] flex-shrink-0">{displayEmoji}</span>
-                                    <div className="text-gray-800 text-[15px] md:text-[16px] leading-[1.7]">
-                                      {right.heading ? (
-                                        <>
-                                          <strong className="text-gray-900">{right.heading}</strong>
-                                          {right.desc && <span className="text-gray-700">: {right.desc}</span>}
-                                        </>
-                                      ) : (
-                                        <span
-                                          dangerouslySetInnerHTML={{
-                                            __html: (right.desc || '')
-                                                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                                  .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                                  .replace(/_(.*?)_/g, '<em>$1</em>')
-                                          }}
-                                        />
-                                            )}
-                                          </div>
-                                        </div>
-                                        </div>
-                              )
-                                  })}
-                                </div>
-                        )
+
+                        const rows: AdhdRow[] = pairs.map((pair, i) => {
+                          const r = typeof pair.right === 'string' ? parseRight(pair.right) : pair.right
+                          const leftBase = toLeftMicro(pair.left, i)
+                          const lower = (leftBase.text || '').toLowerCase()
+                          let youMightTitle = leftBase.label
+                          let youMightBody: string | undefined = undefined
+                          if (/tabs?|browser|doomscroll|scroll|youtube|tiktok|twitter|instagram|reddit/.test(lower)) {
+                            youMightTitle = 'Open one tab, end up with 12'
+                            youMightBody = 'Lose track of your original task'
+                          } else if (/freeze|can'?t start|hard to start|struggle to start/.test(lower)) {
+                            youMightTitle = 'Open your laptop… and just stare'
+                            youMightBody = 'Everything feels too big to begin'
+                          } else if (/hyperfocus/.test(lower)) {
+                            youMightTitle = 'Look up and it’s 4 hours later'
+                            youMightBody = 'Lost the sense of time passing'
+                          } else if (/(running|always).*late|late\b/.test(lower)) {
+                            youMightTitle = 'Leave early, still arrive late'
+                            youMightBody = 'Pre‑leave steps stole the buffer'
+                          } else if (/guilt|shame|behind/.test(lower)) {
+                            youMightTitle = 'Beat yourself up for being “behind”'
+                            youMightBody = 'Motivation drops when shame spikes'
+                          }
+
+                          // Add context examples for loops (work, social, sleep, etc.)
+                          const loopCtx = (content.loop_name || '').toLowerCase()
+                          if (!youMightBody) {
+                            if (/email|text|reply|messages/.test(loopCtx)) {
+                              youMightBody = 'Put off replying; now there’s a “just checking in” message'
+                            } else if (/lateness|appointments|calendar/.test(loopCtx)) {
+                              youMightBody = 'Ran out of prep time; running late again'
+                            } else if (/bedtime|sleep/.test(loopCtx)) {
+                              youMightBody = 'Scroll late; the morning alarm hits hard'
+                            }
+                          }
+                          const whats = {
+                            title: ((r.heading || 'Insight').replace(/[—–-]+\s*$/, '') + ':') as string,
+                            body: String(r.desc || '').replace(/^[\s—–-]+/, '')
+                          }
+                          const tips: string[] = []
+                          const b = `${whats.title} ${whats.body}`.toLowerCase()
+                          const push = (t: string) => { if (!tips.includes(t)) tips.push(t) }
+                          if (/tabs?|browser|attention/.test(lower+b)) {
+                            push('Close extra tabs before starting')
+                            push('Park links in a later window')
+                            push('Use one‑tab full‑screen mode')
+                          }
+                          if (/executive|start|initiat|prioritiz/.test(b)) {
+                            push('Do a 5‑4‑3‑2‑1 countdown')
+                            push('Open the doc and type 1 line')
+                          }
+                          if (/time|blind|planning fallacy|transition/.test(b)) {
+                            push('Set a visible timer 20–30 min')
+                            push('Add +15 min buffer')
+                            push('Run two alarms: wrap‑up + leave')
+                          }
+                          if (/working memory|remember|forget|sequence/.test(b)) {
+                            push('Use a door or desk checklist')
+                            push('Write a one‑sentence recap')
+                          }
+                          if (/rsd|shame|motivation|urgency/.test(b)) {
+                            push('Name it: “time blind, not lazy”')
+                            push('Take a 30‑sec reset')
+                            push('Body‑double for a micro‑win')
+                          }
+                          const howTo = tips.slice(0, 3)
+                          return {
+                            icon: leftBase.emoji,
+                            youMight: { title: youMightTitle, body: youMightBody },
+                            whatsGoingOn: whats,
+                            howTo: howTo.length ? howTo : ['Start with 1 tiny action', 'Make it visible', 'Summarize aloud']
+                          }
+                        })
+                        return <AdhdReasonsThreeCol rows={rows} />
                       })()}
                     </div>
                   </div>
@@ -862,28 +916,28 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
             )}
           </div>
 
-          {/* Content Sections */}
+          {/* Content Sections (life_areas style) */}
           {content.content_sections && content.content_sections.length > 0 && (
             <div className="space-y-4">
               {content.content_sections.map((section, index) => {
                 const colorSchemes = [
-                  { bg: 'bg-[#5390d9]/30', hover: 'hover:bg-[#5390d9]/60', border: 'border-[#5390d9]/50', iconBg: 'bg-[#5390d9]/90'},
-                  { bg: 'bg-[#4ea8de]/30', hover: 'hover:bg-[#4ea8de]/60', border: 'border-[#4ea8de]/50', iconBg: 'bg-[#4ea8de]/90' },
-                  { bg: 'bg-[#56cfe1]/30', hover: 'hover:bg-[#56cfe1]/60', border: 'border-[#56cfe1]/50', iconBg: 'bg-[#56cfe1]/90' },
-                  { bg: 'bg-[#64dfdf]/30', hover: 'hover:bg-[#64dfdf]/60', border: 'border-[#64dfdf]/50', iconBg: 'bg-[#64dfdf]/90' },
-                  { bg: 'bg-[#80ffdb]/30', hover: 'hover:bg-[#80ffdb]/60', border: 'border-[#80ffdb]/50', iconBg: 'bg-[#80ffdb]/90' }
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#FDE4CF]', iconBg: 'bg-[#FDE4CF]', panelBg: 'bg-[#FDE4CF]/20' },
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#B9FBC0]', iconBg: 'bg-[#B9FBC0]', panelBg: 'bg-[#B9FBC0]/20' },
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#F1C0E8]', iconBg: 'bg-[#F1C0E8]', panelBg: 'bg-[#F1C0E8]/20' },
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#A3C4F3]', iconBg: 'bg-[#A3C4F3]', panelBg: 'bg-[#A3C4F3]/20' },
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#B9FBC0]', iconBg: 'bg-[#B9FBC0]', panelBg: 'bg-[#B9FBC0]/20' }
                 ];
-                
                 const colors = colorSchemes[index % colorSchemes.length];
                 const IconComponent = getSectionIcon(section.emoji);
                 const sectionId = `section-${index}`;
                 const isExpanded = expandedSections[sectionId];
+                
 
                 return (
-                  <div key={index} className={`${colors.bg} backdrop-blur-sm rounded-2xl border ${colors.border} transition-all duration-300`}>
+                  <div key={index} className={`rounded-2xl ${colors.bg} border ${colors.border} transition-all duration-300`}>
                     <button
                       onClick={() => toggleSection(sectionId)}
-                      className={`w-full p-6 text-left ${colors.hover} rounded-2xl transition-all duration-300 flex items-center justify-between group`}
+                      className={`w-full p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group`}
                       title={isExpanded ? "Close section" : "Open section"}
                     >
                       <div className="flex items-center gap-3">
@@ -891,28 +945,20 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                           <IconComponent className="h-5 w-5 text-gray-900" />
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            {section.title}
-                          </h3>
-                          {!isExpanded && (
-                            <p className="text-sm text-gray-600 mt-0.5">
-                              {getSectionSubtitle(section.title, content.loop_name)}
-                            </p>
-                          )}
+                          <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-0.5">{section.title}</h3>
+                          <p className="text-sm text-gray-700">{getSectionSubtitle(section.title, content.loop_name)}</p>
                         </div>
                       </div>
                       {isExpanded ? (
-                        <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
+                        <Minus className="h-5 w-5 text-black flex-shrink-0" />
                       ) : (
-                        <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
+                        <Plus className="h-5 w-5 text-black flex-shrink-0" />
                       )}
                     </button>
-                    
                     {isExpanded && (
-                      <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
-                        {/* Section content */}
+                      <div className={`px-6 pb-6 animate-in slide-in-from-top duration-300 border-t ${colors.border} ${colors.panelBg} rounded-b-2xl`}>
                         {section.content && section.content.length > 0 && (
-                          <div className="space-y-4 mb-4 relative before:absolute before:left-3 before:top-0 before:bottom-0 before:w-px before:bg-gray-200">
+                          <div className="space-y-4 mb-4 pt-2">
                             {(() => {
                               const groupedContent: Array<{type: 'quote', items: string[]} | {type: 'bullet', item: string}> = [];
                               let currentQuoteGroup: string[] = [];
@@ -936,8 +982,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                               return groupedContent.map((group, groupIndex) => {
                                 if (group.type === 'quote') {
                                   return (
-                                    <div key={groupIndex} className={`border-l-4 ${colors.border} ml-6 pl-4 py-3 ${colors.bg.replace('/40', '/10')} rounded-lg space-y-2 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 hover:shadow-sm transition-shadow group/quote`}>
-                                      <div className={`absolute -left-[1.4rem] top-1/2 -translate-y-1/2 w-3 h-3 ${colors.iconBg} rounded-full transition-transform group-hover/quote:scale-110`} />
+                                    <div key={groupIndex} className={`border-l-4 ${colors.border} ml-6 pl-4 py-3 ${colors.panelBg.replace('/20','/10')} rounded-lg space-y-2 hover:shadow-sm transition-shadow group/quote`}>
                                       {group.items.map((item, itemIndex) => (
                                         <div key={itemIndex} className="text-gray-900"
                                              dangerouslySetInnerHTML={{ 
@@ -952,11 +997,11 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                                   )
                                 } else {
                                   return (
-                                    <div key={groupIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
-                                      <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform">•</span>
-                                      <div className="text-gray-900 pt-0.5 py-1"
+                                    <div key={groupIndex} className="flex items-baseline gap-3 ml-6 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors mt-1">
+                                      <span className="text-gray-900 flex-shrink-0 mt-0.5 text-lg group-hover/bullet:scale-110 transition-transform">•</span>
+                                      <div className="text-gray-900 py-1"
                                            dangerouslySetInnerHTML={{ 
-                                             __html: group.item.replace(/^- /, '')
+                                             __html: group.item.replace(/^[-]\s*/, '')
                                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                                                .replace(/\*(.*?)\*/g, '<em>$1</em>')
                                                .replace(/_(.*?)_/g, '<em>$1</em>')
@@ -1019,19 +1064,19 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                                       </h4>
                                     </div>
                                     {isSubExpanded ? (
-                                      <Minus className={`h-4 w-4 ${subColors.textColor} flex-shrink-0 opacity-70`} />
+                                      <Minus className={`h-4 w-4 text-black flex-shrink-0`} />
                                     ) : (
-                                      <Plus className={`h-4 w-4 ${subColors.textColor} flex-shrink-0 opacity-70`} />
+                                      <Plus className={`h-4 w-4 text-black flex-shrink-0`} />
                                     )}
                                   </button>
                                   
                                   {isSubExpanded && subsection.content && subsection.content.length > 0 && (
                                     <div className="px-4 pb-4 animate-in slide-in-from-top duration-300">
-                                      <div className="space-y-2">
+                                      <div className="space-y-2 mt-2">
                                         {subsection.content.map((item, itemIndex) => (
-                                          <div key={itemIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
-                                            <span className={`${subColors.textColor} flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform`}>•</span>
-                                            <div className={`${subColors.textColor} text-base pt-0.5 py-1`}
+                                          <div key={itemIndex} className="flex items-baseline gap-3 ml-6 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
+                                            <span className={`${subColors.textColor} flex-shrink-0 mt-0.5 text-lg group-hover/bullet:scale-110 transition-transform`}>•</span>
+                                            <div className={`${subColors.textColor} text-base py-1`}
                                                  dangerouslySetInnerHTML={{ 
                                                    __html: item
                                                      .replace(/^-\s*/, '') // Remove leading dash and space
@@ -1058,35 +1103,37 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
             </div>
           )}
 
-          {/* Sources Section - last header */}
+          {/* Sources Section - life_areas style */}
           {sources && sources.length > 0 && (
-            <div className="space-y-4 mt-8">
-              <div className="relative">
-                <Button
-                  onClick={() => setExpandedSections(prev=>({ ...prev, 'sources': !prev['sources'] }))}
-                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-2xl border-2 bg-[#E0F2FE]/40 hover:bg-[#E0F2FE]/60 border-[#93C5FD]/50 transition-colors min-h-[75px] touch-manipulation"
-                  variant="ghost"
-                  size="lg"
+            <div className="space-y-4 mt-4">
+              <div className="rounded-2xl bg-white border border-[#D9D9FF] transition-all duration-300">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleSection('sources');
+                  }}
+                  className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group relative"
+                  title={expandedSections['sources'] ? "Close section" : "Open section"}
                 >
-                  <div className="bg-[#93C5FD]/90 rounded-full p-3 flex-shrink-0">
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 bg-[#D9D9FF] rounded-lg flex-shrink-0">
                     <BookOpen className="h-5 w-5 text-gray-900" />
                   </div>
-                  <div className="flex-1 text-left min-w-0">
-                    <h3 className="text-sm sm:text-lg font-bold text-gray-900 break-words">
-                      Sources ({sources.length} sources)
-                    </h3>
+                    <div>
+                      <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-0.5">Sources</h3>
+                      <p className="text-sm text-gray-700">Explore the books, guides, and research that shaped this page</p>
                   </div>
-                  <div className="flex-shrink-0">
+                  </div>
                     {expandedSections['sources'] ? (
-                      <Minus className="h-6 w-6 text-gray-500" />
+                    <Minus className="h-5 w-5 text-black flex-shrink-0" />
                     ) : (
-                      <Plus className="h-6 w-6 text-gray-500" />
+                    <Plus className="h-5 w-5 text-black flex-shrink-0" />
                     )}
-                  </div>
-                </Button>
+                </button>
 
                 {expandedSections['sources'] && (
-                  <div className="bg-[#E0F2FE]/30 rounded-lg p-4 space-y-4 animate-in slide-in-from-top duration-300 mb-4">
+                  <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#D9D9FF] bg-white">
                     {Object.entries(
                       (sources || []).reduce((acc, source) => {
                         const cat = source.category || 'Other'
@@ -1095,7 +1142,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                         return acc
                       }, {} as Record<string, any[]>)
                     )
-                    .sort(([,a], [,b]) => b.length - a.length)
+                      .sort(([, a], [, b]) => b.length - a.length)
                     .map(([category, categorySources], index) => {
                       const colors = [
                         { bg: 'bg-[#FBF8CC]/40', hover: 'hover:bg-[#FBF8CC]/60', border: 'border-[#FBF8CC]/60' },
@@ -1124,9 +1171,9 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                       ) as Array<any & { _descriptions: string[] }>
 
                       return (
-                        <div key={category} className="space-y-2">
+                          <div key={category} className="space-y-2 mb-4">
                           <Button
-                            onClick={() => setExpandedSections(prev=>({ ...prev, [`src-cat-${category}`]: !prev[`src-cat-${category}`] }))}
+                              onClick={() => setExpandedSections(prev => ({ ...prev, [`src-cat-${category}`]: !prev[`src-cat-${category}`] }))}
                             className={`w-full flex items-center justify-between p-4 rounded-xl ${scheme.bg} ${scheme.hover} border ${scheme.border} transition-all duration-300 shadow-sm`}
                             variant="ghost"
                             size="lg"
@@ -1142,7 +1189,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                           </Button>
 
                           {expandedSections[`src-cat-${category}`] && (
-                            <div className={`pl-2 space-y-3 animate-in slide-in-from-top duration-200 ${scheme.bg} rounded-lg p-4 border ${scheme.border}`}>
+                              <div className={`pl-2 space-y-3 animate-in slide-in-from-top duration-200 bg-white rounded-lg p-4 border ${scheme.border}`}>
                               {deduped.map((source, sourceIndex) => (
                                 <div key={sourceIndex} className="border-l-3 border-gray-400/40 pl-4 py-2">
                                   <div className="flex items-start gap-2">

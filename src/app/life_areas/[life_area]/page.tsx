@@ -1,14 +1,15 @@
 'use client'
 
 import React from 'react'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
+import { useCollapsibleSections } from '@/hooks/useCollapsibleSections'
 import { 
   ArrowLeft, Plus, Minus, Share2, Brain, Heart, 
   Wrench, RotateCcw, Rainbow, Puzzle, Construction,
-  CheckCircle, XCircle, Lightbulb, Target,
+  XCircle, Lightbulb, Target,
   BookOpen, Zap, Star, Clock, Home, Briefcase, 
   Settings, Folder, FileText, Mail, ClipboardList,
-  ShoppingCart, Utensils, Bed, Shirt, Trash2,
+  ShoppingCart, Utensils, Shirt, Trash2,
   Phone, Wallet, Calendar, Car, Pill, Activity,
   Sparkles, Key, Flame, ArrowLeftRight, Bath,
   Sun, DoorClosed, Dumbbell, CookingPot, Refrigerator,
@@ -16,7 +17,7 @@ import {
   ScrollText, Pencil, PhoneCall, Bell, GraduationCap,
   Library, Palette, MailPlus, TrendingUp, TrendingDown,
   Award, Medal, Music, Laptop, Monitor, MapPin, 
-  Dice1 as Dice, Link, Globe, Snowflake, Scissors, Hammer,
+  Link, Globe, Snowflake, Scissors, Hammer,
   Paintbrush, Brush, Shield, Gem, Crown, Flower, Leaf,
   Gamepad2, User, Rocket
 } from 'lucide-react'
@@ -25,6 +26,28 @@ import { getTasksContent, getLifeAreaSources } from '@/lib/supabase'
 import type { TasksContent, LifeAreaSources } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
+import StudyPainpointsGrid from '@/components/ui/StudyPainpointsGrid'
+import CorePrinciplesCondensed from '@/components/ui/CorePrinciplesCondensed'
+import AdhdReasonsThreeCol, { type Row as AdhdRow } from '@/components/ui/AdhdReasonsThreeCol'
+import { CollapsibleToggle } from '@/components/ui/CollapsibleToggle'
+
+// Short, ADHD‑friendly subtitles for section headers (customized for life areas)
+const getSectionSubtitle = (title: string): string => {
+  const t = (title || '').toLowerCase()
+  if (t.includes('core principles')) return 'The few big ideas to keep you steady when things feel overwhelming'
+  if (t.includes('strategies')) return 'Tiny, do‑able moves to get this task started now'
+  if (t.includes('mindset')) return 'Gentle reframes that lower pressure and unlock action'
+  if (t.includes('encouragement')) return 'A quick pep talk to take with you when it’s tough'
+  if (t.includes('tools')) return 'Practical helpers you can grab fast when you need them'
+  if (t.includes('examples')) return 'Real‑life patterns and how people shift them'
+  if (t.includes('common mistakes')) return 'What trips folks up, and how to avoid it without shame'
+  if (t.includes('checklist')) return 'A simple list so your brain doesn’t have to remember it all'
+  if (t.includes('faq')) return 'Quick answers to the questions that pop up a lot'
+  // ADHD reasons header
+  if (t.includes('why') && t.includes('hard')) return 'Connect what you feel with what’s happening in your brain, no shame, just clarity'
+  // Generic fallback
+  return 'Open for a quick, plain‑language guide to help you move forward'
+}
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
@@ -413,17 +436,16 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
   const [sources, setSources] = useState<LifeAreaSources[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({ 'adhd-reasons': true })
-  const [expandedSources, setExpandedSources] = useState<{[key: string]: boolean}>({})
-  const [copySuccess, setCopySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
-  const toggleSection = useCallback((sectionId: string) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [sectionId]: !prev[sectionId]
-    }))
-  }, [])
+  // Use our collapsible sections hook
+  const { 
+    expandedSections, 
+    toggleSection, 
+    toggleAllSections, 
+    isAllExpanded, 
+    isAllCollapsed 
+  } = useCollapsibleSections()
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -571,7 +593,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
@@ -584,7 +606,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
 
   if (error || !content) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg max-w-md text-center">
           <XCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-semibold mb-2">Task Not Found</h2>
@@ -601,7 +623,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#d4fc79] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
       <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
@@ -618,7 +640,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
               <div className="flex-1">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-foreground flex items-center gap-2 sm:gap-3">
                   {React.createElement(getTaskIcon(content.task_name), {
-                    className: "h-6 w-6 sm:h-8 sm:w-8 text-blue-500 flex-shrink-0"
+                    className: "h-6 w-6 sm:h-8 sm:w-8 text-green-600 flex-shrink-0"
                   })}
                   {content.task_name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                 </h1>
@@ -634,15 +656,10 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                   size="default"
                   onClick={handleShare}
                   className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
-                  title={copySuccess ? "Link copied!" : "Share this page"}
+                  title="Share this page"
                 >
                   <Share2 className="h-5 w-5" />
                 </Button>
-                {copySuccess && (
-                  <div className="absolute -top-8 right-0 bg-green-600 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap z-50">
-                    Link copied!
-                  </div>
-                )}
               </div>
             </div>
 
@@ -671,10 +688,10 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
           </div>
 
-          {/* Side-by-Side Toggle Boxes */}
+          {/* Side-by-Side Toggle Boxes (original placement and style) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {/* Left Box - Soft Start */}
-            <div className="relative">
+            <div className="relative" data-section-id="gentle-advice">
               <Button
                 onClick={() => toggleSection('gentle-advice')}
                 className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#61ffb5]/40 hover:shadow-md transition-shadow duration-300 border border-[#A0E8AF]/60 min-h-[60px] touch-manipulation"
@@ -683,9 +700,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
               >
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-5 w-5 text-[#2D9C3C]" />
-                  <h3 className="text-base font-semibold text-gray-900">
-                    Soft Start
-                  </h3>
+                  <h3 className="text-base font-semibold text-gray-900">Soft Start</h3>
                 </div>
                 <div className="flex-shrink-0 ml-4">
                   {expandedSections['gentle-advice'] ? (
@@ -695,7 +710,6 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                   )}
                 </div>
               </Button>
-              
               {expandedSections['gentle-advice'] && (
                 <div className="bg-[#61ffb5]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
                   <p className="text-base text-gray-900 leading-relaxed">
@@ -706,7 +720,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
             </div>
 
             {/* Right Box - Tough Love */}
-            <div className="relative">
+            <div className="relative" data-section-id="stern-advice">
               <Button
                 onClick={() => toggleSection('stern-advice')}
                 className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#ff61ab]/40 hover:shadow-md transition-shadow duration-300 border border-[#FF9EBB]/60 min-h-[60px] touch-manipulation"
@@ -715,9 +729,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
               >
                 <div className="flex items-center gap-2">
                   <Zap className="h-5 w-5 text-[#D23369]" />
-                  <h3 className="text-base font-semibold text-gray-900">
-                    Tough Love
-                  </h3>
+                  <h3 className="text-base font-semibold text-gray-900">Tough Love</h3>
                 </div>
                 <div className="flex-shrink-0 ml-4">
                   {expandedSections['stern-advice'] ? (
@@ -727,7 +739,6 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                   )}
                 </div>
               </Button>
-
               {expandedSections['stern-advice'] && (
                 <div className="bg-[#ff61ab]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#FF9EBB]/60 mt-2">
                   <p className="text-base text-gray-900 leading-relaxed">
@@ -748,25 +759,32 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
           </div>
 
-          {/* ADHD Reasons - paired layout (same as complex_loops) */}
+          {/* Collapsible Toggle */}
+          <div className="flex justify-center mb-4">
+            <CollapsibleToggle
+              isAllExpanded={isAllExpanded}
+              isAllCollapsed={isAllCollapsed}
+              onToggleAll={toggleAllSections}
+            />
+          </div>
+
+          {/* ADHD Reasons - card style */}
           {content.adhd_reasons && content.adhd_reasons.length > 0 && (
-            <div className="bg-[#5e60ce]/20 backdrop-blur-sm rounded-2xl border border-[#5e60ce]/30 transition-all duration-300 mb-8">
+            <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border border-[#FBF8CC]" data-section-id="adhd-reasons">
               <button
                 onClick={() => toggleSection('adhd-reasons')}
-                className="w-full p-6 text-left hover:bg-[#5e60ce]/30 rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
                 title={expandedSections['adhd-reasons'] ? 'Close section' : 'Open section'}
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-[#5e60ce]/90 rounded-lg flex-shrink-0 transition-transform duration-300">
+                  <div className="p-2 bg-[#FBF8CC] rounded-lg flex-shrink-0">
                     <Brain className="h-5 w-5 text-gray-900" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900">
                       Why {content.task_name} is Hard with ADHD
                     </h3>
-                    {!expandedSections['adhd-reasons'] && (
-                      <p className="text-sm text-gray-700 mt-0.5">Connect what you feel with what’s happening in your brain, no shame, just clarity</p>
-                    )}
+                    <p className="text-sm text-gray-700 mt-0.5">Connect what you feel with what’s happening in your brain, no shame, just clarity</p>
                   </div>
                 </div>
                 {expandedSections['adhd-reasons'] ? (
@@ -777,7 +795,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
               </button>
 
               {expandedSections['adhd-reasons'] && (
-                <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
+                <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#D9D9FF] bg-white">
                   <div className="space-y-4">
                     {(() => {
                       const youMightItems: string[] = []
@@ -853,68 +871,122 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
 
                       const pairs = lefts.map((left, i) => ({ left, right: manualRights[i] || rights[i] || guessRight(left) }))
 
-                      const emojiForHeading = (h?: string | null) => {
+
+                      // Transform into reusable grid items
+                      const toLeftMicro = (text: string) => {
+                        const t = text.toLowerCase()
+                        if (/(struggle|hard|difficult)\s+to\s+start|getting\s+started/.test(t)) return { label: 'Struggle to start', text, emoji: '🧊' }
+                        if (/hyperfocus/.test(t)) return { label: 'Hyperfocus for hours', text, emoji: '🌀' }
+                        if (/(running|always).*late|late\b/.test(t)) return { label: 'Running late', text, emoji: '⏱️' }
+                        if (/guilt|shame/.test(t)) return { label: 'Guilt or shame', text, emoji: '😔' }
+                        if (/re-?read/.test(t)) return { label: 'Lost in the page', text: 'Re-read the same page and don’t remember it later', emoji: '📖' }
+                        if (/freeze/.test(t) || (/plan/.test(t) && /start/.test(t))) return { label: 'Freeze at the start', text: 'Plan, then freeze at start', emoji: '🚫' }
+                        if (/tabs?|browser|doomscroll|scroll|youtube|tiktok|twitter|instagram|reddit/.test(t)) return { label: 'Stuck in tabs', text: 'Browser tabs and feeds pull you away', emoji: '💻' }
+                        if (/lose\s*track|what\s*comes\s*next|materials/.test(t)) return { label: 'Misplaced next step', text: 'Lose track of materials/next step', emoji: '🗂️' }
+                        if (/forget/.test(t)) return { label: 'Forget what you studied', text: 'Forget what you already studied and start over again', emoji: '🧠' }
+                        if (/energy|interest|crash/.test(t)) return { label: 'Energy crash', text: 'Crash when energy/interest dips', emoji: '🔋' }
+                        if (/plan(ning)?\s+but\s+not\s+doing|loop of planning/.test(t)) return { label: 'Planning loop', text: 'Get caught in a loop of planning, but not doing', emoji: '📝' }
+                        if (/overwhelm/.test(t)) return { label: 'Overwhelmed', text, emoji: '🌊' }
+                        if (/anxiety|nervous/.test(t)) return { label: 'Anxious to start', text, emoji: '😰' }
+                        if (/distract|notification|ping/.test(t)) return { label: 'Started… then wandered off', text: 'Got sidetracked halfway and never came back', emoji: '🔔' }
+                        const label = text.split(/[,.]/)[0].split(/\s+/).slice(0, 4).join(' ')
+                        return { label: label.charAt(0).toUpperCase() + label.slice(1), text, emoji: '✨' }
+                      }
+
+                      const rightEmojiFor = (h?: string | null) => {
                         const k = (h || '').toLowerCase()
                         if (k.includes('executive')) return '🧩'
-                        if (k.includes('time')) return '⏰'
                         if (k.includes('working memory')) return '🧠'
+                        if (k.includes('time')) return '⏰'
                         if (k.includes('attention')) return '🎯'
-                        if (k.includes('motivation')) return '💥'
-                        if (k.includes('shame')) return '😞'
-                        if (k.includes('nervous system')) return '💛'
+                        if (k.includes('motivation')) return '🔥'
+                        if (k.includes('nervous system')) return '⚡'
                         return '💡'
                       }
 
-                      return (
-                        <div className="space-y-3">
-                          <div className="hidden lg:grid lg:grid-cols-2 gap-3 pl-1 pr-1">
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base border-b border-gray-200 pb-1">You might:</h4>
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base border-b border-gray-200 pb-1">Here's what's really going on:</h4>
-                          </div>
-                          {pairs.map((pair, idx) => {
-                            const rowPalette = [
-                              { bg: 'bg-[#FBF8CC]/35', border: 'border-[#FBF8CC]/60' },
-                              { bg: 'bg-[#FDE4CF]/35', border: 'border-[#FDE4CF]/60' },
-                              { bg: 'bg-[#FFCFD2]/35', border: 'border-[#FFCFD2]/60' },
-                              { bg: 'bg-[#F1C0E8]/35', border: 'border-[#F1C0E8]/60' },
-                              { bg: 'bg-[#CFBAF0]/35', border: 'border-[#CFBAF0]/60' },
-                              { bg: 'bg-[#A3C4F3]/35', border: 'border-[#A3C4F3]/60' },
-                            ]
-                            const rowColor = rowPalette[idx % rowPalette.length]
-                            const right = typeof pair.right === 'string' ? parseRight(pair.right) : pair.right
-                            const displayEmoji = right.emoji || emojiForHeading(right.heading)
-                            return (
-                              <div key={idx} className="relative grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 group">
-                                <span className="hidden lg:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-gray-500 select-none">→</span>
-                                <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
-                                  <span className="text-blue-600 flex-shrink-0 translate-y-[2px] text-base leading-none w-4 text-center">•</span>
-                                  <span className="text-gray-900 text-[15px] md:text-[16px] leading-[1.7] pl-0.5">{pair.left}</span>
-                                </div>
-                                <div className={`rounded-md px-4 py-3 md:py-3.5 flex items-start gap-3 border ${rowColor.bg} ${rowColor.border}`}>
-                                  <span className="text-lg w-5 text-center translate-y-[1px] flex-shrink-0">{displayEmoji}</span>
-                                  <div className="text-gray-800 text-[15px] md:text-[16px] leading-[1.7]">
-                                    {right.heading ? (
-                                      <>
-                                        <strong className="text-gray-900">{right.heading}</strong>
-                                        {right.desc && <span className="text-gray-700">: {right.desc}</span>}
-                                      </>
-                                    ) : (
-                                      <span
-                                        dangerouslySetInnerHTML={{
-                                          __html: (right.desc || '')
-                                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                            .replace(/_(.*?)_/g, '<em>$1</em>')
-                                        }}
-                                      />
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            )
-                          })}
-                        </div>
-                      )
+                      const rows: AdhdRow[] = pairs.map((pair, i) => {
+                        const r = typeof pair.right === 'string' ? parseRight(pair.right) : pair.right
+                        // Rewrite the left column into a short, lived‑experience snapshot
+                        const leftBase = toLeftMicro(pair.left)
+                        const lower = (leftBase.text || '').toLowerCase()
+                        let youMightTitle = leftBase.label
+                        let youMightBody: string | undefined = undefined
+                        if (/tabs?|browser|doomscroll|scroll|youtube|tiktok|twitter|instagram|reddit/.test(lower)) {
+                          youMightTitle = 'Open one tab, end up with 12'
+                          youMightBody = 'Lose track of your original task'
+                        } else if (/freeze|can'?t start|hard to start|struggle to start/.test(lower)) {
+                          youMightTitle = 'Open your laptop… and just stare'
+                          youMightBody = 'Everything feels too big to begin'
+                        } else if (/hyperfocus/.test(lower)) {
+                          youMightTitle = 'Look up and it’s 4 hours later'
+                          youMightBody = 'Lost the sense of time passing'
+                        } else if (/(running|always).*late|late\b/.test(lower)) {
+                          youMightTitle = 'Leave early, still arrive late'
+                          youMightBody = 'Pre‑leave steps stole the buffer'
+                        } else if (/guilt|shame|behind/.test(lower)) {
+                          youMightTitle = 'Beat yourself up for being “behind”'
+                          youMightBody = 'Motivation drops when shame spikes'
+                        }
+
+                        // Context-aware examples to make rows instantly relatable
+                        const ctx = (content.task_name || '').toLowerCase()
+                        // Work Tasks: avoid school/study phrasing and tune to project flow
+                        if (/work tasks/.test(ctx) && /(forget|remember)/.test(lower)) {
+                          youMightTitle = 'Lose your place in the project'
+                          youMightBody = 'Reopen a doc and can’t remember what’s next'
+                        }
+                        if (!youMightBody) {
+                          if (/work|tasks|emails|boss/.test(ctx)) {
+                            youMightBody = 'Put off the project; now your boss pings “status?”'
+                          } else if (/exam|study|classwork/.test(ctx)) {
+                            youMightBody = 'Put off studying; test is tomorrow'
+                          } else if (/planning|schedule/.test(ctx)) {
+                            youMightBody = 'Double‑book meetings without noticing'
+                          } else if (/focus|time/.test(ctx)) {
+                            youMightBody = 'Lose the time block and miss the next step'
+                          }
+                        }
+
+                        const whats = {
+                          title: ((r.heading || 'Insight').replace(/[—–-]+\s*$/, '') + ':') as string,
+                          body: String(r.desc || '').replace(/^[\s—–-]+/, '')
+                        }
+                        // Generate concise, verb‑first, unique tips per row
+                        const tips: string[] = []
+                        const body = `${whats.title} ${whats.body}`.toLowerCase()
+                        const push = (t: string) => { if (!tips.includes(t)) tips.push(t) }
+                        if (/tabs?|browser|attention/.test(lower+body)) {
+                          push('Close extra tabs before starting')
+                          push('Park links in a later window')
+                          push('Use one‑tab full‑screen mode')
+                        }
+                        if (/executive|start|initiat|prioritiz/.test(body)) {
+                          push('Do a 5‑4‑3‑2‑1 countdown')
+                          push('Open the doc and type 1 line')
+                        }
+                        if (/time|blind|planning fallacy|transition/.test(body)) {
+                          push('Set a visible timer 20–30 min')
+                          push('Add +15 min buffer')
+                          push('Run two alarms: wrap‑up + leave')
+                        }
+                        if (/working memory|remember|forget|sequence/.test(body)) {
+                          push('Use a door or desk checklist')
+                          push('Write a one‑sentence recap')
+                        }
+                        if (/rsd|shame|motivation|urgency/.test(body)) {
+                          push('Name it: “time blind, not lazy”')
+                          push('Take a 30‑sec reset')
+                          push('Body‑double for a micro‑win')
+                        }
+                        const howTo = tips.slice(0, 3)
+                        return {
+                          icon: leftBase.emoji,
+                          youMight: { title: youMightTitle, body: youMightBody },
+                          whatsGoingOn: whats,
+                          howTo: howTo.length ? howTo : ['Start with 1 tiny action', 'Make it visible', 'Summarize aloud']
+                        }
+                      })
+                      return <AdhdReasonsThreeCol rows={rows} />
                     })()}
                   </div>
                 </div>
@@ -924,15 +996,19 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
 
 
           {/* Content Sections */}
-          {content.content_sections && content.content_sections.length > 0 && (
+          {content.content_sections && (() => {
+            const visibleSections = content.content_sections.filter((s: any) => !/^\s*sources\s*$/i.test(s.title || ''))
+            if (visibleSections.length === 0) return null
+            return (
             <div className="space-y-4">
-              {content.content_sections.map((section, index) => {
+              {visibleSections.map((section, index) => {
+                // Fixed accent colors per section (order aligned with content)
                 const colorSchemes = [
-                  { bg: 'bg-[#5390d9]/30', hover: 'hover:bg-[#5390d9]/60', border: 'border-[#5390d9]/50', iconBg: 'bg-[#5390d9]/90'},
-                  { bg: 'bg-[#4ea8de]/30', hover: 'hover:bg-[#4ea8de]/60', border: 'border-[#4ea8de]/50', iconBg: 'bg-[#4ea8de]/90' },
-                  { bg: 'bg-[#56cfe1]/30', hover: 'hover:bg-[#56cfe1]/60', border: 'border-[#56cfe1]/50', iconBg: 'bg-[#56cfe1]/90' },
-                  { bg: 'bg-[#64dfdf]/30', hover: 'hover:bg-[#64dfdf]/60', border: 'border-[#64dfdf]/50', iconBg: 'bg-[#64dfdf]/90' },
-                  { bg: 'bg-[#80ffdb]/30', hover: 'hover:bg-[#80ffdb]/60', border: 'border-[#80ffdb]/50', iconBg: 'bg-[#80ffdb]/90' }
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#FDE4CF]', iconBg: 'bg-[#FDE4CF]', textColor: 'text-[#FDE4CF]', panelBg: 'bg-[#FDE4CF]/20' }, // Core Principles
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#B9FBC0]', iconBg: 'bg-[#B9FBC0]', textColor: 'text-[#B9FBC0]', panelBg: 'bg-white' }, // Strategies
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#F1C0E8]', iconBg: 'bg-[#F1C0E8]', textColor: 'text-[#F1C0E8]', panelBg: 'bg-[#F1C0E8]/20' }, // Mindset Shift
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#A3C4F3]', iconBg: 'bg-[#A3C4F3]', textColor: 'text-[#A3C4F3]', panelBg: 'bg-[#A3C4F3]/20' }, // Encouragement
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#B9FBC0]', iconBg: 'bg-[#B9FBC0]', panelBg: 'bg-[#B9FBC0]/20' }, // Sources (fallback)
                 ];
                 
                 const colors = colorSchemes[index % colorSchemes.length];
@@ -940,25 +1016,26 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                 const sectionId = `section-${index}`;
                 const isExpanded = expandedSections[sectionId];
                 
+                
 
 
                 return (
-                  <div key={index} className={`${colors.bg} backdrop-blur-sm rounded-2xl border-2 ${colors.border} transition-all duration-300 group/section`}>
+                  <div key={index} className={`rounded-2xl ${colors.bg} border ${colors.border} transition-all duration-300 group/section`} data-section-id={sectionId}>
                     <button
                       type="button"
                       onClick={(e) => {
                         e.preventDefault();
                         toggleSection(sectionId);
                       }}
-                      className={`w-full p-6 text-left ${colors.hover} rounded-2xl transition-all duration-300 flex items-center justify-between group relative`}
+                      className={`w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group relative`}
                       title={isExpanded ? "Close section" : "Open section"}
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`p-2.5 ${colors.iconBg} rounded-xl flex-shrink-0 transition-transform duration-300 ${isExpanded ? 'scale-110' : 'group-hover:scale-105'} shadow-sm`}>
-                          <IconComponent className="h-6 w-6 text-gray-900" />
+                        <div className={`p-2 ${colors.iconBg} rounded-lg flex-shrink-0`}>
+                          <IconComponent className="h-5 w-5 text-gray-900" />
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                          <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-0.5">
                             <div dangerouslySetInnerHTML={{ 
                               __html: section.title
                                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -966,36 +1043,30 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                 .replace(/_(.*?)_/g, '<em>$1</em>')
                             }} />
                           </h3>
-                          {!isExpanded && (
-                            <p className="text-sm text-gray-600 group-hover/section:text-gray-900 transition-colors">
-                              {/* Simple, ADHD‑friendly subtitles using the section title */}
-                              {(() => {
-                                const t = section.title.toLowerCase()
-                                if (t.includes('core principles')) return 'The few big ideas to keep you steady when your brain spirals'
-                                if (t.includes('strategies')) return 'Tiny, do‑able moves to get this task started now'
-                                if (t.includes('mindset')) return 'Gentle reframes that lower pressure and unlock action'
-                                if (t.includes('encouragement')) return 'A quick pep talk to take with you when it’s tough'
-                                if (t.includes('tools')) return 'Practical helpers you can grab fast when you need them'
-                                if (t.includes('examples')) return 'Real‑life patterns and how people shift them'
-                                if (t.includes('checklist')) return 'A simple list so your brain doesn’t have to remember it all'
-                                return 'Open for a quick, plain‑language guide to help you move forward'
-                              })()}
-                            </p>
-                          )}
+                          <p className="text-sm text-gray-700">{getSectionSubtitle(section.title)}</p>
                         </div>
                       </div>
                       {isExpanded ? (
-                        <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
+                        <Minus className={`h-5 w-5 text-black flex-shrink-0`} />
                       ) : (
-                        <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
+                        <Plus className={`h-5 w-5 text-black flex-shrink-0`} />
                       )}
                     </button>
                     
                     {isExpanded && (
-                      <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
-                        {/* Section content */}
-                        {section.content && section.content.length > 0 && (
-                          <div className="space-y-4 mb-4 relative before:absolute before:left-3 before:top-0 before:bottom-0 before:w-px before:bg-gray-200">
+                      <div className={`px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t ${colors.border} ${colors.panelBg} rounded-b-2xl`}>
+                         {section.content && section.content.length > 0 && (
+                           /^\s*core principles\s*$/i.test(section.title || '') ? (
+                             (() => {
+                               const items = (section.content as string[]).map((line: string) => {
+                                 const m = line.match(/^\s*-\s*(?:([\p{Extended_Pictographic}\u2600-\u27BF])\s*)?\*\*(.*?)\*\*[:：]?\s*(.*)$/u)
+                                 if (m) return { icon: m[1] || '⭐', title: m[2].slice(0, 48), desc: m[3], try: 'Set a visible 20–30 min timer' }
+                                 return { icon: '⭐', title: line.replace(/^\s*-\s*/, '').slice(0, 48), desc: undefined, try: 'Do one tiny action to start' }
+                               })
+                               return <CorePrinciplesCondensed items={items} />
+                             })()
+                           ) : (
+                          <div className="space-y-4 mb-4 pt-2">
                             {(() => {
                               const groupedContent: Array<{type: 'quote', items: string[]} | {type: 'bullet', item: string}> = [];
                               let currentQuoteGroup: string[] = [];
@@ -1024,8 +1095,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                 if (group.type === 'quote') {
                                   // Render grouped quotes in one box
                                   return (
-                                    <div key={groupIndex} className={`border-l-4 ${colors.border} ml-6 pl-4 py-3 ${colors.bg.replace('/40', '/10')} rounded-lg space-y-2 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 hover:shadow-sm transition-shadow group/quote`}>
-                                      <div className={`absolute -left-[1.4rem] top-1/2 -translate-y-1/2 w-3 h-3 ${colors.iconBg} rounded-full transition-transform group-hover/quote:scale-110`} />
+                                    <div key={groupIndex} className={`border-l-4 ${colors.border} ml-6 pl-4 py-3 ${colors.bg.replace('/40', '/10')} rounded-lg space-y-2 hover:shadow-sm transition-shadow group/quote`}>
                                       {group.items.map((item, itemIndex) => (
                                         <div key={itemIndex} className="text-gray-900"
                                              dangerouslySetInnerHTML={{ 
@@ -1042,9 +1112,9 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                 } else {
                                   // Regular bullet points
                                   return (
-                                    <div key={groupIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
-                                      <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform">•</span>
-                                      <div className="text-gray-900 pt-0.5 py-1"
+                                    <div key={groupIndex} className="flex items-baseline gap-3 ml-6 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors mt-1">
+                                      <span className="text-gray-900 flex-shrink-0 mt-0.5 text-lg group-hover/bullet:scale-110 transition-transform">•</span>
+                                      <div className="text-gray-900 py-1"
                                            dangerouslySetInnerHTML={{ 
                                              __html: group.item.replace(/^-\s*(\d+\.\s*)?/, '')
                                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -1057,8 +1127,9 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                 }
                               });
                             })()}
-                          </div>
-                        )}
+                           </div>
+                           )
+                         )}
                         
                         {/* Subsections */}
                         {section.subsections && section.subsections.length > 0 && (
@@ -1085,14 +1156,14 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                               const subColors = colorRotation[subIndex % colorRotation.length];
                               
                               return (
-                                <div key={subIndex} className={`${subColors.bg.replace('/90', '/20')} backdrop-blur-sm rounded-xl border ${subColors.border.replace('/50', '/30')} transition-all duration-300`}>
+                                <div key={subIndex} className={`rounded-xl border ${subColors.border.replace('/30','/40')} transition-all duration-300 overflow-hidden`} data-section-id={subsectionId}>
                                   <button
                                     type="button"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       toggleSection(subsectionId);
                                     }}
-                                    className={`w-full p-4 text-left ${subColors.hover} rounded-xl transition-all duration-300 flex items-center justify-between group`}
+                                    className={`w-full p-4 text-left ${subColors.bg} ${subColors.hover} transition-all duration-300 flex items-center justify-between group`}
                                     title={isSubExpanded ? "Close section" : "Open section"}
                                   >
                                     <div className="flex items-center gap-2">
@@ -1109,19 +1180,19 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                       </h4>
                                     </div>
                                     {isSubExpanded ? (
-                                      <Minus className={`h-4 w-4 ${subColors.textColor} flex-shrink-0 opacity-70`} />
+                                      <Minus className={`h-4 w-4 text-black flex-shrink-0`} />
                                     ) : (
-                                      <Plus className={`h-4 w-4 ${subColors.textColor} flex-shrink-0 opacity-70`} />
+                                      <Plus className={`h-4 w-4 text-black flex-shrink-0`} />
                                     )}
                                   </button>
                                   
                                   {isSubExpanded && subsection.content && subsection.content.length > 0 && (
-                                    <div className="px-4 pb-4 animate-in slide-in-from-top duration-300">
-                                      <div className="space-y-2">
+                                    <div className={`px-4 pb-4 animate-in slide-in-from-top duration-300 ${subColors.bg.replace('/80','/40').replace('/90','/40')} ${subColors.border.replace('/30','/30')} rounded-b-xl` }>
+                                      <div className="space-y-2 mt-2">
                                         {subsection.content.map((item, itemIndex) => (
-                                          <div key={itemIndex} className="flex items-start gap-2">
-                                            <span className={`${subColors.textColor} mt-1 flex-shrink-0 opacity-80`}>•</span>
-                                            <div className={`${subColors.textColor} opacity-90`}
+                                          <div key={itemIndex} className="flex items-baseline gap-2">
+                                            <span className={`text-gray-800 mt-0.5 flex-shrink-0 opacity-80`}>•</span>
+                                            <div className={`text-gray-800 opacity-90`}
                                                  dangerouslySetInnerHTML={{ 
                                                    __html: item.replace(/^-\s*(\d+\.\s*)?/, '')
                                                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -1144,40 +1215,40 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                   </div>
                 )
               })}
-            </div>
-          )}
+            </div>)
+          })()}
 
           {/* Sources Section - Positioned right after content sections */}
           {sources && sources.length > 0 && (
-            <div className="space-y-4 mt-8">
-              <div className="relative">
-                <Button
-                  onClick={() => toggleSection('sources')}
-                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-2xl border-2 
-                            bg-[#f1e4f3]/30 hover:bg-[#f1e4f3]/60 border-[#f1e4f3]/50 
-                            transition-colors min-h-[75px] touch-manipulation"
-                  variant="ghost"
-                  size="lg"
+            <div className="space-y-4 mt-4">
+              <div className="rounded-2xl bg-white border border-[#D9D9FF] transition-all duration-300" data-section-id="sources">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleSection('sources');
+                  }}
+                  className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group relative"
+                  title={expandedSections['sources'] ? "Close section" : "Open section"}
                 >
-                  <div className="bg-[#f1e4f3]/90 rounded-full p-3 flex-shrink-0">
-                    <BookOpen className="h-5 w-5 text-gray-900" />
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 bg-[#D9D9FF] rounded-lg flex-shrink-0">
+                      <BookOpen className="h-5 w-5 text-gray-900" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-0.5">Sources</h3>
+                      <p className="text-sm text-gray-700">Explore the books, guides, and research that shaped this page</p>
+                    </div>
                   </div>
-                  <div className="flex-1 text-left min-w-0">
-                    <h3 className="text-sm sm:text-lg font-bold text-gray-900 break-words">
-                      Sources ({sources.length} sources)
-                    </h3>
-                  </div>
-                  <div className="flex-shrink-0">
-                    {expandedSections['sources'] ? (
-                      <Minus className="h-6 w-6 text-gray-500" />
-                    ) : (
-                      <Plus className="h-6 w-6 text-gray-500" />
-                    )}
-                  </div>
-                </Button>
+                  {expandedSections['sources'] ? (
+                    <Minus className="h-5 w-5 text-black flex-shrink-0" />
+                  ) : (
+                    <Plus className="h-5 w-5 text-black flex-shrink-0" />
+                  )}
+                </button>
                 
                 {expandedSections['sources'] && (
-                  <div className="bg-[#f1e4f3]/20 rounded-lg p-4 space-y-4 animate-in slide-in-from-top duration-300 mb-4">
+                  <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#D9D9FF] bg-white">
                     {/* Group sources by category and sort by count (descending) */}
                     {Object.entries(
                       sources.reduce((acc, source) => {
@@ -1225,7 +1296,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                       ) as Array<any & { _descriptions: string[] }>;
                       
                       return (
-                        <div key={category} className="space-y-2">
+                        <div key={category} className="space-y-2 mb-4" data-section-id={`source-category-${category}`}>
                           <Button
                             onClick={() => toggleSection(`source-category-${category}`)}
                             className={`w-full flex items-center justify-between p-4 rounded-xl ${colorScheme.bg} ${colorScheme.hover} border ${colorScheme.border} transition-all duration-300 shadow-sm`}
@@ -1243,7 +1314,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                           </Button>
                           
                           {expandedSections[`source-category-${category}`] && (
-                            <div className={`pl-2 space-y-3 animate-in slide-in-from-top duration-200 ${colorScheme.bg} rounded-lg p-4 border ${colorScheme.border}`}>
+                  <div className={`pl-2 space-y-3 animate-in slide-in-from-top duration-200 bg-white rounded-lg p-4 border ${colorScheme.border}`}>
                               {deduped.map((source, sourceIndex) => (
                                 <div key={sourceIndex} className="border-l-3 border-gray-400/40 pl-4 py-2">
                                   <div className="flex items-start gap-2">
