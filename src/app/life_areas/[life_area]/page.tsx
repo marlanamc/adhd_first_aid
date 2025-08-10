@@ -784,7 +784,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                     <h3 className="text-lg md:text-xl font-bold text-gray-900">
                       Why {content.task_name} is Hard with ADHD
                     </h3>
-                    <p className="text-sm text-gray-700 mt-0.5">Connect what you feel with what’s happening in your brain, no shame, just clarity</p>
+                      <p className="text-sm text-gray-700 mt-0.5">Connect what you feel with what’s happening in your brain, no shame, just clarity</p>
                   </div>
                 </div>
                 {expandedSections['adhd-reasons'] ? (
@@ -889,8 +889,15 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                         if (/overwhelm/.test(t)) return { label: 'Overwhelmed', text, emoji: '🌊' }
                         if (/anxiety|nervous/.test(t)) return { label: 'Anxious to start', text, emoji: '😰' }
                         if (/distract|notification|ping/.test(t)) return { label: 'Started… then wandered off', text: 'Got sidetracked halfway and never came back', emoji: '🔔' }
-                        const label = text.split(/[,.]/)[0].split(/\s+/).slice(0, 4).join(' ')
-                        return { label: label.charAt(0).toUpperCase() + label.slice(1), text, emoji: '✨' }
+                        let label = text.split(/[,.]/)[0].trim()
+                        // Trim trailing connector words to avoid endings like "or"
+                        label = label.replace(/\b(and|or|but|to|for|of|with|without|between|from|on)\s*$/i, '')
+                        // Keep labels readable but not too long
+                        if (label.length > 60) {
+                          label = label.split(/\s+/).slice(0, 8).join(' ')
+                        }
+                        label = label.charAt(0).toUpperCase() + label.slice(1)
+                        return { label, text, emoji: '✨' }
                       }
 
                       const rightEmojiFor = (h?: string | null) => {
@@ -947,8 +954,34 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                           }
                         }
 
+                        // Choose a more specific emoji for certain contexts (e.g., Bills & Money)
+                        let finalEmoji = leftBase.emoji
+                        if (/bill|money/.test(ctx)) {
+                          if (/(bill|statement|mail)/.test(lower)) finalEmoji = '📬'
+                          else if (/(due|deadline|last minute|late|payment|pay)/.test(lower)) finalEmoji = '⏰'
+                          else if (/budget/.test(lower)) finalEmoji = '📊'
+                          else if (/(spreadsheet|numbers|math|calc)/.test(lower)) finalEmoji = '🧮'
+                          else if (/(behind|shame)/.test(lower)) finalEmoji = '😣'
+                        }
+
+                        // Normalize vague headings like "Insight" or "Context matters"
+                        const normalizeHeading = (h?: string | null) => {
+                          const raw = (h || '').trim()
+                          const k = raw.toLowerCase()
+                          if (!raw || k === 'insight' || k.includes('context matters')) {
+                            // Infer a better key term from the description
+                            const d = String(r.desc || '').toLowerCase()
+                            if (/executive/.test(d)) return 'Executive dysfunction'
+                            if (/working memory|remember|forget/.test(d)) return 'Working memory'
+                            if (/time|deadline|late/.test(d)) return 'Time blindness'
+                            if (/shame|rsd|avoid/.test(d)) return 'Shame/avoidance'
+                            if (/attention|focus/.test(d)) return 'Attention/executive load'
+                            return 'Executive dysfunction'
+                          }
+                          return raw
+                        }
                         const whats = {
-                          title: ((r.heading || 'Insight').replace(/[—–-]+\s*$/, '') + ':') as string,
+                          title: (normalizeHeading(r.heading).replace(/[—–-]+\s*$/, '') + ':') as string,
                           body: String(r.desc || '').replace(/^[\s—–-]+/, '')
                         }
                         // Generate concise, verb‑first, unique tips per row
@@ -980,13 +1013,37 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                         }
                         const howTo = tips.slice(0, 3)
                         return {
-                          icon: leftBase.emoji,
+                          icon: finalEmoji,
                           youMight: { title: youMightTitle, body: youMightBody },
                           whatsGoingOn: whats,
                           howTo: howTo.length ? howTo : ['Start with 1 tiny action', 'Make it visible', 'Summarize aloud']
                         }
                       })
-                      return <AdhdReasonsThreeCol rows={rows} />
+
+                      // Ensure unique "You might" titles to avoid duplicate rows after mapping
+                      const ensureUniqueYouMight = (rowsIn: AdhdRow[], originals: string[]): AdhdRow[] => {
+                        const seen = new Set<string>()
+                        return rowsIn.map((r, idx) => {
+                          let title = r.youMight.title
+                          const key = (s: string) => s.toLowerCase().trim()
+                          if (seen.has(key(title))) {
+                            const src = (originals[idx] || '').toLowerCase()
+                            if (/(abandon|stall|give up|stop|within a week)/.test(src)) title = 'Start strong… then stall out'
+                            else if (/freeze/.test(src)) title = 'Freeze the moment you start'
+                            else if (/plan(ning)?(\s+but\s+not\s+doing)?|loop of planning/.test(src)) title = 'Plan it to death, don’t start'
+                            else if (/forget|remember/.test(src)) title = 'Forget what you studied'
+                            else if (/(materials|what comes next|next step)/.test(src)) title = 'Lose track of what’s next'
+                            else if (/(energy|interest).*crash|crash/.test(src)) title = 'Energy dips stop the session'
+                            else if (/tabs?|scroll/.test(src)) title = 'Open one tab, end up with 12'
+                            else title = title + ' — part 2'
+                          }
+                          seen.add(key(title))
+                          return { ...r, youMight: { ...r.youMight, title } }
+                        })
+                      }
+
+                      const dedupedRows = ensureUniqueYouMight(rows, lefts)
+                      return <AdhdReasonsThreeCol rows={dedupedRows} />
                     })()}
                   </div>
                 </div>
@@ -1055,14 +1112,91 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                     
                     {isExpanded && (
                       <div className={`px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t ${colors.border} ${colors.panelBg} rounded-b-2xl`}>
-                         {section.content && section.content.length > 0 && (
+                        {section.content && section.content.length > 0 && (
                            /^\s*core principles\s*$/i.test(section.title || '') ? (
-                             (() => {
-                               const items = (section.content as string[]).map((line: string) => {
-                                 const m = line.match(/^\s*-\s*(?:([\p{Extended_Pictographic}\u2600-\u27BF])\s*)?\*\*(.*?)\*\*[:：]?\s*(.*)$/u)
-                                 if (m) return { icon: m[1] || '⭐', title: m[2].slice(0, 48), desc: m[3], try: 'Set a visible 20–30 min timer' }
-                                 return { icon: '⭐', title: line.replace(/^\s*-\s*/, '').slice(0, 48), desc: undefined, try: 'Do one tiny action to start' }
-                               })
+                           (() => {
+                               const parse = (line: string) => {
+                                 // Split by newline to handle the "Try:" line separately
+                                 const lines = line.split('\n')
+                                 const mainLine = lines[0] || ''
+                                 
+                                 // Extract the last emoji before the title and clean up the corrupted pattern
+                                 // Pattern: "- ✨ **✨ **✨ **✨ **💡 **Title text**: Description"
+                                 const emojiPattern = /([\p{Extended_Pictographic}\u2600-\u27BF])\s*\*\*/gu
+                                 const emojis = [...mainLine.matchAll(emojiPattern)]
+                                 const lastEmoji = emojis.length > 0 ? emojis[emojis.length - 1][1] : ''
+                                 
+                                 // Remove all the emoji-asterisk patterns to get clean text
+                                 let cleanedLine = mainLine
+                                   .replace(/^-\s*/, '') // Remove leading dash
+                                   .replace(/([\p{Extended_Pictographic}\u2600-\u27BF])\s*\*\*/gu, '') // Remove all emoji-** patterns
+                                   .replace(/\*\*:\*\*.*$/g, '') // Remove trailing **:** corruption
+                                   .trim()
+                                 
+                                 // Now parse title and description
+                                 // The format after cleaning should be: "Title text**: Description" or just "Title text: Description"
+                                 const titleDescMatch = cleanedLine.match(/^(.*?)\*?\*?:\s*(.*)$/)
+                                 
+                                 if (titleDescMatch) {
+                                   const title = titleDescMatch[1].replace(/\*+$/, '').trim()
+                                   const desc = titleDescMatch[2].trim()
+                                   return { icon: lastEmoji, title, desc }
+                                 }
+                                 
+                                 // Fallback: treat the whole cleaned line as title
+                                 const title = cleanedLine.replace(/\*+/g, '').trim()
+                                 return { icon: lastEmoji || '', title, desc: '' }
+                               }
+                               const tryCandidates = (title: string, desc: string): string[] => {
+                                 const t = `${title} ${desc}`.toLowerCase()
+                                 const picks: string[] = []
+                                 const add=(s:string)=>{ if(!picks.includes(s)) picks.push(s) }
+                                 if (/time|timer|visible|countdown|pace/.test(t)) { add('Set a visible 20–30 min timer'); add('Use a kitchen timer in view') }
+                                 if (/structure|routine|system|organize|checklist/.test(t)) { add('Write a 3‑step checklist you can reuse'); add('Pin a 1‑page template where you start') }
+                                 if (/energy|fatigue|capacity|rest|break/.test(t)) { add('Add a movement or water break between blocks'); add('Work in two short bursts, then stop') }
+                                 if (/aware|awareness|notice|name|understand|mind/.test(t)) { add('Name the pattern aloud in 1 sentence'); add('Write a one‑line recap at the end') }
+                                 if (/momentum|start|tiny|first step|begin/.test(t)) { add('Do one 60‑second starter action'); add('Open the doc and type one line') }
+                                 if (/distraction|tab|phone|scroll/.test(t)) { add('Park links in a later window'); add('Put phone in another room for 20 min') }
+                                 if (picks.length === 0) { add('Set a visible 20–30 min timer'); add('Do one 60‑second starter action'); add('Write a 3‑step checklist you can reuse') }
+                                 return picks
+                               }
+                               // Pair lines: principle bullet optionally followed by a "- Try:" line
+                               const lines = section.content as string[]
+                               const raw: Array<{icon:string; title:string; desc:string; try?: string}> = []
+                               for (let i = 0; i < lines.length; i++){
+                                 const line = lines[i]
+                                 if (/^\s*-\s*try:/i.test(line)) continue
+                                 const p = parse(line)
+                                 // Lookahead for Try
+                                 const next = lines[i+1]
+                                 const mTry = next && /^\s*-\s*try:\s*(.+)$/i.exec(next)
+                                 const tryLine = mTry ? mTry[1].trim() : undefined
+                                 if (mTry) i++
+                                 raw.push({ icon: p.icon, title: p.title, desc: p.desc, try: tryLine })
+                               }
+                               // Ensure unique emojis across items
+                               const emojiPool = ['✨','🧭','📌','🔁','🌱','🔎','🪄','🧠','🎯','⚡','⏰','💡']
+                               const usedEmojis = new Set<string>()
+                               const pickEmoji = (want?: string) => {
+                                 if (want && !usedEmojis.has(want)) { usedEmojis.add(want); return want }
+                                 const alt = emojiPool.find(e => !usedEmojis.has(e)) || '✨'
+                                 usedEmojis.add(alt)
+                                 return alt
+                               }
+                               // Ensure unique Try lines across items
+                               const usedTries = new Set<string>()
+                               const pickTry = (title: string, desc: string) => {
+                                 const cands = tryCandidates(title, desc)
+                                 const choice = cands.find(c => !usedTries.has(c)) || cands[0]
+                                 usedTries.add(choice)
+                                 return choice
+                               }
+                               const items = raw.map(r => ({
+                                 icon: pickEmoji(r.icon),
+                                 title: r.title.slice(0, 120),
+                                 desc: r.desc,
+                                 try: (() => { const chosen = r.try || pickTry(r.title, r.desc); usedTries.add(chosen); return chosen })()
+                               }))
                                return <CorePrinciplesCondensed items={items} />
                              })()
                            ) : (
@@ -1127,9 +1261,9 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                 }
                               });
                             })()}
-                           </div>
+                          </div>
                            )
-                         )}
+                        )}
                         
                         {/* Subsections */}
                         {section.subsections && section.subsections.length > 0 && (
@@ -1233,18 +1367,18 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                 >
                   <div className="flex items-center gap-4">
                     <div className="p-2 bg-[#D9D9FF] rounded-lg flex-shrink-0">
-                      <BookOpen className="h-5 w-5 text-gray-900" />
-                    </div>
+                    <BookOpen className="h-5 w-5 text-gray-900" />
+                  </div>
                     <div>
                       <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-0.5">Sources</h3>
                       <p className="text-sm text-gray-700">Explore the books, guides, and research that shaped this page</p>
-                    </div>
                   </div>
-                  {expandedSections['sources'] ? (
+                  </div>
+                    {expandedSections['sources'] ? (
                     <Minus className="h-5 w-5 text-black flex-shrink-0" />
-                  ) : (
+                    ) : (
                     <Plus className="h-5 w-5 text-black flex-shrink-0" />
-                  )}
+                    )}
                 </button>
                 
                 {expandedSections['sources'] && (

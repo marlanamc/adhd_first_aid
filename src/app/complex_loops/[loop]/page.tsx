@@ -869,8 +869,22 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                               youMightBody = 'Scroll late; the morning alarm hits hard'
                             }
                           }
+                          const normalizeHeading = (h?: string | null) => {
+                            const raw = (h || '').trim()
+                            const k = raw.toLowerCase()
+                            if (!raw || k === 'insight' || k.includes('context matters')) {
+                              const d = String(r.desc || '').toLowerCase()
+                              if (/executive/.test(d)) return 'Executive dysfunction'
+                              if (/working memory|remember|forget/.test(d)) return 'Working memory'
+                              if (/time|deadline|late/.test(d)) return 'Time blindness'
+                              if (/shame|rsd|avoid/.test(d)) return 'Shame/avoidance'
+                              if (/attention|focus/.test(d)) return 'Attention/executive load'
+                              return 'Executive dysfunction'
+                            }
+                            return raw
+                          }
                           const whats = {
-                            title: ((r.heading || 'Insight').replace(/[—–-]+\s*$/, '') + ':') as string,
+                            title: (normalizeHeading(r.heading).replace(/[—–-]+\s*$/, '') + ':') as string,
                             body: String(r.desc || '').replace(/^[\s—–-]+/, '')
                           }
                           const tips: string[] = []
@@ -907,7 +921,31 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                             howTo: howTo.length ? howTo : ['Start with 1 tiny action', 'Make it visible', 'Summarize aloud']
                           }
                         })
-                        return <AdhdReasonsThreeCol rows={rows} />
+
+                        // Ensure unique "You might" titles to avoid duplicate rows after mapping
+                        const ensureUniqueYouMight = (rowsIn: AdhdRow[], originals: string[]): AdhdRow[] => {
+                          const seen = new Set<string>()
+                          return rowsIn.map((r, idx) => {
+                            let title = r.youMight.title
+                            const key = (s: string) => s.toLowerCase().trim()
+                            if (seen.has(key(title))) {
+                              const src = (originals[idx] || '').toLowerCase()
+                              if (/(abandon|stall|give up|stop|within a week)/.test(src)) title = 'Start strong… then stall out'
+                              else if (/freeze/.test(src)) title = 'Freeze the moment you start'
+                              else if (/plan(ning)?(\s+but\s+not\s+doing)?|loop of planning/.test(src)) title = 'Plan it to death, don’t start'
+                              else if (/forget|remember/.test(src)) title = 'Lose your place'
+                              else if (/(materials|what comes next|next step)/.test(src)) title = 'Lose track of what’s next'
+                              else if (/(energy|interest).*crash|crash/.test(src)) title = 'Energy dips stop the session'
+                              else if (/tabs?|scroll/.test(src)) title = 'Open one tab, end up with 12'
+                              else title = title + ' — part 2'
+                            }
+                            seen.add(key(title))
+                            return { ...r, youMight: { ...r.youMight, title } }
+                          })
+                        }
+
+                        const dedupedRows = ensureUniqueYouMight(rows, lefts)
+                        return <AdhdReasonsThreeCol rows={dedupedRows} />
                       })()}
                     </div>
                   </div>
@@ -958,11 +996,84 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                     {isExpanded && (
                       <div className={`px-6 pb-6 animate-in slide-in-from-top duration-300 border-t ${colors.border} ${colors.panelBg} rounded-b-2xl`}>
                         {section.content && section.content.length > 0 && (
-                          <div className="space-y-4 mb-4 pt-2">
+                          /^\s*core principles\s*$/i.test(section.title || '') ? (
+                            (() => {
+                              // Mirror life_areas formatting for Core Principles with corruption cleanup
+                              const parse = (line: string) => {
+                                const lines = (line || '').split('\n')
+                                const mainLine = lines[0] || ''
+                                // Capture the last emoji before title if multiple appear
+                                const emojiPattern = /([\p{Extended_Pictographic}\u2600-\u27BF])\s*\*\*/gu
+                                const emojis = [...mainLine.matchAll(emojiPattern)]
+                                const lastEmoji = emojis.length > 0 ? emojis[emojis.length - 1][1] : ''
+                                // Remove all emoji-** fragments and trailing **:** corruption
+                                let cleanedLine = mainLine
+                                  .replace(/^\s*-\s*/, '')
+                                  .replace(/([\p{Extended_Pictographic}\u2600-\u27BF])\s*\*\*/gu, '')
+                                  .replace(/\*\*:\*\*.*$/g, '')
+                                  .trim()
+                                // Parse title and desc: "Title**: Desc" or "Title: Desc"
+                                const m = cleanedLine.match(/^(.*?)\*?\*?:\s*(.*)$/)
+                                if (m){
+                                  const title = m[1]
+                                    .replace(/^[\p{Extended_Pictographic}\u2600-\u27BF\uFE0F\u200D\s]+/u,'')
+                                    .replace(/[\*:]+$/g,'')
+                                    .replace(/\*/g,'')
+                                    .trim()
+                                  const desc = m[2]
+                                    .replace(/\s*-\s*Try:.*$/i,'')
+                                    .replace(/[\*:]+$/g,'')
+                                    .replace(/\*/g,'')
+                                    .trim()
+                                  return { icon: lastEmoji || '', title, desc }
+                                }
+                                // Fallback: treat the whole cleaned line as title
+                                const fallbackTitle = cleanedLine.replace(/\*+/g,'').trim()
+                                return { icon: lastEmoji || '', title: fallbackTitle, desc: '' }
+                              }
+                              const tryCandidates = (title: string, desc: string): string[] => {
+                                const t = `${title} ${desc}`.toLowerCase()
+                                const picks: string[] = []
+                                const add=(s:string)=>{ if(!picks.includes(s)) picks.push(s) }
+                                if (/time|timer|visible|countdown|pace/.test(t)) { add('Set a visible 20–30 min timer'); add('Use a kitchen timer in view') }
+                                if (/structure|routine|system|organize|checklist/.test(t)) { add('Write a 3‑step checklist you can reuse'); add('Pin a 1‑page template where you start') }
+                                if (/energy|fatigue|capacity|rest|break/.test(t)) { add('Add a movement or water break between blocks'); add('Work in two short bursts, then stop') }
+                                if (/aware|awareness|notice|name|understand|mind/.test(t)) { add('Name the pattern aloud in 1 sentence'); add('Write a one‑line recap at the end') }
+                                if (/momentum|start|tiny|first step|begin/.test(t)) { add('Do one 60‑second starter action'); add('Open the doc and type one line') }
+                                if (picks.length === 0) { add('Set a visible 20–30 min timer'); add('Do one 60‑second starter action'); add('Write a 3‑step checklist you can reuse') }
+                                return picks
+                              }
+                              const pool = ['✨','🧭','📌','🔁','🌱','🔎','🪄','🧠','🎯','⚡','⏰','💡']
+                              const usedEmojis = new Set<string>()
+                              const pickEmoji = (want?: string) => {
+                                if (want && !usedEmojis.has(want)) { usedEmojis.add(want); return want }
+                                const alt = pool.find(e => !usedEmojis.has(e)) || '✨'
+                                usedEmojis.add(alt)
+                                return alt
+                              }
+                              const usedTries = new Set<string>()
+                              const pickTry = (title: string, desc: string) => {
+                                const cands = tryCandidates(title, desc)
+                                const choice = cands.find(c => !usedTries.has(c)) || cands[0]
+                                usedTries.add(choice)
+                                return choice
+                              }
+                              const raw = (section.content as string[])
+                                .filter(l => !/^\s*-\s*try:/i.test(l))
+                                .map(parse)
+                              const items = raw.map(r => ({
+                                icon: pickEmoji(r.icon),
+                                title: r.title.slice(0, 120),
+                                desc: r.desc,
+                                try: pickTry(r.title, r.desc)
+                              }))
+                              return <CorePrinciplesCondensed items={items} />
+                            })()
+                          ) : (
+                            <div className="space-y-4 mb-4 pt-2">
                             {(() => {
                               const groupedContent: Array<{type: 'quote', items: string[]} | {type: 'bullet', item: string}> = [];
                               let currentQuoteGroup: string[] = [];
-                              
                               section.content.forEach((item) => {
                                 if (item.startsWith('> ')) {
                                   currentQuoteGroup.push(item);
@@ -974,45 +1085,30 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                                   groupedContent.push({ type: 'bullet', item });
                                 }
                               });
-                              
-                              if (currentQuoteGroup.length > 0) {
-                                groupedContent.push({ type: 'quote', items: currentQuoteGroup });
-                              }
-                              
+                                if (currentQuoteGroup.length > 0) groupedContent.push({ type: 'quote', items: currentQuoteGroup });
                               return groupedContent.map((group, groupIndex) => {
                                 if (group.type === 'quote') {
                                   return (
-                                    <div key={groupIndex} className={`border-l-4 ${colors.border} ml-6 pl-4 py-3 ${colors.panelBg.replace('/20','/10')} rounded-lg space-y-2 hover:shadow-sm transition-shadow group/quote`}>
+                                      <div key={groupIndex} className={`border-l-4 ${colors.border} ml-6 pl-4 py-3 ${colors.panelBg.replace('/20','/10')} rounded-lg space-y-2 hover:shadow-sm transition-shadow group/quote`}>
                                       {group.items.map((item, itemIndex) => (
-                                        <div key={itemIndex} className="text-gray-900"
-                                             dangerouslySetInnerHTML={{ 
-                                               __html: item.replace('> ', '')
-                                                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                                 .replace(/_(.*?)_/g, '<em>$1</em>')
-                                             }} 
-                                        />
+                                          <div key={itemIndex} className="text-gray-900" dangerouslySetInnerHTML={{ 
+                                            __html: item.replace('> ', '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/_(.*?)_/g, '<em>$1</em>') }} />
                                       ))}
                                     </div>
                                   )
                                 } else {
+                                    const html = group.item.replace(/^[\-]\s*/, '').replace(/\*\*([\p{Extended_Pictographic}\u2600-\u27BF\uFE0F\u200D\s]+)([^*]+)\*\*/u, '**$2**').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/_(.*?)_/g, '<em>$1</em>')
                                   return (
-                                    <div key={groupIndex} className="flex items-baseline gap-3 ml-6 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors mt-1">
-                                      <span className="text-gray-900 flex-shrink-0 mt-0.5 text-lg group-hover/bullet:scale-110 transition-transform">•</span>
-                                      <div className="text-gray-900 py-1"
-                                           dangerouslySetInnerHTML={{ 
-                                             __html: group.item.replace(/^[-]\s*/, '')
-                                               .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                               .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                               .replace(/_(.*?)_/g, '<em>$1</em>')
-                                           }} 
-                                      />
+                                      <div key={groupIndex} className="flex items-baseline gap-3 ml-6 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors mt-1">
+                                        <span className="text-gray-900 flex-shrink-0 mt-0.5 text-lg group-hover/bullet:scale-110 transition-transform">•</span>
+                                        <div className="text-gray-900 py-1" dangerouslySetInnerHTML={{ __html: html }} />
                                     </div>
                                   )
                                 }
-                              });
+                                })
                             })()}
                           </div>
+                          )
                         )}
                         
                         {/* Subsections */}
