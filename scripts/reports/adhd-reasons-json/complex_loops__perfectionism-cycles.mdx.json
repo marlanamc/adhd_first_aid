@@ -1,0 +1,56 @@
+{
+  "page": "complex_loops/perfectionism-cycles.mdx",
+  "rows": [
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Avoid starting because you can't do it…"
+      },
+      "whatsGoingOn": {
+        "title": "All-or-nothing thinking:",
+        "body": "tells you if it's not perfect, it's worthless"
+      }
+    },
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Spend hours perfecting something simple"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes planning, prioritizing, and sequencing harder"
+      }
+    },
+    {
+      "icon": "😣",
+      "youMight": {
+        "title": "Keep tweaking instead of finishing"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "make imperfection feel like failure"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Trash what you started because it's not…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "leads to underestimating how long perfectionist spirals take"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Beat yourself up for being “behind"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "Feel shame for not living up to your potential"
+      }
+    }
+  ],
+  "notes": []
+}

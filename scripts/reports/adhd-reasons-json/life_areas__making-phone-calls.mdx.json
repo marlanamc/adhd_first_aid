@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/making-phone-calls.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Keep meaning to call but never do"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "turns dialing into a 12-step task"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Forget what you needed to say once…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "means you avoid calling until it's \"too late\""
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Get overwhelmed by voicemails or scheduling"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes boring tasks hard to initiate"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Freeze when you hear \"please leave a…"
+      },
+      "whatsGoingOn": {
+        "title": "Rejection sensitivity and phone anxiety:",
+        "body": "create emotional overload"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Feel judged, awkward, or unsure how to…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "make it hard to keep your thoughts straight"
+      }
+    }
+  ],
+  "notes": []
+}

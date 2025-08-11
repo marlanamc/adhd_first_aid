@@ -1,0 +1,66 @@
+{
+  "page": "life_areas/creative-projects.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Dream big but never start"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes planning, sequencing, and finishing hard"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Start everything but finish nothing"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "kills pacing and underestimates effort"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Bounce between ideas without structure"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "block momentum"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Lose interest once the “fun part” fades"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "make you forget what's next"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Get overwhelmed by all the steps required…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "**Hyperfocus** burns you out before you can finish"
+      }
+    },
+    {
+      "icon": "🎯",
+      "youMight": {
+        "title": "Open your laptop and freeze"
+      },
+      "whatsGoingOn": {
+        "title": "Fear of doing it \"wrong\":",
+        "body": "keeps you from doing it at all"
+      }
+    }
+  ],
+  "notes": []
+}

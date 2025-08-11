@@ -815,36 +815,47 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
 
                       const parseRight = (s?: string) => {
                         if (!s) return { emoji: null as string | null, heading: null as string | null, desc: '' }
-                        const emojiMatch = s.match(/^(\p{Extended_Pictographic})\s+(.+)/u) || s.match(/^([\u{2300}-\u{23FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F300}-\u{1FAFF}])\s+(.+)/u)
-                        let rest = s; let emoji: string | null = null
+                        // Capture any emoji sequence (with variation selectors/ZWJ) at the start
+                        // Broad emoji matcher without Unicode property to satisfy linter
+                        let rest = s.replace(/^\s*[-•]\s*/, '')
+                        const emojiMatch = rest.match(/^([\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2300-\u23FF\u2600-\u26FF\u2700-\u27BF])\s+(.+)/)
+                        let emoji: string | null = null
                         if (emojiMatch) { emoji = emojiMatch[1]; rest = emojiMatch[2] }
                         rest = sanitize(rest.replace(/^[\uFFFD\s]+/, ''))
                         const boldMatch = rest.match(/^\*\*(.*?)\*\*[:：]?\s*(.*)?$/)
-                        if (boldMatch) return { emoji, heading: boldMatch[1], desc: boldMatch[2] || '' }
-                        return { emoji, heading: null, desc: rest }
+                        if (boldMatch) {
+                          let body = (boldMatch[2] || '').replace(/^\s*[-•]\s*/, '')
+                          body = body.replace(/^([\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2300-\u23FF\u2600-\u26FF\u2700-\u27BF])\s*/, '')
+                          body = body.replace(/^\*\*.*?\*\*[:：]?\s*/, '')
+                          return { emoji, heading: boldMatch[1], desc: body }
+                        }
+                        // If bold not found, attempt to strip any residual heading pattern from desc
+                        const cleaned = rest.replace(/^\s*[-•]\s*/, '').replace(/^([\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2300-\u23FF\u2600-\u26FF\u2700-\u27BF])\s*/, '').replace(/^\s*\*\*.*?\*\*[:：]?\s*/, '')
+                        return { emoji, heading: null, desc: cleaned }
                       }
 
                       const rights = whatsReallyGoingOnItems
                         .map(parseRight)
                         .filter(r => (r.heading && r.heading.trim()) || (r.desc && r.desc.trim()))
-
-                      const seemsRight = (text: string) => /^(\p{Extended_Pictographic}\s+)/u.test(text) || /^\*\*.+?\*\*/.test(text) || /(executive dysfunction|time blindness|working memory|motivation|shame)/i.test(text)
-                      const manualRights: Record<number, { emoji: string | null; heading: string | null; desc: string }> = {}
-                      const lefts = rawLefts.map((left, idx) => {
-                        if (!seemsRight(left)) return left
-                        const r = parseRight(left)
-                        manualRights[idx] = r
-                        let candidate = sanitize(left)
-                          .replace(/^(\p{Extended_Pictographic}\s*)/u, '')
-                          .replace(/\*\*[^*]+\*\*/g, '')
-                          .replace(/^[—:\-\s]+/, '')
-                          .trim()
-                        if (!candidate) {
-                          candidate = r.heading ? `${r.heading} shows up in your day-to-day` : 'Notice this pattern popping up'
+                      // Parse left bullets: "- [emoji] **Title** — subtitle"
+                      const parseLeftItem = (txt: string): { emoji?: string; title: string; body?: string } => {
+                        let t = txt
+                        t = t.replace(/^\s*[−—–-•]\s*/, '')
+                        const em = t.match(/^([\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2300-\u23FF\u2600-\u26FF\u2700-\u27BF])\s+(.+)/)
+                        let emoji: string | undefined
+                        if (em) { emoji = em[1]; t = em[2] }
+                        const m = t.match(/^\*\*(.*?)\*\*\s*(?:[—–-]\s*(.*))?$/)
+                        if (m) {
+                          const title = (m[1] || '').trim()
+                          const body = (m[2] || '').trim() || undefined
+                          return { emoji, title, body }
                         }
-                        candidate = candidate.charAt(0).toUpperCase() + candidate.slice(1)
-                        return candidate
-                      })
+                        const parts = t.split(/[—–-]\s+/, 2)
+                        const title = (parts[0] || '').trim()
+                        const body = (parts[1] || '').trim() || undefined
+                        return { emoji, title: title || t.trim(), body }
+                      }
+                      const leftParsed = rawLefts.map(parseLeftItem)
 
                       const guessRight = (left: string): { emoji: string; heading: string; desc: string } => {
                         const t = left.toLowerCase()
@@ -869,35 +880,18 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                         return { emoji: '💡', heading: 'Context matters', desc: 'your brain is adapting to stressors; gentle supports help shift the pattern' }
                       }
 
-                      const pairs = lefts.map((left, i) => ({ left, right: manualRights[i] || rights[i] || guessRight(left) }))
+                      const pairs = leftParsed.map((left, i) => ({ left, right: rights[i] || guessRight(`${left.title} ${left.body || ''}`) }))
 
 
-                      // Transform into reusable grid items
-                      const toLeftMicro = (text: string) => {
-                        const t = text.toLowerCase()
-                        if (/(struggle|hard|difficult)\s+to\s+start|getting\s+started/.test(t)) return { label: 'Struggle to start', text, emoji: '🧊' }
-                        if (/hyperfocus/.test(t)) return { label: 'Hyperfocus for hours', text, emoji: '🌀' }
-                        if (/(running|always).*late|late\b/.test(t)) return { label: 'Running late', text, emoji: '⏱️' }
-                        if (/guilt|shame/.test(t)) return { label: 'Guilt or shame', text, emoji: '😔' }
-                        if (/re-?read/.test(t)) return { label: 'Lost in the page', text: 'Re-read the same page and don’t remember it later', emoji: '📖' }
-                        if (/freeze/.test(t) || (/plan/.test(t) && /start/.test(t))) return { label: 'Freeze at the start', text: 'Plan, then freeze at start', emoji: '🚫' }
-                        if (/tabs?|browser|doomscroll|scroll|youtube|tiktok|twitter|instagram|reddit/.test(t)) return { label: 'Stuck in tabs', text: 'Browser tabs and feeds pull you away', emoji: '💻' }
-                        if (/lose\s*track|what\s*comes\s*next|materials/.test(t)) return { label: 'Misplaced next step', text: 'Lose track of materials/next step', emoji: '🗂️' }
-                        if (/forget/.test(t)) return { label: 'Forget what you studied', text: 'Forget what you already studied and start over again', emoji: '🧠' }
-                        if (/energy|interest|crash/.test(t)) return { label: 'Energy crash', text: 'Crash when energy/interest dips', emoji: '🔋' }
-                        if (/plan(ning)?\s+but\s+not\s+doing|loop of planning/.test(t)) return { label: 'Planning loop', text: 'Get caught in a loop of planning, but not doing', emoji: '📝' }
-                        if (/overwhelm/.test(t)) return { label: 'Overwhelmed', text, emoji: '🌊' }
-                        if (/anxiety|nervous/.test(t)) return { label: 'Anxious to start', text, emoji: '😰' }
-                        if (/distract|notification|ping/.test(t)) return { label: 'Started… then wandered off', text: 'Got sidetracked halfway and never came back', emoji: '🔔' }
-                        let label = text.split(/[,.]/)[0].trim()
-                        // Trim trailing connector words to avoid endings like "or"
-                        label = label.replace(/\b(and|or|but|to|for|of|with|without|between|from|on)\s*$/i, '')
-                        // Keep labels readable but not too long
-                        if (label.length > 60) {
-                          label = label.split(/\s+/).slice(0, 8).join(' ')
-                        }
-                        label = label.charAt(0).toUpperCase() + label.slice(1)
-                        return { label, text, emoji: '✨' }
+                      const emojiFromHeading = (h?: string|null) => {
+                        const k = (h||'').toLowerCase()
+                        if (k.includes('executive')) return '🧩'
+                        if (k.includes('working memory')) return '🧠'
+                        if (k.includes('time')) return '⏰'
+                        if (k.includes('attention')) return '🎯'
+                        if (k.includes('shame') || k.includes('rsd')) return '😔'
+                        if (k.includes('dopamine') || k.includes('motivation')) return '⚡'
+                        return '✨'
                       }
 
                       const rightEmojiFor = (h?: string | null) => {
@@ -911,58 +905,12 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                         return '💡'
                       }
 
-                      const rows: AdhdRow[] = pairs.map((pair, i) => {
+                      const rows: AdhdRow[] = pairs.map((pair) => {
                         const r = typeof pair.right === 'string' ? parseRight(pair.right) : pair.right
-                        // Rewrite the left column into a short, lived‑experience snapshot
-                        const leftBase = toLeftMicro(pair.left)
-                        const lower = (leftBase.text || '').toLowerCase()
-                        let youMightTitle = leftBase.label
-                        let youMightBody: string | undefined = undefined
-                        if (/tabs?|browser|doomscroll|scroll|youtube|tiktok|twitter|instagram|reddit/.test(lower)) {
-                          youMightTitle = 'Open one tab, end up with 12'
-                          youMightBody = 'Lose track of your original task'
-                        } else if (/freeze|can'?t start|hard to start|struggle to start/.test(lower)) {
-                          youMightTitle = 'Open your laptop… and just stare'
-                          youMightBody = 'Everything feels too big to begin'
-                        } else if (/hyperfocus/.test(lower)) {
-                          youMightTitle = 'Look up and it’s 4 hours later'
-                          youMightBody = 'Lost the sense of time passing'
-                        } else if (/(running|always).*late|late\b/.test(lower)) {
-                          youMightTitle = 'Leave early, still arrive late'
-                          youMightBody = 'Pre‑leave steps stole the buffer'
-                        } else if (/guilt|shame|behind/.test(lower)) {
-                          youMightTitle = 'Beat yourself up for being “behind”'
-                          youMightBody = 'Motivation drops when shame spikes'
-                        }
-
-                        // Context-aware examples to make rows instantly relatable
-                        const ctx = (content.task_name || '').toLowerCase()
-                        // Work Tasks: avoid school/study phrasing and tune to project flow
-                        if (/work tasks/.test(ctx) && /(forget|remember)/.test(lower)) {
-                          youMightTitle = 'Lose your place in the project'
-                          youMightBody = 'Reopen a doc and can’t remember what’s next'
-                        }
-                        if (!youMightBody) {
-                          if (/work|tasks|emails|boss/.test(ctx)) {
-                            youMightBody = 'Put off the project; now your boss pings “status?”'
-                          } else if (/exam|study|classwork/.test(ctx)) {
-                            youMightBody = 'Put off studying; test is tomorrow'
-                          } else if (/planning|schedule/.test(ctx)) {
-                            youMightBody = 'Double‑book meetings without noticing'
-                          } else if (/focus|time/.test(ctx)) {
-                            youMightBody = 'Lose the time block and miss the next step'
-                          }
-                        }
-
-                        // Choose a more specific emoji for certain contexts (e.g., Bills & Money)
-                        let finalEmoji = leftBase.emoji
-                        if (/bill|money/.test(ctx)) {
-                          if (/(bill|statement|mail)/.test(lower)) finalEmoji = '📬'
-                          else if (/(due|deadline|last minute|late|payment|pay)/.test(lower)) finalEmoji = '⏰'
-                          else if (/budget/.test(lower)) finalEmoji = '📊'
-                          else if (/(spreadsheet|numbers|math|calc)/.test(lower)) finalEmoji = '🧮'
-                          else if (/(behind|shame)/.test(lower)) finalEmoji = '😣'
-                        }
+                        const left = pair.left as { emoji?: string; title: string; body?: string }
+                        const youMightTitle = left.title
+                        const youMightBody = left.body
+                        const finalEmoji = left.emoji || r.emoji || emojiFromHeading(r.heading)
 
                         // Normalize vague headings like "Insight" or "Context matters"
                         const normalizeHeading = (h?: string | null) => {
@@ -980,15 +928,22 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                           }
                           return raw
                         }
-                        const whats = {
-                          title: (normalizeHeading(r.heading).replace(/[—–-]+\s*$/, '') + ':') as string,
-                          body: String(r.desc || '').replace(/^[\s—–-]+/, '')
-                        }
+                         // Title should use the bolded label if present; otherwise infer
+                         const inferred = normalizeHeading(r.heading)
+                         const whats = {
+                           title: (inferred || '').replace(/[—–-]+\s*$/, ''),
+                           body: String(r.desc || '')
+                             .replace(/^([\p{Extended_Pictographic}\uFE0F\u200D]|\s)+/u, '')
+                             .replace(/^\*\*.*?\*\*[:：]?\s*/, '')
+                             .replace(/\s+/g, ' ')
+                             .trim(),
+                           icon: r.emoji || undefined
+                         }
                         // Generate concise, verb‑first, unique tips per row
                         const tips: string[] = []
                         const body = `${whats.title} ${whats.body}`.toLowerCase()
                         const push = (t: string) => { if (!tips.includes(t)) tips.push(t) }
-                        if (/tabs?|browser|attention/.test(lower+body)) {
+                        if (/tabs?|browser|attention/.test(body)) {
                           push('Close extra tabs before starting')
                           push('Park links in a later window')
                           push('Use one‑tab full‑screen mode')
@@ -1012,12 +967,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                           push('Body‑double for a micro‑win')
                         }
                         const howTo = tips.slice(0, 3)
-                        return {
-                          icon: finalEmoji,
-                          youMight: { title: youMightTitle, body: youMightBody },
-                          whatsGoingOn: whats,
-                          howTo: howTo.length ? howTo : ['Start with 1 tiny action', 'Make it visible', 'Summarize aloud']
-                        }
+                        return { icon: finalEmoji, youMight: { title: youMightTitle, body: youMightBody }, whatsGoingOn: { ...whats, icon: r.emoji || undefined }, howTo: howTo.length ? howTo : ['Start with 1 tiny action', 'Make it visible', 'Summarize aloud'] }
                       })
 
                       // Ensure unique "You might" titles to avoid duplicate rows after mapping
@@ -1042,7 +992,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                         })
                       }
 
-                      const dedupedRows = ensureUniqueYouMight(rows, lefts)
+                      const dedupedRows = ensureUniqueYouMight(rows, leftParsed.map(l=>`${l.title} ${l.body||''}`))
                       return <AdhdReasonsThreeCol rows={dedupedRows} />
                     })()}
                   </div>
@@ -1100,7 +1050,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                 .replace(/_(.*?)_/g, '<em>$1</em>')
                             }} />
                           </h3>
-                          <p className="text-sm text-gray-700">{getSectionSubtitle(section.title)}</p>
+                           <p className="text-sm text-gray-700">{getSectionSubtitle(section.title.replace(/Get Steady Before You Start/i,'Core Principles'))}</p>
                         </div>
                       </div>
                       {isExpanded ? (
@@ -1113,7 +1063,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                     {isExpanded && (
                       <div className={`px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t ${colors.border} ${colors.panelBg} rounded-b-2xl`}>
                         {section.content && section.content.length > 0 && (
-                           /^\s*core principles\s*$/i.test(section.title || '') ? (
+                           (/^\s*core principles\s*$/i.test(section.title || '') || /^\s*get steady before you start\s*$/i.test(section.title || '')) ? (
                            (() => {
                                const parse = (line: string) => {
                                  // Split by newline to handle the "Try:" line separately
@@ -1323,19 +1273,24 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                   {isSubExpanded && subsection.content && subsection.content.length > 0 && (
                                     <div className={`px-4 pb-4 animate-in slide-in-from-top duration-300 ${subColors.bg.replace('/80','/40').replace('/90','/40')} ${subColors.border.replace('/30','/30')} rounded-b-xl` }>
                                       <div className="space-y-2 mt-2">
-                                        {subsection.content.map((item, itemIndex) => (
-                                          <div key={itemIndex} className="flex items-baseline gap-2">
-                                            <span className={`text-gray-800 mt-0.5 flex-shrink-0 opacity-80`}>•</span>
-                                            <div className={`text-gray-800 opacity-90`}
+                                        {subsection.content.map((item, itemIndex) => {
+                                          const startsHyphen = /^\s*-\s+/.test(item)
+                                          const isTopEmojiBold = /^\s*-\s*([\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2300-\u23FF\u2600-\u26FF\u2700-\u27BF])\s*\*\*/.test(item)
+                                          const showArrow = startsHyphen && !isTopEmojiBold
+                                          return (
+                                            <div key={itemIndex} className="flex items-baseline gap-2">
+                                              <span className={`${showArrow ? 'text-gray-700' : 'text-gray-800'} mt-0.5 flex-shrink-0 opacity-80`}>{showArrow ? '→' : '•'}</span>
+                                              <div className={`text-gray-800 opacity-90`}
                                                  dangerouslySetInnerHTML={{ 
-                                                   __html: item.replace(/^-\s*(\d+\.\s*)?/, '')
+                                                     __html: item.replace(/^\s*-\s*(\d+\.\s*)?/, '')
                                                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                                                      .replace(/\*(.*?)\*/g, '<em>$1</em>')
                                                      .replace(/_(.*?)_/g, '<em>$1</em>')
                                                  }} 
                                             />
                                           </div>
-                                        ))}
+                                          )
+                                        })}
                                       </div>
                                     </div>
                                   )}
@@ -1428,6 +1383,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                           return acc;
                         }, {} as Record<string, any>)
                       ) as Array<any & { _descriptions: string[] }>;
+                      if (deduped.length === 0) return null;
                       
                       return (
                         <div key={category} className="space-y-2 mb-4" data-section-id={`source-category-${category}`}>
@@ -1438,7 +1394,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                             size="lg"
                           >
                             <h4 className="font-bold text-gray-900 text-base">
-                              {category} ({categorySources.length} {categorySources.length === 1 ? 'source' : 'sources'})
+                              {category} ({deduped.length} {deduped.length === 1 ? 'source' : 'sources'})
                             </h4>
                             {expandedSections[`source-category-${category}`] ? (
                               <Minus className="h-4 w-4 text-gray-600" />

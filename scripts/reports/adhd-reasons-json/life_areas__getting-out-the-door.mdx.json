@@ -1,0 +1,67 @@
+{
+  "page": "life_areas/getting-out-the-door.mdx",
+  "rows": [
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Underestimate how long getting ready actually takes"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "make you forget small steps"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Forget things like your wallet or keys…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "means you don't _feel_ the clock ticking"
+      }
+    },
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Panic at the last minute, overwhelmed by…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes sequencing and planning difficult"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Get stuck switching from one mode (resting,…"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes boring tasks like getting dressed feel impossible"
+      }
+    },
+    {
+      "icon": "🌀",
+      "youMight": {
+        "title": "Arrive late and feel guilty, again"
+      },
+      "whatsGoingOn": {
+        "title": "ADHD paralysis:",
+        "body": "turns urgency into shutdown"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Open your laptop and freeze",
+        "body": "It’s hard to start the first step."
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "⚠️ **Shame spirals** kick in if you've been late one too many times"
+      }
+    }
+  ],
+  "notes": []
+}

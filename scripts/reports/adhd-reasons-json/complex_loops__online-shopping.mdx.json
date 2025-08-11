@@ -1,0 +1,56 @@
+{
+  "page": "complex_loops/online-shopping.mdx",
+  "rows": [
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Open Amazon to buy one thing and…"
+      },
+      "whatsGoingOn": {
+        "title": "Impulsivity:",
+        "body": "and instant dopamine make fast purchases extra tempting"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Get overwhelmed and abandon your cart entirely"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "**Overwhelm** from too many tabs, choices, or decisions creates shutdown"
+      }
+    },
+    {
+      "icon": "💨",
+      "youMight": {
+        "title": "Add something impulsively and forget what you…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "makes it hard to remember what you needed in the first place"
+      }
+    },
+    {
+      "icon": "💳",
+      "youMight": {
+        "title": "Forget to track orders or return packages"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "and disorganization can lead to surprise spending or forgotten returns"
+      }
+    },
+    {
+      "icon": "📦",
+      "youMight": {
+        "title": "Feel guilty or ashamed after clicking \"Buy…"
+      },
+      "whatsGoingOn": {
+        "title": "Planning fallacy & transition friction:",
+        "body": "makes it easier to impulse-buy than prep for meals or compare products"
+      }
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/meal-prepping.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Overthink recipes and never pick one"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "multi‑step batching strains sequencing and working memory"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Get lost in grocery aisles without a…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "makes it hard to predict how long things will take"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Start prepping but stop halfway through"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes boring or repetitive tasks hard to start"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Forget you even made food"
+      },
+      "whatsGoingOn": {
+        "title": "Overwhelm and decision fatigue:",
+        "body": "cause \"analysis paralysis\""
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Burn out after cooking once"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "make multi-step cooking feel like a blur"
+      }
+    }
+  ],
+  "notes": []
+}

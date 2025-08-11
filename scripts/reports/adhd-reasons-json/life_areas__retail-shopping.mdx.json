@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/retail-shopping.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Walk into a store and forget why…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes it hard to plan, prioritize, and resist distractions"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Buy 10 things you didn't plan for,…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "makes it easy to underestimate how long it'll take and feel rushed"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Get so overwhelmed by choices that you…"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "leads to impulse buying for stimulation or mood boosts"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Avoid stores altogether and end up with…"
+      },
+      "whatsGoingOn": {
+        "title": "Attention/executive load:",
+        "body": "from lights, sounds, and crowds causes shutdown or impulsivity"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Overspend and later feel guilt or regret"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "mean you forget what you needed as soon as you walk in"
+      }
+    }
+  ],
+  "notes": []
+}

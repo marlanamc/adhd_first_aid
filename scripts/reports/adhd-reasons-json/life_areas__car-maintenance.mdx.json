@@ -1,0 +1,96 @@
+{
+  "page": "life_areas/car-maintenance.mdx",
+  "rows": [
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Put off oil changes until the warning…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "your brain is adapting; supports help"
+      }
+    },
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Let expired registrations or inspection stickers slide…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes initiating multi-step tasks feel impossible"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Forget what maintenance was already done or…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "hides how long it’s been since your last maintenance"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Panic when something breaks because there was…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "Poor **Working memory** means you forget what was checked or scheduled"
+      }
+    },
+    {
+      "icon": "😣",
+      "youMight": {
+        "title": "Makes initiating multi-step tasks feel impossible"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "spirals after missed tasks make it harder to face the problem"
+      }
+    },
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Hides how long it’s been since your…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": ""
+      }
+    },
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Poor means you forget what was checked…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": ""
+      }
+    },
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Low urgency = low activation for tasks…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": ""
+      }
+    },
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Spirals after missed tasks make it harder…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": ""
+      }
+    }
+  ],
+  "notes": []
+}

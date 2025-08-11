@@ -1,0 +1,66 @@
+{
+  "page": "complex_loops/sleeping-through-alarms.mdx",
+  "rows": [
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Hit snooze 6 times and not remember"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "Hit snooze 6 times and not remember"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Sleep through the loudest alarm"
+      },
+      "whatsGoingOn": {
+        "title": "Sensory desensitization:",
+        "body": "trains your brain to tune out alarms"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Leave early, still arrive late"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "**Sleep inertia** is worse with ADHD and burnout, your brain needs more time to boot up"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Wake up foggy"
+      },
+      "whatsGoingOn": {
+        "title": "Attention/executive load:",
+        "body": "lead to deeper, less responsive sleep"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Opened email, forgot work"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent sleep habits:",
+        "body": "mess with your circadian rhythm"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Feel groggy no matter how long you…"
+      },
+      "whatsGoingOn": {
+        "title": "All-or-nothing thinking:",
+        "body": "tells you it's too late to fix your sleep, so you don't try"
+      }
+    }
+  ],
+  "notes": []
+}

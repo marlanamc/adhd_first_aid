@@ -1,0 +1,56 @@
+{
+  "page": "complex_loops/analysis-paralysis.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Spend hours researching without ever choosing"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes it hard to plan, prioritize, and act"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Feel stuck between \"too many options\" or…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "warps urgency, making decisions feel endless"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Avoid starting because you don't know how…"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "leads to shutdown when there's no clear reward"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Restart projects again and again"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "keeps you stuck in research mode"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Wait for a burst of clarity that…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "mean juggling options overloads your brain"
+      }
+    }
+  ],
+  "notes": []
+}

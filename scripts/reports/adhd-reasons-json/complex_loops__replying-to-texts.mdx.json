@@ -1,0 +1,66 @@
+{
+  "page": "complex_loops/replying-to-texts.mdx",
+  "rows": [
+    {
+      "icon": "📝",
+      "youMight": {
+        "title": "See a message, mentally draft a reply,…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "make replies vanish from your mental to-do list"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Feel frozen when someone sends a long…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "causes you to lose track of how long it's been"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Mean to respond later and then forget…"
+      },
+      "whatsGoingOn": {
+        "title": "Task initiation struggles:",
+        "body": "make it hard to start a reply even if you know what to say"
+      }
+    },
+    {
+      "icon": "📵",
+      "youMight": {
+        "title": "Feel guilt or shame about how long…"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes texting feel like a heavy lift"
+      }
+    },
+    {
+      "icon": "🤯",
+      "youMight": {
+        "title": "Want to say something thoughtful but can't…"
+      },
+      "whatsGoingOn": {
+        "title": "Message backlog:",
+        "body": "or intense emotions trigger shutdown or avoidance"
+      }
+    },
+    {
+      "icon": "😔",
+      "youMight": {
+        "title": "One small mistake → spiral + avoid"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "delay or derail your response further"
+      }
+    }
+  ],
+  "notes": []
+}

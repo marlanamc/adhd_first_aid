@@ -1,0 +1,56 @@
+{
+  "page": "complex_loops/waiting-mode.mdx",
+  "rows": [
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Have an appointment later and feel frozen…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "makes it hard to visualize the day as a timeline"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Fear getting sucked into something and missing…"
+      },
+      "whatsGoingOn": {
+        "title": "Planning fallacy & transition friction:",
+        "body": "make shifting in and out of tasks exhausting"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Keep checking the clock and feeling restless"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "can't hold plans and steps while a future event looms"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Scroll or wander instead of starting anything"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "keeps you from committing to anything"
+      }
+    },
+    {
+      "icon": "🚪",
+      "youMight": {
+        "title": "Feel like the day is \"already over\"…"
+      },
+      "whatsGoingOn": {
+        "title": "Initiation paralysis:",
+        "body": "makes short windows feel too small to be productive"
+      }
+    }
+  ],
+  "notes": []
+}

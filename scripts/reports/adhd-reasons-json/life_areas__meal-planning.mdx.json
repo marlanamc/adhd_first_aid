@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/meal-planning.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Feel overwhelmed by choices and give up"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "planning horizon + decision load overwhelm; step sequencing stalls"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Buy groceries with no idea what you'll…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "causes missed meals and underestimating prep time"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Forget what food you already have and…"
+      },
+      "whatsGoingOn": {
+        "title": "Decision fatigue:",
+        "body": "turns \"What's for dinner?\" into a daily crisis"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Hyperfixate on cooking for one week, then…"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "can lead to avoidance or all-or-nothing thinking"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Eat random snacks all day and crash…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "make it hard to remember ingredients or steps"
+      }
+    }
+  ],
+  "notes": []
+}

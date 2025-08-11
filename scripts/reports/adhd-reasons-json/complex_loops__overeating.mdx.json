@@ -1,0 +1,56 @@
+{
+  "page": "complex_loops/overeating.mdx",
+  "rows": [
+    {
+      "icon": "🧪",
+      "youMight": {
+        "title": "Leave early, still arrive late"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "drives cravings for quick, high-reward foods"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Eat out of boredom or overwhelm"
+      },
+      "whatsGoingOn": {
+        "title": "Impulsivity:",
+        "body": "overrides the pause between urge and action"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Struggle to stop even when full"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "means forgetting to eat until it's urgent"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Crave sugar or carbs constantly"
+      },
+      "whatsGoingOn": {
+        "title": "Weak interoception:",
+        "body": "makes hunger/fullness cues hard to read"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Beat yourself up for being “behind"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "Feel ashamed or out of control"
+      }
+    }
+  ],
+  "notes": []
+}

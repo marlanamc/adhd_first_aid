@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/reading-important-mail.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Stack unopened letters into a pile you…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes it hard to initiate and follow through on multi-step tasks"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Tell yourself \"I'll open it later"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "turns a 5-minute task into an eternal \"later\""
+      }
+    },
+    {
+      "icon": "🧪",
+      "youMight": {
+        "title": "Feel intense anxiety about what's inside"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "means the task feels boring, scary, and hard to start"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Started… then wandered off"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "builds around fear of fines, consequences, or shame"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Beat yourself up for being “behind"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "Feel guilt and shame before you even open it"
+      }
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/cleaning-out-the-fridge.mdx",
+  "rows": [
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Keep avoiding the fridge altogether because it’s…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "means “that expired yogurt” is now 3 months old"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Feel ashamed of food waste, and avoid…"
+      },
+      "whatsGoingOn": {
+        "title": "Attention/executive load:",
+        "body": "kicks in fast: sights, smells, textures, and guilt"
+      }
+    },
+    {
+      "icon": "😣",
+      "youMight": {
+        "title": "Open the door, shut it immediately, and…"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "creates avoidance, which creates more mess"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Forget what’s in there until the smell…"
+      },
+      "whatsGoingOn": {
+        "title": "Decision fatigue:",
+        "body": "hits hard when sorting, organizing, and tossing"
+      }
+    },
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "**Executive dysfunction** makes multi-step tasks hard to…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": ""
+      }
+    }
+  ],
+  "notes": []
+}

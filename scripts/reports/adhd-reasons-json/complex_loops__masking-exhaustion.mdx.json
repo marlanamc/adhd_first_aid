@@ -1,0 +1,56 @@
+{
+  "page": "complex_loops/masking-exhaustion.mdx",
+  "rows": [
+    {
+      "icon": "🎭",
+      "youMight": {
+        "title": "Feel like you're \"acting\" all day to…"
+      },
+      "whatsGoingOn": {
+        "title": "Masking:",
+        "body": "is a constant performance, it burns through energy fast"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Over-prepare, overthink, and overcommit"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "mean you're mentally juggling \"scripts\" and real life"
+      }
+    },
+    {
+      "icon": "😬",
+      "youMight": {
+        "title": "Say yes when you're already burned out"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "make it hard to say no or show your real self"
+      }
+    },
+    {
+      "icon": "🚨",
+      "youMight": {
+        "title": "Hide your struggles to avoid judgment"
+      },
+      "whatsGoingOn": {
+        "title": "Hypervigilance:",
+        "body": "from years of shame and criticism keeps your nervous system on high alert"
+      }
+    },
+    {
+      "icon": "😓",
+      "youMight": {
+        "title": "Crumble when you're finally alone"
+      },
+      "whatsGoingOn": {
+        "title": "Perfectionism:",
+        "body": "and self-monitoring lead to chronic stress and eventual burnout"
+      }
+    }
+  ],
+  "notes": []
+}

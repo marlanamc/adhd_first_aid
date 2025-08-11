@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/to-do-lists.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Forget what you were just about to…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "affects prioritizing, sequencing, and getting started"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Have a list so long it feels…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "makes it hard to estimate how long things take or when to do them"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Make a list... and then never look…"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes boring tasks feel impossible to start"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Freeze when there are too many options"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "mean you forget steps or details"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Open your laptop and freeze"
+      },
+      "whatsGoingOn": {
+        "title": "Perfectionism and overwhelm:",
+        "body": "can lead to shutdown or avoidance"
+      }
+    }
+  ],
+  "notes": []
+}

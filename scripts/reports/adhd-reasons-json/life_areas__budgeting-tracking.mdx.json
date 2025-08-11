@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/budgeting-tracking.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Swear you'll track expenses… but never look…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes systems hard to maintain"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Forget subscriptions are charging until your account…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "makes future planning feel abstract"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Spend impulsively, then spiral when you check…"
+      },
+      "whatsGoingOn": {
+        "title": "Impulsivity:",
+        "body": "leads to emotional or reward-based spending"
+      }
+    },
+    {
+      "icon": "📉",
+      "youMight": {
+        "title": "Get stuck in perfectionism or shame and…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "can't hold purchase history or financial goals"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "One small mistake → spiral + avoid"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "is often triggered by shame, fear, or overwhelm"
+      }
+    }
+  ],
+  "notes": []
+}

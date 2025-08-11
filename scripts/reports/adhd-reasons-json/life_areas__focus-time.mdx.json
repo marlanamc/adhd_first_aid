@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/focus-time.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Struggle to start even small tasks"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes planning, starting, and sequencing tasks harder"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Hyperfocus for hours but miss everything else"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "means you can't feel or estimate time accurately"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Always be \"running late\" no matter how…"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes boring tasks feel impossible to begin"
+      }
+    },
+    {
+      "icon": "🌀",
+      "youMight": {
+        "title": "Feel overwhelmed by time management systems that…"
+      },
+      "whatsGoingOn": {
+        "title": "Attention/executive load:",
+        "body": "causes you to zone out, bounce around, or overfocus"
+      }
+    },
+    {
+      "icon": "🎯",
+      "youMight": {
+        "title": "Experience guilt or shame about being \"behind"
+      },
+      "whatsGoingOn": {
+        "title": "Perfectionism:",
+        "body": "or fear of failure can lead to avoidance or shutdown"
+      }
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,66 @@
+{
+  "page": "life_areas/dishes.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Feel dread just walking into the kitchen"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "step sequencing (scrape → rinse → load) breaks down; transitions stall"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Avoid dishes until the pile becomes overwhelming"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "makes it feel like \"it'll take forever\""
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Get stuck in shame loops that make…"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes the task feel boring and unimportant"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Start loading and suddenly start organizing the…"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "lead to procrastination or shutdown"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Feel grossed out or overstimulated by soggy…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "make you forget what step you're on mid-task"
+      }
+    },
+    {
+      "icon": "🎧",
+      "youMight": {
+        "title": "Open your laptop and freeze"
+      },
+      "whatsGoingOn": {
+        "title": "Sensory sensitivity:",
+        "body": "can make it physically uncomfortable, textures, smells, noise, or splashy water on your skin"
+      }
+    }
+  ],
+  "notes": []
+}

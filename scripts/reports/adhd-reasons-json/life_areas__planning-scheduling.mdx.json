@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/planning-scheduling.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Start planning your day, then spiral into…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "affects prioritizing, organizing, and sequencing tasks"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Feel overwhelmed by all the things you…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "warps your sense of duration, urgency, and deadlines"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Make a plan and never look at…"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "mean \"just do it\" doesn't work, you need novelty or purpose"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Underestimate how long tasks will take, or…"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "turns planning into a shame or overwhelm spiral"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Avoid planning entirely because it feels rigid…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "make it hard to hold steps and plans in your head"
+      }
+    }
+  ],
+  "notes": []
+}

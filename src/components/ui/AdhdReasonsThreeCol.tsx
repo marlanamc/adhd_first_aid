@@ -5,7 +5,7 @@ import React from 'react'
 export type Row = {
   icon?: string
   youMight: { title: string; body?: string }
-  whatsGoingOn: { title: string; body: string }
+  whatsGoingOn: { title: string; body: string; icon?: string }
   howTo: string[]
 }
 
@@ -65,14 +65,14 @@ export default function AdhdReasonsThreeCol({ rows }: Props) {
                     <p className="text-[15px] md:text-[16px] leading-[1.65] mt-1">{row.youMight.body}</p>
                   )}
                 </div>
-                <span aria-hidden className="hidden md:flex items-center justify-center absolute -right-3 inset-y-0 my-auto select-none">→</span>
+                <span aria-hidden className="hidden md:flex items-center justify-center absolute -right-4 inset-y-0 my-auto select-none">→</span>
               </article>
 
               {/* Col 2 */}
               <article
                 className={`relative rounded-md px-4 py-3 md:py-4 flex h-full items-start gap-3 border ${scheme.bg} ${scheme.border} min-h-[132px]`}
               >
-                <span aria-hidden className="text-lg w-5 text-center mt-[2px] flex-shrink-0">{rightEmojiFor(row.whatsGoingOn.title)}</span>
+                <span aria-hidden className="text-lg w-5 text-center mt-[2px] flex-shrink-0">{row.whatsGoingOn.icon || rightEmojiFor(row.whatsGoingOn.title)}</span>
                 <div className="text-gray-900">
                   <h3 className="font-semibold text-[16px] md:text-[17px] leading-tight">
                     {ensureColon(row.whatsGoingOn.title)}

@@ -1,0 +1,56 @@
+{
+  "page": "complex_loops/people-pleasing-burnout.mdx",
+  "rows": [
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Say yes to things you don't have…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "Say yes to things you don't have time or energy for"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Beat yourself up for being “behind"
+      },
+      "whatsGoingOn": {
+        "title": "Impulsivity:",
+        "body": "leads to fast yeses before checking your bandwidth"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Overwork yourself to \"make up\" for your…"
+      },
+      "whatsGoingOn": {
+        "title": "Masking and overcompensation:",
+        "body": "push you to prove your worth"
+      }
+    },
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Crash hard after doing too much for…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes it hard to see how full your plate already is"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Feel resentment but say nothing"
+      },
+      "whatsGoingOn": {
+        "title": "Low self-worth:",
+        "body": "drives the belief you need to earn approval through service"
+      }
+    }
+  ],
+  "notes": []
+}

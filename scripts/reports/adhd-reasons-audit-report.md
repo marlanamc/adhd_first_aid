@@ -1,103 +1,104 @@
 # ADHD Reasons Comprehensive Audit Report
 
-Generated: 2025-08-10T03:58:03.833Z
+Generated: 2025-08-10T19:35:51.211Z
 
-Total Issues Found: 75
-
-## Autofix Summary (--write)
-
-- complex_loops_content: updated 2 items
+Total Issues Found: 166
 
 ## Summary by Severity
 
-- 🔴 **High Severity**: 7 issues
-- 🟡 **Medium Severity**: 0 issues
-- 🟢 **Low Severity**: 68 issues
+- 🔴 **High Severity**: 0 issues
+- 🟡 **Medium Severity**: 6 issues
+- 🟢 **Low Severity**: 160 issues
 
 ## Issues by Type
 
-### ✏️ Typos & Spelling (68 issues)
+### ✏️ Typos & Spelling (160 issues)
 
-**Analysis Paralysis** - Line 4
-- Missing apostrophe or typo: "(?<!\w)t\s+(?=\w)" should be "'t "
-- Original: "- Avoid starting because you don't know how to do it perfectly"
-- Suggested: "- Avoid starting because you don''t know how to do it perfectly"
-
-**Analysis Paralysis** - Line 7
+**Big Exam Prep (Long-Term Studying)** - Line 6
 - Missing apostrophe or typo: "(?<!\w)s\s+(?=\w)" should be "'s "
 - Original: "Here's what's really going on:"
 - Suggested: "Here''s what''s really going on:"
 
-**Analysis Paralysis** - Line 10
-- Missing apostrophe or typo: "(?<!\w)s\s+(?=\w)" should be "'s "
-- Original: "💥 **Low dopamine**: leads to shutdown when there's no clear reward"
-- Suggested: "💥 **Low dopamine**: leads to shutdown when there''s no clear reward"
-
-**Bedtime Procrastination** - Line 6
-- Missing apostrophe or typo: "(?<!\w)t\s+(?=\w)" should be "'t "
-- Original: "- Have a racing mind that won't turn off when you try to sleep"
-- Suggested: "- Have a racing mind that won''t turn off when you try to sleep"
-
-**Bedtime Procrastination** - Line 7
+**Bills & Money** - Line 7
 - Missing apostrophe or typo: "(?<!\w)s\s+(?=\w)" should be "'s "
 - Original: "Here's what's really going on:"
 - Suggested: "Here''s what''s really going on:"
 
-... and 63 more
+**Budgeting & Tracking** - Line 2
+- Missing apostrophe or typo: "(?<!\w)ll\s+(?=\w)" should be "'ll "
+- Original: "- Swear you'll track expenses… but never look at the log again"
+- Suggested: "- Swear you''ll track expenses… but never look at the log again"
 
-### 🏗️ Structural Issues (7 issues)
+**Budgeting & Tracking** - Line 6
+- Missing apostrophe or typo: "(?<!\w)s\s+(?=\w)" should be "'s "
+- Original: "Here's what's really going on:"
+- Suggested: "Here''s what''s really going on:"
 
-**ADHD & Social Media** - Overall structure
-- Missing "Here's what's really going on:" section
+**Budgeting & Tracking** - Line 10
+- Missing apostrophe or typo: "(?<!\w)t\s+(?=\w)" should be "'t "
+- Original: "📉 **Working memory**: can't hold purchase history or financial goals"
+- Suggested: "📉 **Working memory**: can''t hold purchase history or financial goals"
 
-**Encouragement to Take With You** - Overall structure
-- Missing "You might:" section
+... and 155 more
 
-**Encouragement to Take With You** - Overall structure
-- Missing "Here's what's really going on:" section
+### ❓ Nonsensical Phrases (6 issues)
 
-**ADHD & Social Media** - Overall structure
-- No "You might" items found
+**Car Maintenance** - Line 6
+- Problematic phrase found: "makes initiating multi-step tasks feel impossible"
+- Original: "- Makes initiating multi-step tasks feel impossible"
 
-**ADHD & Social Media** - Overall structure
-- No "What's really going on" items found
+**Car Maintenance** - Line 13
+- Problematic phrase found: "makes initiating multi-step tasks feel impossible"
+- Original: "🧩 **Executive dysfunction**: makes initiating multi-step tasks feel impossible"
 
-... and 2 more
+**Cooking** - Line 12
+- Problematic phrase found: "to to"
+- Original: "💡 **Insight**: Sensory sensitivities can make textures, smells, or dish sounds hard to tolerate"
+
+**Grocery Shopping** - Line 3
+- Problematic phrase found: "an an"
+- Original: "- Wander aisles without a plan and leave exhausted"
+
+**Planning & Scheduling** - Line 4
+- Problematic phrase found: "an an"
+- Original: "- Make a plan and never look at it again"
+
+... and 1 more
 
 ## Emoji Usage Analysis
 
 | Emoji | Usage Count | Number of Items | Status |
 |-------|-------------|-----------------|--------|
-| 💡 | 47 | 17 | 🔴 Overused |
-| 🧠 | 13 | 13 | 🔴 Overused |
-| 🧩 | 11 | 11 | 🔴 Overused |
-| ⏰ | 11 | 11 | 🔴 Overused |
-| 💥 | 9 | 9 | 🟡 High |
-| 🔁 | 7 | 7 | 🟡 High |
-| 😣 | 4 | 4 | 🟢 OK |
-| 🧪 | 3 | 3 | 🟢 OK |
+| 💡 | 62 | 27 | 🔴 Overused |
+| ⏰ | 48 | 48 | 🔴 Overused |
+| 🧩 | 47 | 47 | 🔴 Overused |
+| 🧠 | 37 | 37 | 🔴 Overused |
+| 💥 | 36 | 36 | 🔴 Overused |
+| 🔁 | 33 | 33 | 🔴 Overused |
+| 😣 | 8 | 8 | 🟡 High |
+| 🎯 | 4 | 4 | 🟢 OK |
+| 📉 | 4 | 4 | 🟢 OK |
+| 🌀 | 4 | 4 | 🟢 OK |
+| 🧪 | 4 | 4 | 🟢 OK |
+| 🎧 | 3 | 3 | 🟢 OK |
+| ⏳ | 3 | 3 | 🟢 OK |
+| 📦 | 3 | 3 | 🟢 OK |
+| ⚠ | 2 | 2 | 🟢 OK |
+| 😰 | 2 | 2 | 🟢 OK |
+| ⚡ | 2 | 2 | 🟢 OK |
 | 🚪 | 2 | 2 | 🟢 OK |
 | 🌙 | 2 | 2 | 🟢 OK |
 | 📵 | 2 | 2 | 🟢 OK |
-| 🔄 | 2 | 2 | 🟢 OK |
-| 💔 | 2 | 2 | 🟢 OK |
-| 🎭 | 2 | 2 | 🟢 OK |
-| ⏳ | 2 | 2 | 🟢 OK |
-| 😬 | 2 | 2 | 🟢 OK |
-| 🚨 | 2 | 2 | 🟢 OK |
-| 😓 | 2 | 2 | 🟢 OK |
-| 🎢 | 1 | 1 | 🟢 OK |
-| 📱 | 1 | 1 | 🟢 OK |
 
 ## Items with Most Issues
 
+- **Trash & Recycling**: 8 total (0 high, 1 medium, 7 low)
+- **Car Maintenance**: 7 total (0 high, 2 medium, 5 low)
+- **Grocery Shopping**: 5 total (0 high, 1 medium, 4 low)
 - **Workout Avoidance**: 5 total (0 high, 0 medium, 5 low)
+- **Cooking**: 4 total (0 high, 1 medium, 3 low)
+- **Medication Refills**: 4 total (0 high, 0 medium, 4 low)
+- **Planning & Scheduling**: 4 total (0 high, 1 medium, 3 low)
+- **Reading Important Mail**: 4 total (0 high, 0 medium, 4 low)
 - **Masking Exhaustion**: 4 total (0 high, 0 medium, 4 low)
 - **Perfectionism Cycles**: 4 total (0 high, 0 medium, 4 low)
-- **Rejection Sensitivity Loops**: 4 total (0 high, 0 medium, 4 low)
-- **Replying to Texts**: 4 total (0 high, 0 medium, 4 low)
-- **Undereating**: 4 total (0 high, 0 medium, 4 low)
-- **Waiting Mode**: 4 total (0 high, 0 medium, 4 low)
-- **Encouragement to Take With You**: 4 total (4 high, 0 medium, 0 low)
-- **Analysis Paralysis**: 3 total (0 high, 0 medium, 3 low)
-- **Can’t Fall Asleep**: 3 total (0 high, 0 medium, 3 low)

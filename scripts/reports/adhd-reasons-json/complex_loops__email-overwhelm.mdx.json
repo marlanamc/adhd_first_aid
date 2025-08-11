@@ -1,0 +1,66 @@
+{
+  "page": "complex_loops/email-overwhelm.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Ignore emails because they seem overwhelming or…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes sorting, prioritizing, and follow-through difficult"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Open a message and immediately forget what…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "cause you to forget why you opened a message"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Get lost down a rabbit hole from…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "makes it feel like \"just checking email\" eats hours"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Dread replying and postpone it until you…"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes boring admin feel impossible"
+      }
+    },
+    {
+      "icon": "🎧",
+      "youMight": {
+        "title": "Feel embarrassed about unread messages and avoid…"
+      },
+      "whatsGoingOn": {
+        "title": "Attention/executive load:",
+        "body": "(notifications, pop-ups, hyperlinks) overwhelms your focus"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "One small mistake → spiral + avoid"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "keep you stuck in avoidance"
+      }
+    }
+  ],
+  "notes": []
+}

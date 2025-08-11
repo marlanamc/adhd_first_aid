@@ -1,0 +1,66 @@
+{
+  "page": "life_areas/grocery-shopping.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Forget what you need once you're at…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "affects planning, sequencing, and memory"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Wander aisles without a plan and leave…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "makes it easy to underestimate how long it'll take"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Overbuy random stuff and still have \"nothing…"
+      },
+      "whatsGoingOn": {
+        "title": "Decision fatigue:",
+        "body": "builds from nonstop choices and brand comparisons"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Struggle to put groceries away once you're…"
+      },
+      "whatsGoingOn": {
+        "title": "Impulsivity:",
+        "body": "leads to overbuying, underbuying, or dopamine-based splurges"
+      }
+    },
+    {
+      "icon": "🎧",
+      "youMight": {
+        "title": "Avoid the task altogether for weeks"
+      },
+      "whatsGoingOn": {
+        "title": "Attention/executive load:",
+        "body": "from crowds, lights, and noise can drain your energy"
+      }
+    },
+    {
+      "icon": "🥴",
+      "youMight": {
+        "title": "Open your laptop and freeze"
+      },
+      "whatsGoingOn": {
+        "title": "Hunger and erratic fueling:",
+        "body": "make everything feel more overwhelming"
+      }
+    }
+  ],
+  "notes": []
+}

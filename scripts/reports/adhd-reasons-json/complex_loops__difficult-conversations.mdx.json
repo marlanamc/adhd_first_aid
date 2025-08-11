@@ -1,0 +1,56 @@
+{
+  "page": "complex_loops/difficult-conversations.mdx",
+  "rows": [
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Avoid conversations because you're afraid of conflict…"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "makes rejection or tension feel physically painful"
+      }
+    },
+    {
+      "icon": "😣",
+      "youMight": {
+        "title": "Struggle to explain your thoughts clearly"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "leads to panic over real or imagined criticism"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Say too much"
+      },
+      "whatsGoingOn": {
+        "title": "Mental \"noise\" and distractibility:",
+        "body": "can make it hard to follow or finish your thoughts"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Overprepare and still feel like you messed…"
+      },
+      "whatsGoingOn": {
+        "title": "Impulsivity:",
+        "body": "leads to talking too much, interrupting, or going off-track"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Beat yourself up for being “behind"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "Replay conversations for days, stuck in a shame spiral"
+      }
+    }
+  ],
+  "notes": []
+}

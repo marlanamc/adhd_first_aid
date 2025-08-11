@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/minor-repairs.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Walk past a broken drawer or burnt-out…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes planning, sequencing, and follow-through harder"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Keep meaning to fix something but never…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "causes you to underestimate how long \"quick fixes\" will take"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Forget where your tools are or what…"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes boring or repetitive tasks hard to start"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Feel paralyzed by tiny decisions (what kind…"
+      },
+      "whatsGoingOn": {
+        "title": "Overwhelm:",
+        "body": "kicks in when a repair involves clutter or unclear steps"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Avoid repairs until they become urgent or…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "mean you forget steps mid-task"
+      }
+    }
+  ],
+  "notes": []
+}

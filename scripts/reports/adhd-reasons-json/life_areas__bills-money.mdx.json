@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/bills-money.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Avoid opening bills or statements"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes organization and follow-through harder"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Miss payment due dates or pay last…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "due dates feel abstract; late fees sneak up"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Start a budget, then abandon it"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "forget what was scheduled or paid"
+      }
+    },
+    {
+      "icon": "😣",
+      "youMight": {
+        "title": "Feel paralyzed by spreadsheets or numbers"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "money tasks trigger fear, so you shut down"
+      }
+    },
+    {
+      "icon": "🎯",
+      "youMight": {
+        "title": "Open your laptop and freeze"
+      },
+      "whatsGoingOn": {
+        "title": "Decision fatigue:",
+        "body": "too many choices or categories stalls action"
+      }
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,66 @@
+{
+  "page": "complex_loops/workout-avoidance.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Feel paralyzed even though you want to…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes task initiation and sequencing hard"
+      }
+    },
+    {
+      "icon": "🧪",
+      "youMight": {
+        "title": "Plan to work out… then never start"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "means movement won't feel rewarding until after you do it"
+      }
+    },
+    {
+      "icon": "😣",
+      "youMight": {
+        "title": "Get overwhelmed by too many choices (what…"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "keeps you stuck, especially if exercise feels like punishment"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Avoid the gym because it feels overstimulating…"
+      },
+      "whatsGoingOn": {
+        "title": "All-or-nothing thinking:",
+        "body": "says if you can't do a full workout, it's not worth starting"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Say \"I'll go later"
+      },
+      "whatsGoingOn": {
+        "title": "Sensory issues:",
+        "body": "with clothing, noise, or environment make movement feel unsafe"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Open one tab, end up with 12"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "your brain is adapting; supports help"
+      }
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,86 @@
+{
+  "page": "life_areas/medication-refills.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Forget to call the pharmacy until the…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes planning, initiating, and follow-through harder"
+      }
+    },
+    {
+      "icon": "📦",
+      "youMight": {
+        "title": "Lose the pill bottle or can't remember…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "mean key steps slip your mind"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Procrastinate calling because it feels awkward or…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "makes deadlines feel invisible until it's too late"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Assume you'll remember later (but you don't)"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes boring, high-friction tasks hard to start"
+      }
+    },
+    {
+      "icon": "💡",
+      "youMight": {
+        "title": "Get overwhelmed by all the steps and…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "**Overwhelm and decision fatigue** shut your brain down mid-process"
+      }
+    },
+    {
+      "icon": "📞",
+      "youMight": {
+        "title": "One small mistake → spiral + avoid"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "adds another layer of resistance"
+      }
+    },
+    {
+      "icon": "📉",
+      "youMight": {
+        "title": "Avoid opening messages you fear"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "(especially around stimulant meds) can block action"
+      }
+    },
+    {
+      "icon": "🧱",
+      "youMight": {
+        "title": "Open your laptop and freeze"
+      },
+      "whatsGoingOn": {
+        "title": "Pharmacy systems:",
+        "body": "often create barriers that are harder for ADHD brains to navigate"
+      }
+    }
+  ],
+  "notes": []
+}

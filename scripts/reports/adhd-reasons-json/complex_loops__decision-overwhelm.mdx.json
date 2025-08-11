@@ -1,0 +1,76 @@
+{
+  "page": "complex_loops/decision-overwhelm.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Spend hours researching but never choose"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "makes organizing, prioritizing, and initiating action harder"
+      }
+    },
+    {
+      "icon": "🎯",
+      "youMight": {
+        "title": "Feel paralyzed by even small choices"
+      },
+      "whatsGoingOn": {
+        "title": "Attention/executive load:",
+        "body": "causes everything to feel equally urgent or interesting"
+      }
+    },
+    {
+      "icon": "🔄",
+      "youMight": {
+        "title": "Loop through every possible outcome"
+      },
+      "whatsGoingOn": {
+        "title": "Divergent thinking:",
+        "body": "generates too many options, creativity becomes chaos"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Say yes too quickly, then regret it"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "make it hard to keep steps or consequences in mind"
+      }
+    },
+    {
+      "icon": "🚫",
+      "youMight": {
+        "title": "Avoid tasks entirely because you can't pick…"
+      },
+      "whatsGoingOn": {
+        "title": "Fear of failure and perfectionism:",
+        "body": "paralyze decision-making"
+      }
+    },
+    {
+      "icon": "📉",
+      "youMight": {
+        "title": "Only start when it’s exciting or urgent"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes boring or uncertain options feel impossible to choose"
+      }
+    },
+    {
+      "icon": "😰",
+      "youMight": {
+        "title": "One small mistake → spiral + avoid"
+      },
+      "whatsGoingOn": {
+        "title": "Shame/avoidance:",
+        "body": "turns small choices into high-stress moments"
+      }
+    }
+  ],
+  "notes": []
+}

@@ -31,6 +31,21 @@ export default function CorePrinciplesCondensed({ items }: Props) {
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/_(.*?)_/g, '<em>$1</em>')
   }
+  
+  const formatTitle = (title?: string) => {
+    if (!title) return ''
+    // Check if title contains a colon
+    const colonIndex = title.indexOf(':')
+    if (colonIndex > -1) {
+      // Split at colon and format the part before as bold
+      const beforeColon = title.substring(0, colonIndex)
+      const afterColon = title.substring(colonIndex + 1).trim()
+      // Return formatted HTML without the colon, with the second part on next line
+      return `<strong>${escapeHtml(beforeColon)}</strong><br/>${escapeHtml(afterColon)}`
+    }
+    // If no colon, just apply normal markdown formatting
+    return mdInline(title)
+  }
   return (
     <section aria-labelledby="core-principles" className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
@@ -49,18 +64,25 @@ export default function CorePrinciplesCondensed({ items }: Props) {
             >
               <span aria-hidden className="text-xl leading-none mt-0.5 flex-shrink-0 select-none">{uniqueEmoji}</span>
               <div className="min-w-0">
-                <div
-                  className="font-semibold text-base text-gray-900"
-                  dangerouslySetInnerHTML={{ __html: mdInline(it.title) }}
-                />
-                {it.desc && (
-                  <p
-                    className="text-sm text-gray-800 mt-0.5 leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: mdInline(it.desc) }}
+                {/* When desc is provided separately, title is already just the bold part */}
+                {it.desc ? (
+                  <>
+                    <div className="font-semibold text-base text-gray-900">
+                      {it.title}
+                    </div>
+                    <div className="text-base text-gray-900 leading-relaxed">
+                      {it.desc}
+                    </div>
+                  </>
+                ) : (
+                  /* When no desc, parse the title for colon */
+                  <div
+                    className="text-base text-gray-900 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: formatTitle(it.title) }}
                   />
                 )}
                 {it.try && (
-                  <p className="text-xs text-gray-600 mt-1"><span className="font-semibold">Try:</span> {it.try}</p>
+                  <p className="text-xs text-gray-600 mt-1.5"><span className="font-semibold">Try:</span> {it.try}</p>
                 )}
               </div>
             </div>

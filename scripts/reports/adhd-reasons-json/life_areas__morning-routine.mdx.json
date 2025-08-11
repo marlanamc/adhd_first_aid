@@ -1,0 +1,56 @@
+{
+  "page": "life_areas/morning-routine.mdx",
+  "rows": [
+    {
+      "icon": "🧩",
+      "youMight": {
+        "title": "Hit snooze 6 times and rush through…"
+      },
+      "whatsGoingOn": {
+        "title": "Executive dysfunction:",
+        "body": "affects planning, sequencing, and initiation"
+      }
+    },
+    {
+      "icon": "⏰",
+      "youMight": {
+        "title": "Forget simple steps like brushing your teeth…"
+      },
+      "whatsGoingOn": {
+        "title": "Time blindness:",
+        "body": "distorts how long tasks take or how fast time is passing"
+      }
+    },
+    {
+      "icon": "💥",
+      "youMight": {
+        "title": "Feel overwhelmed by where to start and…"
+      },
+      "whatsGoingOn": {
+        "title": "Inconsistent motivation (dopamine‑based):",
+        "body": "makes \"boring\" tasks feel nearly impossible to start"
+      }
+    },
+    {
+      "icon": "🔁",
+      "youMight": {
+        "title": "Get stuck scrolling or daydreaming instead of…"
+      },
+      "whatsGoingOn": {
+        "title": "Working memory gaps:",
+        "body": "cause you to lose track of multi-step routines"
+      }
+    },
+    {
+      "icon": "🧠",
+      "youMight": {
+        "title": "Leave early, still arrive late"
+      },
+      "whatsGoingOn": {
+        "title": "Planning fallacy & transition friction:",
+        "body": "is a complex neurological shift"
+      }
+    }
+  ],
+  "notes": []
+}
