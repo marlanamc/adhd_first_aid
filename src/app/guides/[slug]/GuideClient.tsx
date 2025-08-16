@@ -70,38 +70,38 @@ export default function GuideClient({ guide }: GuideClientProps) {
   return (
     <div className="min-h-screen bg-[#CAE5FF] dark:from-[#0a0f1a] dark:via-[#0c1423] dark:to-[#0f182a] relative">
 
-      <div className="max-w-4xl mx-auto px-4 py-6 pt-20">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-6">
+      <div className="max-w-3xl mx-auto px-6 py-8 pt-24">
+        {/* Header - Larger and more spacious */}
+        <div className="mb-12">
+          <div className="flex items-center gap-6 mb-8">
             <Button
               variant="ghost"
               onClick={goBack}
-              className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
+              className="p-3 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
             >
-              <ArrowLeft className="h-5 w-5 text-black dark:text-white" />
+              <ArrowLeft className="h-6 w-6 text-black dark:text-white" />
             </Button>
             <div className="flex-1">
               <div className="text-center">
-                <div className="text-4xl mb-2 drop-shadow-sm">{guide.emoji}</div>
-                <h1 className="text-2xl md:text-3xl font-serif font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
+                <div className="text-6xl mb-4 drop-shadow-sm">{guide.emoji}</div>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight">
                   {guide.title}
                 </h1>
-                <p className="text-gray-700 dark:text-white/70 text-sm md:text-[15px] max-w-3xl mx-auto">
+                <p className="text-gray-700 dark:text-white/80 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
                   {guide.description}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Minimal meta chips removed for focus; keep tags only if present */}
+          {/* Larger, more readable tags */}
           {guide.tags.length > 0 && (
-            <div className="mb-6">
-              <div className="flex flex-wrap gap-2 justify-center">
+            <div className="mb-8">
+              <div className="flex flex-wrap gap-3 justify-center">
                 {guide.tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="bg-white/60 dark:bg-gray-800 text-black dark:text-white px-2 py-1 rounded-full text-[10px] md:text-xs border border-white/40 dark:border-gray-700"
+                    className="bg-white/70 dark:bg-gray-800 text-black dark:text-white px-4 py-2 rounded-full text-sm md:text-base border border-white/40 dark:border-gray-700 font-medium"
                   >
                     {tag}
                   </span>
@@ -111,13 +111,9 @@ export default function GuideClient({ guide }: GuideClientProps) {
           )}
         </div>
 
-        {/* Progress bar removed for distraction-free reading */}
-
-        {/* Name timeline removed per request */}
-
-        {/* Guide Content */}
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-white/20 dark:border-gray-800">
-          {/* Quick Summary as colorful cards, if present */}
+        {/* Guide Content - Much more spacious */}
+        <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-xl border border-white/20 dark:border-gray-800">
+          {/* Quick Summary with larger, more readable cards */}
           {(() => {
             const lines = guide.content.split(/\r?\n/)
             const startIdx = lines.findIndex(l => /^##\s+Quick Summary/i.test(l))
@@ -137,16 +133,16 @@ export default function GuideClient({ guide }: GuideClientProps) {
               { bg: 'from-[#F1F8E9] to-[#E8EAF6] dark:from-lime-900/30 dark:to-indigo-900/30', border: 'border-lime-200 dark:border-lime-800/60', dot: 'bg-lime-600 dark:bg-lime-400' }
             ]
             return (
-              <div className="mb-6">
-                <div className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">Quick Summary</div>
-                <div className="grid sm:grid-cols-2 gap-3">
+              <div className="mb-10">
+                <div className="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4 font-semibold">Quick Summary</div>
+                <div className="grid gap-6">
                   {bullets.map((b, i) => {
                     const c = palette[i % palette.length]
                     return (
-                      <div key={i} className={`rounded-xl p-4 bg-gradient-to-br ${c.bg} border ${c.border}`}>
-                        <div className="flex items-start gap-3">
-                          <div className={`w-2 h-2 ${c.dot} rounded-full mt-2 flex-shrink-0`} />
-                          <div className="text-[13px] leading-relaxed text-gray-800 dark:text-gray-100" dangerouslySetInnerHTML={{ __html: emphasizeFirstClause(b) }} />
+                      <div key={i} className={`rounded-2xl p-6 bg-gradient-to-br ${c.bg} border-2 ${c.border}`}>
+                        <div className="flex items-start gap-4">
+                          <div className={`w-3 h-3 ${c.dot} rounded-full mt-2 flex-shrink-0`} />
+                          <div className="text-base md:text-lg leading-relaxed text-gray-800 dark:text-gray-100 font-medium" dangerouslySetInnerHTML={{ __html: emphasizeFirstClause(b) }} />
                         </div>
                       </div>
                     )
@@ -155,12 +151,13 @@ export default function GuideClient({ guide }: GuideClientProps) {
               </div>
             )
           })()}
+          
           <div className="prose max-w-none leading-relaxed">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
                 h1: ({ children }) => (
-                  <h1 className="text-2xl md:text-3xl font-bold mt-8 mb-4 text-gray-900 dark:text-white first:mt-0 tracking-tight">
+                  <h1 className="text-3xl md:text-4xl font-bold mt-12 mb-6 text-gray-900 dark:text-white first:mt-0 tracking-tight leading-tight">
                     {children}
                   </h1>
                 ),
@@ -168,8 +165,8 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   const text = Array.isArray(children) ? children.join('') : String(children) || ''
                   const id = slugify(String(text))
                   return (
-                    <h2 id={id} className="mt-9 mb-3 scroll-mt-28 text-xl md:text-[20px] font-bold text-gray-900 dark:text-gray-50">
-                      <a href={`#${id}`} className="no-underline hover:underline decoration-2 underline-offset-[6px]">
+                    <h2 id={id} className="mt-16 mb-6 scroll-mt-28 text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-50 leading-tight">
+                      <a href={`#${id}`} className="no-underline hover:underline decoration-2 underline-offset-[8px]">
                         {children}
                       </a>
                     </h2>
@@ -179,7 +176,7 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   const text = Array.isArray(children) ? children.join('') : String(children) || ''
                   const id = slugify(String(text))
                   return (
-                    <h3 id={id} className="mt-5 mb-2 scroll-mt-28 text-lg font-semibold text-gray-800 dark:text-gray-100">
+                    <h3 id={id} className="mt-12 mb-4 scroll-mt-28 text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-100 leading-tight">
                       <a href={`#${id}`} className="no-underline hover:underline decoration-2 underline-offset-[6px]">
                         {children}
                       </a>
@@ -192,8 +189,8 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   
                   if (isActionItem) {
                     return (
-                      <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/30 dark:to-amber-900/30 border-l-4 border-yellow-400 dark:border-yellow-700">
-                        <p className="text-gray-800 dark:text-gray-100 leading-relaxed font-medium text-sm md:text-[15px]">
+                      <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/30 dark:to-amber-900/30 border-l-4 border-yellow-400 dark:border-yellow-700">
+                        <p className="text-gray-800 dark:text-gray-100 leading-relaxed font-medium text-lg md:text-xl">
                           {children}
                         </p>
                       </div>
@@ -204,24 +201,24 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   if (typeof children === 'string') {
                     return (
                       <p
-                        className="mb-3 text-gray-800 dark:text-gray-100 leading-relaxed text-sm md:text-[15px]"
+                        className="mb-6 text-gray-800 dark:text-gray-100 leading-relaxed text-lg md:text-xl"
                         dangerouslySetInnerHTML={{ __html: emphasizeFirstClause(children as string) }}
                       />
                     )
                   }
-                  return <p className="mb-3 text-gray-800 dark:text-gray-100 leading-relaxed text-sm md:text-[15px]">{children}</p>
+                  return <p className="mb-6 text-gray-800 dark:text-gray-100 leading-relaxed text-lg md:text-xl">{children}</p>
                 },
                 ul: ({children}) => (
-                  <ul className="mb-5 space-y-2.5 list-none">
+                  <ul className="mb-8 space-y-4 list-none">
                     {children}
                   </ul>
                 ),
                 li: ({children}) => {
                   const text = typeof children === 'string' ? children : ''
                   return (
-                    <li className="text-gray-800 dark:text-gray-100 mb-2.5 pl-0 text-sm md:text-[15px]">
-                      <div className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 bg-blue-600/70 dark:bg-blue-300 rounded-full mt-2 flex-shrink-0"></div>
+                    <li className="text-gray-800 dark:text-gray-100 mb-4 pl-0 text-lg md:text-xl">
+                      <div className="flex items-start gap-4">
+                        <div className="w-2 h-2 bg-blue-600/70 dark:bg-blue-300 rounded-full mt-3 flex-shrink-0"></div>
                         {typeof children === 'string' ? (
                           <span className="leading-relaxed" dangerouslySetInnerHTML={{ __html: emphasizeFirstClause(text) }} />
                         ) : (
@@ -232,7 +229,7 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   )
                 },
                 a: ({ children, href }) => (
-                  <a href={href} className="text-blue-700 dark:text-blue-300 underline-offset-2 hover:underline">
+                  <a href={href} className="text-blue-700 dark:text-blue-300 underline-offset-4 hover:underline text-lg font-medium">
                     {children}
                   </a>
                 ),
@@ -241,7 +238,7 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   const isKeyTerm = text.includes('ADHD') || text.includes('Executive') || text.includes('Working Memory') || text.includes('Attention')
                   
                   return (
-                    <strong className={`font-semibold ${isKeyTerm ? 'text-blue-800 dark:text-blue-200 bg-blue-100/70 dark:bg-blue-900/40 px-1 py-0.5 rounded' : 'text-gray-900 dark:text-gray-50'}`}>
+                    <strong className={`font-bold ${isKeyTerm ? 'text-blue-800 dark:text-blue-200 bg-blue-100/70 dark:bg-blue-900/40 px-2 py-1 rounded-md' : 'text-gray-900 dark:text-gray-50'}`}>
                       {children}
                     </strong>
                   )
@@ -342,16 +339,16 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   const IconComponent = calloutType.icon
                   
                   return (
-                    <div className="mb-6">
-                      <div className={`bg-gradient-to-r ${calloutType.bg} border-l-4 ${calloutType.border} rounded-r-lg overflow-hidden shadow-sm`}>
-                        <div className={`flex items-center gap-3 px-4 py-3 bg-white/60 dark:bg-gray-900/70`}>
-                          <IconComponent className={`h-5 w-5 ${calloutType.iconColor} flex-shrink-0`} />
-                          <span className="font-semibold text-gray-800 dark:text-gray-100">
+                    <div className="mb-10">
+                      <div className={`bg-gradient-to-r ${calloutType.bg} border-l-6 ${calloutType.border} rounded-r-2xl overflow-hidden shadow-lg`}>
+                        <div className={`flex items-center gap-4 px-6 py-4 bg-white/60 dark:bg-gray-900/70`}>
+                          <IconComponent className={`h-6 w-6 ${calloutType.iconColor} flex-shrink-0`} />
+                          <span className="font-bold text-lg text-gray-800 dark:text-gray-100">
                             {calloutTitle}
                           </span>
                         </div>
-                        <div className="px-4 py-4">
-                          <div className="text-gray-700 dark:text-gray-100 leading-relaxed [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">
+                        <div className="px-6 py-6">
+                          <div className="text-gray-700 dark:text-gray-100 leading-relaxed text-lg [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">
                             {calloutMatch ? 
                               textContent.replace(/__CALLOUT_(NOTE|INFO|TIP|WARNING|DANGER|EXAMPLE)__\s*/i, '').trim()
                               : children
@@ -363,12 +360,12 @@ export default function GuideClient({ guide }: GuideClientProps) {
                   )
                 },
                 code: ({children}) => (
-                  <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm text-gray-800 dark:text-gray-200">
+                  <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-base text-gray-800 dark:text-gray-200 font-mono">
                     {children}
                   </code>
                 ),
                 hr: () => (
-                  <div className="my-8">
+                  <div className="my-12">
                     <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent"></div>
                   </div>
                 )
@@ -379,13 +376,13 @@ export default function GuideClient({ guide }: GuideClientProps) {
           </div>
         </div>
 
-        {/* Navigation Footer */}
-        <div className="text-center mt-6">
+        {/* Navigation Footer - Larger button */}
+        <div className="text-center mt-10">
           <Button 
             onClick={goBack}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-xl"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
+            <ArrowLeft className="h-5 w-5 mr-3" />
             Back to Guides
           </Button>
         </div>

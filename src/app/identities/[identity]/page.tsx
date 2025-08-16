@@ -402,7 +402,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
   const [error, setError] = useState<string | null>(null)
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
   const [hoveredSection, setHoveredSection] = useState<string | null>(null)
-  const [copySuccess, setCopySuccess] = useState(false)
+  const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [sources, setSources] = useState<Array<{ id: number; identity_slug: string; category: string; title: string; authors: string | null; description: string }> | null>(null)
 

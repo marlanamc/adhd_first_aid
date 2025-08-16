@@ -257,7 +257,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
     slug: string;
     description: string;
   } | null>(null)
-  const [copySuccess, setCopySuccess] = useState(false)
+  const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
   const toggleSection = (section: string) => {

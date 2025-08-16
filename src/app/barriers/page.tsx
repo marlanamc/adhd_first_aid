@@ -1,14 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, Ban, Battery, Brain, CloudLightning, Clock, HelpCircle, Mountain, Frown, CloudRain, XCircle, TimerOff, Map, Users, Shuffle, Pause, Zap, Lightbulb, Focus, Snowflake, Target, TrendingDown, UserX, Route, Layers, HeartCrack, ZapOff, Meh, Tv, MousePointerClick, Shield } from 'lucide-react'
+import { ArrowLeft, Battery, Brain, CloudLightning, Clock, HelpCircle, Mountain, Frown, XCircle, TimerOff, Map, Pause, Lightbulb, Focus, Snowflake, Target, TrendingDown, UserX, Route, Layers, HeartCrack, ZapOff, Meh, Tv, MousePointerClick, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import React from 'react'
 
 // Icon mapping to ensure proper resolution
 const iconMap = {
-  Ban,
   XCircle,
   Battery,
   CloudLightning,
@@ -17,11 +16,8 @@ const iconMap = {
   HelpCircle,
   Mountain,
   Frown,
-  CloudRain,
   TimerOff,
-  Users,
   Map,
-  Shuffle,
   Pause,
   ZapOff,
   Lightbulb,
@@ -82,14 +78,6 @@ const categories = [
   { name: 'View All', color: 'from-gray-400 to-gray-600', count: 20 }
 ]
 
-const categoryColors = {
-  'Getting Started': 'from-blue-400 to-cyan-500',
-  'Decision & Planning': 'from-purple-400 to-indigo-500',
-  'Memory & Time': 'from-green-400 to-emerald-500',
-  'Energy & Focus': 'from-orange-400 to-yellow-500',
-  'Emotional Blocks': 'from-red-400 to-pink-500',
-  'Motivation Issues': 'from-gray-400 to-slate-500'
-}
 
 export default function BarriersPage() {
   const [selectedBarrier, setSelectedBarrier] = useState<string | null>(null)
@@ -146,7 +134,7 @@ export default function BarriersPage() {
             </Button>
             <div className="flex-1">
               <h1 className="text-3xl md:text-4xl font-serif font-bold text-black dark:text-white text-center">
-                What's Getting in Your Way?
+                What&apos;s Getting in Your Way?
               </h1>
             </div>
           </div>

@@ -2,10 +2,11 @@
 
 import React from 'react'
 import { useState, useEffect, use } from 'react'
+import Link from 'next/link'
 import { 
-  ArrowLeft, AlertCircle, Ban, Battery, Brain, CloudLightning, 
-  Clock, HelpCircle, Mountain, Frown, CloudRain, XCircle, 
-  Timer, Map, Users, Shuffle, Heart, Plus, Minus, Share2, 
+  ArrowLeft, AlertCircle, Battery, Brain, CloudLightning, 
+  Clock, HelpCircle, Mountain, Frown, XCircle, 
+  Timer, Map, Heart, Plus, Minus, Share2, 
   Wrench, RotateCcw, Rainbow, Puzzle, Construction, Pause,
   UserX, Focus, Snowflake, Route, Zap, TrendingDown, Layers, Sparkles,
   ArrowLeftRight, BookOpen
@@ -16,7 +17,6 @@ import type { BarriersContent, BarrierSources } from '@/lib/supabase'
 import { StepIcon } from '@/components/ui/StepIcon';
 import BarrierActions from '@/components/barriers/BarrierActions'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
-import { Header } from '@/components/layout/Header';
 import { ShareModal } from '@/components/ui/ShareModal';
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
@@ -153,8 +153,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
-  const [hoveredSection, setHoveredSection] = useState<string | null>(null)
-  const [copySuccess, setCopySuccess] = useState(false)
+  const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
   const toggleSection = (section: string) => {
@@ -219,7 +218,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
         
         // Fetch sources data using the URL slug
         const barrierSlug = resolvedParams.barrier  // This is the URL slug like 'i-cant-start'
-        const { data: sourcesData, error: sourcesError } = await getBarrierSources(barrierSlug.replace(/-/g, '_'))
+        const { data: sourcesData } = await getBarrierSources(barrierSlug.replace(/-/g, '_'))
         
         if (sourcesData && sourcesData.length > 0) {
           setSources(sourcesData)
@@ -472,7 +471,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
-              <p className="text-sm font-medium">Explore when you're ready</p>
+              <p className="text-sm font-medium">Explore when you&apos;re ready</p>
             </div>
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
           </div>
@@ -829,7 +828,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
 
           {/* Footer */}
           <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>Need more help? Check out our <a href="/guides" className="text-orange-600 hover:underline">guides</a>, <a href="/scripts" className="text-orange-600 hover:underline">scripts</a>, <a href="/quizzes" className="text-orange-600 hover:underline">quizzes</a>, or <a href="/resources" className="text-orange-600 hover:underline">resources</a>.</p>
+            <p>Need more help? Check out our <Link href="/guides" className="text-orange-600 hover:underline">guides</Link>, <Link href="/scripts" className="text-orange-600 hover:underline">scripts</Link>, <Link href="/quizzes" className="text-orange-600 hover:underline">quizzes</Link>, or <Link href="/resources" className="text-orange-600 hover:underline">resources</Link>.</p>
           </div>
           
           </div> {/* Close glassmorphism container */}

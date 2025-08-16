@@ -1,4 +1,4 @@
-### Sat, August 9th — Website To‑Do (high‑impact, step‑by‑step)
+### Sunday, Aug 10 — Website To‑Do (high‑impact, step‑by‑step)
 
 - [X] Prep (10 min)
   - [X] Pull latest, clear cache, verify local build runs clean

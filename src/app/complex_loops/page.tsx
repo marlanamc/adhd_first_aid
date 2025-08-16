@@ -60,14 +60,6 @@ const categories = [
   { name: 'View All', color: 'from-gray-400 to-gray-600', count: 28 }
 ]
 
-const categoryColors = {
-  'Digital & Screen': 'from-blue-400 to-cyan-500',
-  'Time & Schedule': 'from-purple-400 to-indigo-500',
-  'Emotional & Social': 'from-pink-400 to-rose-500',
-  'Decision & Perfectionism': 'from-amber-400 to-orange-500',
-  'Life & Wellness': 'from-green-400 to-emerald-500',
-  'Sleep & Energy': 'from-indigo-400 to-blue-500'
-}
 
 export default function ComplexLoopsPage() {
   const [selectedLoop, setSelectedLoop] = useState<string | null>(null)

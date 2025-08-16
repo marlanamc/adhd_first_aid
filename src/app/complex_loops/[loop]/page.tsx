@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { 
   ArrowLeft, Plus, Minus, Share2, Brain, Heart, 
   Wrench, RotateCcw, Rainbow, Construction,
@@ -16,7 +17,7 @@ import {
   HeartHandshake, MessageCircleQuestion, CircleDashed, Infinity,
   UtensilsCrossed, Building2, Dumbbell, Moon, BellRing, BatteryLow,
   Briefcase, Activity, TrendingUp, TrendingDown, Award, Music,
-  Phone, Smartphone, Globe, Palette, Link, MapPin, Dice1 as Dice, Home, Pill, Car,
+  Phone, Smartphone, Globe, Palette, Link as LinkIcon, MapPin, Dice1 as Dice, Home, Pill, Car,
   CookingPot, Shirt, Bath, PhoneCall, Receipt, ScrollText, Trash2, 
   Hammer, Crown, Shield, Gem, Rocket, Medal, Flower, Leaf
 } from 'lucide-react'
@@ -30,7 +31,7 @@ import StudyPainpointsGrid from '@/components/ui/StudyPainpointsGrid'
 import { ShareModal } from '@/components/ui/ShareModal';
 
 // Short, ADHD‑friendly subtitles for section headers
-const getSectionSubtitle = (title: string, loopName?: string): string => {
+const getSectionSubtitle = (title: string): string => {
   const t = (title || '').toLowerCase()
   if (t.includes('core principles')) return 'The few big ideas to keep you steady when your brain spirals'
   if (t.includes('strategies')) return 'Tiny, do‑able moves to break the loop right now'
@@ -269,7 +270,7 @@ const getSectionIcon = (emoji: string): React.ElementType => {
     '💻': Laptop,
     '🖥️': Laptop,
     '📲': Phone,
-    '🔗': Link,
+    '🔗': LinkIcon,
     '🌐': Globe,
     '📺': Laptop,
     
@@ -374,7 +375,7 @@ const getSectionIcon = (emoji: string): React.ElementType => {
     '📈_up': TrendingUp,
     '🚀_rocket': Rocket,
     '🧩_piece': Puzzle,
-    '🔗_link': Link,
+    '🔗_link': LinkIcon,
     '🌐_globe': Globe,
     '⭐_medal': Medal,
     '💎_jewel': Key,
@@ -400,7 +401,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
-  const [copySuccess, setCopySuccess] = useState(false)
+  const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [sources, setSources] = useState<Array<{ id: number; loop_slug: string; category: string; title: string; authors: string | null; description: string }> | null>(null)
 
@@ -473,7 +474,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
           const sourcesSlug = mapRouteToSourcesSlug[routeSlug] || routeSlug
           const { data: srcData, error: srcError } = await getComplexLoopSources(sourcesSlug)
           if (!srcError && srcData && srcData.length > 0) {
-            setSources(srcData as any)
+            setSources(srcData as typeof sources)
           }
         } else {
           setError('Complex loop content not found')
@@ -683,7 +684,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
-              <p className="text-sm font-medium">Explore when you're ready</p>
+              <p className="text-sm font-medium">Explore when you&apos;re ready</p>
             </div>
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
           </div>
@@ -772,7 +773,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                             return { emoji: '🧠', heading: 'Working memory failures', desc: 'your brain is juggling a lot, so details slip without reminders' }
                           }
                           if (/(avoid|boring|complex|start|starting|begin|multi\s*step|plan)/.test(t)) {
-                            return { emoji: '🧩', heading: 'Executive dysfunction', desc: "getting started is hard when your brain can't pick a first step or feel the spark" }
+                            return { emoji: '🧩', heading: 'Executive dysfunction', desc: "getting started is hard when your brain can&apos;t pick a first step or feel the spark" }
                           }
                           if (/(late|time|deadline|last-minute|estimate|expire|registration|inspection|how long it's been)/.test(t)) {
                             return { emoji: '⏰', heading: 'Time blindness', desc: 'time feels fuzzy, so deadlines sneak up and urgency spikes' }
@@ -984,7 +985,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                         </div>
                         <div>
                           <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-0.5">{section.title}</h3>
-                          <p className="text-sm text-gray-700">{getSectionSubtitle(section.title, content.loop_name)}</p>
+                          <p className="text-sm text-gray-700">{getSectionSubtitle(section.title)}</p>
                         </div>
                       </div>
                       {isExpanded ? (
@@ -1233,10 +1234,10 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                     {Object.entries(
                       (sources || []).reduce((acc, source) => {
                         const cat = source.category || 'Other'
-                        if (!acc[cat]) acc[cat] = [] as any[]
-                        (acc[cat] as any[]).push(source)
+                        if (!acc[cat]) acc[cat] = [] as typeof sources
+                        (acc[cat] as typeof sources).push(source)
                         return acc
-                      }, {} as Record<string, any[]>)
+                      }, {} as Record<string, typeof sources>)
                     )
                       .sort(([, a], [, b]) => b.length - a.length)
                     .map(([category, categorySources], index) => {
@@ -1258,13 +1259,13 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                           .trim()
 
                       const deduped = Object.values(
-                        (categorySources as any[]).reduce((acc, src) => {
+                        (categorySources as typeof sources).reduce((acc, src) => {
                           const key = `${normalized(src.title)}::${normalized(src.authors || '')}`
                           if (!acc[key]) acc[key] = { ...src, _descriptions: [] as string[] }
                           if (src.description) acc[key]._descriptions.push(src.description)
                           return acc
-                        }, {} as Record<string, any>)
-                      ) as Array<any & { _descriptions: string[] }>
+                        }, {} as Record<string, (typeof sources)[0] & { _descriptions: string[] }>)
+                      ) as Array<(typeof sources)[0] & { _descriptions: string[] }>
 
                       return (
                           <div key={category} className="space-y-2 mb-4">
@@ -1434,7 +1435,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
           </div>
           {/* Footer */}
           <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>Need more help? Check out our <a href="/guides" className="text-purple-600 hover:underline">guides</a>, <a href="/scripts" className="text-purple-600 hover:underline">scripts</a>, <a href="/quizzes" className="text-purple-600 hover:underline">quizzes</a>, or <a href="/resources" className="text-purple-600 hover:underline">resources</a>.</p>
+            <p>Need more help? Check out our <Link href="/guides" className="text-purple-600 hover:underline">guides</Link>, <Link href="/scripts" className="text-purple-600 hover:underline">scripts</Link>, <Link href="/quizzes" className="text-purple-600 hover:underline">quizzes</Link>, or <Link href="/resources" className="text-purple-600 hover:underline">resources</Link>.</p>
           </div>
           
           </div> {/* Close glassmorphism container */}
