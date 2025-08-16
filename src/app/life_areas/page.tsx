@@ -154,7 +154,10 @@ export default function TasksPage() {
             <MousePointerClick className="h-5 w-5" />
             Choose a task type:
           </h2>
-          {isMobile ? (
+          {isMobile === undefined ? (
+            // Show loading state during hydration to prevent flash
+            <div className="w-full bg-white/20 dark:bg-gray-800/40 backdrop-blur-md border border-white/30 dark:border-gray-600/30 rounded-md h-10 animate-pulse"></div>
+          ) : isMobile ? (
             <Select value={selectedCategory || undefined} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-full bg-white/20 dark:bg-gray-800/40 backdrop-blur-md border-white/30 dark:border-gray-600/30 text-black dark:text-white">
                 <SelectValue placeholder="Choose a category" />
