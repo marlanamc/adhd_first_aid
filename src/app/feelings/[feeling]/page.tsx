@@ -8,7 +8,8 @@ import {
   LockKeyhole, Flame, Sparkles, CloudLightning, 
   Activity, Skull, CloudRain, Rainbow,
   Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, HeartOff, ZapOff,
-  Share2, Wrench, Construction, RotateCcw, Puzzle, XCircle 
+  Share2, Wrench, Construction, RotateCcw, Puzzle, XCircle,
+  Scale, Scissors, UserX, Battery, X, User, Star, Lock
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getFeelingsContent, getFeelingSources } from '@/lib/supabase'
@@ -17,24 +18,8 @@ import { StepIcon } from '@/components/ui/StepIcon';
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
 import FixedBottomActions from '@/components/ui/FixedBottomActions'
+import { TargetedCrisisMode } from '@/components/ui/TargetedCrisisMode'
 
-// Function to format text without bold (for use when bold is handled manually)
-const formatTextNoBold = (text: string) => {
-  // Strip ** formatting and just handle italics and plain text
-  const strippedText = text.replace(/\*\*(.*?)\*\*/g, '$1');
-  
-  if (strippedText.includes('_')) {
-    // Handle italics (_text_)
-    return strippedText.split(/(_[^_]+_)/).map((part, index) => {
-      if (part.startsWith('_') && part.endsWith('_')) {
-        return <em key={`italic-${index}`}>{part.slice(1, -1)}</em>;
-      }
-      return part;
-    });
-  }
-  
-  return strippedText;
-};
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
@@ -182,6 +167,32 @@ const FEELING_ICONS: Record<string, React.ElementType> = {
   'Rejected': Activity // Changed to Activity as closest to square-activity
 }
 
+// Emoji mapping for crisis mode (actual emoji icons from database)
+const FEELING_EMOJI_ICONS: Record<string, string> = {
+  'Anxious': '😰',
+  'Ashamed': '😔',
+  'Burned Out': '🔥',
+  'Defeated': '😔',
+  'Drained': '🔋',
+  'Forgetful': '🤔',
+  'Frustrated': '😤',
+  'Guilty': '😞',
+  'Hopeless': '🌫️',
+  'Lonely': '😢',
+  'Mental Fog': '🌫️', // Similar to Hopeless
+  'Misunderstood': '🙄',
+  'Numb': '😶',
+  'Overstimulated': '🌈',
+  'Overwhelmed': '🤯',
+  'Rejected': '😔', // Similar to Ashamed/Defeated
+  'Restless': '🏃',
+  'Scattered': '🌪️',
+  'Stressed': '😵',
+  'Stuck': '🧊',
+  'Tense': '😤', // Similar to Frustrated
+  'Wired': '⚡'
+}
+
 
 interface FeelingPageProps {
   params: Promise<{
@@ -199,6 +210,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
   const [hoveredSection, setHoveredSection] = useState<string | null>(null)
   const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [isCrisisModeOpen, setIsCrisisModeOpen] = useState(false)
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
@@ -892,9 +904,9 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               </div>
 
               {/* Desktop: Detailed cards with descriptions */}
-              <div className="hidden lg:block space-y-2">
+              <div className="hidden lg:block space-y-2 max-w-4xl mx-auto">
                 {/* Top Row - Barriers and Tasks */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 justify-center">
                   <Button 
                     variant="outline"
                     size="lg"
@@ -927,7 +939,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 </div>
 
                 {/* Middle Row - Complex Loops and Identity */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 justify-center">
                   <Button 
                     variant="outline"
                     size="lg"
@@ -960,7 +972,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 </div>
 
                 {/* Bottom Row - Systems Lab */}
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 gap-4 justify-center max-w-md mx-auto">
                   <Button 
                     variant="outline"
                     size="lg"
@@ -998,13 +1010,22 @@ export default function FeelingPage({ params }: FeelingPageProps) {
         description={`Get help with feeling ${content?.feeling_name?.toLowerCase()} - ADHD-friendly strategies and support.`}
       />
 
+      {/* Targeted Crisis Mode Modal */}
+      <TargetedCrisisMode
+        feelingName={content?.feeling_name || ''}
+        isOpen={isCrisisModeOpen}
+        onClose={() => setIsCrisisModeOpen(false)}
+        feelingEmoji={FEELING_EMOJI_ICONS[content?.feeling_name || ''] || '❤️'}
+      />
+
       {/* Fixed Bottom Actions */}
       <FixedBottomActions
         slug={resolvedParams.feeling}
-        summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : `<ul><li>Step away for 60–120s; breathe 4–6 times</li><li>Lower input: silence phone; reduce tabs</li><li>Pick 1 tiny task; 2‑minute timer; start</li></ul>`}
+        summaryHtml={content?.intro_paragraph || 'Step away for 60–120s; breathe 4–6 times • Lower input: silence phone; reduce tabs • Pick 1 tiny task; 2‑minute timer; start'}
         pageType="feeling"
         content={content}
         sources={sources}
+        onOpenCrisisMode={() => setIsCrisisModeOpen(true)}
       />
     </div>
   )

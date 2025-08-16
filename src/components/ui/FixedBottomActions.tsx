@@ -43,6 +43,8 @@ interface FixedBottomActionsProps {
   pageType?: 'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' | 'identity' | 'guide' | 'script' | 'quiz' | 'resource'
   content?: FeelingsContent | BarriersContent | null
   sources?: FeelingSources[] | BarrierSources[] | null
+  crisisOnly?: boolean // Show only crisis mode button, no walkthrough
+  onOpenCrisisMode?: () => void // Function to open targeted crisis mode for feelings
 }
 
 export default function FixedBottomActions({ 
@@ -51,7 +53,9 @@ export default function FixedBottomActions({
   customSteps: providedCustomSteps,
   pageType = 'feeling',
   content,
-  sources
+  sources,
+  crisisOnly = false,
+  onOpenCrisisMode
 }: FixedBottomActionsProps) {
   const isMobile = useIsMobile()
   
@@ -60,27 +64,14 @@ export default function FixedBottomActions({
     // If custom steps are already provided, use them
     if (providedCustomSteps) return providedCustomSteps
     
-    // If no content, return minimal steps
+    // If no content, return empty steps (no TL;DR since intro is already visible on page)
     if (!content) {
-      return [
-        {
-          id: 'tldr',
-          title: 'Quick Summary',
-          classes: 'border-l-4 border-pink-400 bg-pink-50/50 dark:bg-pink-900/10 p-5 rounded-r-lg',
-          content: <div dangerouslySetInnerHTML={{ __html: summaryHtml || '' }} />,
-        },
-      ]
+      return []
     }
     
     const steps: Array<{ id: string; title: string; classes?: string; content: React.ReactNode }> = []
     
-    // Add TL;DR
-    steps.push({
-      id: 'tldr',
-      title: 'TL;DR / Quick Summary',
-      classes: 'border-l-4 border-pink-400 bg-pink-50/50 dark:bg-pink-900/10 p-5 rounded-r-lg',
-      content: <div dangerouslySetInnerHTML={{ __html: summaryHtml || '' }} />,
-    })
+    // Skip TL;DR/intro for walkthrough since it's already visible on the page
     
     // Add Gentle Advice
     if (content.gentle_advice) {
@@ -263,7 +254,7 @@ export default function FixedBottomActions({
         <div className="max-w-4xl mx-auto px-4 py-3 pb-safe">
           <div className="flex items-center gap-3 justify-center">
             <Button 
-              onClick={goCrisis} 
+              onClick={pageType === 'feeling' && onOpenCrisisMode ? onOpenCrisisMode : goCrisis} 
               className={`flex-1 sm:flex-none sm:min-w-[140px] ${gradientStyles.crisis} text-black font-medium border-0`}
               size="default"
             >
@@ -271,7 +262,7 @@ export default function FixedBottomActions({
               Crisis mode
             </Button>
             
-            {!isMobile && (
+            {!isMobile && !crisisOnly && (
               <Button 
                 onClick={openWalkthrough} 
                 className={`flex-1 sm:flex-none sm:min-w-[180px] ${gradientStyles.walkthrough} text-black font-medium border-0`}

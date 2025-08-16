@@ -245,6 +245,42 @@ export async function getIdentitiesContent(identityName: string) {
   }
 }
 
+// Crisis Mode Functions
+export async function getCrisisModeFeeling(feelingName: string) {
+  try {
+    const { data, error } = await supabase
+      .from('crisis_mode_feelings')
+      .select('*')
+      .eq('feeling_name', feelingName)
+      .single();
+    
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching crisis mode feeling:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error : new Error('Failed to fetch crisis mode feeling') 
+    };
+  }
+}
+
+export async function getAllCrisisModeFeelingsNames() {
+  try {
+    const { data, error } = await supabase
+      .from('crisis_mode_feelings')
+      .select('feeling_name, description, icon')
+      .order('feeling_name');
+    
+    return { data, error };
+  } catch (error) {
+    console.error('Error fetching crisis mode feelings names:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error : new Error('Failed to fetch crisis mode feelings names') 
+    };
+  }
+}
+
 export async function getAllIdentitiesContent() {
   try {
     const { data, error } = await supabase

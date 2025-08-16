@@ -19,23 +19,6 @@ import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
 
-// Function to format text without bold (for use when bold is handled manually)
-const formatTextNoBold = (text: string) => {
-  // Strip ** formatting and just handle italics and plain text
-  const strippedText = text.replace(/\*\*(.*?)\*\*/g, '$1');
-  
-  if (strippedText.includes('_')) {
-    // Handle italics (_text_)
-    return strippedText.split(/(_[^_]+_)/).map((part, index) => {
-      if (part.startsWith('_') && part.endsWith('_')) {
-        return <em key={`italic-${index}`}>{part.slice(1, -1)}</em>;
-      }
-      return part;
-    });
-  }
-  
-  return strippedText;
-};
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
@@ -971,7 +954,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
       {/* Fixed Bottom Actions */}
       <FixedBottomActions
         slug={resolvedParams.barrier}
-        summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : ''}
+        summaryHtml={content?.intro_paragraph || ''}
         pageType="barrier"
         content={content}
         sources={sources}

@@ -1074,7 +1074,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                               return groupedContent.map((group, groupIndex) => {
                                 if (group.type === 'quote') {
                                   return (
-                                      <div key={groupIndex} className={`border-l-4 ${colors.border} ml-6 pl-4 py-3 ${colors.panelBg.replace('/20','/10')} rounded-lg space-y-2 hover:shadow-sm transition-shadow group/quote`}>
+                                      <div key={groupIndex} className={`border-l-4 border-blue-400 ml-6 pl-4 py-3 bg-blue-50/20 dark:bg-blue-900/20 rounded-lg space-y-2 hover:shadow-sm transition-shadow group/quote`}>
                                       {group.items.map((item, itemIndex) => (
                                           <div key={itemIndex} className="text-gray-900" dangerouslySetInnerHTML={{ 
                                             __html: item.replace('> ', '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/_(.*?)_/g, '<em>$1</em>') }} />

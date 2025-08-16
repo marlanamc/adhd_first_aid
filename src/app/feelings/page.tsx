@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { SuggestFeelingModal } from '@/components/ui/SuggestFeelingModal'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useIsMobile } from '@/hooks/use-mobile'
+import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import React from 'react'
 
 // Categories with counts
@@ -316,6 +317,13 @@ export default function FeelingsPage() {
       <SuggestFeelingModal
         isOpen={isSuggestModalOpen}
         onClose={() => setIsSuggestModalOpen(false)}
+      />
+      
+      {/* Crisis Mode Actions */}
+      <FixedBottomActions 
+        slug="feelings-category"
+        pageType="feeling"
+        crisisOnly={true}
       />
     </div>
   )
