@@ -220,7 +220,7 @@ export default function BarrierActions({ slug, summaryHtml, content, sources }: 
     ]
   }, [content, sources, summaryHtml])
 
-  const { goCrisis, openWalkthrough, modal } = useCrisisAndWalkthrough({ slug, summaryHtml, customSteps })
+  const { goCrisis, openWalkthrough, modal } = useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageType: 'barrier' })
 
   return (
     <div className="flex items-center gap-2">

@@ -656,7 +656,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                                     // Regular items - with bullet
                                     return (
                                       <li key={itemIndex} className="flex items-start gap-3 py-1 px-2 sm:py-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-                                        <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-base">•</span>
+                                        <span className={`${colors.bulletColor} flex-shrink-0 translate-y-[1px] text-base`}>•</span>
                                         <span className="text-gray-900 leading-snug">
                                           {parsed
                                             ? (<><strong>{parsed.heading}:</strong> {formatMarkdownText(parsed.body)}</>)
@@ -973,6 +973,8 @@ export default function BarrierPage({ params }: BarrierPageProps) {
         slug={resolvedParams.barrier}
         summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : ''}
         pageType="barrier"
+        content={content}
+        sources={sources}
       />
     </div>
   )

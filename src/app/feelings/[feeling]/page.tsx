@@ -685,7 +685,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                                     // Regular items - with bullet
                                     return (
                                       <li key={itemIndex} className="flex items-start gap-3 py-1 px-2 sm:py-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-                                        <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-base">•</span>
+                                        <span className={`${colors.bulletColor} flex-shrink-0 translate-y-[1px] text-base`}>•</span>
                                         <span className="text-gray-900 leading-snug">
                                           {parsed
                                             ? (<><strong>{parsed.heading}:</strong> {formatMarkdownText(parsed.body)}</>)
@@ -1003,6 +1003,8 @@ export default function FeelingPage({ params }: FeelingPageProps) {
         slug={resolvedParams.feeling}
         summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : `<ul><li>Step away for 60–120s; breathe 4–6 times</li><li>Lower input: silence phone; reduce tabs</li><li>Pick 1 tiny task; 2‑minute timer; start</li></ul>`}
         pageType="feeling"
+        content={content}
+        sources={sources}
       />
     </div>
   )

@@ -249,7 +249,7 @@ export default function FeelingActions({ slug, summaryHtml, content, sources }: 
     ]
   }, [content, sources, summaryHtml])
 
-  const { goCrisis, openWalkthrough, modal } = useCrisisAndWalkthrough({ slug, summaryHtml, customSteps })
+  const { goCrisis, openWalkthrough, modal } = useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageType: 'feeling' })
 
   return (
     <div className="flex flex-col sm:flex-row items-center gap-2">
