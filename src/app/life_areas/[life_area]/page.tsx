@@ -624,11 +624,11 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-      <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
+      <div className="max-w-5xl mx-auto px-4 py-6 pt-20">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-4 md:p-6 shadow-lg">
           {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center gap-4 mb-5">
+          <div className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
               <Button
                 variant="ghost"
                 size="default"
@@ -664,7 +664,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
             </div>
 
             {/* Intro Paragraph - with green border like requested */}
-            <div className="border-l-4 border-green-500 bg-green-50/50 dark:bg-green-900/10 pl-5 py-4 mb-7 rounded-r-lg">
+            <div className="border-l-4 border-green-500 bg-green-50/50 dark:bg-green-900/10 pl-4 py-3 mb-5 rounded-r-lg">
               <p className="text-base md:text-lg text-foreground leading-relaxed"
                  dangerouslySetInnerHTML={{ 
                    __html: content.intro_paragraph
@@ -689,12 +689,12 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
           </div>
 
           {/* Side-by-Side Toggle Boxes (original placement and style) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
             {/* Left Box - Soft Start */}
             <div className="relative" data-section-id="gentle-advice">
               <Button
                 onClick={() => toggleSection('gentle-advice')}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#61ffb5]/40 hover:shadow-md transition-shadow duration-300 border border-[#A0E8AF]/60 min-h-[60px] touch-manipulation"
+                className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-[#61ffb5]/40 hover:shadow-md transition-shadow duration-300 border border-[#A0E8AF]/60 min-h-[52px] touch-manipulation"
                 variant="ghost"
                 size="lg"
               >
@@ -711,7 +711,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                 </div>
               </Button>
               {expandedSections['gentle-advice'] && (
-                <div className="bg-[#61ffb5]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
+                <div className="bg-[#61ffb5]/40 rounded-xl p-3 space-y-2 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
                   <p className="text-base text-gray-900 leading-relaxed">
                     {formatMarkdownText(content.gentle_advice)}
                   </p>
@@ -723,7 +723,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
             <div className="relative" data-section-id="stern-advice">
               <Button
                 onClick={() => toggleSection('stern-advice')}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-[#ff61ab]/40 hover:shadow-md transition-shadow duration-300 border border-[#FF9EBB]/60 min-h-[60px] touch-manipulation"
+                className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-[#ff61ab]/40 hover:shadow-md transition-shadow duration-300 border border-[#FF9EBB]/60 min-h-[52px] touch-manipulation"
                 variant="ghost"
                 size="lg"
               >
@@ -740,7 +740,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                 </div>
               </Button>
               {expandedSections['stern-advice'] && (
-                <div className="bg-[#ff61ab]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#FF9EBB]/60 mt-2">
+                <div className="bg-[#ff61ab]/40 rounded-xl p-3 space-y-2 animate-in slide-in-from-top duration-300 border border-[#FF9EBB]/60 mt-2">
                   <p className="text-base text-gray-900 leading-relaxed">
                     {formatMarkdownText(content.stern_advice)}
                   </p>
@@ -773,7 +773,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
             <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border border-[#FBF8CC]" data-section-id="adhd-reasons">
               <button
                 onClick={() => toggleSection('adhd-reasons')}
-                className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                className="w-full p-4 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
                 title={expandedSections['adhd-reasons'] ? 'Close section' : 'Open section'}
               >
                 <div className="flex items-center gap-3">
@@ -795,7 +795,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
               </button>
 
               {expandedSections['adhd-reasons'] && (
-                <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#D9D9FF] bg-white">
+                <div className="px-4 pb-4 animate-in slide-in-from-top duration-300 border-t border-[#D9D9FF] bg-white">
                   <div className="space-y-4">
                     {(() => {
                       const youMightItems: string[] = []
@@ -1061,7 +1061,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                     </button>
                     
                     {isExpanded && (
-                      <div className={`px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t ${colors.border} ${colors.panelBg} rounded-b-2xl`}>
+                      <div className={`px-3 md:px-4 pb-3 md:pb-4 animate-in slide-in-from-top duration-300 border-t ${colors.border} ${colors.panelBg} rounded-b-2xl`}>
                         {section.content && section.content.length > 0 && (
                            (/^\s*core principles\s*$/i.test(section.title || '') || /^\s*get steady before you start\s*$/i.test(section.title || '')) ? (
                            (() => {
@@ -1150,7 +1150,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                                return <CorePrinciplesCondensed items={items} />
                              })()
                            ) : (
-                          <div className="space-y-4 mb-4 pt-2">
+                          <div className="space-y-2 sm:space-y-3 mb-2 sm:mb-3 pt-1 sm:pt-2">
                             {(() => {
                               const groupedContent: Array<{type: 'quote', items: string[]} | {type: 'bullet', item: string}> = [];
                               let currentQuoteGroup: string[] = [];
@@ -1217,7 +1217,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                         
                         {/* Subsections */}
                         {section.subsections && section.subsections.length > 0 && (
-                          <div className="space-y-4">
+                          <div className="space-y-2 sm:space-y-3">
                             {section.subsections.map((subsection, subIndex) => {
                               const SubIconComponent = getSectionIcon(subsection.emoji);
                               const subsectionId = `subsection-${index}-${subIndex}`;
@@ -1317,7 +1317,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                     e.preventDefault();
                     toggleSection('sources');
                   }}
-                  className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group relative"
+                                        className="w-full p-4 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group relative"
                   title={expandedSections['sources'] ? "Close section" : "Open section"}
                 >
                   <div className="flex items-center gap-4">
@@ -1337,7 +1337,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                 </button>
                 
                 {expandedSections['sources'] && (
-                  <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#D9D9FF] bg-white">
+                  <div className="px-4 pb-4 animate-in slide-in-from-top duration-300 border-t border-[#D9D9FF] bg-white">
                     {/* Group sources by category and sort by count (descending) */}
                     {Object.entries(
                       sources.reduce((acc, source) => {
@@ -1485,9 +1485,9 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
           )}
 
           {/* Next Steps Section with Glassmorphism Background */}
-          <div className="mt-8 p-8 bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-xl">
+          <div className="mt-6 p-6 bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-xl">
             {/* Suggestion Button */}
-            <div className="mb-8">
+            <div className="mb-6">
               <SuggestionButton pageType="tasks" />
             </div>
 
@@ -1644,7 +1644,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
             </div>
           </div>
           {/* Footer */}
-          <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
+          <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
             <p>Need more help? Check out our <a href="/guides" className="text-blue-600 hover:underline">guides</a>, <a href="/scripts" className="text-blue-600 hover:underline">scripts</a>, <a href="/quizzes" className="text-blue-600 hover:underline">quizzes</a>, or <a href="/resources" className="text-blue-600 hover:underline">resources</a>.</p>
           </div>
           

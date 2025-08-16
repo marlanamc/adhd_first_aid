@@ -16,7 +16,7 @@ import type { FeelingsContent, FeelingSources } from '@/lib/supabase'
 import { StepIcon } from '@/components/ui/StepIcon';
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
-import FeelingActions from '@/components/feelings/FeelingActions'
+import FixedBottomActions from '@/components/ui/FixedBottomActions'
 
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
@@ -164,77 +164,6 @@ const FEELING_ICONS: Record<string, React.ElementType> = {
   'Rejected': Activity // Changed to Activity as closest to square-activity
 }
 
-// Hardcoded guide mappings
-const FEELING_GUIDE_MAPPINGS = {
-  // Cognitive & Overload feelings
-  'mental fog': {
-    title: 'Cognitive & Overload Guide',
-    slug: 'mentalfog',
-    emoji: '😶‍🌫️',
-    description: 'Navigate cognitive challenges and overwhelm with practical ADHD-friendly strategies'
-  },
-  'overwhelmed': {
-    title: 'Cognitive & Overload Guide',
-    slug: 'mentalfog',
-    emoji: '😶‍🌫️',
-    description: 'Navigate cognitive challenges and overwhelm with practical ADHD-friendly strategies'
-  },
-  'forgetful': {
-    title: 'Cognitive & Overload Guide',
-    slug: 'mentalfog',
-    emoji: '😶‍🌫️',
-    description: 'Navigate cognitive challenges and overwhelm with practical ADHD-friendly strategies'
-  },
-  'scattered': {
-    title: 'Cognitive & Overload Guide',
-    slug: 'mentalfog',
-    emoji: '😶‍🌫️',
-    description: 'Navigate cognitive challenges and overwhelm with practical ADHD-friendly strategies'
-  },
-  'overstimulated': {
-    title: 'Cognitive & Overload Guide',
-    slug: 'mentalfog',
-    emoji: '😶‍🌫️',
-    description: 'Navigate cognitive challenges and overwhelm with practical ADHD-friendly strategies'
-  },
-  // Dysregulation & Shutdown feelings
-  'stuck': {
-    title: 'Dysregulation & Shutdown Guide',
-    slug: 'dysregulation',
-    emoji: '🧯',
-    description: 'Navigate emotional overwhelm and nervous system shutdown with compassionate ADHD-friendly strategies'
-  },
-  'drained': {
-    title: 'Dysregulation & Shutdown Guide',
-    slug: 'dysregulation',
-    emoji: '🧯',
-    description: 'Navigate emotional overwhelm and nervous system shutdown with compassionate ADHD-friendly strategies'
-  },
-  'burned out': {
-    title: 'Dysregulation & Shutdown Guide',
-    slug: 'dysregulation',
-    emoji: '🧯',
-    description: 'Navigate emotional overwhelm and nervous system shutdown with compassionate ADHD-friendly strategies'
-  },
-  'numb': {
-    title: 'Dysregulation & Shutdown Guide',
-    slug: 'dysregulation',
-    emoji: '🧯',
-    description: 'Navigate emotional overwhelm and nervous system shutdown with compassionate ADHD-friendly strategies'
-  },
-  'ashamed': {
-    title: 'Dysregulation & Shutdown Guide',
-    slug: 'dysregulation',
-    emoji: '🧯',
-    description: 'Navigate emotional overwhelm and nervous system shutdown with compassionate ADHD-friendly strategies'
-  },
-  'frustrated': {
-    title: 'Dysregulation & Shutdown Guide',
-    slug: 'dysregulation',
-    emoji: '🧯',
-    description: 'Navigate emotional overwhelm and nervous system shutdown with compassionate ADHD-friendly strategies'
-  }
-}
 
 interface FeelingPageProps {
   params: Promise<{
@@ -250,13 +179,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
   const [error, setError] = useState<string | null>(null)
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
   const [hoveredSection, setHoveredSection] = useState<string | null>(null)
-  const [introRevealed, setIntroRevealed] = useState(false)
-  const [availableGuide, setAvailableGuide] = useState<{
-    title: string;
-    emoji: string;
-    slug: string;
-    description: string;
-  } | null>(null)
   const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
@@ -294,16 +216,12 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
         // Fetch sources data using the URL slug
         const feelingSlug = resolvedParams.feeling  // This is the URL slug like 'mental-fog'
-        const { data: sourcesData, error: sourcesError } = await getFeelingSources(feelingSlug.replace(/-/g, '_'))
+        const { data: sourcesData } = await getFeelingSources(feelingSlug.replace(/-/g, '_'))
         
         if (sourcesData && sourcesData.length > 0) {
           setSources(sourcesData)
         }
 
-        // Check if there's a guide for this feeling
-        const feelingKey = feelingName.toLowerCase().trim()
-        const matchedGuide = FEELING_GUIDE_MAPPINGS[feelingKey as keyof typeof FEELING_GUIDE_MAPPINGS]
-        setAvailableGuide(matchedGuide || null)
       } catch (err) {
         setError('Failed to load feelings content.')
         console.error('Error loading feelings content:', err)
@@ -372,10 +290,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-10 shadow-lg">
+      <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6 md:py-8 pt-24 sm:pt-28 md:pt-24">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-4 sm:mb-6 md:mb-6">
             <div className="flex items-center gap-4 mb-6">
               <Button
                 variant="ghost"
@@ -411,20 +329,11 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               </div>
             </div>
 
-            {/* Crisis Mode Button */}
-            <div className="mb-6">
-              <FeelingActions
-                slug={resolvedParams.feeling}
-                summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : `<ul><li>Step away for 60–120s; breathe 4–6 times</li><li>Lower input: silence phone; reduce tabs</li><li>Pick 1 tiny task; 2‑minute timer; start</li></ul>`}
-                content={content}
-                sources={sources}
-              />
-            </div>
 
             {/* Intro Paragraph - with pink border like screenshot */}
             <div 
               id="tldr"
-              className="guide-section border-l-4 border-pink-400 bg-pink-50/50 dark:bg-pink-900/10 pl-5 py-5 mb-8 rounded-r-lg"
+              className="guide-section border-l-4 border-pink-400 bg-pink-50/50 dark:bg-pink-900/10 pl-5 py-4 mb-4 sm:mb-5 md:mb-6 rounded-r-lg"
             >
               <p className="text-base md:text-lg text-foreground leading-relaxed">
                 {content?.intro_paragraph && formatMarkdownText(content.intro_paragraph)}
@@ -434,7 +343,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
 
           {/* Section Divider */}
-          <div className="flex items-center justify-center gap-4 mb-5 text-gray-400 dark:text-gray-600">
+          <div className="flex items-center justify-center gap-4 mb-4 text-gray-400 dark:text-gray-600">
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
             <div className="flex items-center gap-2">
               <ArrowLeftRight className="h-4 w-4" />
@@ -444,7 +353,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           </div>
 
           {/* Side-by-Side Toggle Boxes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mb-3 sm:mb-4">
             {/* Left Box - Soft Start */}
             <section id="gentle" className="guide-section relative">
               <Button
@@ -479,7 +388,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               )}
               
               {expandedSections['gentle'] && (
-                <div className="bg-[#A0E8AF]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
+                <div className="bg-[#A0E8AF]/40 rounded-xl p-4 sm:p-5 space-y-2 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
                   <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
                     {formatMarkdownText(content.gentle_advice)}
                   </p>
@@ -521,7 +430,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               )}
 
               {expandedSections['stern'] && (
-                <div className="bg-[#F87171]/30 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#F87171]/50 mt-2">
+                <div className="bg-[#F87171]/30 rounded-xl p-4 sm:p-5 space-y-2 animate-in slide-in-from-top duration-300 border border-[#F87171]/50 mt-2">
                   <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
                     {formatMarkdownText(content.stern_advice)}
                   </p>
@@ -531,7 +440,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           </div>
 
           {/* Gentle guidance note - moved before ADHD reasons section */}
-          <div className="flex items-center justify-center gap-4 mb-5 text-gray-400 dark:text-gray-600">
+          <div className="flex items-center justify-center gap-4 mb-4 text-gray-400 dark:text-gray-600">
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
@@ -541,11 +450,11 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           </div>
 
           {/* Why ADHD Makes [Feeling] Worse Section */}
-          <section id="adhd_reasons" className="guide-section relative mb-4">
-            <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border border-[#FFADD3] md:border-2 shadow-sm">
+          <section id="adhd_reasons" className="guide-section relative mb-3 sm:mb-4">
+            <div className="rounded-2xl transition-all duration-300 mb-3 bg-white border border-[#FFADD3] md:border-2 shadow-sm">
               <button
                 onClick={() => toggleSection('adhd_reasons')}
-                className="w-full p-3 md:p-5 lg:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                className="w-full p-3 md:p-4 lg:p-5 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
                 title={expandedSections['adhd_reasons'] ? 'Close section' : 'Open section'}
               >
                 <div className="flex items-center gap-2 md:gap-3">
@@ -565,8 +474,8 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               </button>
               
               {expandedSections['adhd_reasons'] && (
-                <div className="px-3 md:px-6 pb-3 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#FFADD3] bg-white">
-                  <div className="space-y-4">
+                <div className="px-3 md:px-4 pb-2 md:pb-3 animate-in slide-in-from-top duration-300 border-t border-[#FFADD3] bg-white">
+                  <div className="space-y-1">
                     {content.adhd_reasons.map((reason, index) => {
                       // Split on the first colon to get bold heading and description
                       const colonIndex = reason.indexOf(':');
@@ -630,7 +539,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                       const emoji = getEmoji(reason, usedEmojis);
                       
                       return (
-                        <div key={index} className="flex items-start gap-3 p-4 rounded-xl bg-[#FBF8CC]/40 border border-[#FBF8CC]/60 hover:bg-[#FBF8CC]/60 transition-colors">
+                        <div key={index} className="flex items-start gap-3 p-2 rounded-xl bg-[#FBF8CC]/40 border border-[#FBF8CC]/60 hover:bg-[#FBF8CC]/60 transition-colors">
                           <div className="bg-[#FBF8CC] rounded-full p-2 flex-shrink-0">
                             <span className="text-lg">{emoji}</span>
                           </div>
@@ -656,34 +565,28 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
           {/* Step-by-Step Sections with clean headers */}
           {content.step_sections && content.step_sections.length > 0 && (
-            <div className="space-y-4">
+            <div className="space-y-2">
               {content.step_sections.map((step, index) => {
                 const colorSchemes = [
-                  { bg: 'bg-[#FCF6BD]', border: 'border-[#FCF6BD]' },
-                  { bg: 'bg-[#D0F4DE]', border: 'border-[#D0F4DE]' },
-                  { bg: 'bg-[#A9DEF9]', border: 'border-[#A9DEF9]' },
-                  { bg: 'bg-[#E4C1F9]', border: 'border-[#E4C1F9]' },
-                  { bg: 'bg-[#CEF4FF]', border: 'border-[#CEF4FF]' }
+                  { bg: 'bg-[#FCF6BD]', border: 'border-[#FCF6BD]', bulletColor: 'text-yellow-600', tipBg: 'bg-[#FCF6BD]' },
+                  { bg: 'bg-[#D0F4DE]', border: 'border-[#D0F4DE]', bulletColor: 'text-green-600', tipBg: 'bg-[#D0F4DE]' },
+                  { bg: 'bg-[#A9DEF9]', border: 'border-[#A9DEF9]', bulletColor: 'text-blue-600', tipBg: 'bg-[#A9DEF9]' },
+                  { bg: 'bg-[#E4C1F9]', border: 'border-[#E4C1F9]', bulletColor: 'text-purple-600', tipBg: 'bg-[#E4C1F9]' },
+                  { bg: 'bg-[#CEF4FF]', border: 'border-[#CEF4FF]', bulletColor: 'text-cyan-600', tipBg: 'bg-[#CEF4FF]' }
                 ];
                 
                 const colors = colorSchemes[index % colorSchemes.length];
                 
                 return (
                   <section key={index} id={`step_${index}`} className="guide-section relative">
-                    <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border md:border-2 shadow-sm" style={{
-                      borderColor: index === 0 ? '#FCF6BD' : 
-                                  index === 1 ? '#D0F4DE' : 
-                                  index === 2 ? '#A9DEF9' : 
-                                  index === 3 ? '#E4C1F9' : 
-                                  index === 4 ? '#CEF4FF' : '#E4C1F9'
-                    }}>
+                    <div className="bg-white rounded-2xl transition-all duration-300 mb-4 shadow-sm">
                       <button
                         onClick={() => toggleSection(`step_${index}`)}
-                        className="w-full p-3 md:p-5 lg:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                        className="w-full p-3 md:p-4 lg:p-5 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
                         title={expandedSections[`step_${index}`] ? 'Close section' : 'Open section'}
                       >
                         <div className="flex items-center gap-2 md:gap-3">
-                          <div className={`p-1.5 md:p-2 ${colors.bg} rounded-lg flex-shrink-0`}>
+                          <div className={`p-1.5 md:p-2 ${colors.bg} rounded-full flex-shrink-0`}>
                             <StepIcon 
                               iconName={step.emoji} 
                               className="h-4 w-4 md:h-5 md:w-5 text-gray-900" 
@@ -706,11 +609,11 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                       </button>
                       
                       {expandedSections[`step_${index}`] && (
-                        <div className="px-3 md:px-6 pb-3 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-gray-200 bg-white">
-                          <div className="space-y-4">
+                        <div className="px-3 md:px-5 pb-2 md:pb-3 animate-in slide-in-from-top duration-300 bg-white rounded-b-2xl">
+                          <div className="space-y-2">
                             <div>
-                              <p className="font-semibold text-gray-900 mb-3">Try this:</p>
-                              <ul className="space-y-2">
+                              <p className="font-semibold text-gray-900 mb-2">Try this:</p>
+                              <ul className="space-y-1">
                                 {step.try_this.map((item, itemIndex) => {
                                   // Split on the first colon to get bold heading and description
                                   const colonIndex = item.indexOf(':');
@@ -722,9 +625,9 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                                   const cleanHeading = heading.replace(/\*\*(.*?)\*\*/g, '$1');
                                   
                                   return (
-                                    <li key={itemIndex} className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-                                      <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-lg">•</span>
-                                      <span className="text-gray-900 leading-relaxed">
+                                    <li key={itemIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
+                                      <span className={`${colors.bulletColor} flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform`}>•</span>
+                                      <span className="text-gray-900 py-1 leading-relaxed">
                                         {hasColon ? (
                                           <>
                                             <strong>{cleanHeading}</strong> {formatMarkdownText(description)}
@@ -739,7 +642,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                               </ul>
                             </div>
                             
-                            <div className="bg-blue-50 border-l-4 border-blue-400 pl-4 py-3 rounded-r-lg">
+                            <div className={`${colors.tipBg} border-l-4 ${colors.border} pl-4 py-3 rounded-r-lg`}>
                               <p className="text-sm text-gray-700">
                                 <span className="font-semibold">💡 Tip:</span> {formatMarkdownText(step.tip)}
                               </p>
@@ -756,12 +659,12 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
           {/* Sources Section */}
           {sources && sources.length > 0 && (
-            <div className="space-y-4">
+            <div className="space-y-2 mt-3">
               <section id="sources" className="guide-section relative">
-                <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border border-gray-300 md:border-2 shadow-sm">
+                <div className="rounded-2xl transition-all duration-300 mb-3 bg-white border border-gray-300 md:border-2 shadow-sm">
                   <button
                     onClick={() => toggleSection('sources')}
-                    className="w-full p-3 md:p-5 lg:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                    className="w-full p-3 md:p-4 lg:p-5 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
                     title={expandedSections['sources'] ? 'Close section' : 'Open section'}
                   >
                     <div className="flex items-center gap-2 md:gap-3">
@@ -781,8 +684,8 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   </button>
                   
                   {expandedSections['sources'] && (
-                    <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-gray-200 bg-white">
-                      <div className="space-y-4">
+                    <div className="px-5 md:px-6 pb-4 md:pb-5 animate-in slide-in-from-top duration-300 border-t border-gray-200 bg-white">
+                      <div className="space-y-2">
                         {/* Group sources by category and sort by count (descending) */}
                         {Object.entries(
                           sources.reduce((acc, source) => {
@@ -826,7 +729,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                               </button>
                               
                               {expandedSections[`source-category-${category}`] && (
-                                <div className={`pl-2 space-y-3 animate-in slide-in-from-top duration-200 bg-white rounded-lg p-4 border ${colorScheme.border}`}>
+                                <div className={`pl-2 space-y-2 animate-in slide-in-from-top duration-200 bg-white rounded-lg p-3 border ${colorScheme.border}`}>
                                   {categorySources.map((source, sourceIndex) => (
                                     <div key={sourceIndex} className="border-l-3 border-gray-400/40 pl-4 py-2">
                                       <div className="flex items-start gap-2">
@@ -861,16 +764,16 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           )}
 
           {/* Next Steps Section with Glassmorphism Background */}
-          <div className="mt-8 p-8 bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-xl">
+          <div className="mt-4 sm:mt-5 md:mt-6 p-4 sm:p-5 md:p-6 bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-xl">
             {/* Suggestion Button */}
-            <div className="mb-8">
+            <div className="mb-4 sm:mb-5 md:mb-6">
               <SuggestionButton pageType="feelings" />
             </div>
 
             {/* Navigation Options - Excluding Feelings */}
-            <div className="space-y-4">
+            <div className="space-y-2">
               {/* Mobile: Simple stacked buttons */}
-              <div className="block lg:hidden space-y-3">
+              <div className="block lg:hidden space-y-2">
                 <Button 
                   variant="outline"
                   size="lg"
@@ -933,7 +836,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               </div>
 
               {/* Desktop: Detailed cards with descriptions */}
-              <div className="hidden lg:block space-y-4">
+              <div className="hidden lg:block space-y-2">
                 {/* Top Row - Barriers and Tasks */}
                 <div className="grid grid-cols-2 gap-4">
                   <Button 
@@ -1020,8 +923,9 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               </div>
             </div>
 
+
           {/* Footer */}
-          <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
+          <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
             <p>Need more help? Check out our <a href="/guides" className="text-blue-600 hover:underline">guides</a>, <a href="/scripts" className="text-blue-600 hover:underline">scripts</a>, <a href="/quizzes" className="text-blue-600 hover:underline">quizzes</a>, or <a href="/resources" className="text-blue-600 hover:underline">resources</a>.</p>
           </div>
           
@@ -1036,6 +940,13 @@ export default function FeelingPage({ params }: FeelingPageProps) {
         title={content?.feeling_name || 'Feeling Page'}
         url={typeof window !== 'undefined' ? window.location.href : ''}
         description={`Get help with feeling ${content?.feeling_name?.toLowerCase()} - ADHD-friendly strategies and support.`}
+      />
+
+      {/* Fixed Bottom Actions */}
+      <FixedBottomActions
+        slug={resolvedParams.feeling}
+        summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : `<ul><li>Step away for 60–120s; breathe 4–6 times</li><li>Lower input: silence phone; reduce tabs</li><li>Pick 1 tiny task; 2‑minute timer; start</li></ul>`}
+        pageType="feeling"
       />
     </div>
   )

@@ -172,15 +172,13 @@ export default function TasksPage() {
                     <div className="flex items-center w-full">
                       <div className="flex items-center gap-4 flex-1">
                         <span className="text-xl">
-                          {category.name === 'Home & Daily Life' ? '🏠' :
-                           category.name === 'Health & Wellness' ? '💪' :
-                           category.name === 'Work & Productivity' ? '💼' :
-                           category.name === 'Learning & Growth' ? '📚' :
-                           category.name === 'Social & Relationships' ? '👥' :
-                           category.name === 'Financial & Planning' ? '💰' :
-                           category.name === 'Creative & Hobbies' ? '🎨' :
-                           category.name === 'Self Care & Maintenance' ? '🛁' :
-                           category.name === 'View All' ? '👀' : '📋'}
+                          {category.name === 'Work & Study' ? '💼' :
+                           category.name === 'Home & Cleaning' ? '🏠' :
+                           category.name === 'Health & Routines' ? '💪' :
+                           category.name === 'Food & Shopping' ? '🛒' :
+                           category.name === 'Planning & Organization' ? '📋' :
+                           category.name === 'Creative & Personal' ? '🎨' :
+                           category.name === 'View All' ? '👀' : '🔧'}
                         </span>
                         <span className={`font-medium text-base ${category.name === 'View All' ? 'text-gray-600' : ''}`}>
                           {category.name}

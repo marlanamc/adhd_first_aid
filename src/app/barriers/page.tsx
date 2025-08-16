@@ -167,15 +167,13 @@ export default function BarriersPage() {
                     <div className="flex items-center w-full">
                       <div className="flex items-center gap-4 flex-1">
                         <span className="text-xl">
-                          {category.name === 'Time & Planning' ? '⏰' :
-                           category.name === 'Focus & Attention' ? '🎯' :
-                           category.name === 'Organization & Memory' ? '🗂️' :
-                           category.name === 'Emotional Regulation' ? '😌' :
-                           category.name === 'Social & Communication' ? '💬' :
-                           category.name === 'Physical & Energy' ? '⚡' :
-                           category.name === 'Executive Function' ? '🧠' :
-                           category.name === 'Sensory & Environment' ? '🌍' :
-                           category.name === 'View All' ? '👀' : '🚧'}
+                          {category.name === 'Getting Started' ? '🚀' :
+                           category.name === 'Decision & Planning' ? '🎯' :
+                           category.name === 'Memory & Time' ? '⏰' :
+                           category.name === 'Energy & Focus' ? '⚡' :
+                           category.name === 'Emotional Blocks' ? '💔' :
+                           category.name === 'Motivation Issues' ? '💪' :
+                           category.name === 'View All' ? '👀' : '🔧'}
                         </span>
                         <span className={`font-medium text-base ${category.name === 'View All' ? 'text-gray-600' : ''}`}>
                           {category.name}

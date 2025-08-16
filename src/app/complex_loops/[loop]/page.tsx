@@ -1,13 +1,12 @@
 'use client'
 
-import React from 'react'
+import React, { use } from 'react'
 import { useState, useEffect } from 'react'
-import { useIsMobile } from '@/hooks/use-mobile'
 import Link from 'next/link'
 import { 
   ArrowLeft, Plus, Minus, Share2, Brain, Heart, 
-  Wrench, RotateCcw, Rainbow, Construction,
-  CheckCircle, XCircle, Lightbulb, Target,
+  Wrench, Rainbow, Construction,
+  XCircle, Lightbulb, Target,
   BookOpen, Zap, Star, Clock,
   Settings, Mail, ClipboardList,
   ShoppingCart, Utensils, Bed,
@@ -15,20 +14,20 @@ import {
   MessageSquareText, Users, AlertCircle, ArrowLeftRight, Puzzle,
   ShoppingBag, AlarmClock, CalendarX, CalendarCheck, CalendarClock,
   Timer, HeartCrack, UserMinus, UserX, MessagesSquare, MailQuestion,
-  HeartHandshake, MessageCircleQuestion, CircleDashed, Infinity,
+  HeartHandshake, MessageCircleQuestion, CircleDashed,
   UtensilsCrossed, Building2, Dumbbell, Moon, BellRing, BatteryLow,
-  Briefcase, Activity, TrendingUp, TrendingDown, Award, Music,
-  Phone, Smartphone, Globe, Palette, Link as LinkIcon, MapPin, Dice1 as Dice, Home, Pill, Car,
+  Briefcase, Activity, TrendingUp, Award, Music,
+  Phone, Smartphone, Globe, Palette, Link as LinkIcon, Dice1 as Dice, Home, Pill, Car,
   CookingPot, Shirt, Bath, PhoneCall, Receipt, ScrollText, Trash2, 
-  Hammer, Crown, Shield, Gem, Rocket, Medal, Flower, Leaf, Footprints
+  Hammer, Crown, Shield, Gem, Rocket, Medal, Flower, Leaf
 } from 'lucide-react'
+import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import { Button } from '@/components/ui/button'
 import { getComplexLoopsContent, getComplexLoopSources } from '@/lib/supabase'
 import type { ComplexLoopsContent } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import AdhdReasonsThreeCol, { type Row as AdhdRow } from '@/components/ui/AdhdReasonsThreeCol'
 import CorePrinciplesCondensed from '@/components/ui/CorePrinciplesCondensed'
-import StudyPainpointsGrid from '@/components/ui/StudyPainpointsGrid'
 import { ShareModal } from '@/components/ui/ShareModal';
 
 // Short, ADHD‑friendly subtitles for section headers
@@ -398,6 +397,7 @@ interface ComplexLoopPageProps {
 }
 
 export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
+  const resolvedParams = use(params)
   const [content, setContent] = useState<ComplexLoopsContent | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -405,7 +405,6 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
   const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [sources, setSources] = useState<Array<{ id: number; loop_slug: string; category: string; title: string; authors: string | null; description: string }> | null>(null)
-  const isMobile = useIsMobile()
 
   const toggleSection = (sectionId: string) => {
     setExpandedSections(prev => ({
@@ -418,8 +417,6 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
     const fetchContent = async () => {
       try {
         setLoading(true)
-        // Await the params first
-        const resolvedParams = await params
         
         // Convert URL param back to display name with smarter normalization
         const slugParam = decodeURIComponent(resolvedParams.loop)
@@ -490,7 +487,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
     }
 
     fetchContent()
-  }, [params])
+  }, [resolvedParams.loop])
 
   const goBack = () => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -545,10 +542,10 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-      <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
+      <div className="max-w-5xl mx-auto px-6 py-4 sm:py-6 md:py-8 pt-24 sm:pt-28 md:pt-24">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-4 sm:mb-6 md:mb-8">
             <div className="flex items-center gap-4 mb-6">
               <Button
                 variant="ghost"
@@ -591,24 +588,9 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
               </div>
             </div>
 
-            {/* Crisis Mode Button */}
-            <div className="mb-6">
-              <div className="flex items-center gap-2">
-                <Button onClick={() => {}} className="w-full sm:w-auto bg-rose-600 hover:bg-rose-700 text-white">
-                  <Zap className="h-4 w-4 mr-2" />
-                  Crisis mode
-                </Button>
-                {!isMobile && (
-                  <Button onClick={() => {}} className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white" variant="default">
-                    <Footprints className="h-4 w-4 mr-2" />
-                    Walk me through this
-                  </Button>
-                )}
-              </div>
-            </div>
 
             {/* Intro Paragraph - Blue callout box */}
-            <div className="border-l-4 border-blue-500 bg-blue-50/50 dark:bg-blue-900/10 pl-5 py-5 mb-8 rounded-r-lg">
+            <div className="border-l-4 border-blue-500 bg-blue-50/50 dark:bg-blue-900/10 pl-5 py-5 mb-4 sm:mb-6 md:mb-8 rounded-r-lg">
               <div className="text-lg md:text-xl text-black dark:text-white leading-relaxed"
                    dangerouslySetInnerHTML={{ 
                      __html: content.intro_paragraph
@@ -633,7 +615,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
           </div>
 
           {/* Side-by-Side Toggle Boxes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
             {/* Left Box - Soft Start */}
             <div className="relative">
               <Button
@@ -837,24 +819,6 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                           return { label: label.charAt(0).toUpperCase() + label.slice(1), text, emoji: fallback[index % fallback.length] }
                         }
 
-                        const rightEmojiFor = (h?: string | null, index?: number) => {
-                          const k = (h || '').toLowerCase()
-                          if (k.includes('executive')) return '🧩'
-                          if (k.includes('working memory')) return '🧠'
-                          if (k.includes('time')) return '⏰'
-                          if (k.includes('attention')) return '🎯'
-                          if (k.includes('motivation')) return '🔥'
-                          if (k.includes('nervous system')) return '⚡'
-                          if (k.includes('all-or-nothing')) return '⚖️'
-                          if (k.includes('rsd') || k.includes('judgment')) return '😣'
-                          if (k.includes('perfection')) return '🪞'
-                          if (k.includes('hyperfocus')) return '🔭'
-                          if (k.includes('avoid')) return '🚫'
-                          if (k.includes('rumination')) return '♻️'
-                          if (k.includes('dopamine')) return '🧪'
-                          const fallback = ['💡','🔎','🧭','🪄','🌱','🔁','🧿']
-                          return fallback[(index || 0) % fallback.length]
-                        }
 
                         const rows: AdhdRow[] = pairs.map((pair, i) => {
                           const r = typeof pair.right === 'string' ? parseRight(pair.right) : pair.right
@@ -1015,7 +979,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                       )}
                     </button>
                     {isExpanded && (
-                      <div className={`px-6 pb-6 animate-in slide-in-from-top duration-300 border-t ${colors.border} ${colors.panelBg} rounded-b-2xl`}>
+                      <div className={`px-4 sm:px-6 pb-3 sm:pb-4 animate-in slide-in-from-top duration-300 border-t ${colors.border} ${colors.panelBg} rounded-b-2xl`}>
                         {section.content && section.content.length > 0 && (
                           /^\s*core principles\s*$/i.test(section.title || '') ? (
                             (() => {
@@ -1091,7 +1055,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                               return <CorePrinciplesCondensed items={items} />
                             })()
                           ) : (
-                            <div className="space-y-4 mb-4 pt-2">
+                            <div className="space-y-2 sm:space-y-3 mb-2 sm:mb-3 pt-1 sm:pt-2">
                             {(() => {
                               const groupedContent: Array<{type: 'quote', items: string[]} | {type: 'bullet', item: string}> = [];
                               let currentQuoteGroup: string[] = [];
@@ -1536,6 +1500,13 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
         title={content?.loop_name || 'Complex Loop Page'}
         url={typeof window !== 'undefined' ? window.location.href : ''}
         description={`Get help with ${content?.loop_name?.toLowerCase() || 'this complex loop'} - ADHD-friendly strategies and support.`}
+      />
+
+      {/* Fixed Bottom Actions */}
+      <FixedBottomActions
+        slug={resolvedParams.loop}
+        summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : ''}
+        pageType="complex_loop"
       />
     </div>
   )

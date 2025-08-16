@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { getBarriersContent, getBarrierSources } from '@/lib/supabase'
 import type { BarriersContent, BarrierSources } from '@/lib/supabase'
 import { StepIcon } from '@/components/ui/StepIcon';
-import BarrierActions from '@/components/barriers/BarrierActions'
+import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
 
@@ -297,7 +297,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
   if (error || !content) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+        <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6 md:py-8 pt-24 sm:pt-28 md:pt-24">
           <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-10 shadow-lg">
             <div className="flex items-center gap-4 mb-5">
               <Button
@@ -334,10 +334,10 @@ export default function BarrierPage({ params }: BarrierPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-      <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
+      <div className="max-w-5xl mx-auto px-6 py-4 sm:py-6 md:py-8 pt-24 sm:pt-28 md:pt-24">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-4 sm:mb-6 md:mb-8">
             <div className="flex items-center gap-4 mb-6">
               <Button
                 variant="ghost"
@@ -373,19 +373,10 @@ export default function BarrierPage({ params }: BarrierPageProps) {
               </div>
             </div>
 
-            {/* Crisis Mode Button */}
-            <div className="mb-6">
-              <BarrierActions
-                slug={resolvedParams.barrier}
-                summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : ''}
-                content={content}
-                sources={sources}
-              />
-            </div>
 
             {/* Intro Paragraph - with orange border like screenshot */}
             <div 
-              className="border-l-4 border-orange-400 bg-orange-50/50 dark:bg-orange-900/10 pl-5 py-5 mb-8 rounded-r-lg"
+              className="border-l-4 border-orange-400 bg-orange-50/50 dark:bg-orange-900/10 pl-5 py-5 mb-4 sm:mb-6 md:mb-8 rounded-r-lg"
             >
               <p className="text-base md:text-lg text-foreground leading-relaxed">
                 {content?.intro_paragraph && formatMarkdownText(content.intro_paragraph)}
@@ -404,7 +395,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
           </div>
 
           {/* Side-by-Side Toggle Boxes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
             {/* Left Box - Soft Start */}
             <div className="relative">
               <Button
@@ -543,204 +534,210 @@ export default function BarrierPage({ params }: BarrierPageProps) {
             </div>
           </div>
 
-          {/* Step-by-Step Sections with different colors */}
+          {/* Step-by-Step Sections with clean headers */}
           {content.step_sections && content.step_sections.length > 0 && (
-            <div className="space-y-4">
+            <div className="space-y-2">
               {content.step_sections.map((step, index) => {
-                // Define different color schemes for each step
                 const colorSchemes = [
-                  { bg: 'bg-[#FCF6BD]/20', hover: 'hover:bg-[#FCF6BD]/30', border: 'border-[#FCF6BD]/50', iconBg: 'bg-[#FCF6BD]/90' },
-                  { bg: 'bg-[#D0F4DE]/20', hover: 'hover:bg-[#D0F4DE]/30', border: 'border-[#D0F4DE]/50', iconBg: 'bg-[#D0F4DE]/90' },
-                  { bg: 'bg-[#A9DEF9]/20', hover: 'hover:bg-[#A9DEF9]/30', border: 'border-[#A9DEF9]/50', iconBg: 'bg-[#A9DEF9]/90' },
-                  { bg: 'bg-[#E4C1F9]/20', hover: 'hover:bg-[#E4C1F9]/30', border: 'border-[#E4C1F9]/50', iconBg: 'bg-[#E4C1F9]/90' },
-                  { bg: 'bg-[#ffdace]/20', hover: 'hover:bg-[#ffdace]/30', border: 'border-[#ffdace]/50', iconBg: 'bg-[#ffdace]/90' }
+                  { bg: 'bg-[#FCF6BD]', border: 'border-[#FCF6BD]', bulletColor: 'text-yellow-600', tipBg: 'bg-[#FCF6BD]' },
+                  { bg: 'bg-[#D0F4DE]', border: 'border-[#D0F4DE]', bulletColor: 'text-green-600', tipBg: 'bg-[#D0F4DE]' },
+                  { bg: 'bg-[#A9DEF9]', border: 'border-[#A9DEF9]', bulletColor: 'text-blue-600', tipBg: 'bg-[#A9DEF9]' },
+                  { bg: 'bg-[#E4C1F9]', border: 'border-[#E4C1F9]', bulletColor: 'text-purple-600', tipBg: 'bg-[#E4C1F9]' },
+                  { bg: 'bg-[#CEF4FF]', border: 'border-[#CEF4FF]', bulletColor: 'text-cyan-600', tipBg: 'bg-[#CEF4FF]' }
                 ];
                 
                 const colors = colorSchemes[index % colorSchemes.length];
                 
                 return (
-                  <div key={index} className="relative">
-                    <Button
-                      onClick={() => toggleSection(`step_${index}`)}
-                      className={`w-full flex items-center gap-4 mb-5 p-4 rounded-xl ${colors.bg} ${colors.hover} transition-colors min-h-[75px] touch-manipulation`}
-                      variant="ghost"
-                      size="lg"
-                    >
-                      <div className={`${colors.iconBg} rounded-full p-3 flex-shrink-0`}>
-                        <StepIcon 
-                          iconName={step.emoji} 
-                          className="h-5 w-5 text-gray-900 dark:text-white" 
-                        />
-                      </div>
-                      <div className="flex-1 text-left min-w-0">
-                        <h3 className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white mb-1 break-words">
-                          {step.number}. {step.title.replace(/\*\*(.*?)\*\*/g, '$1')}
-                        </h3>
-                        <p className="text-base text-gray-600 dark:text-gray-400">
-                          {formatMarkdownText(step.intro)}
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
+                  <section key={index} id={`step_${index}`} className="guide-section relative">
+                    <div className="bg-white rounded-2xl transition-all duration-300 mb-4 shadow-sm">
+                      <button
+                        onClick={() => toggleSection(`step_${index}`)}
+                        className="w-full p-3 md:p-4 lg:p-5 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                        title={expandedSections[`step_${index}`] ? 'Close section' : 'Open section'}
+                      >
+                        <div className="flex items-center gap-2 md:gap-3">
+                          <div className={`p-1.5 md:p-2 ${colors.bg} rounded-full flex-shrink-0`}>
+                            <StepIcon 
+                              iconName={step.emoji} 
+                              className="h-4 w-4 md:h-5 md:w-5 text-gray-900" 
+                            />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h3 className="text-base md:text-lg lg:text-xl font-bold text-gray-900 leading-tight">
+                              {step.number}. {step.title.replace(/\*\*(.*?)\*\*/g, '$1')}
+                            </h3>
+                            <p className="text-xs md:text-sm text-gray-700 mt-0.5">
+                              {formatMarkdownText(step.intro)}
+                            </p>
+                          </div>
+                        </div>
                         {expandedSections[`step_${index}`] ? (
-                          <Minus className="h-6 w-6 text-gray-500" />
+                          <Minus className="h-5 w-5 text-black flex-shrink-0" />
                         ) : (
-                          <Plus className="h-6 w-6 text-gray-500" />
+                          <Plus className="h-5 w-5 text-black flex-shrink-0" />
                         )}
-                      </div>
-                    </Button>
-                    
-                    {expandedSections[`step_${index}`] && (
-                      <div className={`${colors.bg} rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 border ${colors.border}`}>
-                        <div>
-                          <p className="font-semibold text-gray-900 dark:text-white mb-3">Try this:</p>
-                          <ul className="space-y-2">
-                            {step.try_this.map((item, itemIndex) => {
-                              return (
-                                <li key={itemIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
-                                  <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform">•</span>
-                                  <span className="text-gray-900 py-1 leading-relaxed">
-                                    {formatMarkdownText(item)}
-                                  </span>
-                                </li>
-                              );
-                            })}
-                          </ul>
+                      </button>
+                      
+                      {expandedSections[`step_${index}`] && (
+                        <div className="px-3 md:px-5 pb-2 md:pb-3 animate-in slide-in-from-top duration-300 bg-white rounded-b-2xl">
+                          <div className="space-y-2">
+                            <div>
+                              <p className="font-semibold text-gray-900 mb-2">Try this:</p>
+                              <ul className="space-y-1">
+                                {step.try_this.map((item, itemIndex) => {
+                                  // Split on the first colon to get bold heading and description
+                                  const colonIndex = item.indexOf(':');
+                                  const hasColon = colonIndex !== -1;
+                                  const heading = hasColon ? item.substring(0, colonIndex + 1) : '';
+                                  const description = hasColon ? item.substring(colonIndex + 1).trim() : item;
+                                  
+                                  // Strip ** formatting from heading since we're manually applying <strong>
+                                  const cleanHeading = heading.replace(/\*\*(.*?)\*\*/g, '$1');
+                                  
+                                  return (
+                                    <li key={itemIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
+                                      <span className={`${colors.bulletColor} flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform`}>•</span>
+                                      <span className="text-gray-900 py-1 leading-relaxed">
+                                        {hasColon ? (
+                                          <>
+                                            <strong>{cleanHeading}</strong> {formatMarkdownText(description)}
+                                          </>
+                                        ) : (
+                                          formatMarkdownText(item)
+                                        )}
+                                      </span>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </div>
+                            
+                            <div className={`${colors.tipBg} border-l-4 ${colors.border} pl-4 py-3 rounded-r-lg`}>
+                              <p className="text-sm text-gray-700">
+                                <span className="font-semibold">💡 Tip:</span> {formatMarkdownText(step.tip)}
+                              </p>
+                            </div>
+                          </div>
                         </div>
-                        
-                        <div className={`${colors.bg} border-l-4 ${colors.border} pl-4 py-2 rounded-r-lg`}>
-                          <p className="text-sm text-gray-700 dark:text-gray-300">
-                            <span className="font-semibold">💡 Tip:</span> {formatMarkdownText(step.tip)}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
+                  </section>
                 );
               })}
             </div>
           )}
 
-          {/* Sources Section - styled like a step but without number */}
+          {/* Sources Section */}
           {sources && sources.length > 0 && (
-            <div className="space-y-4">
-              <div className="relative">
-                <Button
-                  onClick={() => toggleSection('sources')}
-                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-[#CEFFF2]/20 hover:bg-[#CEFFF2]/30 transition-colors min-h-[75px] touch-manipulation"
-                  variant="ghost"
-                  size="lg"
-                >
-                  <div className="bg-[#CEFFF2]/90 rounded-full p-3 flex-shrink-0">
-                    <BookOpen className="h-5 w-5 text-gray-900" />
-                  </div>
-                  <div className="flex-1 text-left min-w-0">
-                    <h3 className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white mb-1 break-words">
-                      Sources: {content?.barrier_name}
-                    </h3>
-                    <p className="text-base text-gray-600 dark:text-gray-400">
-                      Explore the books, guides, and research that shaped this page
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0">
+            <div className="space-y-2 mt-3">
+              <section id="sources" className="guide-section relative">
+                <div className="rounded-2xl transition-all duration-300 mb-3 bg-white border border-gray-300 md:border-2 shadow-sm">
+                  <button
+                    onClick={() => toggleSection('sources')}
+                    className="w-full p-3 md:p-4 lg:p-5 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                    title={expandedSections['sources'] ? 'Close section' : 'Open section'}
+                  >
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <div className="p-1.5 md:p-2 bg-[#CEFFF2] rounded-lg flex-shrink-0">
+                        <BookOpen className="h-4 w-4 md:h-5 md:w-5 text-gray-900" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-base md:text-lg lg:text-xl font-bold text-gray-900 leading-tight">Sources: {content?.barrier_name}</h3>
+                        <p className="text-xs md:text-sm text-gray-700 mt-0.5">Explore the books, guides, and research that shaped this page</p>
+                      </div>
+                    </div>
                     {expandedSections['sources'] ? (
-                      <Minus className="h-6 w-6 text-gray-500" />
+                      <Minus className="h-5 w-5 text-black flex-shrink-0" />
                     ) : (
-                      <Plus className="h-6 w-6 text-gray-500" />
+                      <Plus className="h-5 w-5 text-black flex-shrink-0" />
                     )}
-                  </div>
-                </Button>
-                
-                {expandedSections['sources'] && (
-                  <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-6 animate-in slide-in-from-top duration-300">
-                    <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                      These resources explain the neurological roots and offer strategies for overcoming this barrier.
-                    </p>
-                    
-                    {/* Group sources by category and sort by count (most to least) */}
-                    {Object.entries(
-                      sources.reduce((acc, source) => {
-                        const category = source.category || 'Other'
-                        if (!acc[category]) {
-                          acc[category] = []
-                        }
-                        acc[category].push(source)
-                        return acc
-                      }, {} as Record<string, BarrierSources[]>)
-                    ).sort(([, a], [, b]) => b.length - a.length).map(([category, categorySources], index) => {
-                      // Define color schemes for categories (same as feelings)
-                      const colors = [
-                        { bg: 'bg-[#FBF8CC]/40', hover: 'hover:bg-[#FBF8CC]/60', border: 'border-[#FBF8CC]/30', text: 'text-gray-900', bulletColor: 'text-orange-600' },
-                        { bg: 'bg-[#FFD3A5]/40', hover: 'hover:bg-[#FFD3A5]/60', border: 'border-[#FFD3A5]/30', text: 'text-gray-900', bulletColor: 'text-red-600' },
-                        { bg: 'bg-[#FD9FDD]/40', hover: 'hover:bg-[#FD9FDD]/60', border: 'border-[#FD9FDD]/30', text: 'text-gray-900', bulletColor: 'text-pink-600' },
-                        { bg: 'bg-[#EEAECA]/40', hover: 'hover:bg-[#EEAECA]/60', border: 'border-[#EEAECA]/30', text: 'text-gray-900', bulletColor: 'text-purple-600' },
-                        { bg: 'bg-[#94F3E4]/40', hover: 'hover:bg-[#94F3E4]/60', border: 'border-[#94F3E4]/30', text: 'text-gray-900', bulletColor: 'text-teal-600' },
-                        { bg: 'bg-[#B8E6B8]/40', hover: 'hover:bg-[#B8E6B8]/60', border: 'border-[#B8E6B8]/30', text: 'text-gray-900', bulletColor: 'text-green-600' },
-                        { bg: 'bg-[#A8E6CF]/40', hover: 'hover:bg-[#A8E6CF]/60', border: 'border-[#A8E6CF]/30', text: 'text-gray-900', bulletColor: 'text-emerald-600' },
-                        { bg: 'bg-[#C7CEEA]/40', hover: 'hover:bg-[#C7CEEA]/60', border: 'border-[#C7CEEA]/30', text: 'text-gray-900', bulletColor: 'text-indigo-600' },
-                        { bg: 'bg-[#FFDAC1]/40', hover: 'hover:bg-[#FFDAC1]/60', border: 'border-[#FFDAC1]/30', text: 'text-gray-900', bulletColor: 'text-orange-500' },
-                        { bg: 'bg-[#FFB7B2]/40', hover: 'hover:bg-[#FFB7B2]/60', border: 'border-[#FFB7B2]/30', text: 'text-gray-900', bulletColor: 'text-red-500' }
-                      ]
-                      const colorScheme = colors[index % colors.length]
-                      
-                      return (
-                        <div key={category} className="relative">
-                          <Button
-                            onClick={() => toggleSection(`sources_${category.replace(/\s+/g, '_').toLowerCase()}`)}
-                            className={`w-full flex items-center gap-3 mb-3 p-4 rounded-lg ${colorScheme.bg} ${colorScheme.hover} transition-all duration-200 touch-manipulation border ${colorScheme.border}`}
-                            variant="ghost"
-                            size="default"
-                          >
-                            <div className="flex-1 text-left">
-                              <h4 className="font-bold text-gray-900 text-base">
-                                {category} ({categorySources.length} {categorySources.length === 1 ? 'source' : 'sources'})
-                              </h4>
-                            </div>
-                            <div className="flex-shrink-0">
-                              {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] ? (
-                                <Minus className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-                              ) : (
-                                <Plus className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                  </button>
+                  
+                  {expandedSections['sources'] && (
+                    <div className="px-5 md:px-6 pb-4 md:pb-5 animate-in slide-in-from-top duration-300 border-t border-gray-200 bg-white">
+                      <div className="space-y-2">
+                        {/* Group sources by category and sort by count (descending) */}
+                        {Object.entries(
+                          sources.reduce((acc, source) => {
+                            const category = source.category || 'Other'
+                            if (!acc[category]) acc[category] = []
+                            acc[category].push(source)
+                            return acc
+                          }, {} as Record<string, typeof sources>)
+                        )
+                        .sort(([,a], [,b]) => b.length - a.length) // Sort by count descending
+                        .map(([category, categorySources], index) => {
+                          // Color palette for category headers (matching life_areas style)
+                          const colors = [
+                            { bg: 'bg-[#FBF8CC]', border: 'border-[#FBF8CC]' }, // Lemon Chiffon
+                            { bg: 'bg-[#FDE4CF]', border: 'border-[#FDE4CF]' }, // Champagne Pink
+                            { bg: 'bg-[#FFCFD2]', border: 'border-[#FFCFD2]' }, // Baby Pink
+                            { bg: 'bg-[#F1C0E8]', border: 'border-[#F1C0E8]' }, // Pink Lavender
+                            { bg: 'bg-[#CFBAF0]', border: 'border-[#CFBAF0]' }, // Lavender Blue
+                            { bg: 'bg-[#A3C4F3]', border: 'border-[#A3C4F3]' }, // Baby Blue Eyes
+                            { bg: 'bg-[#90DBF4]', border: 'border-[#90DBF4]' }, // Sky Blue
+                            { bg: 'bg-[#8EECF5]', border: 'border-[#8EECF5]' }, // Electric Blue
+                            { bg: 'bg-[#98F5E1]', border: 'border-[#98F5E1]' }, // Magic Mint
+                            { bg: 'bg-[#B9FBC0]', border: 'border-[#B9FBC0]' }  // Granny Smith Apple
+                          ]
+                          const colorScheme = colors[index % colors.length]
+                          
+                          return (
+                            <div key={category} className="space-y-2">
+                              <button
+                                onClick={() => toggleSection(`source-category-${category}`)}
+                                className={`w-full flex items-center justify-between p-4 rounded-xl ${colorScheme.bg} border ${colorScheme.border} transition-all duration-300 text-left`}
+                              >
+                                <h4 className="font-bold text-gray-900 text-base">
+                                  {category} ({categorySources.length} {categorySources.length === 1 ? 'source' : 'sources'})
+                                </h4>
+                                {expandedSections[`source-category-${category}`] ? (
+                                  <Minus className="h-4 w-4 text-gray-600" />
+                                ) : (
+                                  <Plus className="h-4 w-4 text-gray-600" />
+                                )}
+                              </button>
+                              
+                              {expandedSections[`source-category-${category}`] && (
+                                <div className={`pl-2 space-y-2 animate-in slide-in-from-top duration-200 bg-white rounded-lg p-3 border ${colorScheme.border}`}>
+                                  {categorySources.map((source, sourceIndex) => (
+                                    <div key={sourceIndex} className="border-l-3 border-gray-400/40 pl-4 py-2">
+                                      <div className="flex items-start gap-2">
+                                        <span className="text-gray-900 mt-1 flex-shrink-0">•</span>
+                                        <div>
+                                          <h5 className="font-semibold text-gray-900">
+                                            {source.title}
+                                            {source.authors && (
+                                              <span className="font-normal text-gray-600">
+                                                {' by '}{source.authors}
+                                              </span>
+                                            )}
+                                          </h5>
+                                          <p className="text-sm text-gray-700 leading-relaxed mt-1">
+                                            {source.description.replace(/\s*—\s*/g, ', ')}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
                               )}
                             </div>
-                          </Button>
-                          
-                          {expandedSections[`sources_${category.replace(/\s+/g, '_').toLowerCase()}`] && (
-                            <div className={`${colorScheme.bg} rounded-lg p-4 space-y-3 animate-in slide-in-from-top duration-300 mb-4 border ${colorScheme.border}`}>
-                              {categorySources.map((source, sourceIndex) => (
-                                <div key={sourceIndex} className={`border-l-3 ${colorScheme.border} pl-4 py-2`}>
-                                  <div className="flex items-start gap-2">
-                                    <span className={`${colorScheme.bulletColor} dark:${colorScheme.bulletColor} mt-1 flex-shrink-0`}>•</span>
-                                    <div>
-                                      <h5 className="font-semibold text-gray-900 dark:text-white">
-                                        {source.title}
-                                        {source.authors && (
-                                          <span className="font-normal text-gray-600 dark:text-gray-400">
-                                            {' by '}{source.authors}
-                                          </span>
-                                        )}
-                                      </h5>
-                                      <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mt-1">
-                                        {source.description.replace(/\s*—\s*/g, ', ')}
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </section>
             </div>
           )}
 
           {/* Next Steps Section with Glassmorphism Background */}
-          <div className="mt-8 p-8 bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-xl">
+          <div className="mt-4 sm:mt-6 md:mt-8 p-4 sm:p-6 md:p-8 bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-xl">
             {/* Suggestion Button */}
-            <div className="mb-8">
+            <div className="mb-4 sm:mb-6 md:mb-8">
               <SuggestionButton pageType="barriers" />
             </div>
 
@@ -897,6 +894,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
             </div>
           </div>
 
+
           {/* Footer */}
           <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
             <p>Need more help? Check out our <Link href="/guides" className="text-orange-600 hover:underline">guides</Link>, <Link href="/scripts" className="text-orange-600 hover:underline">scripts</Link>, <Link href="/quizzes" className="text-orange-600 hover:underline">quizzes</Link>, or <Link href="/resources" className="text-orange-600 hover:underline">resources</Link>.</p>
@@ -912,6 +910,13 @@ export default function BarrierPage({ params }: BarrierPageProps) {
         title={content?.barrier_name || 'Barrier Page'}
         url={typeof window !== 'undefined' ? window.location.href : ''}
         description={`Get help overcoming "${content?.barrier_name}" - ADHD-friendly strategies and support.`}
+      />
+
+      {/* Fixed Bottom Actions */}
+      <FixedBottomActions
+        slug={resolvedParams.barrier}
+        summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : ''}
+        pageType="barrier"
       />
     </div>
   )

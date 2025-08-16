@@ -167,7 +167,7 @@ export default function ComplexLoopsPage() {
                            category.name === 'Time & Schedule' ? '📅' :
                            category.name === 'Life & Wellness' ? '🌱' :
                            category.name === 'Sleep & Energy' ? '😴' :
-                           category.name === 'View All' ? '👀' : '🔄'}
+                           category.name === 'View All' ? '👀' : '🔧'}
                         </span>
                         <span className={`font-medium text-base ${category.name === 'View All' ? 'text-gray-600' : ''}`}>
                           {category.name}

@@ -149,7 +149,7 @@ export default function FeelingsPage() {
                            category.name === 'Heavy Feelings' ? '💔' :
                            category.name === 'Jittery & Wound Up' ? '⚡' :
                            category.name === 'Social & Connection' ? '🤝' :
-                           category.name === 'View All' ? '👀' : '📋'}
+                           category.name === 'View All' ? '👀' : '🔧'}
                         </span>
                         <span className={`font-medium text-base ${category.name === 'View All' ? 'text-gray-600' : ''}`}>
                           {category.name}
