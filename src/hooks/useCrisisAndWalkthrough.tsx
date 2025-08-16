@@ -7,6 +7,38 @@ import { getAllCrisisModeFeelingsNames, getCrisisModeFeeling } from '@/lib/supab
 import { CrisisModeFeeling } from '@/types/database'
 import * as LucideIcons from 'lucide-react'
 
+// Function to format markdown text (same as used in content pages)
+const formatMarkdownText = (text: string) => {
+  if (!text) return text
+  
+  // Handle bold text (**text**)
+  const withBold = text.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
+    }
+    return { type: 'text', content: part, key: `text-${index}` };
+  });
+
+  // Then handle italics (_text_) within each part
+  const result: React.ReactNode[] = [];
+  withBold.forEach((item) => {
+    if (item.type === 'bold') {
+      result.push(<strong key={item.key}>{item.content}</strong>);
+    } else {
+      // Process italics in text parts
+      const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
+        if (part.startsWith('_') && part.endsWith('_')) {
+          return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
+        }
+        return part;
+      });
+      result.push(...italicParts);
+    }
+  });
+
+  return result;
+};
+
 export interface UseCrisisAndWalkthroughOptions {
   slug: string
   summaryHtml?: string
@@ -339,8 +371,8 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
     <>
       {/* Crisis mode dialog */}
       <Dialog open={isCrisisOpen} onOpenChange={setIsCrisisOpen}>
-        <DialogContent className="max-w-4xl w-full bg-white dark:bg-gray-900 !top-16 !translate-y-0 sm:!top-20">
-          <DialogHeader className="text-center">
+        <DialogContent className="max-w-4xl w-full bg-white dark:bg-gray-900 !top-20 !translate-y-0 sm:!top-20 max-h-[calc(100vh-5rem)] overflow-hidden flex flex-col">
+          <DialogHeader className="text-center flex-shrink-0">
             <DialogTitle className="flex items-center justify-center gap-2 text-2xl">
               <LucideIcons.Zap className="h-6 w-6 text-pink-600" />
               🆘 Crisis Mode
@@ -354,53 +386,113 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
             </DialogDescription>
           </DialogHeader>
 
-          {crisisLoading ? (
-            <div className="flex items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600"></div>
-            </div>
-          ) : selectedFeeling ? (
-            // Selected feeling view
-            <div className="space-y-6">
-              {/* Emergency notice */}
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <LucideIcons.AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-red-800 dark:text-red-200">
-                    <p className="font-semibold mb-1">If you're in immediate danger or having thoughts of self-harm:</p>
-                    <p>Call 988 (Suicide & Crisis Lifeline) or text "HELLO" to 741741 (Crisis Text Line)</p>
+          <div className="flex-1 overflow-y-auto min-h-0">
+            {crisisLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600"></div>
+              </div>
+            ) : selectedFeeling ? (
+              // Selected feeling view
+              <div className="space-y-6 p-1">
+                {/* Emergency notice */}
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <LucideIcons.AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-red-800 dark:text-red-200">
+                      <p className="font-semibold mb-1">If you're in immediate danger or having thoughts of self-harm:</p>
+                      <p>Call 988 (Suicide & Crisis Lifeline) or text "HELLO" to 741741 (Crisis Text Line)</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div className="text-center">
+                  <p className="text-lg text-gray-700 dark:text-gray-300">{formatMarkdownText(selectedFeeling.description)}</p>
+                </div>
+
+                {/* Strategies */}
+                <div className="pb-4">
+                  <h3 className="text-lg font-semibold text-center mb-4">{formatMarkdownText("**Try one of these:**")}</h3>
+                  <div className="space-y-3">
+                    {selectedFeeling.strategies.map((strategy, index) => (
+                      <div
+                        key={index}
+                        className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-pink-500 to-orange-400 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                            {index + 1}
+                          </div>
+                          <p className="text-gray-900 dark:text-white leading-relaxed flex-1 text-sm">
+                            {formatMarkdownText(strategy)}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
-
-              {/* Description */}
-              <div className="text-center">
-                <p className="text-lg text-gray-700 dark:text-gray-300">{selectedFeeling.description}</p>
-              </div>
-
-              {/* Strategies */}
-              <div>
-                <h3 className="text-lg font-semibold text-center mb-4">**Try one of these:**</h3>
-                <div className="space-y-3 max-h-[50vh] overflow-y-auto">
-                  {selectedFeeling.strategies.map((strategy, index) => (
-                    <div
-                      key={index}
-                      className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-pink-500 to-orange-400 rounded-full flex items-center justify-center text-white font-bold text-xs">
-                          {index + 1}
-                        </div>
-                        <p className="text-gray-900 dark:text-white leading-relaxed flex-1 text-sm">
-                          {strategy}
-                        </p>
-                      </div>
+            ) : (
+              // Feelings list view
+              <div className="space-y-6 p-1">
+                {/* Emergency notice */}
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <LucideIcons.AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-red-800 dark:text-red-200">
+                      <p className="font-semibold mb-1">If you're in immediate danger or having thoughts of self-harm:</p>
+                      <p>Call 988 (Suicide & Crisis Lifeline) or text "HELLO" to 741741 (Crisis Text Line)</p>
                     </div>
-                  ))}
+                  </div>
+                </div>
+
+                {/* Feelings grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pb-4">
+                  {crisisFeelings.map((feeling) => {
+                    const IconComponent = (LucideIcons as any)[feeling.icon] as React.ComponentType<any>
+                    
+                    return (
+                      <button
+                        key={feeling.feeling_name}
+                        onClick={() => selectFeeling(feeling.feeling_name)}
+                        className="text-left bg-gray-50 dark:bg-gray-800 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700 group"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0">
+                            {IconComponent ? (
+                              <IconComponent className="h-5 w-5 text-pink-600 dark:text-pink-400" />
+                            ) : (
+                              <LucideIcons.Circle className="h-5 w-5 text-pink-600 dark:text-pink-400" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-pink-700 dark:group-hover:text-pink-300 transition-colors text-sm">
+                              {feeling.feeling_name}
+                            </h3>
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
+                              {formatMarkdownText(feeling.description)}
+                            </p>
+                          </div>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+
+                {/* Footer */}
+                <div className="text-center pb-4">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    These are immediate, in-the-moment strategies. You're not broken — you're human.
+                  </p>
                 </div>
               </div>
-
-              {/* Footer */}
-              <div className="flex gap-2 justify-center pt-4">
+            )}
+          </div>
+          
+          {/* Fixed footer buttons */}
+          <div className="flex-shrink-0 border-t pt-4">
+            {selectedFeeling ? (
+              <div className="flex gap-2 justify-center">
                 <Button 
                   onClick={() => setSelectedFeeling(null)} 
                   variant="outline"
@@ -414,59 +506,8 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
                   Close
                 </Button>
               </div>
-            </div>
-          ) : (
-            // Feelings list view
-            <div className="space-y-6">
-              {/* Emergency notice */}
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <LucideIcons.AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-red-800 dark:text-red-200">
-                    <p className="font-semibold mb-1">If you're in immediate danger or having thoughts of self-harm:</p>
-                    <p>Call 988 (Suicide & Crisis Lifeline) or text "HELLO" to 741741 (Crisis Text Line)</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Feelings grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[60vh] overflow-y-auto">
-                {crisisFeelings.map((feeling) => {
-                  const IconComponent = (LucideIcons as any)[feeling.icon] as React.ComponentType<any>
-                  
-                  return (
-                    <button
-                      key={feeling.feeling_name}
-                      onClick={() => selectFeeling(feeling.feeling_name)}
-                      className="text-left bg-gray-50 dark:bg-gray-800 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700 group"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0">
-                          {IconComponent ? (
-                            <IconComponent className="h-5 w-5 text-pink-600 dark:text-pink-400" />
-                          ) : (
-                            <LucideIcons.Circle className="h-5 w-5 text-pink-600 dark:text-pink-400" />
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-pink-700 dark:group-hover:text-pink-300 transition-colors text-sm">
-                            {feeling.feeling_name}
-                          </h3>
-                          <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
-                            {feeling.description}
-                          </p>
-                        </div>
-                      </div>
-                    </button>
-                  )
-                })}
-              </div>
-
-              {/* Footer */}
-              <div className="text-center pt-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  These are immediate, in-the-moment strategies. You're not broken — you're human.
-                </p>
+            ) : (
+              <div className="text-center">
                 <Button 
                   onClick={() => setIsCrisisOpen(false)} 
                   variant="outline"
@@ -474,8 +515,8 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
                   Close
                 </Button>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </DialogContent>
       </Dialog>
 
