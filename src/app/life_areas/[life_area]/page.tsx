@@ -1491,22 +1491,19 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
               <SuggestionButton pageType="tasks" />
             </div>
 
-            {/* Navigation Options - Excluding Life Areas */}
-            <div className="space-y-4">
-            {/* Top Row - Feelings and Barriers */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Navigation Options - Excluding Life Areas */}
+          <div className="space-y-4">
+            {/* Mobile: Simple stacked buttons */}
+            <div className="block lg:hidden space-y-3">
               <Button 
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/feelings'}
-                className="p-4 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                className="w-full p-4 text-center h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-3">
                   <Heart className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Feeling stuck emotionally?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Feelings</div>
-                  </div>
+                  <span className="font-medium text-gray-900 dark:text-white">Browse by Feelings</span>
                 </div>
               </Button>
 
@@ -1514,32 +1511,23 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/barriers'}
-                className="p-4 text-left h-auto border-2 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                className="w-full p-4 text-center h-auto border-2 hover:bg-orange-50 dark:hover:bg-orange-900/20"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-3">
                   <Construction className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Encountering barriers?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Barriers</div>
-                  </div>
+                  <span className="font-medium text-gray-900 dark:text-white">Browse by Barriers</span>
                 </div>
               </Button>
-            </div>
 
-            {/* Bottom Row - Complex Loops and Identity */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button 
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/complex_loops'}
-                className="p-4 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                className="w-full p-4 text-center h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-3">
                   <RotateCcw className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Stuck in repetitive patterns?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse Complex Loops</div>
-                  </div>
+                  <span className="font-medium text-gray-900 dark:text-white">Browse by Complex Loops</span>
                 </div>
               </Button>
 
@@ -1547,33 +1535,112 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/identities'}
-                className="p-4 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                className="w-full p-4 text-center h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-3">
                   <Rainbow className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Need identity-aware support?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse by Identity</div>
-                  </div>
+                  <span className="font-medium text-gray-900 dark:text-white">Browse by Identity</span>
                 </div>
               </Button>
-            </div>
-            {/* Bottom Row - Systems Lab */}
-            <div className="grid grid-cols-1 gap-4">
+
               <Button 
                 variant="outline"
                 size="lg"
                 onClick={() => window.location.href = '/systems'}
-                className="p-4 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
+                className="w-full p-4 text-center h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-3">
                   <Puzzle className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Want to build a system around this?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Systems Lab</div>
-                  </div>
+                  <span className="font-medium text-gray-900 dark:text-white">Go to Systems Lab</span>
                 </div>
               </Button>
+            </div>
+
+            {/* Desktop: Detailed cards with descriptions */}
+            <div className="hidden lg:block space-y-4">
+              {/* Top Row - Feelings and Barriers */}
+              <div className="grid grid-cols-2 gap-4">
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/feelings'}
+                  className="p-4 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                >
+                  <div className="flex items-center gap-3">
+                    <Heart className="h-5 w-5" />
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white">Feeling stuck emotionally?</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Feelings</div>
+                    </div>
+                  </div>
+                </Button>
+
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/barriers'}
+                  className="p-4 text-left h-auto border-2 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                >
+                  <div className="flex items-center gap-3">
+                    <Construction className="h-5 w-5" />
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white">Encountering barriers?</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Barriers</div>
+                    </div>
+                  </div>
+                </Button>
+              </div>
+
+              {/* Middle Row - Complex Loops and Identity */}
+              <div className="grid grid-cols-2 gap-4">
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/complex_loops'}
+                  className="p-4 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                >
+                  <div className="flex items-center gap-3">
+                    <RotateCcw className="h-5 w-5" />
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white">Stuck in repetitive patterns?</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse Complex Loops</div>
+                    </div>
+                  </div>
+                </Button>
+
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/identities'}
+                  className="p-4 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                >
+                  <div className="flex items-center gap-3">
+                    <Rainbow className="h-5 w-5" />
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white">Need identity-aware support?</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse by Identity</div>
+                    </div>
+                  </div>
+                </Button>
+              </div>
+
+              {/* Bottom Row - Systems Lab */}
+              <div className="grid grid-cols-1 gap-4">
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/systems'}
+                  className="p-4 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
+                >
+                  <div className="flex items-center gap-3">
+                    <Puzzle className="h-5 w-5" />
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white">Want to build a system around this?</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Systems Lab</div>
+                    </div>
+                  </div>
+                </Button>
+              </div>
             </div>
           </div>
           {/* Footer */}

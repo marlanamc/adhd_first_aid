@@ -542,19 +542,19 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
           {/* Why ADHD Makes [Feeling] Worse Section */}
           <section id="adhd_reasons" className="guide-section relative mb-4">
-                            <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border-2 border-[#FFADD3] shadow-sm">
+            <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border border-[#FFADD3] md:border-2 shadow-sm">
               <button
                 onClick={() => toggleSection('adhd_reasons')}
-                className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                className="w-full p-3 md:p-5 lg:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
                 title={expandedSections['adhd_reasons'] ? 'Close section' : 'Open section'}
               >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-[#FFADD3] rounded-lg flex-shrink-0">
-                    <Brain className="h-5 w-5 text-gray-900" />
+                <div className="flex items-center gap-2 md:gap-3">
+                  <div className="p-1.5 md:p-2 bg-[#FFADD3] rounded-lg flex-shrink-0">
+                    <Brain className="h-4 w-4 md:h-5 md:w-5 text-gray-900" />
                   </div>
-                  <div>
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900">Why ADHD Makes {content?.feeling_name} Worse</h3>
-                    <p className="text-sm text-gray-700 mt-0.5">The hidden drivers</p>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-base md:text-lg lg:text-xl font-bold text-gray-900 leading-tight">Why ADHD Makes {content?.feeling_name} Worse</h3>
+                    <p className="text-xs md:text-sm text-gray-700 mt-0.5">The hidden drivers</p>
                   </div>
                 </div>
                 {expandedSections['adhd_reasons'] ? (
@@ -565,7 +565,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               </button>
               
               {expandedSections['adhd_reasons'] && (
-                <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#FFADD3] bg-white">
+                <div className="px-3 md:px-6 pb-3 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#FFADD3] bg-white">
                   <div className="space-y-4">
                     {content.adhd_reasons.map((reason, index) => {
                       // Split on the first colon to get bold heading and description
@@ -670,7 +670,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 
                 return (
                   <section key={index} id={`step_${index}`} className="guide-section relative">
-                    <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border-2 shadow-sm" style={{
+                    <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border md:border-2 shadow-sm" style={{
                       borderColor: index === 0 ? '#FCF6BD' : 
                                   index === 1 ? '#D0F4DE' : 
                                   index === 2 ? '#A9DEF9' : 
@@ -679,21 +679,21 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                     }}>
                       <button
                         onClick={() => toggleSection(`step_${index}`)}
-                        className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                        className="w-full p-3 md:p-5 lg:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
                         title={expandedSections[`step_${index}`] ? 'Close section' : 'Open section'}
                       >
-                        <div className="flex items-center gap-3">
-                          <div className={`p-2 ${colors.bg} rounded-lg flex-shrink-0`}>
+                        <div className="flex items-center gap-2 md:gap-3">
+                          <div className={`p-1.5 md:p-2 ${colors.bg} rounded-lg flex-shrink-0`}>
                             <StepIcon 
                               iconName={step.emoji} 
-                              className="h-5 w-5 text-gray-900" 
+                              className="h-4 w-4 md:h-5 md:w-5 text-gray-900" 
                             />
                           </div>
-                          <div>
-                            <h3 className="text-lg md:text-xl font-bold text-gray-900">
+                          <div className="min-w-0 flex-1">
+                            <h3 className="text-base md:text-lg lg:text-xl font-bold text-gray-900 leading-tight">
                               {step.number}. {step.title.replace(/\*\*(.*?)\*\*/g, '$1')}
                             </h3>
-                            <p className="text-sm text-gray-700 mt-0.5">
+                            <p className="text-xs md:text-sm text-gray-700 mt-0.5">
                               {formatMarkdownText(step.intro)}
                             </p>
                           </div>
@@ -706,7 +706,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                       </button>
                       
                       {expandedSections[`step_${index}`] && (
-                        <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-gray-200 bg-white">
+                        <div className="px-3 md:px-6 pb-3 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-gray-200 bg-white">
                           <div className="space-y-4">
                             <div>
                               <p className="font-semibold text-gray-900 mb-3">Try this:</p>
@@ -758,19 +758,19 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           {sources && sources.length > 0 && (
             <div className="space-y-4">
               <section id="sources" className="guide-section relative">
-                <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border-2 border-gray-300 shadow-sm">
+                <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border border-gray-300 md:border-2 shadow-sm">
                   <button
                     onClick={() => toggleSection('sources')}
-                    className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                    className="w-full p-3 md:p-5 lg:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
                     title={expandedSections['sources'] ? 'Close section' : 'Open section'}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-[#CEFFF2] rounded-lg flex-shrink-0">
-                        <BookOpen className="h-5 w-5 text-gray-900" />
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <div className="p-1.5 md:p-2 bg-[#CEFFF2] rounded-lg flex-shrink-0">
+                        <BookOpen className="h-4 w-4 md:h-5 md:w-5 text-gray-900" />
                       </div>
-                      <div>
-                        <h3 className="text-lg md:text-xl font-bold text-gray-900">Sources: {content?.feeling_name}</h3>
-                        <p className="text-sm text-gray-700 mt-0.5">Explore the books, guides, and research that shaped this page</p>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-base md:text-lg lg:text-xl font-bold text-gray-900 leading-tight">Sources: {content?.feeling_name}</h3>
+                        <p className="text-xs md:text-sm text-gray-700 mt-0.5">Explore the books, guides, and research that shaped this page</p>
                       </div>
                     </div>
                     {expandedSections['sources'] ? (
@@ -869,90 +869,156 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
             {/* Navigation Options - Excluding Feelings */}
             <div className="space-y-4">
-            {/* Top Row - Barriers and Tasks */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Button 
-                variant="outline"
-                size="lg"
-                onClick={() => window.location.href = '/barriers'}
-                className="p-4 text-left h-auto border-2 hover:bg-orange-100 dark:hover:bg-orange-900/40"
-              >
-                <div className="flex items-center gap-3">
-                  <Construction className="h-5 w-5 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-words">Facing barriers or obstacles?</div>
-                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">→ Go to Barriers Support</div>
+              {/* Mobile: Simple stacked buttons */}
+              <div className="block lg:hidden space-y-3">
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/barriers'}
+                  className="w-full p-4 text-center h-auto border md:border-2 hover:bg-orange-100 dark:hover:bg-orange-900/40"
+                >
+                  <div className="flex items-center justify-center gap-3">
+                    <Construction className="h-5 w-5" />
+                    <span className="font-medium text-gray-900 dark:text-white">Browse by Barriers</span>
                   </div>
-                </div>
-              </Button>
+                </Button>
 
-              <Button 
-                variant="outline"
-                size="lg"
-                onClick={() => window.location.href = '/life_areas'}
-                className="p-4 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
-              >
-                <div className="flex items-center gap-3">
-                  <Wrench className="h-5 w-5 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-words">Need help with specific tasks?</div>
-                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">→ Go to Life Areas</div>
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/life_areas'}
+                  className="w-full p-4 text-center h-auto border md:border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                >
+                  <div className="flex items-center justify-center gap-3">
+                    <Wrench className="h-5 w-5" />
+                    <span className="font-medium text-gray-900 dark:text-white">Browse by Life Areas</span>
                   </div>
+                </Button>
+
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/complex_loops'}
+                  className="w-full p-4 text-center h-auto border md:border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                >
+                  <div className="flex items-center justify-center gap-3">
+                    <RotateCcw className="h-5 w-5" />
+                    <span className="font-medium text-gray-900 dark:text-white">Browse by Complex Loops</span>
+                  </div>
+                </Button>
+
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/identities'}
+                  className="w-full p-4 text-center h-auto border md:border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                >
+                  <div className="flex items-center justify-center gap-3">
+                    <Rainbow className="h-5 w-5" />
+                    <span className="font-medium text-gray-900 dark:text-white">Browse by Identity</span>
+                  </div>
+                </Button>
+
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/systems'}
+                  className="w-full p-4 text-center h-auto border md:border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
+                >
+                  <div className="flex items-center justify-center gap-3">
+                    <Puzzle className="h-5 w-5" />
+                    <span className="font-medium text-gray-900 dark:text-white">Go to Systems Lab</span>
+                  </div>
+                </Button>
+              </div>
+
+              {/* Desktop: Detailed cards with descriptions */}
+              <div className="hidden lg:block space-y-4">
+                {/* Top Row - Barriers and Tasks */}
+                <div className="grid grid-cols-2 gap-4">
+                  <Button 
+                    variant="outline"
+                    size="lg"
+                    onClick={() => window.location.href = '/barriers'}
+                    className="p-4 text-left h-auto border md:border-2 hover:bg-orange-100 dark:hover:bg-orange-900/40"
+                  >
+                    <div className="flex items-start gap-3 w-full">
+                      <Construction className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                      <div className="min-w-0 flex-1">
+                        <div className="font-medium text-gray-900 dark:text-white text-base break-words leading-tight">Facing barriers or obstacles?</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1 break-words">→ Go to Barriers Support</div>
+                      </div>
+                    </div>
+                  </Button>
+
+                  <Button 
+                    variant="outline"
+                    size="lg"
+                    onClick={() => window.location.href = '/life_areas'}
+                    className="p-4 text-left h-auto border md:border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                  >
+                    <div className="flex items-start gap-3 w-full">
+                      <Wrench className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                      <div className="min-w-0 flex-1">
+                        <div className="font-medium text-gray-900 dark:text-white text-base break-words leading-tight">Need help with specific tasks?</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1 break-words">→ Go to Life Areas</div>
+                      </div>
+                    </div>
+                  </Button>
                 </div>
-              </Button>
+
+                {/* Middle Row - Complex Loops and Identity */}
+                <div className="grid grid-cols-2 gap-4">
+                  <Button 
+                    variant="outline"
+                    size="lg"
+                    onClick={() => window.location.href = '/complex_loops'}
+                    className="p-4 text-left h-auto border md:border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                  >
+                    <div className="flex items-start gap-3 w-full">
+                      <RotateCcw className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                      <div className="min-w-0 flex-1">
+                        <div className="font-medium text-gray-900 dark:text-white text-base break-words leading-tight">Stuck in repetitive patterns?</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1 break-words">→ Browse Complex Loops</div>
+                      </div>
+                    </div>
+                  </Button>
+
+                  <Button 
+                    variant="outline"
+                    size="lg"
+                    onClick={() => window.location.href = '/identities'}
+                    className="p-4 text-left h-auto border md:border-2 hover:bg-pink-50 dark:hover:bg-purple-900/20"
+                  >
+                    <div className="flex items-start gap-3 w-full">
+                      <Rainbow className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                      <div className="min-w-0 flex-1">
+                        <div className="font-medium text-gray-900 dark:text-white text-base break-words leading-tight">Need identity-aware support?</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1 break-words">→ Browse by Identity</div>
+                      </div>
+                    </div>
+                  </Button>
+                </div>
+
+                {/* Bottom Row - Systems Lab */}
+                <div className="grid grid-cols-1 gap-4">
+                  <Button 
+                    variant="outline"
+                    size="lg"
+                    onClick={() => window.location.href = '/systems'}
+                    className="p-4 text-left h-auto border md:border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
+                  >
+                    <div className="flex items-start gap-3 w-full">
+                      <Puzzle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                      <div className="min-w-0 flex-1">
+                        <div className="font-medium text-gray-900 dark:text-white text-base break-words leading-tight">Want to build a system around this?</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1 break-words">→ Go to Systems Lab</div>
+                      </div>
+                    </div>
+                  </Button>
+                </div>
+              </div>
             </div>
-
-            {/* Middle Row - Complex Loops and Identity */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Button 
-                variant="outline"
-                size="lg"
-                onClick={() => window.location.href = '/complex_loops'}
-                className="p-4 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
-              >
-                <div className="flex items-center gap-3">
-                  <RotateCcw className="h-5 w-5 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-words">Stuck in repetitive patterns?</div>
-                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">→ Browse Complex Loops</div>
-                  </div>
-                </div>
-              </Button>
-
-              <Button 
-                variant="outline"
-                size="lg"
-                onClick={() => window.location.href = '/identities'}
-                className="p-4 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
-              >
-                <div className="flex items-center gap-3">
-                  <Rainbow className="h-5 w-5 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-words">Need identity-aware support?</div>
-                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">→ Browse by Identity</div>
-                  </div>
-                </div>
-              </Button>
-            </div>
-
-            {/* Bottom Row - Systems Lab */}
-            <div className="grid grid-cols-1 gap-4">
-              <Button 
-                variant="outline"
-                size="lg"
-                onClick={() => window.location.href = '/systems'}
-                className="p-4 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
-              >
-                <div className="flex items-center gap-3">
-                  <Puzzle className="h-5 w-5 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-words">Want to build a system around this?</div>
-                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">→ Go to Systems Lab</div>
-                  </div>
-                </div>
-              </Button>
-            </div>
-          </div>
 
           {/* Footer */}
           <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
