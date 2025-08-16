@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { useIsMobile } from '@/hooks/use-mobile'
 import Link from 'next/link'
 import { 
   ArrowLeft, Plus, Minus, Share2, Brain, Heart, 
@@ -19,7 +20,7 @@ import {
   Briefcase, Activity, TrendingUp, TrendingDown, Award, Music,
   Phone, Smartphone, Globe, Palette, Link as LinkIcon, MapPin, Dice1 as Dice, Home, Pill, Car,
   CookingPot, Shirt, Bath, PhoneCall, Receipt, ScrollText, Trash2, 
-  Hammer, Crown, Shield, Gem, Rocket, Medal, Flower, Leaf
+  Hammer, Crown, Shield, Gem, Rocket, Medal, Flower, Leaf, Footprints
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getComplexLoopsContent, getComplexLoopSources } from '@/lib/supabase'
@@ -404,6 +405,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
   const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [sources, setSources] = useState<Array<{ id: number; loop_slug: string; category: string; title: string; authors: string | null; description: string }> | null>(null)
+  const isMobile = useIsMobile()
 
   const toggleSection = (sectionId: string) => {
     setExpandedSections(prev => ({
@@ -547,29 +549,31 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
           <div className="mb-8">
-            <div className="flex items-center gap-4 mb-5">
+            <div className="flex items-center gap-4 mb-6">
               <Button
                 variant="ghost"
                 size="default"
                 onClick={goBack}
-                className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
+                className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full flex-shrink-0"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-foreground flex items-center gap-2 sm:gap-3">
                   {React.createElement(getLoopIcon(content.loop_name), {
                     className: "h-6 w-6 sm:h-8 sm:w-8 text-blue-500 flex-shrink-0"
                   })}
-                  {content.loop_name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                  <span className="break-words truncate">
+                    {content.loop_name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                  </span>
                 </h1>
                 {content.subtitle && (
-                  <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">
+                  <p className="text-lg text-gray-600 dark:text-gray-300 mt-2 truncate">
                     {content.subtitle}
                   </p>
                 )}
               </div>
-              <div className="relative">
+              <div className="relative flex items-center flex-shrink-0">
                 <Button
                   variant="ghost"
                   size="default"
@@ -587,8 +591,24 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
               </div>
             </div>
 
+            {/* Crisis Mode Button */}
+            <div className="mb-6">
+              <div className="flex items-center gap-2">
+                <Button onClick={() => {}} className="w-full sm:w-auto bg-rose-600 hover:bg-rose-700 text-white">
+                  <Zap className="h-4 w-4 mr-2" />
+                  Crisis mode
+                </Button>
+                {!isMobile && (
+                  <Button onClick={() => {}} className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white" variant="default">
+                    <Footprints className="h-4 w-4 mr-2" />
+                    Walk me through this
+                  </Button>
+                )}
+              </div>
+            </div>
+
             {/* Intro Paragraph - Blue callout box */}
-            <div className="border-l-4 border-blue-500 bg-blue-50/50 dark:bg-blue-900/10 pl-5 py-4 mb-7 rounded-r-lg">
+            <div className="border-l-4 border-blue-500 bg-blue-50/50 dark:bg-blue-900/10 pl-5 py-5 mb-8 rounded-r-lg">
               <div className="text-lg md:text-xl text-black dark:text-white leading-relaxed"
                    dangerouslySetInnerHTML={{ 
                      __html: content.intro_paragraph

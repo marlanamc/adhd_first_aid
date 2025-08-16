@@ -77,6 +77,43 @@
   - [ ] Push branch and open PR with a checklist summarizing above
 
 ---
+
+### Mobile UX Improvements (Critical Priority)
+
+**Issue:** Website looks gorgeous on desktop but needs significant mobile improvements for usability.
+
+- [ ] **Comprehensive mobile responsiveness audit across all pages**
+  - [ ] Audit all page layouts for mobile breakpoints
+  - [ ] Document specific mobile UX pain points
+  - [ ] Prioritize issues by severity and user impact
+
+- [ ] **Fix mobile navigation and header layouts**
+  - [ ] Ensure consistent mobile-friendly navigation across all pages
+  - [ ] Fix header text wrapping and icon sizing
+  - [ ] Optimize hamburger menus and touch targets
+
+- [ ] **Improve mobile text sizing and readability** 
+  - [ ] Apply responsive text sizing patterns (text-sm sm:text-base) to all pages
+  - [ ] Fix text wrapping with break-words and proper flex layouts
+  - [ ] Ensure proper line height and spacing for mobile reading
+
+- [ ] **Optimize mobile touch targets and button spacing**
+  - [ ] Ensure all buttons meet 44px minimum touch target size
+  - [ ] Add proper spacing between interactive elements
+  - [ ] Fix navigation button layouts (like we did for feelings page)
+
+- [ ] **Test mobile UX on real devices and fix issues**
+  - [ ] Test on various screen sizes and devices
+  - [ ] Fix any remaining layout or interaction issues
+  - [ ] Validate accessibility on mobile
+
+**Template:** Use feelings page mobile fixes as reference pattern:
+- `flex-shrink-0` for icons
+- `min-w-0` for text containers  
+- `text-sm sm:text-base` for responsive sizing
+- `break-words` for proper text wrapping
+
+---
 Notes captured today
 - Removed "How to work with your brain" column; site now renders 2‑column ADHD Reasons.
 - Normalized middle‑column headings to concrete ADHD terms.
@@ -85,4 +122,5 @@ Notes captured today
   - audit-adhd-reasons.ts (autofix for You‑might truncation, section markers, typos)
   - export-adhd-reasons-2col-report.ts (generates 2‑col markdown + suggested strategy moves)
 - Remaining high‑severity items (from audit): 7 — address first tomorrow.
+- **✅ COMPLETED:** Fixed mobile text wrapping and responsiveness in feelings page navigation (commit f7b5c05)
 

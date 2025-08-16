@@ -338,24 +338,24 @@ export default function BarrierPage({ params }: BarrierPageProps) {
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
           <div className="mb-8">
-            <div className="flex items-center gap-4 mb-5">
+            <div className="flex items-center gap-4 mb-6">
               <Button
                 variant="ghost"
                 size="default"
                 onClick={goBack}
-                className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
+                className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full flex-shrink-0"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-foreground flex items-center gap-2 sm:gap-3">
                   {React.createElement(BARRIER_ICONS[content?.barrier_name || ''] || Construction, {
                     className: "h-6 w-6 sm:h-8 sm:w-8 text-orange-500 flex-shrink-0"
                   })}
-                  {content?.barrier_name}
+                  <span className="break-words truncate">{content?.barrier_name}</span>
                 </h1>
               </div>
-              <div className="relative flex items-center gap-2">
+              <div className="relative flex items-center flex-shrink-0">
                 <Button
                   variant="ghost"
                   size="default"
@@ -365,12 +365,6 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                 >
                   <Share2 className="h-5 w-5" />
                 </Button>
-                <BarrierActions
-                  slug={resolvedParams.barrier}
-                  summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : ''}
-                  content={content}
-                  sources={sources}
-                />
                 {copySuccess && (
                   <div className="absolute -top-8 right-0 bg-green-600 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap z-50">
                     Link copied!
@@ -379,9 +373,19 @@ export default function BarrierPage({ params }: BarrierPageProps) {
               </div>
             </div>
 
+            {/* Crisis Mode Button */}
+            <div className="mb-6">
+              <BarrierActions
+                slug={resolvedParams.barrier}
+                summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : ''}
+                content={content}
+                sources={sources}
+              />
+            </div>
+
             {/* Intro Paragraph - with orange border like screenshot */}
             <div 
-              className="border-l-4 border-orange-400 bg-orange-50/50 dark:bg-orange-900/10 pl-5 py-4 mb-7 rounded-r-lg"
+              className="border-l-4 border-orange-400 bg-orange-50/50 dark:bg-orange-900/10 pl-5 py-5 mb-8 rounded-r-lg"
             >
               <p className="text-base md:text-lg text-foreground leading-relaxed">
                 {content?.intro_paragraph && formatMarkdownText(content.intro_paragraph)}
@@ -478,64 +482,65 @@ export default function BarrierPage({ params }: BarrierPageProps) {
 
           {/* Why ADHD Makes [Barrier] Worse Section */}
           <div className="relative mb-4">
-            <Button
-              onClick={() => toggleSection('adhd_reasons')}
-              className="w-full flex items-center gap-4 mb-5 p-5 rounded-xl bg-[#FFADD3]/20 hover:bg-[#FFADD3]/30 transition-colors min-h-[90px] touch-manipulation"
-              variant="ghost"
-              size="lg"
-            >
-              <div className="bg-[#FFADD3]/90 rounded-full p-3 flex-shrink-0">
-                <Brain className="h-5 w-5 text-gray-900" />
-              </div>
-              <div className="flex-1 text-left">
-                <h3 className="text-lg font-bold text-gray-900 mb-1">
-                  How ADHD Amplifies The Struggle
-                </h3>
-                <p className="text-base text-gray-600">
-                  The hidden drivers
-                </p>
-              </div>
-              <div className="flex-shrink-0">
+            <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border border-[#FFADD3]">
+              <button
+                onClick={() => toggleSection('adhd_reasons')}
+                className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                title={expandedSections['adhd_reasons'] ? 'Close section' : 'Open section'}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-[#FFADD3] rounded-lg flex-shrink-0">
+                    <Brain className="h-5 w-5 text-gray-900" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900">How ADHD Amplifies The Struggle</h3>
+                    <p className="text-sm text-gray-700 mt-0.5">The hidden drivers</p>
+                  </div>
+                </div>
                 {expandedSections['adhd_reasons'] ? (
-                  <Minus className="h-6 w-6 text-gray-500" />
+                  <Minus className="h-5 w-5 text-black flex-shrink-0" />
                 ) : (
-                  <Plus className="h-6 w-6 text-gray-500" />
+                  <Plus className="h-5 w-5 text-black flex-shrink-0" />
                 )}
-              </div>
-            </Button>
-            
-            {expandedSections['adhd_reasons'] && (
-              <div className="bg-[#FFADD3]/20 rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 border border-[#FFADD3]/30">
-                <ul className="space-y-3">
-                  {content.adhd_reasons.map((reason, index) => {
-                    // Define emojis for each ADHD reason
-                    const reasonEmojis = ['🧩', '⏰', '🧠', '💔', '⚡'];
-                    const emoji = reasonEmojis[index % reasonEmojis.length];
-                    
-                    // Split on the first colon to get bold heading and description
-                    const colonIndex = reason.indexOf(':');
-                    const hasColon = colonIndex !== -1;
-                    const heading = hasColon ? reason.substring(0, colonIndex) : '';
-                    const description = hasColon ? reason.substring(colonIndex + 1).trim() : reason;
-                    
-                    return (
-                      <li key={index} className="flex items-start gap-3">
-                        <span className="text-2xl mt-0 flex-shrink-0">{emoji}</span>
-                        <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                          {hasColon ? (
-                            <>
-                              <strong>{heading}</strong> - {formatMarkdownText(description)}
-                            </>
-                          ) : (
-                            formatMarkdownText(reason)
-                          )}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            )}
+              </button>
+              
+              {expandedSections['adhd_reasons'] && (
+                <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#FFADD3] bg-white">
+                  <div className="space-y-4">
+                    {content.adhd_reasons.map((reason, index) => {
+                      // Define emojis for each ADHD reason
+                      const reasonEmojis = ['🧩', '⏰', '🧠', '💔', '⚡'];
+                      const emoji = reasonEmojis[index % reasonEmojis.length];
+                      
+                      // Split on the first colon to get bold heading and description
+                      const colonIndex = reason.indexOf(':');
+                      const hasColon = colonIndex !== -1;
+                      const heading = hasColon ? reason.substring(0, colonIndex) : '';
+                      const description = hasColon ? reason.substring(colonIndex + 1).trim() : reason;
+                      
+                      return (
+                        <div key={index} className="flex items-start gap-3 p-4 rounded-xl bg-[#FBF8CC]/40 border border-[#FBF8CC]/60 hover:bg-[#FBF8CC]/60 transition-colors">
+                          <div className="bg-[#FBF8CC] rounded-full p-2 flex-shrink-0">
+                            <span className="text-lg">{emoji}</span>
+                          </div>
+                          <div className="flex-1">
+                            <div className="text-gray-900 leading-relaxed">
+                              {hasColon ? (
+                                <>
+                                  <strong>{heading}</strong> - {formatMarkdownText(description)}
+                                </>
+                              ) : (
+                                formatMarkdownText(reason)
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Step-by-Step Sections with different colors */}

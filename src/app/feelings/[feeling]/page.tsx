@@ -376,7 +376,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-10 shadow-lg">
           {/* Header */}
           <div className="mb-8">
-            <div className="flex items-center gap-4 mb-5">
+            <div className="flex items-center gap-4 mb-6">
               <Button
                 variant="ghost"
                 size="default"
@@ -390,10 +390,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                   {React.createElement(FEELING_ICONS[content?.feeling_name || ''] || Heart, {
                     className: "h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-pink-500 flex-shrink-0"
                   })}
-                  <span className="break-words">{content?.feeling_name}</span>
+                  <span className="break-words truncate">{content?.feeling_name}</span>
                 </h1>
               </div>
-              <div className="relative flex items-center gap-2">
+              <div className="relative flex items-center flex-shrink-0">
                 <Button
                   variant="ghost"
                   size="default"
@@ -403,13 +403,6 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 >
                   <Share2 className="h-5 w-5" />
                 </Button>
-                {/* Permanent actions */}
-                <FeelingActions
-                  slug={resolvedParams.feeling}
-                  summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : `<ul><li>Step away for 60–120s; breathe 4–6 times</li><li>Lower input: silence phone; reduce tabs</li><li>Pick 1 tiny task; 2‑minute timer; start</li></ul>`}
-                  content={content}
-                  sources={sources}
-                />
                 {copySuccess && (
                   <div className="absolute -top-8 right-0 bg-green-600 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap z-50">
                     Link copied!
@@ -418,10 +411,20 @@ export default function FeelingPage({ params }: FeelingPageProps) {
               </div>
             </div>
 
+            {/* Crisis Mode Button */}
+            <div className="mb-6">
+              <FeelingActions
+                slug={resolvedParams.feeling}
+                summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : `<ul><li>Step away for 60–120s; breathe 4–6 times</li><li>Lower input: silence phone; reduce tabs</li><li>Pick 1 tiny task; 2‑minute timer; start</li></ul>`}
+                content={content}
+                sources={sources}
+              />
+            </div>
+
             {/* Intro Paragraph - with pink border like screenshot */}
             <div 
               id="tldr"
-              className="guide-section border-l-4 border-pink-400 bg-pink-50/50 dark:bg-pink-900/10 pl-5 py-4 mb-7 rounded-r-lg"
+              className="guide-section border-l-4 border-pink-400 bg-pink-50/50 dark:bg-pink-900/10 pl-5 py-5 mb-8 rounded-r-lg"
             >
               <p className="text-base md:text-lg text-foreground leading-relaxed">
                 {content?.intro_paragraph && formatMarkdownText(content.intro_paragraph)}
@@ -539,222 +542,212 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
           {/* Why ADHD Makes [Feeling] Worse Section */}
           <section id="adhd_reasons" className="guide-section relative mb-4">
-            <Button
-              onClick={() => toggleSection('adhd_reasons')}
-              onMouseEnter={() => setHoveredSection('adhd_reasons')}
-              onMouseLeave={() => setHoveredSection(null)}
-              onTouchStart={() => setHoveredSection(null)}
-              className="w-full flex items-center gap-4 mb-5 p-5 rounded-xl bg-[#FFADD3]/20 hover:bg-[#FFADD3]/30 transition-colors min-h-[90px] touch-manipulation"
-              variant="ghost"
-              size="lg"
-            >
-              <div className="bg-[#FFADD3]/90 rounded-full p-3 flex-shrink-0">
-                <Brain className="h-5 w-5 text-gray-900" />
-              </div>
-              <div className="flex-1 text-left">
-                <h3 className="text-lg font-bold text-gray-900 mb-1">
-                  Why ADHD Makes {content?.feeling_name} Worse
-                </h3>
-                <p className="text-base text-gray-600">
-                  The hidden drivers
-                </p>
-              </div>
-              <div className="flex-shrink-0">
+                            <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border-2 border-[#FFADD3] shadow-sm">
+              <button
+                onClick={() => toggleSection('adhd_reasons')}
+                className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                title={expandedSections['adhd_reasons'] ? 'Close section' : 'Open section'}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-[#FFADD3] rounded-lg flex-shrink-0">
+                    <Brain className="h-5 w-5 text-gray-900" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900">Why ADHD Makes {content?.feeling_name} Worse</h3>
+                    <p className="text-sm text-gray-700 mt-0.5">The hidden drivers</p>
+                  </div>
+                </div>
                 {expandedSections['adhd_reasons'] ? (
-                  <Minus className="h-6 w-6 text-gray-500" />
+                  <Minus className="h-5 w-5 text-black flex-shrink-0" />
                 ) : (
-                  <Plus className="h-6 w-6 text-gray-500" />
+                  <Plus className="h-5 w-5 text-black flex-shrink-0" />
                 )}
-              </div>
-            </Button>
-            
-            {/* Custom Tooltip */}
-            {hoveredSection === 'adhd_reasons' && (
-              <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                {expandedSections['adhd_reasons'] ? "Close section" : "Open section"}
-              </div>
-            )}
-            
-            {expandedSections['adhd_reasons'] && (
-              <div className="bg-[#FFADD3]/20 rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 border border-[#FFADD3]/30">
-                <ul className="space-y-3">
-                  {content.adhd_reasons.map((reason, index) => {
-                    // Split on the first colon to get bold heading and description
-                    const colonIndex = reason.indexOf(':');
-                    const hasColon = colonIndex !== -1;
-                    const heading = hasColon ? reason.substring(0, colonIndex + 1) : '';
-                    const description = hasColon ? reason.substring(colonIndex + 1).trim() : reason;
-                    
-                    // Smart emoji selection for ADHD reasons
-                    const getEmoji = (reasonText: string, usedEmojis: string[]) => {
-                      const text = reasonText.toLowerCase();
+              </button>
+              
+              {expandedSections['adhd_reasons'] && (
+                <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#FFADD3] bg-white">
+                  <div className="space-y-4">
+                    {content.adhd_reasons.map((reason, index) => {
+                      // Split on the first colon to get bold heading and description
+                      const colonIndex = reason.indexOf(':');
+                      const hasColon = colonIndex !== -1;
+                      const heading = hasColon ? reason.substring(0, colonIndex + 1) : '';
+                      const description = hasColon ? reason.substring(colonIndex + 1).trim() : reason;
                       
-                      // More specific matches first to avoid conflicts
-                      if (text.includes('working memory') && !usedEmojis.includes('💭')) return '💭';
-                      if (text.includes('executive') && !usedEmojis.includes('⚙️')) return '⚙️';
-                      if (text.includes('dopamine') && !usedEmojis.includes('🧬')) return '🧬';
-                      if (text.includes('nervous system') && !usedEmojis.includes('🔌')) return '🔌';
-                      if (text.includes('rejection') && !usedEmojis.includes('💔')) return '💔';
-                      if (text.includes('emotional') && !usedEmojis.includes('🎭')) return '🎭';
-                      if (text.includes('regulation') && !usedEmojis.includes('🌡️')) return '🌡️';
-                      if (text.includes('sensitivity') && !usedEmojis.includes('🎚️')) return '🎚️';
-                      if (text.includes('perfectionism') && !usedEmojis.includes('🎯')) return '🎯';
-                      if (text.includes('rumination') && !usedEmojis.includes('🌀')) return '🌀';
-                      if (text.includes('shame') && !usedEmojis.includes('🔒')) return '🔒';
-                      if (text.includes('hypervigilance') && !usedEmojis.includes('👀')) return '👀';
-                      if (text.includes('attention') && !usedEmojis.includes('🔍')) return '🔍';
-                      if (text.includes('focus') && !usedEmojis.includes('🎪')) return '🎪';
-                      if (text.includes('distract') && !usedEmojis.includes('🎲')) return '🎲';
-                      if (text.includes('overwhelm') && !usedEmojis.includes('🌊')) return '🌊';
-                      if (text.includes('stimulation') && !usedEmojis.includes('⚡')) return '⚡';
-                      if (text.includes('energy') && !usedEmojis.includes('🔋')) return '🔋';
-                      if (text.includes('motivation') && !usedEmojis.includes('🚀')) return '🚀';
-                      if (text.includes('procrastination') && !usedEmojis.includes('⏰')) return '⏰';
-                      if (text.includes('time') && !usedEmojis.includes('⏳')) return '⏳';
-                      if (text.includes('pattern') && !usedEmojis.includes('🔄')) return '🔄';
-                      if (text.includes('habit') && !usedEmojis.includes('🔗')) return '🔗';
-                      if (text.includes('brain') && !usedEmojis.includes('🧠')) return '🧠';
-                      if (text.includes('cognitive') && !usedEmojis.includes('🤔')) return '🤔';
-                      if (text.includes('sensory') && !usedEmojis.includes('👂')) return '👂';
-                      if (text.includes('fatigue') && !usedEmojis.includes('😴')) return '😴';
-                      if (text.includes('burnout') && !usedEmojis.includes('🔥')) return '🔥';
-                      if (text.includes('anxiety') && !usedEmojis.includes('😰')) return '😰';
-                      if (text.includes('stress') && !usedEmojis.includes('😤')) return '😤';
-                      if (text.includes('overwhelm') && !usedEmojis.includes('🌊')) return '🌊';
-                      if (text.includes('avoidance') && !usedEmojis.includes('🙈')) return '🙈';
-                      if (text.includes('mask') && !usedEmojis.includes('🎭')) return '🎭';
-                      if (text.includes('comparison') && !usedEmojis.includes('⚖️')) return '⚖️';
-                      if (text.includes('criticism') && !usedEmojis.includes('🗣️')) return '🗣️';
-                      if (text.includes('feedback') && !usedEmojis.includes('💬')) return '💬';
-                      if (text.includes('social') && !usedEmojis.includes('👥')) return '👥';
-                      
-                      // Fallback emojis to ensure uniqueness
-                      const fallbacks = ['🧩', '🔧', '📊', '🎨', '🔮', '⭐', '🎪', '📡', '🎛️', '🔬'];
-                      return fallbacks.find(emoji => !usedEmojis.includes(emoji)) || '🧩';
-                    };
+                      // Smart emoji selection for ADHD reasons
+                      const getEmoji = (reasonText: string, usedEmojis: string[]) => {
+                        const text = reasonText.toLowerCase();
+                        
+                        // More specific matches first to avoid conflicts
+                        if (text.includes('working memory') && !usedEmojis.includes('💭')) return '💭';
+                        if (text.includes('executive') && !usedEmojis.includes('⚙️')) return '⚙️';
+                        if (text.includes('dopamine') && !usedEmojis.includes('🧬')) return '🧬';
+                        if (text.includes('nervous system') && !usedEmojis.includes('🔌')) return '🔌';
+                        if (text.includes('rejection') && !usedEmojis.includes('💔')) return '💔';
+                        if (text.includes('emotional') && !usedEmojis.includes('🎭')) return '🎭';
+                        if (text.includes('regulation') && !usedEmojis.includes('🌡️')) return '🌡️';
+                        if (text.includes('sensitivity') && !usedEmojis.includes('🎚️')) return '🎚️';
+                        if (text.includes('perfectionism') && !usedEmojis.includes('🎯')) return '🎯';
+                        if (text.includes('rumination') && !usedEmojis.includes('🌀')) return '🌀';
+                        if (text.includes('shame') && !usedEmojis.includes('🔒')) return '🔒';
+                        if (text.includes('hypervigilance') && !usedEmojis.includes('👀')) return '👀';
+                        if (text.includes('attention') && !usedEmojis.includes('🔍')) return '🔍';
+                        if (text.includes('focus') && !usedEmojis.includes('🎪')) return '🎪';
+                        if (text.includes('distract') && !usedEmojis.includes('🎲')) return '🎲';
+                        if (text.includes('overwhelm') && !usedEmojis.includes('🌊')) return '🌊';
+                        if (text.includes('stimulation') && !usedEmojis.includes('⚡')) return '⚡';
+                        if (text.includes('energy') && !usedEmojis.includes('🔋')) return '🔋';
+                        if (text.includes('motivation') && !usedEmojis.includes('🚀')) return '🚀';
+                        if (text.includes('procrastination') && !usedEmojis.includes('⏰')) return '⏰';
+                        if (text.includes('time') && !usedEmojis.includes('⏳')) return '⏳';
+                        if (text.includes('pattern') && !usedEmojis.includes('🔄')) return '🔄';
+                        if (text.includes('habit') && !usedEmojis.includes('🔗')) return '🔗';
+                        if (text.includes('brain') && !usedEmojis.includes('🧠')) return '🧠';
+                        if (text.includes('cognitive') && !usedEmojis.includes('🤔')) return '🤔';
+                        if (text.includes('sensory') && !usedEmojis.includes('👂')) return '👂';
+                        if (text.includes('fatigue') && !usedEmojis.includes('😴')) return '😴';
+                        if (text.includes('burnout') && !usedEmojis.includes('🔥')) return '🔥';
+                        if (text.includes('anxiety') && !usedEmojis.includes('😰')) return '😰';
+                        if (text.includes('stress') && !usedEmojis.includes('😤')) return '😤';
+                        if (text.includes('overwhelm') && !usedEmojis.includes('🌊')) return '🌊';
+                        if (text.includes('avoidance') && !usedEmojis.includes('🙈')) return '🙈';
+                        if (text.includes('mask') && !usedEmojis.includes('🎭')) return '🎭';
+                        if (text.includes('comparison') && !usedEmojis.includes('⚖️')) return '⚖️';
+                        if (text.includes('criticism') && !usedEmojis.includes('🗣️')) return '🗣️';
+                        if (text.includes('feedback') && !usedEmojis.includes('💬')) return '💬';
+                        if (text.includes('social') && !usedEmojis.includes('👥')) return '👥';
+                        
+                        // Fallback emojis to ensure uniqueness
+                        const fallbacks = ['🧩', '🔧', '📊', '🎨', '🔮', '⭐', '🎪', '📡', '🎛️', '🔬'];
+                        return fallbacks.find(emoji => !usedEmojis.includes(emoji)) || '🧩';
+                      };
 
-                    const usedEmojis = content.adhd_reasons.slice(0, index).map((_, i) => 
-                      getEmoji(content.adhd_reasons[i], content.adhd_reasons.slice(0, i).map((_, j) => 
-                        getEmoji(content.adhd_reasons[j], [])
-                      ))
-                    );
-                    const emoji = getEmoji(reason, usedEmojis);
-                    
-                    return (
-                      <li key={index} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
-                        <span className="text-base translate-y-[1px] flex-shrink-0 group-hover/bullet:scale-110 transition-transform">{emoji}</span>
-                        <span className="text-gray-900 py-1 leading-relaxed">
-                          {hasColon ? (
-                            <>
-                              <strong>{heading.replace(/\*\*(.*?)\*\*/g, '$1')}</strong> {formatMarkdownText(description)}
-                            </>
-                          ) : (
-                            formatMarkdownText(reason)
-                          )}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            )}
+                      const usedEmojis = content.adhd_reasons.slice(0, index).map((_, i) => 
+                        getEmoji(content.adhd_reasons[i], content.adhd_reasons.slice(0, i).map((_, j) => 
+                          getEmoji(content.adhd_reasons[j], [])
+                        ))
+                      );
+                      const emoji = getEmoji(reason, usedEmojis);
+                      
+                      return (
+                        <div key={index} className="flex items-start gap-3 p-4 rounded-xl bg-[#FBF8CC]/40 border border-[#FBF8CC]/60 hover:bg-[#FBF8CC]/60 transition-colors">
+                          <div className="bg-[#FBF8CC] rounded-full p-2 flex-shrink-0">
+                            <span className="text-lg">{emoji}</span>
+                          </div>
+                          <div className="flex-1">
+                            <div className="text-gray-900 leading-relaxed">
+                              {hasColon ? (
+                                <>
+                                  <strong>{heading.replace(/\*\*(.*?)\*\*/g, '$1')}</strong> {formatMarkdownText(description)}
+                                </>
+                              ) : (
+                                formatMarkdownText(reason)
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           </section>
 
-          {/* Step-by-Step Sections with different colors */}
+          {/* Step-by-Step Sections with clean headers */}
           {content.step_sections && content.step_sections.length > 0 && (
             <div className="space-y-4">
               {content.step_sections.map((step, index) => {
                 const colorSchemes = [
-                  { bg: 'bg-[#FCF6BD]/20', hover: 'hover:bg-[#FCF6BD]/30', border: 'border-[#FCF6BD]/50', iconBg: 'bg-[#FCF6BD]/90' },
-                  { bg: 'bg-[#D0F4DE]/20', hover: 'hover:bg-[#D0F4DE]/30', border: 'border-[#D0F4DE]/50', iconBg: 'bg-[#D0F4DE]/90' },
-                  { bg: 'bg-[#A9DEF9]/20', hover: 'hover:bg-[#A9DEF9]/30', border: 'border-[#A9DEF9]/50', iconBg: 'bg-[#A9DEF9]/90' },
-                  { bg: 'bg-[#E4C1F9]/20', hover: 'hover:bg-[#E4C1F9]/30', border: 'border-[#E4C1F9]/50', iconBg: 'bg-[#E4C1F9]/90' },
-                  { bg: 'bg-[#CEF4FF]/20', hover: 'hover:bg-[#CEF4FF]/30', border: 'border-[#CEF4FF]/50', iconBg: 'bg-[#CEF4FF]/90' }
+                  { bg: 'bg-[#FCF6BD]', border: 'border-[#FCF6BD]' },
+                  { bg: 'bg-[#D0F4DE]', border: 'border-[#D0F4DE]' },
+                  { bg: 'bg-[#A9DEF9]', border: 'border-[#A9DEF9]' },
+                  { bg: 'bg-[#E4C1F9]', border: 'border-[#E4C1F9]' },
+                  { bg: 'bg-[#CEF4FF]', border: 'border-[#CEF4FF]' }
                 ];
                 
                 const colors = colorSchemes[index % colorSchemes.length];
                 
                 return (
                   <section key={index} id={`step_${index}`} className="guide-section relative">
-                    <Button
-                      onClick={() => toggleSection(`step_${index}`)}
-                      onMouseEnter={() => setHoveredSection(`step_${index}`)}
-                      onMouseLeave={() => setHoveredSection(null)}
-                      onTouchStart={() => setHoveredSection(null)}
-                      className={`w-full flex items-center gap-4 mb-5 p-4 rounded-xl ${colors.bg} ${colors.hover} transition-colors min-h-[75px] touch-manipulation`}
-                      variant="ghost"
-                      size="lg"
-                    >
-                      <div className={`${colors.iconBg} rounded-full p-3 flex-shrink-0`}>
-                        <StepIcon 
-                          iconName={step.emoji} 
-                          className="h-5 w-5 text-gray-900" 
-                        />
-                      </div>
-                      <div className="flex-1 text-left min-w-0">
-                        <h3 className="text-sm sm:text-lg font-bold text-gray-900 mb-1 break-words">
-                          {step.number}. {step.title.replace(/\*\*(.*?)\*\*/g, '$1')}
-                        </h3>
-                        <p className="text-base text-gray-600">
-                          {formatMarkdownText(step.intro)}
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
+                    <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border-2 shadow-sm" style={{
+                      borderColor: index === 0 ? '#FCF6BD' : 
+                                  index === 1 ? '#D0F4DE' : 
+                                  index === 2 ? '#A9DEF9' : 
+                                  index === 3 ? '#E4C1F9' : 
+                                  index === 4 ? '#CEF4FF' : '#E4C1F9'
+                    }}>
+                      <button
+                        onClick={() => toggleSection(`step_${index}`)}
+                        className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                        title={expandedSections[`step_${index}`] ? 'Close section' : 'Open section'}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 ${colors.bg} rounded-lg flex-shrink-0`}>
+                            <StepIcon 
+                              iconName={step.emoji} 
+                              className="h-5 w-5 text-gray-900" 
+                            />
+                          </div>
+                          <div>
+                            <h3 className="text-lg md:text-xl font-bold text-gray-900">
+                              {step.number}. {step.title.replace(/\*\*(.*?)\*\*/g, '$1')}
+                            </h3>
+                            <p className="text-sm text-gray-700 mt-0.5">
+                              {formatMarkdownText(step.intro)}
+                            </p>
+                          </div>
+                        </div>
                         {expandedSections[`step_${index}`] ? (
-                          <Minus className="h-6 w-6 text-gray-500" />
+                          <Minus className="h-5 w-5 text-black flex-shrink-0" />
                         ) : (
-                          <Plus className="h-6 w-6 text-gray-500" />
+                          <Plus className="h-5 w-5 text-black flex-shrink-0" />
                         )}
-                      </div>
-                    </Button>
-                    
-                    {/* Custom Tooltip */}
-                    {hoveredSection === `step_${index}` && (
-                      <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                        {expandedSections[`step_${index}`] ? "Close section" : "Open section"}
-                      </div>
-                    )}
-                    
-                    {expandedSections[`step_${index}`] && (
-                      <div className={`${colors.bg} rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 border ${colors.border}`}>
-                        <div>
-                          <p className="font-semibold text-gray-900 dark:text-white mb-3">Try this:</p>
-                          <ul className="space-y-2">
-                            {step.try_this.map((item, itemIndex) => {
-                              // Split on the first colon to get bold heading and description
-                              const colonIndex = item.indexOf(':');
-                              const hasColon = colonIndex !== -1;
-                              const heading = hasColon ? item.substring(0, colonIndex + 1) : '';
-                              const description = hasColon ? item.substring(colonIndex + 1).trim() : item;
-                              
-                              // Strip ** formatting from heading since we're manually applying <strong>
-                              const cleanHeading = heading.replace(/\*\*(.*?)\*\*/g, '$1');
-                              
-                              return (
-                                <li key={itemIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
-                                  <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform">•</span>
-                                  <span className="text-gray-900 py-1 leading-relaxed">
-                                    {hasColon ? (
-                                      <>
-                                        <strong>{cleanHeading}</strong> {formatMarkdownText(description)}
-                                      </>
-                                    ) : (
-                                      formatMarkdownText(item)
-                                    )}
-                                  </span>
-                                </li>
-                              );
-                            })}
-                          </ul>
+                      </button>
+                      
+                      {expandedSections[`step_${index}`] && (
+                        <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-gray-200 bg-white">
+                          <div className="space-y-4">
+                            <div>
+                              <p className="font-semibold text-gray-900 mb-3">Try this:</p>
+                              <ul className="space-y-2">
+                                {step.try_this.map((item, itemIndex) => {
+                                  // Split on the first colon to get bold heading and description
+                                  const colonIndex = item.indexOf(':');
+                                  const hasColon = colonIndex !== -1;
+                                  const heading = hasColon ? item.substring(0, colonIndex + 1) : '';
+                                  const description = hasColon ? item.substring(colonIndex + 1).trim() : item;
+                                  
+                                  // Strip ** formatting from heading since we're manually applying <strong>
+                                  const cleanHeading = heading.replace(/\*\*(.*?)\*\*/g, '$1');
+                                  
+                                  return (
+                                    <li key={itemIndex} className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                                      <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-lg">•</span>
+                                      <span className="text-gray-900 leading-relaxed">
+                                        {hasColon ? (
+                                          <>
+                                            <strong>{cleanHeading}</strong> {formatMarkdownText(description)}
+                                          </>
+                                        ) : (
+                                          formatMarkdownText(item)
+                                        )}
+                                      </span>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </div>
+                            
+                            <div className="bg-blue-50 border-l-4 border-blue-400 pl-4 py-3 rounded-r-lg">
+                              <p className="text-sm text-gray-700">
+                                <span className="font-semibold">💡 Tip:</span> {formatMarkdownText(step.tip)}
+                              </p>
+                            </div>
+                          </div>
                         </div>
-                        
-                        <div className={`${colors.bg} border-l-4 ${colors.border} pl-4 py-2 rounded-r-lg`}>
-                          <p className="text-sm text-gray-700 dark:text-gray-300">
-                            <span className="font-semibold">💡 Tip:</span> {formatMarkdownText(step.tip)}
-                          </p>
-                        </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </section>
                 );
               })}
@@ -765,107 +758,104 @@ export default function FeelingPage({ params }: FeelingPageProps) {
           {sources && sources.length > 0 && (
             <div className="space-y-4">
               <section id="sources" className="guide-section relative">
-                <Button
-                  onClick={() => toggleSection('sources')}
-                  className="w-full flex items-center gap-4 mb-5 p-4 rounded-xl bg-[#CEFFF2]/20 hover:bg-[#CEFFF2]/30 transition-colors min-h-[75px] touch-manipulation"
-                  variant="ghost"
-                  size="lg"
-                >
-                  <div className="bg-[#CEFFF2]/90 rounded-full p-3 flex-shrink-0">
-                    <BookOpen className="h-5 w-5 text-gray-900" />
-                  </div>
-                  <div className="flex-1 text-left min-w-0">
-                    <h3 className="text-sm sm:text-lg font-bold text-gray-900 mb-1 break-words">
-                      Sources: {content?.feeling_name}
-                    </h3>
-                    <p className="text-base text-gray-600">
-                      Explore the books, guides, and research that shaped this page
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0">
+                <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border-2 border-gray-300 shadow-sm">
+                  <button
+                    onClick={() => toggleSection('sources')}
+                    className="w-full p-5 md:p-6 text-left rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                    title={expandedSections['sources'] ? 'Close section' : 'Open section'}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-[#CEFFF2] rounded-lg flex-shrink-0">
+                        <BookOpen className="h-5 w-5 text-gray-900" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg md:text-xl font-bold text-gray-900">Sources: {content?.feeling_name}</h3>
+                        <p className="text-sm text-gray-700 mt-0.5">Explore the books, guides, and research that shaped this page</p>
+                      </div>
+                    </div>
                     {expandedSections['sources'] ? (
-                      <Minus className="h-6 w-6 text-gray-500" />
+                      <Minus className="h-5 w-5 text-black flex-shrink-0" />
                     ) : (
-                      <Plus className="h-6 w-6 text-gray-500" />
+                      <Plus className="h-5 w-5 text-black flex-shrink-0" />
                     )}
-                  </div>
-                </Button>
-                
-                {expandedSections['sources'] && (
-                  <div className="bg-[#CEFFF2]/20 rounded-lg p-4 space-y-4 animate-in slide-in-from-top duration-300 mb-4">
-                    {/* Group sources by category and sort by count (descending) */}
-                    {Object.entries(
-                      sources.reduce((acc, source) => {
-                        const category = source.category || 'Other'
-                        if (!acc[category]) acc[category] = []
-                        acc[category].push(source)
-                        return acc
-                      }, {} as Record<string, typeof sources>)
-                    )
-                    .sort(([,a], [,b]) => b.length - a.length) // Sort by count descending
-                    .map(([category, categorySources], index) => {
-                      // Color palette for category headers (matching life_areas style)
-                      const colors = [
-                        { bg: 'bg-[#FBF8CC]/40', hover: 'hover:bg-[#FBF8CC]/60', border: 'border-[#FBF8CC]/60', iconBg: 'bg-[#FBF8CC]/90' }, // Lemon Chiffon
-                        { bg: 'bg-[#FDE4CF]/40', hover: 'hover:bg-[#FDE4CF]/60', border: 'border-[#FDE4CF]/60', iconBg: 'bg-[#FDE4CF]/90' }, // Champagne Pink
-                        { bg: 'bg-[#FFCFD2]/40', hover: 'hover:bg-[#FFCFD2]/60', border: 'border-[#FFCFD2]/60', iconBg: 'bg-[#FFCFD2]/90' }, // Baby Pink
-                        { bg: 'bg-[#F1C0E8]/40', hover: 'hover:bg-[#F1C0E8]/60', border: 'border-[#F1C0E8]/60', iconBg: 'bg-[#F1C0E8]/90' }, // Pink Lavender
-                        { bg: 'bg-[#CFBAF0]/40', hover: 'hover:bg-[#CFBAF0]/60', border: 'border-[#CFBAF0]/60', iconBg: 'bg-[#CFBAF0]/90' }, // Lavender Blue
-                        { bg: 'bg-[#A3C4F3]/40', hover: 'hover:bg-[#A3C4F3]/60', border: 'border-[#A3C4F3]/60', iconBg: 'bg-[#A3C4F3]/90' }, // Baby Blue Eyes
-                        { bg: 'bg-[#90DBF4]/40', hover: 'hover:bg-[#90DBF4]/60', border: 'border-[#90DBF4]/60', iconBg: 'bg-[#90DBF4]/90' }, // Sky Blue
-                        { bg: 'bg-[#8EECF5]/40', hover: 'hover:bg-[#8EECF5]/60', border: 'border-[#8EECF5]/60', iconBg: 'bg-[#8EECF5]/90' }, // Electric Blue
-                        { bg: 'bg-[#98F5E1]/40', hover: 'hover:bg-[#98F5E1]/60', border: 'border-[#98F5E1]/60', iconBg: 'bg-[#98F5E1]/90' }, // Magic Mint
-                        { bg: 'bg-[#B9FBC0]/40', hover: 'hover:bg-[#B9FBC0]/60', border: 'border-[#B9FBC0]/60', iconBg: 'bg-[#B9FBC0]/90' }  // Granny Smith Apple
-                      ]
-                      const colorScheme = colors[index % colors.length]
-                      
-                      return (
-                        <div key={category} className="space-y-2">
-                          <Button
-                            onClick={() => toggleSection(`source-category-${category}`)}
-                            className={`w-full flex items-center justify-between p-4 rounded-xl ${colorScheme.bg} ${colorScheme.hover} border ${colorScheme.border} transition-all duration-300 shadow-sm`}
-                            variant="ghost"
-                            size="lg"
-                          >
-                            <h4 className="font-bold text-gray-900 text-base">
-                              {category} ({categorySources.length} {categorySources.length === 1 ? 'source' : 'sources'})
-                            </h4>
-                            {expandedSections[`source-category-${category}`] ? (
-                              <Minus className="h-4 w-4 text-gray-600" />
-                            ) : (
-                              <Plus className="h-4 w-4 text-gray-600" />
-                            )}
-                          </Button>
+                  </button>
+                  
+                  {expandedSections['sources'] && (
+                    <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-gray-200 bg-white">
+                      <div className="space-y-4">
+                        {/* Group sources by category and sort by count (descending) */}
+                        {Object.entries(
+                          sources.reduce((acc, source) => {
+                            const category = source.category || 'Other'
+                            if (!acc[category]) acc[category] = []
+                            acc[category].push(source)
+                            return acc
+                          }, {} as Record<string, typeof sources>)
+                        )
+                        .sort(([,a], [,b]) => b.length - a.length) // Sort by count descending
+                        .map(([category, categorySources], index) => {
+                          // Color palette for category headers (matching life_areas style)
+                          const colors = [
+                            { bg: 'bg-[#FBF8CC]', border: 'border-[#FBF8CC]' }, // Lemon Chiffon
+                            { bg: 'bg-[#FDE4CF]', border: 'border-[#FDE4CF]' }, // Champagne Pink
+                            { bg: 'bg-[#FFCFD2]', border: 'border-[#FFCFD2]' }, // Baby Pink
+                            { bg: 'bg-[#F1C0E8]', border: 'border-[#F1C0E8]' }, // Pink Lavender
+                            { bg: 'bg-[#CFBAF0]', border: 'border-[#CFBAF0]' }, // Lavender Blue
+                            { bg: 'bg-[#A3C4F3]', border: 'border-[#A3C4F3]' }, // Baby Blue Eyes
+                            { bg: 'bg-[#90DBF4]', border: 'border-[#90DBF4]' }, // Sky Blue
+                            { bg: 'bg-[#8EECF5]', border: 'border-[#8EECF5]' }, // Electric Blue
+                            { bg: 'bg-[#98F5E1]', border: 'border-[#98F5E1]' }, // Magic Mint
+                            { bg: 'bg-[#B9FBC0]', border: 'border-[#B9FBC0]' }  // Granny Smith Apple
+                          ]
+                          const colorScheme = colors[index % colors.length]
                           
-                          {expandedSections[`source-category-${category}`] && (
-                            <div className={`pl-2 space-y-3 animate-in slide-in-from-top duration-200 ${colorScheme.bg} rounded-lg p-4 border ${colorScheme.border}`}>
-                              {categorySources.map((source, sourceIndex) => (
-                                <div key={sourceIndex} className="border-l-3 border-gray-400/40 pl-4 py-2">
-                                  <div className="flex items-start gap-2">
-                                    <span className="text-gray-900 mt-1 flex-shrink-0">•</span>
-                                    <div>
-                                      <h5 className="font-semibold text-gray-900">
-                                        {source.title}
-                                        {source.authors && (
-                                          <span className="font-normal text-gray-600">
-                                            {' by '}{source.authors}
-                                          </span>
-                                        )}
-                                      </h5>
-                                      <p className="text-sm text-gray-700 leading-relaxed mt-1">
-                                        {source.description.replace(/\s*—\s*/g, ', ')}
-                                      </p>
+                          return (
+                            <div key={category} className="space-y-2">
+                              <button
+                                onClick={() => toggleSection(`source-category-${category}`)}
+                                className={`w-full flex items-center justify-between p-4 rounded-xl ${colorScheme.bg} border ${colorScheme.border} transition-all duration-300 text-left`}
+                              >
+                                <h4 className="font-bold text-gray-900 text-base">
+                                  {category} ({categorySources.length} {categorySources.length === 1 ? 'source' : 'sources'})
+                                </h4>
+                                {expandedSections[`source-category-${category}`] ? (
+                                  <Minus className="h-4 w-4 text-gray-600" />
+                                ) : (
+                                  <Plus className="h-4 w-4 text-gray-600" />
+                                )}
+                              </button>
+                              
+                              {expandedSections[`source-category-${category}`] && (
+                                <div className={`pl-2 space-y-3 animate-in slide-in-from-top duration-200 bg-white rounded-lg p-4 border ${colorScheme.border}`}>
+                                  {categorySources.map((source, sourceIndex) => (
+                                    <div key={sourceIndex} className="border-l-3 border-gray-400/40 pl-4 py-2">
+                                      <div className="flex items-start gap-2">
+                                        <span className="text-gray-900 mt-1 flex-shrink-0">•</span>
+                                        <div>
+                                          <h5 className="font-semibold text-gray-900">
+                                            {source.title}
+                                            {source.authors && (
+                                              <span className="font-normal text-gray-600">
+                                                {' by '}{source.authors}
+                                              </span>
+                                            )}
+                                          </h5>
+                                          <p className="text-sm text-gray-700 leading-relaxed mt-1">
+                                            {source.description.replace(/\s*—\s*/g, ', ')}
+                                          </p>
+                                        </div>
+                                      </div>
                                     </div>
-                                  </div>
+                                  ))}
                                 </div>
-                              ))}
+                              )}
                             </div>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </section>
             </div>
           )}

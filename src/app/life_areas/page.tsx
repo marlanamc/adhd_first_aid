@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { ArrowLeft, Wrench, Home, Calendar, Brain, Clock, Mail, ClipboardList, Briefcase, BookOpen, Brush, ShoppingCart, Utensils, Bed, Shirt, Trash2, Laptop, Phone, Wallet, FileText, Users, Sparkles, Bath, Car, Sun, Dumbbell, CookingPot, Refrigerator, Recycle, Store, PackageCheck, Receipt, Calculator, ScrollText, Pencil, PhoneCall, Bell, GraduationCap, Library, Palette, DoorClosed, Pill, MailPlus, MousePointerClick, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useIsMobile } from '@/hooks/use-mobile'
 import React from 'react'
 
 // Tasks data with icons - updated to ensure Brain is first, Sparkles is last, no duplicates
@@ -80,6 +82,7 @@ export default function TasksPage() {
   const [selectedTask, setSelectedTask] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>('Work & Study')
   const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false)
+  const isMobile = useIsMobile()
 
   // Read category from URL parameter on page load
   useEffect(() => {
@@ -151,37 +154,79 @@ export default function TasksPage() {
             <MousePointerClick className="h-5 w-5" />
             Choose a task type:
           </h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {categories.map((category) => (
-              <button
-                key={category.name}
-                onClick={() => setSelectedCategory(category.name)}
-                className={`
-                  group cursor-pointer transform transition-all duration-300 ease-out
-                  hover:scale-105 hover:-translate-y-1 text-left
-                  ${selectedCategory === category.name ? 'scale-105 -translate-y-1' : ''}
-                `}
-              >
-                <div className={`backdrop-blur-md rounded-2xl p-3 
-                              transition-all duration-300
-                              group-hover:bg-white/30
-                              h-16 flex flex-col justify-center
-                              ${selectedCategory === category.name 
-                                ? 'bg-white/40 ring-2 ring-black/[0.15] dark:ring-white/[0.3]' 
-                                : 'bg-white/10 hover:bg-white/20'}`}>
-                  
-                  <h3 className={`text-sm font-medium text-black dark:text-white text-center mb-1
-                                ${selectedCategory === category.name ? 'font-semibold' : ''}`}>
-                    {category.name}
-                  </h3>
-                  <p className={`text-xs text-black/70 dark:text-white/70 text-center
-                                ${selectedCategory === category.name ? 'text-black/90 dark:text-white/90' : ''}`}>
-                    {category.count} tasks
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
+          {isMobile ? (
+            <Select value={selectedCategory || undefined} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-full bg-white/20 dark:bg-gray-800/40 backdrop-blur-md border-white/30 dark:border-gray-600/30 text-black dark:text-white">
+                <SelectValue placeholder="Choose a category" />
+              </SelectTrigger>
+              <SelectContent className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-white/30 dark:border-gray-600/30">
+                {categories.map((category, index) => (
+                  <SelectItem 
+                    key={category.name} 
+                    value={category.name}
+                    className="text-black dark:text-white hover:bg-white/20 dark:hover:bg-gray-700/50"
+                  >
+                    {category.name === 'View All' && index > 0 && (
+                      <div className="border-t border-gray-300 my-2 -mx-2"></div>
+                    )}
+                    <div className="flex items-center w-full">
+                      <div className="flex items-center gap-4 flex-1">
+                        <span className="text-xl">
+                          {category.name === 'Home & Daily Life' ? '🏠' :
+                           category.name === 'Health & Wellness' ? '💪' :
+                           category.name === 'Work & Productivity' ? '💼' :
+                           category.name === 'Learning & Growth' ? '📚' :
+                           category.name === 'Social & Relationships' ? '👥' :
+                           category.name === 'Financial & Planning' ? '💰' :
+                           category.name === 'Creative & Hobbies' ? '🎨' :
+                           category.name === 'Self Care & Maintenance' ? '🛁' :
+                           category.name === 'View All' ? '👀' : '📋'}
+                        </span>
+                        <span className={`font-medium text-base ${category.name === 'View All' ? 'text-gray-600' : ''}`}>
+                          {category.name}
+                        </span>
+                      </div>
+                      <span className="text-sm text-black/60 dark:text-white/60 flex-shrink-0 ml-4">
+                        {category.count} {category.count === 1 ? 'task' : 'tasks'}
+                      </span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {categories.map((category) => (
+                <button
+                  key={category.name}
+                  onClick={() => setSelectedCategory(category.name)}
+                  className={`
+                    group cursor-pointer transform transition-all duration-300 ease-out
+                    hover:scale-105 hover:-translate-y-1 text-left
+                    ${selectedCategory === category.name ? 'scale-105 -translate-y-1' : ''}
+                  `}
+                >
+                  <div className={`backdrop-blur-md rounded-2xl p-3 
+                                transition-all duration-300
+                                group-hover:bg-white/30
+                                h-16 flex flex-col justify-center
+                                ${selectedCategory === category.name 
+                                  ? 'bg-white/40 ring-2 ring-black/[0.15] dark:ring-white/[0.3]' 
+                                  : 'bg-white/10 hover:bg-white/20'}`}>
+                    
+                    <h3 className={`text-sm font-medium text-black dark:text-white text-center mb-1
+                                  ${selectedCategory === category.name ? 'font-semibold' : ''}`}>
+                      {category.name}
+                    </h3>
+                    <p className={`text-xs text-black/70 dark:text-white/70 text-center
+                                  ${selectedCategory === category.name ? 'text-black/90 dark:text-white/90' : ''}`}>
+                      {category.count} tasks
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Selected Category Tasks */}

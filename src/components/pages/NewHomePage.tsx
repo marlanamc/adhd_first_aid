@@ -172,26 +172,27 @@ export default function NewHomePage({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 flex flex-col items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 flex flex-col items-center justify-center p-4 md:p-6">
       {/* Header */}
-      <div className="text-center mb-12 space-y-4 mt-20">
-        <h1 className="text-xl md:text-2xl font-light text-gray-800 dark:text-gray-200">
+      <div className="text-center mb-8 md:mb-12 space-y-3 md:space-y-4 mt-12 md:mt-20">
+        <h1 className="text-lg md:text-xl lg:text-2xl font-light text-gray-800 dark:text-gray-200">
           {getPersonalizedGreeting()}
         </h1>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-gray-900 dark:text-blue-300 homepage-main-heading">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-gray-900 dark:text-blue-300 homepage-main-heading px-4 md:px-0">
           Where do you want to start?
         </h2>
       </div>
 
       {/* Main Cards - 3 Section Layout */}
-      <div className="max-w-6xl w-full space-y-12 relative">
+      <div className="max-w-6xl w-full space-y-8 md:space-y-12 relative">
         
         {/* Top Row - Core Entry Points */}
-        <div className="space-y-6 relative">
-          {/* Subtle separator shadow */}
-          <div className="absolute -bottom-6 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-30"></div>
+        <div className="space-y-4 md:space-y-6 relative">
+          {/* Subtle separator shadow - hidden on mobile */}
+          <div className="hidden md:block absolute -bottom-6 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-30"></div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-stretch">
+          {/* Mobile: Full-width stacked cards, Desktop: Grid layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-3 items-stretch">
           {topCategories.map((category) => {
             const IconComponent = category.icon
             
@@ -201,10 +202,10 @@ export default function NewHomePage({
                 onClick={() => handleCardClick(category.id)}
                 className={`
                   relative group cursor-pointer transform transition-all duration-300 ease-out touch-manipulation
-                  hover:-translate-y-1 hover:shadow-lg
-                  ${localSelectedCard === category.id ? '-translate-y-1 shadow-lg' : ''}
+                  md:hover:-translate-y-1 md:hover:shadow-lg
+                  ${localSelectedCard === category.id ? 'md:-translate-y-1 shadow-lg' : ''}
                   ${isTransitioning ? 'pointer-events-none' : ''}
-                  hover:z-10 active:scale-95
+                  md:hover:z-10 active:scale-[0.98] md:active:scale-95
                 `}
                 style={{
                   transformOrigin: 'center center',
@@ -212,57 +213,60 @@ export default function NewHomePage({
               >
                 <div 
                   className={`
-                    relative overflow-hidden rounded-[1.5rem] p-4
+                    relative overflow-hidden rounded-2xl md:rounded-[1.5rem] p-5 md:p-4
                     ${category.color}
                     transition-all duration-300 ease-out
-                    h-[15rem] md:h-[16rem]
-                    flex flex-col justify-between h-full
+                    h-[12rem] sm:h-[13rem] md:h-[15rem] lg:h-[16rem]
+                    flex flex-col justify-between
                     group-hover:shadow-xl
                     after:absolute after:inset-0 after:bg-gradient-to-b after:from-white/5 after:to-transparent
                   `}
                 >
                   <div className="flex flex-col h-full">
-                    {/* Icon - Fixed at top */}
-                    <div className="flex justify-center mb-3 transition-all duration-300 ease-out">
-                      <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-all duration-300 group-hover:bg-white/30">
-                        <IconComponent className="w-6 h-6 text-black transition-all duration-300" />
+                    {/* Mobile: Horizontal layout, Desktop: Vertical layout */}
+                    <div className="flex md:flex-col h-full">
+                      {/* Icon */}
+                      <div className="flex-shrink-0 mr-4 md:mr-0 md:mb-3 md:flex md:justify-center">
+                        <div className="w-14 h-14 md:w-12 md:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-all duration-300 group-hover:bg-white/30">
+                          <IconComponent className="w-7 h-7 md:w-6 md:h-6 text-black transition-all duration-300" />
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Title - Fixed height and positioned consistently */}
-                    <div className="text-center mb-3">
-                      <h3 className="text-base font-bold text-black transition-all duration-300 group-hover:text-lg leading-tight h-[3rem] flex items-start justify-center">
-                        {category.title}
-                      </h3>
-                    </div>
-                    
-                    {/* Content area - Takes remaining space */}
-                    <div className="flex-1 flex flex-col text-center">
-                      {/* Description - Fixed position for first line alignment */}
-                      <div className="h-12 mb-4">
-                        <p className="text-black/80 text-sm leading-relaxed transition-all duration-300 group-hover:text-black font-medium">
+                      {/* Content */}
+                      <div className="flex-1 flex flex-col md:text-center">
+                        {/* Title */}
+                        <h3 className="text-lg md:text-base font-bold text-black transition-all duration-300 md:group-hover:text-lg leading-tight mb-2 md:mb-3 md:h-[3rem] md:flex md:items-start md:justify-center">
+                          {category.title}
+                        </h3>
+                        
+                        {/* Description */}
+                        <p className="text-black/80 text-sm leading-relaxed transition-all duration-300 group-hover:text-black font-medium mb-3 md:mb-4 md:h-12">
                           {category.subtitle}
                         </p>
-                      </div>
-                      
-                      {/* Examples - Show 2 examples */}
-                      <div className="flex justify-center gap-1.5 flex-wrap">
-                        {category.examples.slice(0, 2).map((example, index) => (
-                          <span
-                            key={index}
-                            className="bg-white/20 backdrop-blur-sm rounded-full px-2 py-1 text-xs text-black
-                                       transition-all duration-300 ease-out
-                                       group-hover:bg-white/30 leading-none font-medium"
-                          >
-                            {example}
-                          </span>
-                        ))}
+                        
+                        {/* Examples - Show all on mobile, 2 on desktop */}
+                        <div className="flex flex-wrap gap-1.5 md:justify-center">
+                          {category.examples.map((example, index) => (
+                            <span
+                              key={index}
+                              className={`
+                                bg-white/20 backdrop-blur-sm rounded-full px-2.5 py-1.5 md:px-2 md:py-1 text-xs text-black
+                                transition-all duration-300 ease-out
+                                group-hover:bg-white/30 leading-none font-medium
+                                ${index > 1 ? 'md:hidden' : ''}
+                              `}
+                            >
+                              {example}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="absolute bottom-2 right-2">
-                    <ArrowRight className="w-3.5 h-3.5 text-black transition-all duration-300 ease-out group-hover:translate-x-1" />
+                    {/* Arrow indicator */}
+                    <div className="absolute bottom-3 right-3 md:bottom-2 md:right-2">
+                      <ArrowRight className="w-4 h-4 md:w-3.5 md:h-3.5 text-black/60 md:text-black transition-all duration-300 ease-out group-hover:translate-x-1" />
+                    </div>
                   </div>
 
                 </div>
@@ -273,27 +277,27 @@ export default function NewHomePage({
         </div>
 
         {/* Middle - Systems Lab (Subtle) */}
-        <div className="flex justify-center relative">
-          {/* Subtle separator shadow */}
-          <div className="absolute -bottom-6 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-30"></div>
+        <div className="flex justify-center relative px-0 md:px-0">
+          {/* Subtle separator shadow - hidden on mobile */}
+          <div className="hidden md:block absolute -bottom-6 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-30"></div>
           <div
             onClick={() => handleCardClick(systemsCategory.id)}
             className={`
               relative group cursor-pointer transform transition-all duration-300 ease-out touch-manipulation
-              hover:scale-[1.01] hover:shadow-md
-              ${localSelectedCard === systemsCategory.id ? 'scale-[1.01] shadow-md' : ''}
+              md:hover:scale-[1.01] md:hover:shadow-md
+              ${localSelectedCard === systemsCategory.id ? 'md:scale-[1.01] shadow-md' : ''}
               ${isTransitioning ? 'pointer-events-none' : ''}
-              active:scale-95 max-w-2xl w-full
+              active:scale-[0.98] md:active:scale-95 max-w-2xl w-full
             `}
           >
             <div 
               className={`
-                relative overflow-hidden rounded-xl p-4 border border-gray-200/30 dark:border-gray-700/30
+                relative overflow-hidden rounded-2xl md:rounded-xl p-5 md:p-4 border border-gray-200/30 dark:border-gray-700/30
                 bg-gradient-to-r from-gray-50/80 via-white/60 to-gray-50/80 
                 dark:from-gray-800/80 dark:via-gray-700/60 dark:to-gray-800/80
                 backdrop-blur-sm
                 transition-all duration-300 ease-out
-                h-[3.5rem] sm:h-[4rem]
+                h-[4.5rem] md:h-[3.5rem] lg:h-[4rem]
                 flex items-center
                 group-hover:border-gray-300/40 dark:group-hover:border-gray-600/40
                 group-hover:shadow-lg
@@ -309,10 +313,10 @@ export default function NewHomePage({
                   </div>
 
                   <div className="flex-1">
-                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 transition-all duration-300 mb-0.5">
+                    <h3 className="text-base md:text-sm font-bold text-gray-700 dark:text-gray-300 transition-all duration-300 mb-0.5">
                       {systemsCategory.title}
                     </h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-xs transition-all duration-300 group-hover:text-gray-600 dark:group-hover:text-gray-300">
+                    <p className="text-gray-500 dark:text-gray-400 text-xs md:text-xs transition-all duration-300 group-hover:text-gray-600 dark:group-hover:text-gray-300">
                       Combine strategies from above into routines
                     </p>
                   </div>
@@ -334,14 +338,14 @@ export default function NewHomePage({
         </div>
 
         {/* Bottom Row - Support & Tools */}
-        <div className="space-y-6 relative">
+        <div className="space-y-4 md:space-y-6 relative">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-lg text-gray-700 dark:text-gray-300 font-medium">
+            <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 font-medium">
               More tools to support your journey
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-stretch max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 items-stretch max-w-4xl mx-auto">
           {bottomCategories.map((category) => {
             const IconComponent = category.icon
             
@@ -351,10 +355,10 @@ export default function NewHomePage({
                 onClick={() => handleCardClick(category.id)}
                 className={`
                   relative group cursor-pointer transform transition-all duration-300 ease-out touch-manipulation
-                  hover:scale-[1.02] hover:shadow-md
-                  ${localSelectedCard === category.id ? 'scale-[1.02] shadow-md' : ''}
+                  md:hover:scale-[1.02] md:hover:shadow-md
+                  ${localSelectedCard === category.id ? 'md:scale-[1.02] shadow-md' : ''}
                   ${isTransitioning ? 'pointer-events-none' : ''}
-                  active:scale-95
+                  active:scale-[0.98] md:active:scale-95
                 `}
                 style={{
                   transformOrigin: 'center center',
@@ -362,10 +366,10 @@ export default function NewHomePage({
               >
                 <div 
                   className={`
-                    relative overflow-hidden rounded-lg p-3 border-2 border-gray-200/50 dark:border-gray-700/50
+                    relative overflow-hidden rounded-2xl md:rounded-lg p-4 md:p-3 border-2 border-gray-200/50 dark:border-gray-700/50
                     ${category.color}
                     transition-all duration-300 ease-out
-                    h-[9rem] sm:h-[9.5rem]
+                    h-[10rem] md:h-[9rem] lg:h-[9.5rem]
                     flex flex-col
                     group-hover:border-gray-300/60 dark:group-hover:border-gray-600/60
                     group-hover:shadow-lg
@@ -373,22 +377,22 @@ export default function NewHomePage({
                   `}
                 >
                   {/* Header with icon and title */}
-                  <div className="flex items-start gap-3 mb-2">
+                  <div className="flex items-start gap-3 mb-3 md:mb-2">
                     <div className="flex-shrink-0">
-                      <div className="w-8 h-8 bg-black/10 dark:bg-white/10 rounded-lg flex items-center justify-center">
-                        <IconComponent className="w-4 h-4 text-black dark:text-white" />
+                      <div className="w-10 h-10 md:w-8 md:h-8 bg-black/10 dark:bg-white/10 rounded-lg flex items-center justify-center">
+                        <IconComponent className="w-5 h-5 md:w-4 md:h-4 text-black dark:text-white" />
                       </div>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-base font-semibold text-black dark:text-white leading-tight">
+                      <h3 className="text-lg md:text-base font-semibold text-black dark:text-white leading-tight">
                         {category.title}
                       </h3>
                     </div>
                   </div>
 
                   {/* Description */}
-                  <div className="flex-1 mb-2">
-                    <p className="text-black/70 dark:text-white/70 text-sm leading-snug font-medium">
+                  <div className="flex-1 mb-3 md:mb-2">
+                    <p className="text-black/70 dark:text-white/70 text-sm leading-relaxed md:leading-snug font-medium">
                       {category.subtitle}
                     </p>
                   </div>
@@ -396,16 +400,19 @@ export default function NewHomePage({
                   {/* Bottom section with examples and arrow */}
                   <div className="flex items-center justify-between">
                     <div className="flex-1 flex gap-1.5 flex-wrap">
-                      {category.examples.slice(0, 3).map((example, index) => (
+                      {category.examples.map((example, index) => (
                         <span
                           key={index}
-                          className="inline-block bg-black/10 dark:bg-white/10 rounded-md px-2 py-1 text-xs text-black dark:text-white font-medium"
+                          className={`
+                            inline-block bg-black/10 dark:bg-white/10 rounded-md px-2 py-1 text-xs text-black dark:text-white font-medium
+                            ${index > 2 ? 'md:hidden' : ''}
+                          `}
                         >
                           {example}
                         </span>
                       ))}
                     </div>
-                    <ArrowRight className="w-4 h-4 text-black/60 dark:text-white/60 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:text-black dark:group-hover:text-white ml-2" />
+                    <ArrowRight className="w-4 h-4 text-black/60 dark:text-white/60 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:text-black dark:group-hover:text-white ml-2 flex-shrink-0" />
                   </div>
 
                 </div>

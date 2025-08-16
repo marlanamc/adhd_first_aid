@@ -43,41 +43,51 @@ export default function AdhdReasonsThreeCol({ rows }: Props) {
     <section aria-labelledby="adhd-reasons" className="space-y-3">
       {/* Column headings on desktop to match existing style */}
       <div className="hidden md:grid md:grid-cols-2 gap-5 pl-1 pr-1" aria-hidden>
-        <h4 className="font-semibold text-gray-900 text-base border-b border-gray-200 text-center py-3 bg-white/60 dark:bg-gray-900/10 rounded-t">You might:</h4>
-        <h4 className="font-semibold text-gray-900 text-base border-b border-gray-200 text-center py-3 bg-white/60 dark:bg-gray-900/10 rounded-t">Here's what's really going on:</h4>
+        <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base border-b border-gray-200 dark:border-gray-700 text-center py-3 bg-white/60 dark:bg-gray-900/10 rounded-t">You might:</h4>
+        <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base border-b border-gray-200 dark:border-gray-700 text-center py-3 bg-white/60 dark:bg-gray-900/10 rounded-t">Here's what's really going on:</h4>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-6 md:space-y-4">
         {rows.map((row, idx) => {
           const scheme = rowPalette[idx % rowPalette.length]
           return (
-            <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 items-stretch">
+            <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-5 items-stretch">
+              {/* Mobile section header */}
+              <div className="md:hidden">
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2">You might:</h4>
+              </div>
+              
               {/* Col 1 */}
               <article
-                className={`relative rounded-md px-4 py-3 md:py-4 flex h-full items-start gap-3 border ${scheme.bg} ${scheme.border} focus-within:ring-2 focus-within:ring-blue-400 min-h-[132px]`}
+                className={`relative rounded-xl md:rounded-md px-5 md:px-4 py-4 flex h-full items-start gap-3 border ${scheme.bg} ${scheme.border} focus-within:ring-2 focus-within:ring-blue-400 min-h-[132px]`}
                 role="group"
               >
                 {row.icon && (
                   <span aria-hidden className="text-lg w-5 text-center mt-[2px] flex-shrink-0">{row.icon}</span>
                 )}
-                <div className="text-gray-900">
-                  <h3 className="font-semibold text-[16px] md:text-[17px] leading-tight">{row.youMight.title}</h3>
+                <div className="text-gray-900 dark:text-gray-100">
+                  <h3 className="font-semibold text-[17px] leading-tight">{row.youMight.title}</h3>
                   {row.youMight.body && (
-                    <p className="text-[15px] md:text-[16px] leading-[1.65] mt-1">{row.youMight.body}</p>
+                    <p className="text-[16px] leading-[1.65] mt-2 text-gray-800 dark:text-gray-200">{row.youMight.body}</p>
                   )}
                 </div>
                 <span aria-hidden className="hidden md:flex items-center justify-center absolute -right-4 inset-y-0 my-auto select-none">→</span>
               </article>
 
+              {/* Mobile section header */}
+              <div className="md:hidden mt-2">
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2">Here's what's really going on:</h4>
+              </div>
+
               {/* Col 2 */}
               <article
-                className={`relative rounded-md px-4 py-3 md:py-4 flex h-full items-start gap-3 border ${scheme.bg} ${scheme.border} min-h-[132px]`}
+                className={`relative rounded-xl md:rounded-md px-5 md:px-4 py-4 flex h-full items-start gap-3 border ${scheme.bg} ${scheme.border} min-h-[132px]`}
               >
                 <span aria-hidden className="text-lg w-5 text-center mt-[2px] flex-shrink-0">{row.whatsGoingOn.icon || rightEmojiFor(row.whatsGoingOn.title)}</span>
-                <div className="text-gray-900">
-                  <h3 className="font-semibold text-[16px] md:text-[17px] leading-tight">
+                <div className="text-gray-900 dark:text-gray-100">
+                  <h3 className="font-semibold text-[17px] leading-tight">
                     {ensureColon(row.whatsGoingOn.title)}
                   </h3>
-                  <p className="text-[15px] md:text-[16px] leading-[1.65] mt-1">{row.whatsGoingOn.body}</p>
+                  <p className="text-[16px] leading-[1.65] mt-2 text-gray-800 dark:text-gray-200">{row.whatsGoingOn.body}</p>
                 </div>
               </article>
             </div>

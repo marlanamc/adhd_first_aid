@@ -4,6 +4,7 @@ import React, { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Zap, Footprints } from 'lucide-react'
 import { useCrisisAndWalkthrough } from '@/hooks/useCrisisAndWalkthrough'
+import { useIsMobile } from '@/hooks/use-mobile'
 import type { FeelingsContent, FeelingSources } from '@/lib/supabase'
 
 // Local markdown-style formatter to match page rendering
@@ -43,6 +44,7 @@ export interface FeelingActionsProps {
 }
 
 export default function FeelingActions({ slug, summaryHtml, content, sources }: FeelingActionsProps) {
+  const isMobile = useIsMobile()
   // Build rich, colored steps directly so modal shows full sections with their styles
   const customSteps = useMemo(() => {
     // If full content is available, mirror the entire page (summary → gentle → stern → reasons → steps → sources)
@@ -250,15 +252,17 @@ export default function FeelingActions({ slug, summaryHtml, content, sources }: 
   const { goCrisis, openWalkthrough, modal } = useCrisisAndWalkthrough({ slug, summaryHtml, customSteps })
 
   return (
-    <div className="flex items-center gap-2">
-      <Button onClick={goCrisis} className="bg-rose-600 hover:bg-rose-700 text-white">
+    <div className="flex flex-col sm:flex-row items-center gap-2">
+      <Button onClick={goCrisis} className="w-full sm:w-auto bg-rose-600 hover:bg-rose-700 text-white">
         <Zap className="h-4 w-4 mr-2" />
         Crisis mode
       </Button>
-      <Button onClick={openWalkthrough} className="bg-teal-600 hover:bg-teal-700 text-white" variant="default">
-        <Footprints className="h-4 w-4 mr-2" />
-        Walk me through this
-      </Button>
+      {!isMobile && (
+        <Button onClick={openWalkthrough} className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white" variant="default">
+          <Footprints className="h-4 w-4 mr-2" />
+          Walk me through this
+        </Button>
+      )}
       {modal}
     </div>
   )

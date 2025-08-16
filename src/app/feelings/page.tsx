@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, Heart, Brain, Zap, Frown, Users, LockKeyhole, Flame, MoveRight, CloudLightning, Activity, Skull, CloudRain, Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, Battery, UserX, ZapOff, EyeOff, Sparkles, Scissors, MousePointerClick } from 'lucide-react'
+import { ArrowLeft, Heart, Brain, Zap, Frown, Users, LockKeyhole, Flame, MoveRight, CloudLightning, Activity, Skull, CloudRain, Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, Battery, UserX, ZapOff, EyeOff, Sparkles, Scissors } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SuggestFeelingModal } from '@/components/ui/SuggestFeelingModal'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useIsMobile } from '@/hooks/use-mobile'
 import React from 'react'
 
 // Categories with counts
@@ -55,6 +57,7 @@ export default function FeelingsPage() {
   const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>('Cognitive & Overload')
   const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false)
+  const isMobile = useIsMobile()
 
   // Read category from URL parameter on page load
   useEffect(() => {
@@ -97,10 +100,10 @@ export default function FeelingsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+      <div className="max-w-4xl mx-auto px-4 py-6 md:py-8 pt-20 md:pt-24">
         {/* Header */}
-        <div className="mb-12">
-          <div className="flex items-center gap-4 mb-6">
+        <div className="mb-8 md:mb-12">
+          <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
             <Button
               variant="ghost"
               size="default"
@@ -110,88 +113,133 @@ export default function FeelingsPage() {
               <ArrowLeft className="h-5 w-5 text-[#22223B] dark:text-white" />
             </Button>
             <div className="flex-1">
-              <h1 className="text-3xl md:text-4xl font-serif font-bold text-black dark:text-white text-center">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-black dark:text-white text-center">
                 How are you feeling right now?
               </h1>
             </div>
           </div>
         </div>
 
-        {/* Category Selection */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-black dark:text-white text-center mb-6 flex items-center justify-center gap-2">
-            <MousePointerClick className="h-5 w-5" />
-            Choose a feeling type:
+        {/* Category Selection - Mobile Optimized */}
+        <div className="mb-6 md:mb-8">
+          <h2 className="text-lg md:text-xl font-semibold text-black dark:text-white text-center mb-4 md:mb-6">
+            Choose a feeling category
           </h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
-              <button
-                key={category.name}
-                onClick={() => setSelectedCategory(category.name)}
-                className={`
-                  group cursor-pointer transform transition-all duration-300 ease-out
-                  hover:scale-105 hover:-translate-y-1 text-left
-                  ${selectedCategory === category.name ? 'scale-105 -translate-y-1' : ''}
-                `}
-              >
-                <div className={`backdrop-blur-md rounded-2xl p-3 
-                              transition-all duration-300
-                              group-hover:bg-white/30 group-hover:scale-[1.02]
-                              h-16 flex flex-col justify-center gap-2
-                              relative before:absolute before:left-3 before:top-0 before:bottom-0 before:w-px before:bg-gray-200/30
-                              ${selectedCategory === category.name 
-                                ? 'bg-white/40 ring-2 ring-black/[0.15] dark:ring-white/[0.3]' 
-                                : 'bg-white/10 hover:bg-white/20'}`}>
-                  
-                  <h3 className={`text-sm font-medium text-black dark:text-white text-center mb-1
-                                ${selectedCategory === category.name ? 'font-semibold' : ''}`}>
-                    {category.name}
-                  </h3>
-                  <p className={`text-xs text-black/70 dark:text-white/70 text-center
-                                ${selectedCategory === category.name ? 'text-black/90 dark:text-white/90' : ''}`}>
-                    {category.count} feeling{category.count > 1 ? 's' : ''}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
+          
+          {isMobile ? (
+            <Select value={selectedCategory || undefined} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-full bg-white/20 dark:bg-gray-800/40 backdrop-blur-md border-white/30 dark:border-gray-600/30 text-black dark:text-white">
+                <SelectValue placeholder="Choose a category" />
+              </SelectTrigger>
+              <SelectContent className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-white/30 dark:border-gray-600/30">
+                {categories.map((category, index) => (
+                  <SelectItem 
+                    key={category.name} 
+                    value={category.name}
+                    className="text-black dark:text-white hover:bg-white/20 dark:hover:bg-gray-700/50"
+                  >
+                    {category.name === 'View All' && index > 0 && (
+                      <div className="border-t border-gray-300 my-2 -mx-2"></div>
+                    )}
+                    <div className="flex items-center w-full">
+                      <div className="flex items-center gap-4 flex-1">
+                        <span className="text-xl">
+                          {category.name === 'Cognitive & Overload' ? '🧠' :
+                           category.name === 'Dysregulation & Shutdown' ? '😵‍💫' :
+                           category.name === 'Heavy Feelings' ? '💔' :
+                           category.name === 'Jittery & Wound Up' ? '⚡' :
+                           category.name === 'Social & Connection' ? '🤝' :
+                           category.name === 'View All' ? '👀' : '📋'}
+                        </span>
+                        <span className={`font-medium text-base ${category.name === 'View All' ? 'text-gray-600' : ''}`}>
+                          {category.name}
+                        </span>
+                      </div>
+                      <span className="text-sm text-black/60 dark:text-white/60 flex-shrink-0 ml-4">
+                        {category.count} {category.count === 1 ? 'feeling' : 'feelings'}
+                      </span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ) : (
+            <div className="grid gap-3 grid-cols-2 lg:grid-cols-3">
+              {categories.map((category) => (
+                <button
+                  key={category.name}
+                  onClick={() => setSelectedCategory(category.name)}
+                  className={`
+                    group cursor-pointer transform transition-all duration-300 ease-out
+                    hover:scale-105 hover:-translate-y-1 text-left
+                    active:scale-95
+                    ${selectedCategory === category.name ? 'scale-105 -translate-y-1' : ''}
+                  `}
+                >
+                  <div className={`
+                    backdrop-blur-md rounded-2xl p-3 
+                    transition-all duration-300
+                    group-hover:bg-white/30 group-hover:scale-[1.02]
+                    flex flex-col items-center justify-center
+                    h-16 gap-2
+                    ${selectedCategory === category.name 
+                      ? 'bg-white/40 ring-2 ring-white/50 shadow-lg' 
+                      : 'bg-white/10 hover:bg-white/20'}
+                  `}>
+                    <h3 className={`text-sm font-medium text-black dark:text-white text-center
+                                  ${selectedCategory === category.name ? 'font-bold' : ''}`}>
+                      {category.name}
+                    </h3>
+                    <span className={`text-xs text-black/60 dark:text-white/60 text-center
+                                    ${selectedCategory === category.name ? 'text-black/80 dark:text-white/80' : ''}`}>
+                      {category.count} {category.count === 1 ? 'feeling' : 'feelings'}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Selected Category Feelings */}
         {selectedCategory && (
           <div>
-            <h2 className="text-2xl font-bold text-black dark:text-white text-center mb-8">
+            {/* Visual separator on mobile */}
+            <div className="md:hidden h-px bg-white/20 dark:bg-gray-600/30 mb-6 mx-4" />
+            
+            <h2 className="text-xl md:text-2xl font-bold text-black dark:text-white text-center mb-6 md:mb-8">
               {selectedCategory === 'View All' ? 'All Feelings' : selectedCategory}
             </h2>
             
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-3 md:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
               {filteredFeelings.map((feeling) => (
                 <div
                   key={feeling.name}
                   onClick={() => handleFeelingSelect(feeling.name)}
                   className={`
                     group cursor-pointer transform transition-all duration-300 ease-out
-                    hover:scale-105 hover:-translate-y-1
-                    ${selectedFeeling === feeling.name ? 'scale-105 -translate-y-1' : ''}
+                    md:hover:scale-105 md:hover:-translate-y-1
+                    active:scale-[0.98] md:active:scale-95
+                    ${selectedFeeling === feeling.name ? 'md:scale-105 md:-translate-y-1' : ''}
                   `}
                 >
-                  <div className="bg-white/20 backdrop-blur-md rounded-xl p-6 
+                  <div className="bg-white/20 backdrop-blur-md rounded-xl p-4 md:p-6 
                                 shadow-lg hover:shadow-xl transition-all duration-300
                                 group-hover:bg-white/30 group-hover:scale-[1.02]
-                                h-32 flex flex-col justify-center items-center gap-3
+                                h-28 md:h-32 flex flex-col justify-center items-center gap-2 md:gap-3
                                 border border-black/[0.08] dark:border-white/[0.15]
                                 relative before:absolute before:left-3 before:top-0 before:bottom-0 before:w-px before:bg-gray-200/30">
                     
                     {/* Icon */}
                     <div className="text-2xl mb-1 transition-all duration-300 group-hover:scale-110">
                       {React.createElement(feeling.icon, {
-                        size: 24,
-                        className: "text-black dark:text-white"
+                        size: 28,
+                        className: "text-black dark:text-white w-7 h-7 md:w-6 md:h-6"
                       })}
                     </div>
                     
                     {/* Feeling Name */}
-                    <h3 className="text-sm font-medium text-black dark:text-white text-center transition-all duration-300">
+                    <h3 className="text-sm md:text-sm font-medium text-black dark:text-white text-center transition-all duration-300">
                       {feeling.name}
                     </h3>
                   </div>
@@ -202,9 +250,9 @@ export default function FeelingsPage() {
         )}
 
         {/* Footer Text */}
-        <div className="text-center mt-12 max-w-3xl mx-auto">
-          <div className="bg-white/20 dark:bg-gray-800/60 backdrop-blur-md rounded-2xl p-6 border border-white/10 dark:border-gray-600/30">
-            <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
+        <div className="text-center mt-8 md:mt-12 max-w-3xl mx-auto">
+          <div className="bg-white/20 dark:bg-gray-800/60 backdrop-blur-md rounded-xl md:rounded-2xl p-5 md:p-6 border border-white/10 dark:border-gray-600/30">
+            <h3 className="text-base md:text-lg font-semibold text-black dark:text-white mb-2">
               Don't see your feeling?
             </h3>
             
@@ -223,10 +271,10 @@ export default function FeelingsPage() {
               </Button>
             </div>
             
-            <p className="text-black dark:text-gray-200 text-sm mb-4">
+            <p className="text-black dark:text-gray-200 text-sm mb-4 px-2 md:px-0">
               Sometimes emotions are complex. Try exploring other approaches to find what you need.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <div className="flex flex-col gap-2 sm:flex-row sm:gap-3 justify-center">
               <Button 
                 variant="ghost"
                 size="default"
