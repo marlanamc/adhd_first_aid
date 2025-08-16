@@ -19,6 +19,24 @@ import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
 
+// Function to format text without bold (for use when bold is handled manually)
+const formatTextNoBold = (text: string) => {
+  // Strip ** formatting and just handle italics and plain text
+  const strippedText = text.replace(/\*\*(.*?)\*\*/g, '$1');
+  
+  if (strippedText.includes('_')) {
+    // Handle italics (_text_)
+    return strippedText.split(/(_[^_]+_)/).map((part, index) => {
+      if (part.startsWith('_') && part.endsWith('_')) {
+        return <em key={`italic-${index}`}>{part.slice(1, -1)}</em>;
+      }
+      return part;
+    });
+  }
+  
+  return strippedText;
+};
+
 // Function to convert markdown-style formatting to JSX with intelligent enhancement
 const formatMarkdownText = (text: string) => {
   // If text already has markdown formatting, process it as-is
@@ -503,11 +521,26 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                       const reasonEmojis = ['🧩', '⏰', '🧠', '💔', '⚡'];
                       const emoji = reasonEmojis[index % reasonEmojis.length];
                       
-                      // Split on the first colon to get bold heading and description
-                      const colonIndex = reason.indexOf(':');
-                      const hasColon = colonIndex !== -1;
-                      const heading = hasColon ? reason.substring(0, colonIndex) : '';
-                      const description = hasColon ? reason.substring(colonIndex + 1).trim() : reason;
+                      // Parse bold heading safely before splitting on colon
+                      const parseHeadingAndBody = (text: string) => {
+                        // Handle **Heading:** format (colon inside the stars)
+                        const boldMatchInside = text.match(/^\s*\*\*([^*]+?):\*\*\s*/);
+                        if (boldMatchInside) {
+                          return { heading: boldMatchInside[1].trim(), body: text.slice(boldMatchInside[0].length).trim() };
+                        }
+                        // Handle **Heading**: format (colon outside the stars)
+                        const boldMatchOutside = text.match(/^\s*\*\*([^*]+?)\*\*\s*:\s*/);
+                        if (boldMatchOutside) {
+                          return { heading: boldMatchOutside[1].trim(), body: text.slice(boldMatchOutside[0].length).trim() };
+                        }
+                        // Handle regular heading: format
+                        const colonIndex = text.indexOf(':');
+                        if (colonIndex !== -1) {
+                          return { heading: text.slice(0, colonIndex).trim(), body: text.slice(colonIndex + 1).trim() };
+                        }
+                        return null;
+                      };
+                      const parsedReason = parseHeadingAndBody(reason);
                       
                       return (
                         <div key={index} className="flex items-start gap-3 p-4 rounded-xl bg-[#FBF8CC]/40 border border-[#FBF8CC]/60 hover:bg-[#FBF8CC]/60 transition-colors">
@@ -515,14 +548,10 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                             <span className="text-lg">{emoji}</span>
                           </div>
                           <div className="flex-1">
-                            <div className="text-gray-900 leading-relaxed">
-                              {hasColon ? (
-                                <>
-                                  <strong>{heading}</strong> - {formatMarkdownText(description)}
-                                </>
-                              ) : (
-                                formatMarkdownText(reason)
-                              )}
+                            <div className="text-gray-900 leading-snug">
+                              {parsedReason
+                                ? (<><strong>{parsedReason.heading}:</strong> {formatMarkdownText(parsedReason.body)}</>)
+                                : formatMarkdownText(reason)}
                             </div>
                           </div>
                         </div>
@@ -586,29 +615,56 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                               <p className="font-semibold text-gray-900 mb-2">Try this:</p>
                               <ul className="space-y-1">
                                 {step.try_this.map((item, itemIndex) => {
-                                  // Split on the first colon to get bold heading and description
-                                  const colonIndex = item.indexOf(':');
-                                  const hasColon = colonIndex !== -1;
-                                  const heading = hasColon ? item.substring(0, colonIndex + 1) : '';
-                                  const description = hasColon ? item.substring(colonIndex + 1).trim() : item;
+                                  // Check if this is an arrow item (nested)
+                                  const isArrowItem = item.startsWith('→');
+                                  const processedItem = isArrowItem ? item.substring(1).trim() : item;
                                   
-                                  // Strip ** formatting from heading since we're manually applying <strong>
-                                  const cleanHeading = heading.replace(/\*\*(.*?)\*\*/g, '$1');
+                                  // Parse bold heading safely before splitting on colon
+                                  const parseHeadingAndBody = (text: string) => {
+                                    // Handle **Heading:** format (colon inside the stars)
+                                    const boldMatchInside = text.match(/^\s*\*\*([^*]+?):\*\*\s*/);
+                                    if (boldMatchInside) {
+                                      return { heading: boldMatchInside[1].trim(), body: text.slice(boldMatchInside[0].length).trim() };
+                                    }
+                                    // Handle **Heading**: format (colon outside the stars)
+                                    const boldMatchOutside = text.match(/^\s*\*\*([^*]+?)\*\*\s*:\s*/);
+                                    if (boldMatchOutside) {
+                                      return { heading: boldMatchOutside[1].trim(), body: text.slice(boldMatchOutside[0].length).trim() };
+                                    }
+                                    // Handle regular heading: format
+                                    const colonIndex = text.indexOf(':');
+                                    if (colonIndex !== -1) {
+                                      return { heading: text.slice(0, colonIndex).trim(), body: text.slice(colonIndex + 1).trim() };
+                                    }
+                                    return null;
+                                  };
+                                  const parsed = parseHeadingAndBody(processedItem);
                                   
-                                  return (
-                                    <li key={itemIndex} className="flex items-start gap-3 ml-6 relative before:absolute before:left-[-1.75rem] before:top-1/2 before:w-3 before:h-px before:bg-gray-200 group/bullet hover:bg-gray-500/10 rounded-lg transition-colors">
-                                      <span className={`${colors.bulletColor} flex-shrink-0 translate-y-[1px] text-lg group-hover/bullet:scale-110 transition-transform`}>•</span>
-                                      <span className="text-gray-900 py-1 leading-relaxed">
-                                        {hasColon ? (
-                                          <>
-                                            <strong>{cleanHeading}</strong> {formatMarkdownText(description)}
-                                          </>
-                                        ) : (
-                                          formatMarkdownText(item)
-                                        )}
-                                      </span>
-                                    </li>
-                                  );
+                                  if (isArrowItem) {
+                                    // Arrow items - no bullet, different styling
+                                    return (
+                                      <li key={itemIndex} className="flex items-start gap-3 py-1 px-2 sm:py-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                                        <span className="text-gray-500 flex-shrink-0 translate-y-[1px] text-base">→</span>
+                                        <span className="text-gray-900 leading-snug">
+                                          {parsed
+                                            ? (<><strong>{parsed.heading}:</strong> {formatMarkdownText(parsed.body)}</>)
+                                            : formatMarkdownText(processedItem)}
+                                        </span>
+                                      </li>
+                                    );
+                                  } else {
+                                    // Regular items - with bullet
+                                    return (
+                                      <li key={itemIndex} className="flex items-start gap-3 py-1 px-2 sm:py-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                                        <span className="text-gray-900 flex-shrink-0 translate-y-[1px] text-base">•</span>
+                                        <span className="text-gray-900 leading-snug">
+                                          {parsed
+                                            ? (<><strong>{parsed.heading}:</strong> {formatMarkdownText(parsed.body)}</>)
+                                            : formatMarkdownText(processedItem)}
+                                        </span>
+                                      </li>
+                                    );
+                                  }
                                 })}
                               </ul>
                             </div>
