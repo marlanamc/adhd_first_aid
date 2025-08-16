@@ -45,6 +45,7 @@ Navigate by how you're feeling in the moment:
 - **Visual Calm** - Soft gradients and glassmorphism effects
 
 ### Interactive Features
+- **Crisis Mode** - Targeted support for overwhelming moments
 - **Systems Lab** - Browse and build ADHD-friendly routines
 - **Guides** - Educational content about ADHD
 - **Scripts** - Communication templates for difficult conversations
@@ -65,7 +66,7 @@ Navigate by how you're feeling in the moment:
 src/
 ├── app/                 # Next.js App Router pages
 │   ├── barriers/        # Barrier pages
-│   ├── feelings/        # Feeling pages
+│   ├── feelings/        # Feeling pages  
 │   ├── tasks/           # Task pages
 │   ├── identities/      # Identity pages
 │   ├── complex_loops/   # Complex loop pages
@@ -74,11 +75,14 @@ src/
 │   └── [others]/        # Additional features
 ├── components/          
 │   ├── ui/              # Reusable UI components
+│   │   ├── TargetedCrisisMode.tsx    # Crisis mode support
+│   │   └── FixedBottomActions.tsx    # Action buttons
 │   ├── barriers/        # Barrier-specific components
 │   └── feelings/        # Feeling-specific components
 ├── lib/                 # Utilities and database client
 ├── hooks/               # Custom React hooks
-└── types/               # TypeScript definitions
+├── types/               # TypeScript definitions
+└── scripts/             # Essential import scripts only
 ```
 
 ## 🧠 Database Structure
@@ -87,10 +91,11 @@ All content is stored in Supabase with comprehensive relational data:
 
 - **strategies** - 289 ADHD-specific strategies
 - **feelings_content** - Complete feeling pages with dual advice system
-- **tasks_content** - Task-specific guidance
+- **tasks_content** - Task-specific guidance with ADHD reasons
 - **barriers_content** - Barrier-focused strategies
 - **identities_content** - Identity-based support
 - **complex_loops_content** - Behavioral pattern content
+- **crisis_mode_feelings** - Quick access crisis support
 - **[entity]_sources** - Research sources for content credibility
 
 ## 🎨 Design Philosophy
@@ -111,9 +116,15 @@ All content is stored in Supabase with comprehensive relational data:
 
 ```bash
 npm run dev          # Start development server
-npm run build        # Build for production
+npm run build        # Build for production  
 npm run lint         # Run ESLint
 npm run import-data  # Import CSV data to Supabase
+
+# Essential scripts (optimized repository)
+tsx scripts/import-data.ts                    # Main data import
+tsx scripts/import-life-areas-sources.ts     # Import sources
+tsx scripts/import-identity-sources.ts       # Import identity sources  
+tsx scripts/import-complex-loop-sources.ts   # Import loop sources
 ```
 
 ## 🤝 Contributing
@@ -132,14 +143,42 @@ We welcome contributions that align with our ADHD-friendly philosophy:
 - **Privacy First** - No tracking, no data collection
 - **Local Storage** - User preferences saved locally only
 
+## 🚨 Crisis Mode
+
+A dedicated support system for overwhelming moments, offering:
+
+### Targeted Crisis Support
+
+- **Mood-Based Categories** - Anxious, Despair, Numbed, Overwhelmed, Scattered
+- **Quick Access** - Immediate help without navigation complexity  
+- **Feeling-Specific Resources** - 22 crisis-ready emotions with tailored support
+- **Mobile-Optimized** - Touch-friendly interface for distressed states
+
+### Crisis Mode Features
+
+- **One-Touch Access** - Crisis button available throughout the app
+- **Gentle Language** - Supportive, non-judgmental tone
+- **Progressive Steps** - Simple, achievable actions
+- **Safety Resources** - Crisis hotlines and emergency contacts
+
+Crisis mode integrates seamlessly across feelings, barriers, and complex loops pages, ensuring help is always within reach.
+
 ## 📚 Recent Updates
 
+### August 2025
+
+- **NEW: Crisis Mode** - Targeted support for overwhelming moments
+- **Repository Optimization** - Reduced from 18,761 files to ~50 (99.7% reduction)
+- **Performance Improvements** - Dramatically faster development experience
+- **Enhanced Database** - Added crisis_mode_feelings table
+- **Updated UI Components** - TargetedCrisisMode and enhanced FixedBottomActions
+
 ### January 2025
+
 - Complete database migration for all content
-- Enhanced UI components for barriers and feelings
+- Enhanced UI components for barriers and feelings  
 - New crisis and walkthrough support hooks
 - Improved guide system with better navigation
-- Cleaned up project structure, removed obsolete files
 - Added comprehensive source citations for credibility
 
 ## 🌈 Our Mission

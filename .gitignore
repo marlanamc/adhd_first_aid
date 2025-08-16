@@ -31,4 +31,36 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts 
+next-env.d.ts
+
+# development artifacts
+temp-*.js
+temp-*.ts
+*.temp
+*-backup.*
+*-old.*
+
+# database dumps and large data
+*.sql.backup
+*.dump
+*.large.csv
+
+# script outputs
+scripts/output/
+scripts/temp/
+scripts/logs/
+
+# IDE and editor files
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+thumbs.db 
