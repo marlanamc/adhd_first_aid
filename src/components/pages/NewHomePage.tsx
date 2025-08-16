@@ -191,9 +191,9 @@ export default function NewHomePage({
           {/* Subtle separator shadow - hidden on mobile */}
           <div className="hidden md:block absolute -bottom-6 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-30"></div>
           
-          {/* Mobile: Full-width stacked cards, Desktop: Grid layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-3 items-stretch">
-          {topCategories.map((category) => {
+          {/* Mobile: 2x2x1 grid layout, Desktop: Grid layout */}
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-3 items-stretch">
+          {topCategories.map((category, index) => {
             const IconComponent = category.icon
             
             return (
@@ -206,6 +206,7 @@ export default function NewHomePage({
                   ${localSelectedCard === category.id ? 'md:-translate-y-1 shadow-lg' : ''}
                   ${isTransitioning ? 'pointer-events-none' : ''}
                   md:hover:z-10 active:scale-[0.98] md:active:scale-95
+                  ${index === 4 ? 'col-span-2 md:col-span-1' : ''}
                 `}
                 style={{
                   transformOrigin: 'center center',
@@ -213,47 +214,46 @@ export default function NewHomePage({
               >
                 <div 
                   className={`
-                    relative overflow-hidden rounded-2xl md:rounded-[1.5rem] p-5 md:p-4
+                    relative overflow-hidden rounded-2xl md:rounded-[1.5rem] p-3 md:p-4
                     ${category.color}
                     transition-all duration-300 ease-out
-                    h-[12rem] sm:h-[13rem] md:h-[15rem] lg:h-[16rem]
+                    h-[11rem] sm:h-[12rem] md:h-[15rem] lg:h-[16rem]
                     flex flex-col justify-between
                     group-hover:shadow-xl
                     after:absolute after:inset-0 after:bg-gradient-to-b after:from-white/5 after:to-transparent
                   `}
                 >
                   <div className="flex flex-col h-full">
-                    {/* Mobile: Horizontal layout, Desktop: Vertical layout */}
-                    <div className="flex md:flex-col h-full">
+                    {/* Mobile: Vertical layout like desktop */}
+                    <div className="flex flex-col h-full">
                       {/* Icon */}
-                      <div className="flex-shrink-0 mr-4 md:mr-0 md:mb-3 md:flex md:justify-center">
-                        <div className="w-14 h-14 md:w-12 md:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-all duration-300 group-hover:bg-white/30">
-                          <IconComponent className="w-7 h-7 md:w-6 md:h-6 text-black transition-all duration-300" />
+                      <div className="flex-shrink-0 mb-2 md:mb-3 flex justify-center">
+                        <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-all duration-300 group-hover:bg-white/30">
+                          <IconComponent className="w-5 h-5 md:w-6 md:h-6 text-black transition-all duration-300" />
                         </div>
                       </div>
 
                       {/* Content */}
-                      <div className="flex-1 flex flex-col md:text-center">
+                      <div className="flex-1 flex flex-col text-center">
                         {/* Title */}
-                        <h3 className="text-lg md:text-base font-bold text-black transition-all duration-300 md:group-hover:text-lg leading-tight mb-2 md:mb-3 md:h-[3rem] md:flex md:items-start md:justify-center">
+                        <h3 className="text-sm md:text-base font-bold text-black transition-all duration-300 md:group-hover:text-lg leading-tight mb-1 md:mb-3 md:h-[3rem] md:flex md:items-start md:justify-center">
                           {category.title}
                         </h3>
                         
                         {/* Description */}
-                        <p className="text-black/80 text-sm leading-relaxed transition-all duration-300 group-hover:text-black font-medium mb-3 md:mb-4 md:h-12">
+                        <p className="text-black/80 text-xs md:text-sm leading-snug transition-all duration-300 group-hover:text-black font-medium mb-1.5 md:mb-4 md:h-12">
                           {category.subtitle}
                         </p>
                         
-                        {/* Examples - Show all on mobile, 2 on desktop */}
-                        <div className="flex flex-wrap gap-1.5 md:justify-center">
+                        {/* Examples - Show 2 on mobile, all on desktop */}
+                        <div className="flex flex-wrap gap-1 justify-center">
                           {category.examples.map((example, index) => (
                             <span
                               key={index}
                               className={`
-                                bg-white/20 backdrop-blur-sm rounded-full px-2.5 py-1.5 md:px-2 md:py-1 text-xs text-black
-                                transition-all duration-300 ease-out
-                                group-hover:bg-white/30 leading-none font-medium
-                                ${index > 1 ? 'md:hidden' : ''}
+                                bg-white/20 backdrop-blur-sm rounded-full px-1.5 py-0.5 md:px-2 md:py-1 text-xs text-black
+                                transition-all duration-300 ease-out group-hover:bg-white/30 leading-none font-medium
+                                ${index > 1 ? 'hidden md:inline-block' : ''}
                               `}
                             >
                               {example}
