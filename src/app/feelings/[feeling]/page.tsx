@@ -372,8 +372,8 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-      <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-10 shadow-lg">
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-4 mb-5">
@@ -381,16 +381,16 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 variant="ghost"
                 size="default"
                 onClick={goBack}
-                className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full"
+                className="p-2 hover:bg-white/20 dark:hover:bg-gray-700 rounded-full flex-shrink-0"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <div className="flex-1">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-foreground flex items-center gap-2 sm:gap-3">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-foreground flex items-center gap-2 sm:gap-3">
                   {React.createElement(FEELING_ICONS[content?.feeling_name || ''] || Heart, {
-                    className: "h-6 w-6 sm:h-8 sm:w-8 text-pink-500 flex-shrink-0"
+                    className: "h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-pink-500 flex-shrink-0"
                   })}
-                  {content?.feeling_name}
+                  <span className="break-words">{content?.feeling_name}</span>
                 </h1>
               </div>
               <div className="relative flex items-center gap-2">
@@ -888,10 +888,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 className="p-4 text-left h-auto border-2 hover:bg-orange-100 dark:hover:bg-orange-900/40"
               >
                 <div className="flex items-center gap-3">
-                  <Construction className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Facing barriers or obstacles?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Barriers Support</div>
+                  <Construction className="h-5 w-5 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-words">Facing barriers or obstacles?</div>
+                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">→ Go to Barriers Support</div>
                   </div>
                 </div>
               </Button>
@@ -903,10 +903,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 className="p-4 text-left h-auto border-2 hover:bg-blue-50 dark:hover:bg-blue-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Wrench className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Need help with specific tasks?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Life Areas</div>
+                  <Wrench className="h-5 w-5 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-words">Need help with specific tasks?</div>
+                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">→ Go to Life Areas</div>
                   </div>
                 </div>
               </Button>
@@ -921,10 +921,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 className="p-4 text-left h-auto border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <RotateCcw className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Stuck in repetitive patterns?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse Complex Loops</div>
+                  <RotateCcw className="h-5 w-5 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-words">Stuck in repetitive patterns?</div>
+                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">→ Browse Complex Loops</div>
                   </div>
                 </div>
               </Button>
@@ -936,10 +936,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 className="p-4 text-left h-auto border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Rainbow className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Need identity-aware support?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Browse by Identity</div>
+                  <Rainbow className="h-5 w-5 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-words">Need identity-aware support?</div>
+                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">→ Browse by Identity</div>
                   </div>
                 </div>
               </Button>
@@ -954,10 +954,10 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                 className="p-4 text-left h-auto border-2 hover:bg-green-50 dark:hover:bg-green-900/20"
               >
                 <div className="flex items-center gap-3">
-                  <Puzzle className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Want to build a system around this?</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">→ Go to Systems Lab</div>
+                  <Puzzle className="h-5 w-5 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-words">Want to build a system around this?</div>
+                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">→ Go to Systems Lab</div>
                   </div>
                 </div>
               </Button>
