@@ -11,6 +11,7 @@ import { Footer } from '@/components/layout/Footer'
 import { SearchModal } from '@/components/ui/SearchModal'
 import { ModalProvider, useModal } from '@/contexts/ModalContext'
 import { FeedbackModal } from '@/components/ui/FeedbackModal'
+import { PWAInstallPrompt } from '@/components/ui/PWAInstallPrompt'
 
 const inter = Inter({ subsets: ['latin'] })
 const playfair = Playfair_Display({
@@ -63,6 +64,22 @@ export default function RootLayout({
     setPageType(getPageType())
   }, [pathname])
 
+  // Register service worker for PWA
+  useEffect(() => {
+    if ('serviceWorker' in navigator && typeof window !== 'undefined') {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then(
+          (registration) => {
+            console.log('Service Worker registered successfully:', registration.scope)
+          },
+          (error) => {
+            console.log('Service Worker registration failed:', error)
+          }
+        )
+      })
+    }
+  }, [])
+
   const navigateHome = useCallback(() => {
     router.push('/')
   }, [router])
@@ -74,6 +91,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* PWA Meta Tags */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#ff4747" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="ADHD Aid" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+        
+        {/* Additional PWA Meta Tags */}
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="application-name" content="ADHD First Aid Kit" />
+        <meta name="msapplication-TileColor" content="#ff4747" />
+        <meta name="msapplication-TileImage" content="/icon-144x144.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+        
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -115,6 +149,7 @@ export default function RootLayout({
                 onClose={() => setIsSearchOpen(false)}
               />
               <GlobalModals />
+              <PWAInstallPrompt />
             </div>
           </ModalProvider>
         </ThemeProvider>

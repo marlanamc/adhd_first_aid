@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Installation Test - ADHD First Aid Kit</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: #ff4747;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #e63946;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .checklist {
+            margin: 20px 0;
+        }
+        .check-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 4px solid #ddd;
+            background: #f9f9f9;
+        }
+        .check-item.pass {
+            border-left-color: #28a745;
+            background: #f0fff4;
+        }
+        .check-item.fail {
+            border-left-color: #dc3545;
+            background: #fff5f5;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 PWA Installation Test</h1>
+        <p>ADHD First Aid Kit - Progressive Web App Setup</p>
+        
+        <div class="checklist" id="checklist">
+            <h3>PWA Requirements Check:</h3>
+        </div>
+
+        <div id="status"></div>
+        
+        <div style="margin-top: 20px;">
+            <button onclick="window.open('http://localhost:3008', '_blank')">
+                Open App in New Tab
+            </button>
+            <button onclick="testServiceWorker()">
+                Test Service Worker
+            </button>
+            <button onclick="checkInstallability()">
+                Check Installability
+            </button>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <h3>📱 Installation Instructions:</h3>
+            
+            <h4>On Mac (Chrome/Edge):</h4>
+            <ol>
+                <li>Open <a href="http://localhost:3008" target="_blank">http://localhost:3008</a> in Chrome or Edge</li>
+                <li>Look for the install icon in the address bar (⊕ or ⬇️)</li>
+                <li>Click it and select "Install"</li>
+                <li>The app will open in its own window</li>
+            </ol>
+            
+            <h4>On Mac (Safari):</h4>
+            <ol>
+                <li>Open <a href="http://localhost:3008" target="_blank">http://localhost:3008</a> in Safari</li>
+                <li>Click File → Add to Dock (macOS Sonoma or later)</li>
+                <li>Or use Share button → Add to Home Screen</li>
+            </ol>
+            
+            <h4>Testing Offline Mode:</h4>
+            <ol>
+                <li>Install the app first</li>
+                <li>Open Chrome DevTools (Cmd+Option+I)</li>
+                <li>Go to Network tab</li>
+                <li>Check "Offline" checkbox</li>
+                <li>Refresh the page - you should see the offline page</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Check PWA requirements
+        function checkPWARequirements() {
+            const checks = [
+                {
+                    name: 'HTTPS or localhost',
+                    test: () => location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1',
+                    status: ''
+                },
+                {
+                    name: 'Service Worker Support',
+                    test: () => 'serviceWorker' in navigator,
+                    status: ''
+                },
+                {
+                    name: 'Manifest Support',
+                    test: () => {
+                        const link = document.querySelector('link[rel="manifest"]');
+                        return link !== null;
+                    },
+                    status: ''
+                },
+                {
+                    name: 'Browser Compatibility',
+                    test: () => {
+                        const ua = navigator.userAgent;
+                        return !ua.includes('Firefox') || ua.includes('Chrome') || ua.includes('Edge') || ua.includes('Safari');
+                    },
+                    status: ''
+                }
+            ];
+
+            const checklist = document.getElementById('checklist');
+            checks.forEach(check => {
+                const passed = check.test();
+                const div = document.createElement('div');
+                div.className = `check-item ${passed ? 'pass' : 'fail'}`;
+                div.innerHTML = `${passed ? '✅' : '❌'} ${check.name}`;
+                checklist.appendChild(div);
+            });
+        }
+
+        // Test service worker
+        async function testServiceWorker() {
+            const status = document.getElementById('status');
+            
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    if (registration) {
+                        status.innerHTML = '<div class="status success">✅ Service Worker is registered and active!</div>';
+                    } else {
+                        status.innerHTML = '<div class="status warning">⚠️ Service Worker not registered. Open the app first.</div>';
+                    }
+                } catch (error) {
+                    status.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                }
+            } else {
+                status.innerHTML = '<div class="status error">❌ Service Workers not supported in this browser</div>';
+            }
+        }
+
+        // Check installability
+        function checkInstallability() {
+            const status = document.getElementById('status');
+            
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                status.innerHTML = '<div class="status success">✅ App is already installed and running in standalone mode!</div>';
+            } else {
+                status.innerHTML = '<div class="status info">ℹ️ App is running in browser mode. Follow the installation instructions above to install.</div>';
+            }
+        }
+
+        // Run checks on load
+        window.addEventListener('load', () => {
+            checkPWARequirements();
+        });
+    </script>
+</body>
+</html>
