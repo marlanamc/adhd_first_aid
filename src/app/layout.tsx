@@ -95,7 +95,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ec4899" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="light-content" />
         <meta name="apple-mobile-web-app-title" content="ADHD Aid" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
@@ -136,7 +136,7 @@ export default function RootLayout({
                 pageType={pageType}
               />
 
-              <main className="flex-1 flex flex-col relative z-0">
+              <main className="flex-1 flex flex-col relative z-0 mt-header-safe">
                 {children}
               </main>
 

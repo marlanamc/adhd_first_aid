@@ -1097,5 +1097,38 @@ header.fixed {
   }
 }
 
+/* iOS Safe Area Support */
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.pl-safe {
+  padding-left: env(safe-area-inset-left);
+}
+
+.pr-safe {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Ensure main content doesn't get hidden behind header with safe area */
+.mt-header-safe {
+  margin-top: calc(60px + env(safe-area-inset-top));
+}
+
+/* For screens that don't support safe-area-inset, provide fallback */
+@supports not (padding-top: env(safe-area-inset-top)) {
+  .pt-safe {
+    padding-top: 20px; /* Fallback for older devices */
+  }
+  
+  .mt-header-safe {
+    margin-top: 80px; /* 60px header + 20px fallback */
+  }
+}
+
 
 

@@ -52,7 +52,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }:
   return (
     <>
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/10 dark:bg-gray-900/60 backdrop-blur-md border-b border-white/20 dark:border-white/10 shadow-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/10 dark:bg-gray-900/60 backdrop-blur-md border-b border-white/20 dark:border-white/10 shadow-sm pt-safe">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
           <div className="flex justify-between items-center py-2 sm:py-1 min-h-[60px]">
             {/* Logo Area */}
