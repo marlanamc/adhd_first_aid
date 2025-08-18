@@ -46,7 +46,7 @@ export function parseMarkdownToSections(content: string): LegalSection[] {
     
     return {
       title,
-      content: sectionContent
+      content: renderMarkdown(sectionContent)
     }
   })
 }

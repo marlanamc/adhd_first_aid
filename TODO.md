@@ -1,6 +1,6 @@
 # ADHD First Aid Kit - Project TODO
 
-> **Status Dashboard** | **Last Updated:** 2025-01-08
+> **Status Dashboard** | **Last Updated:** 2025-01-18
 > - **Critical Priority:** Mobile UX Improvements, Search functionality 🔴  
 > - **Launch Blockers:** Search functionality 🔴
 > - **Legal Requirements:** Complete ✅
@@ -50,6 +50,8 @@
   - [x] Updated legal page to read from markdown files dynamically
   - [x] Added proper contact information (marlie@navcoaching.org)
   - [x] Set Massachusetts jurisdiction and proper business attribution (Navigating the Storm)
+  - [x] Enhanced markdown parser to handle level 3 headers (### subsections)
+  - [x] Updated legal page "last updated" date to August 2025
 - [ ] Add legal links to footer
 - [ ] Implement cookie consent banner if needed
 - [ ] Review GDPR compliance requirements
@@ -315,6 +317,11 @@
 > **Completed work and important context**
 
 ### Recent Achievements ✅
+- **✅ COMPLETED:** Enhanced legal document markdown parsing system (2025-01-18)
+  - Fixed markdown parser to properly handle level 3 headers (### subsections) 
+  - Updated parseSections function to call renderMarkdown on all content
+  - All legal documents now render with proper formatting including subsection headers
+  - Updated legal page "last updated" date to August 2025 for accuracy
 - **✅ COMPLETED:** Removed PWA installation prompt (2025-01-18)
   - Disabled automatic PWA installation popup that appeared after 30 seconds
   - Commented out PWAInstallPrompt component import and usage in layout.tsx

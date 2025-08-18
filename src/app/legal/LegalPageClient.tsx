@@ -33,7 +33,7 @@ export function LegalPageClient({ termsDocument, privacyDocument }: LegalPageCli
     { id: 'disclaimer', label: 'Medical Disclaimer', icon: AlertTriangle }
   ]
 
-  const lastUpdated = "January 2025"
+  const lastUpdated = "August 2025"
 
   const renderSection = (section: { title: string; content: string }) => (
     <div key={section.title} className="space-y-4">
