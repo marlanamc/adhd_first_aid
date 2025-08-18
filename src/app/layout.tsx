@@ -93,7 +93,7 @@ export default function RootLayout({
       <head>
         {/* PWA Meta Tags */}
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#ff4747" />
+        <meta name="theme-color" content="#ec4899" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="ADHD Aid" />
@@ -104,7 +104,7 @@ export default function RootLayout({
         {/* Additional PWA Meta Tags */}
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="application-name" content="ADHD First Aid Kit" />
-        <meta name="msapplication-TileColor" content="#ff4747" />
+        <meta name="msapplication-TileColor" content="#ec4899" />
         <meta name="msapplication-TileImage" content="/icon-144x144.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
         

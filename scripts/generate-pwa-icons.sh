@@ -3,7 +3,7 @@
 # Generate PWA icons from logo.png using macOS sips
 # Usage: ./scripts/generate-pwa-icons.sh
 
-SOURCE_IMAGE="public/ios_icon.png"
+SOURCE_IMAGE="public/ios_logo.png"
 OUTPUT_DIR="public"
 
 # Check if source image exists
