@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { ArrowLeft, ChevronDown, HelpCircle, MessageCircle } from 'lucide-react'
 
 // FAQ data
@@ -241,9 +240,6 @@ export default function FAQPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer navigateToPage={navigateToPage} />
-    </div>
+      </main></div>
   )
 }

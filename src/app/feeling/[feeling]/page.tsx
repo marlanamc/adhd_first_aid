@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, ChevronRight, BookOpen } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { getStrategies } from '@/lib/strategies'
 // import { getAllGuides, type GuideMetadata } from '@/lib/markdown'
 
@@ -128,9 +127,7 @@ export default function FeelingIssuePage({ params }: { params: Promise<{ feeling
         <main className="flex-1 flex flex-col items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           <p className="mt-4 text-muted-foreground">Finding what's weighing on you...</p>
-        </main>
-        <Footer navigateToPage={navigateToPage} />
-      </div>
+        </main></div>
     )
   }
 
@@ -223,9 +220,6 @@ export default function FeelingIssuePage({ params }: { params: Promise<{ feeling
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer navigateToPage={navigateToPage} />
-    </div>
+      </main></div>
   )
 }

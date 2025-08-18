@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { ArrowLeft, Mail, MessageCircle, Send, CheckCircle, Heart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -105,8 +104,6 @@ export default function ContactPage() {
             </div>
           </div>
         </main>
-
-        <Footer navigateToPage={navigateToPage} />
       </div>
     )
   }
@@ -292,8 +289,6 @@ export default function ContactPage() {
           </div>
         </div>
       </main>
-
-      <Footer navigateToPage={navigateToPage} />
     </div>
   )
 }

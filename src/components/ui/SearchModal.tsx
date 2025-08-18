@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Search, X, Heart, Wrench, AlertCircle, User, BookOpen, MessageSquareText, HelpCircle, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getStrategies } from '@/lib/strategies'
+import { supabase } from '@/lib/supabase'
 import type { Strategy } from '@/lib/supabase'
 
 interface SearchResult {
@@ -53,7 +54,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     icon: Heart
   })
 
-  // Search function with real database integration
+  // Search function with comprehensive database integration
   const performSearch = async (searchQuery: string) => {
     if (!searchQuery.trim()) {
       setResults([])
@@ -63,11 +64,159 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     setIsSearching(true)
     
     try {
-      // Search strategies using the database
-      const strategies = await getStrategies({ search: searchQuery })
+      const searchTerm = searchQuery.toLowerCase()
+      const allResults: SearchResult[] = []
       
-      // Convert strategies to search results
-      const strategyResults = strategies.slice(0, 8).map(strategyToSearchResult)
+      // Search strategies using the existing function
+      try {
+        const strategies = await getStrategies({ search: searchQuery })
+        const strategyResults = strategies.slice(0, 4).map(strategyToSearchResult)
+        allResults.push(...strategyResults)
+      } catch (error) {
+        console.warn('Strategy search failed:', error)
+      }
+
+      // Search barriers content
+      try {
+        const { data: barriers } = await supabase
+          .from('barriers_content')
+          .select('*')
+          .or(`barrier_name.ilike.%${searchTerm}%,gentle_advice.ilike.%${searchTerm}%,stern_advice.ilike.%${searchTerm}%`)
+          .limit(3)
+        
+        if (barriers) {
+          barriers.forEach(barrier => {
+            allResults.push({
+              id: barrier.id,
+              title: barrier.barrier_name,
+              description: barrier.gentle_advice || 'Strategies for overcoming this barrier',
+              category: 'Barriers',
+              type: 'barrier',
+              url: `/barriers/${encodeURIComponent(barrier.barrier_name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))}`,
+              icon: AlertCircle
+            })
+          })
+        }
+      } catch (error) {
+        console.warn('Barriers search failed:', error)
+      }
+
+      // Search feelings content
+      try {
+        const { data: feelings } = await supabase
+          .from('feelings_content')
+          .select('*')
+          .or(`feeling_name.ilike.%${searchTerm}%,quick_summary.ilike.%${searchTerm}%,soft_start.ilike.%${searchTerm}%`)
+          .limit(3)
+        
+        if (feelings) {
+          feelings.forEach(feeling => {
+            allResults.push({
+              id: feeling.id,
+              title: feeling.feeling_name,
+              description: feeling.quick_summary || 'Support for this feeling',
+              category: 'Feelings',
+              type: 'feeling',
+              url: `/feelings/${encodeURIComponent(feeling.feeling_name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))}`,
+              icon: Heart
+            })
+          })
+        }
+      } catch (error) {
+        console.warn('Feelings search failed:', error)
+      }
+
+      // Search tasks/life areas content
+      try {
+        const { data: tasks } = await supabase
+          .from('tasks_content')
+          .select('*')
+          .or(`task_name.ilike.%${searchTerm}%,intro_paragraph.ilike.%${searchTerm}%,encouragement.ilike.%${searchTerm}%`)
+          .limit(3)
+        
+        if (tasks) {
+          tasks.forEach(task => {
+            const taskSlug = task.task_name.toLowerCase()
+              .replace(/[&]/g, '-and-')
+              .replace(/\s+/g, '-')
+              .replace(/[^a-z0-9-]/g, '')
+              .replace(/--+/g, '-')
+              .replace(/^-|-$/g, '')
+            
+            allResults.push({
+              id: task.id,
+              title: task.task_name,
+              description: task.intro_paragraph?.substring(0, 150) + '...' || 'ADHD-friendly guidance for this task',
+              category: 'Life Areas',
+              type: 'task',
+              url: `/life_areas/${taskSlug}`,
+              icon: Wrench
+            })
+          })
+        }
+      } catch (error) {
+        console.warn('Tasks search failed:', error)
+      }
+
+      // Search identities content
+      try {
+        const { data: identities } = await supabase
+          .from('identities_content')
+          .select('*')
+          .or(`identity_name.ilike.%${searchTerm}%,intro_paragraph.ilike.%${searchTerm}%`)
+          .limit(2)
+        
+        if (identities) {
+          identities.forEach(identity => {
+            const identitySlug = identity.identity_name.toLowerCase()
+              .replace(/\s+/g, '-')
+              .replace(/[^a-z0-9-]/g, '')
+              .replace(/--+/g, '-')
+            
+            allResults.push({
+              id: identity.id,
+              title: identity.identity_name,
+              description: identity.intro_paragraph?.substring(0, 150) + '...' || 'ADHD identity guide',
+              category: 'Identities',
+              type: 'identity',
+              url: `/identities/${identitySlug}`,
+              icon: User
+            })
+          })
+        }
+      } catch (error) {
+        console.warn('Identities search failed:', error)
+      }
+
+      // Search complex loops content
+      try {
+        const { data: loops } = await supabase
+          .from('complex_loops_content')
+          .select('*')
+          .or(`loop_name.ilike.%${searchTerm}%,intro_paragraph.ilike.%${searchTerm}%`)
+          .limit(2)
+        
+        if (loops) {
+          loops.forEach(loop => {
+            const loopSlug = loop.loop_name.toLowerCase()
+              .replace(/\s+/g, '-')
+              .replace(/[^a-z0-9-]/g, '')
+              .replace(/--+/g, '-')
+            
+            allResults.push({
+              id: loop.id,
+              title: loop.loop_name,
+              description: loop.intro_paragraph?.substring(0, 150) + '...' || 'Breaking complex ADHD patterns',
+              category: 'Complex Loops',
+              type: 'complex_loop',
+              url: `/complex_loops/${loopSlug}`,
+              icon: RotateCcw
+            })
+          })
+        }
+      } catch (error) {
+        console.warn('Complex loops search failed:', error)
+      }
       
       // Search static content
       const staticResults = staticContent.filter(item => {
@@ -77,10 +226,9 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           item.description.toLowerCase().includes(queryLower) ||
           item.category.toLowerCase().includes(queryLower)
         )
-      }).slice(0, 4)
+      }).slice(0, 2)
       
-      // Combine and sort results (strategies first, then static content)
-      const allResults = [...strategyResults, ...staticResults]
+      allResults.push(...staticResults)
       
       // Sort by relevance (title matches first, then description)
       const sortedResults = allResults.sort((a, b) => {
@@ -93,7 +241,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
         return 0
       })
 
-      setResults(sortedResults.slice(0, 12)) // Limit to 12 results
+      setResults(sortedResults.slice(0, 15)) // Increased limit
     } catch (error) {
       console.error('Search error:', error)
       // Fallback to static content only

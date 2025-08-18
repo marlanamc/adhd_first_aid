@@ -23,6 +23,16 @@ npx tsx scripts/fast-barrier-validator.ts "Barrier Name"  # Single barrier valid
 npx tsx scripts/batch-barrier-validator.ts              # All barriers validation
 ```
 
+## Custom Commands
+
+### update_git_todo
+When user says "update_git_todo", perform these actions in order:
+1. Update TODO.md with completed work from recent session
+2. Commit all changes with descriptive message about work completed
+3. Push changes to git repository
+
+**Usage:** User simply types "update_git_todo" and Claude will handle the full workflow automatically.
+
 ## Project Overview
 
 ### Tech Stack

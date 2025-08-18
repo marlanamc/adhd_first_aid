@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { ArrowLeft, Search, BookOpen, Brain } from 'lucide-react'
 
 // ADHD terminology and definitions
@@ -357,9 +356,6 @@ export default function TerminologyPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer navigateToPage={navigateToPage} />
-    </div>
+      </main></div>
   )
 }

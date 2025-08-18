@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { ArrowLeft, Lightbulb, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -125,10 +124,7 @@ export default function SuggestPage() {
               </Button>
             </div>
           </div>
-        </main>
-
-        <Footer navigateToPage={navigateToPage} />
-      </div>
+        </main></div>
     )
   }
 
@@ -488,9 +484,6 @@ export default function SuggestPage() {
             </form>
           </div>
         </div>
-      </main>
-
-      <Footer navigateToPage={navigateToPage} />
-    </div>
+      </main></div>
   )
 }

@@ -5,7 +5,6 @@ import { useRouter, useParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, ChevronRight } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { getStrategies } from '@/lib/strategies'
 import type { Barrier } from '@/types/database'
 import {
@@ -95,9 +94,7 @@ export default function FeelingIssueBarrierPage() {
         <main className="flex-1 flex flex-col items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           <p className="mt-4 text-muted-foreground">Loading Barriers Content...</p>
-        </main>
-        <Footer navigateToPage={navigateToPage} />
-      </div>
+        </main></div>
     )
   }
 
@@ -183,9 +180,6 @@ export default function FeelingIssueBarrierPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer navigateToPage={navigateToPage} />
-    </div>
+      </main></div>
   )
 }

@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { ArrowLeft, BookOpen, Calendar, Clock, ChevronRight } from 'lucide-react'
 
 // Sample blog posts (this would come from a CMS or database in the future)
@@ -213,9 +212,6 @@ export default function BlogPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer navigateToPage={navigateToPage} />
-    </div>
+      </main></div>
   )
 }

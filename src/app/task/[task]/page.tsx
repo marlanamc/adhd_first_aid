@@ -5,7 +5,6 @@ import { useRouter, useParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, ChevronRight } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { supabase } from '@/lib/supabase'
 import type { Barrier } from '@/types/database'
 import {
@@ -121,9 +120,7 @@ export default function TaskBarrierPage() {
         <main className="flex-1 flex flex-col items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           <p className="mt-4 text-muted-foreground">Finding what's blocking you...</p>
-        </main>
-        <Footer navigateToPage={navigateToPage} />
-      </div>
+        </main></div>
     )
   }
 
@@ -207,9 +204,6 @@ export default function TaskBarrierPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer navigateToPage={navigateToPage} />
-    </div>
+      </main></div>
   )
 }

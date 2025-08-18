@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { ArrowLeft, Heart, Sparkles, Users, Target } from 'lucide-react'
 
 export default function AboutPage() {
@@ -145,9 +144,6 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer navigateToPage={navigateToPage} />
-    </div>
+      </main></div>
   )
 }
