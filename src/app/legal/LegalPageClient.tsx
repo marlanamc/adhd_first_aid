@@ -39,9 +39,9 @@ export function LegalPageClient({ termsDocument, privacyDocument }: LegalPageCli
     <div key={section.title} className="space-y-4">
       <h3 className="text-xl font-semibold text-foreground mb-3">{section.title}</h3>
       <div 
-        className="prose prose-lg max-w-none text-muted-foreground leading-relaxed"
+        className="prose prose-lg max-w-none"
         dangerouslySetInnerHTML={{ 
-          __html: `<p class="text-muted-foreground leading-relaxed">${section.content}</p>` 
+          __html: section.content
         }}
       />
     </div>

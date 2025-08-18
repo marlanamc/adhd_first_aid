@@ -11,7 +11,7 @@ import { Footer } from '@/components/layout/Footer'
 import { SearchModal } from '@/components/ui/SearchModal'
 import { ModalProvider, useModal } from '@/contexts/ModalContext'
 import { FeedbackModal } from '@/components/ui/FeedbackModal'
-import { PWAInstallPrompt } from '@/components/ui/PWAInstallPrompt'
+// import { PWAInstallPrompt } from '@/components/ui/PWAInstallPrompt'
 
 const inter = Inter({ subsets: ['latin'] })
 const playfair = Playfair_Display({
@@ -149,7 +149,7 @@ export default function RootLayout({
                 onClose={() => setIsSearchOpen(false)}
               />
               <GlobalModals />
-              <PWAInstallPrompt />
+              {/* <PWAInstallPrompt /> */}
             </div>
           </ModalProvider>
         </ThemeProvider>
