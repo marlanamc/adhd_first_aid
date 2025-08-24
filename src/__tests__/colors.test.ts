@@ -60,32 +60,32 @@ describe('Color System', () => {
   describe('getPageTypeGradient', () => {
     it('should return correct gradient for feeling page type', () => {
       const gradient = getPageTypeGradient('feeling')
-      expect(gradient).toBe('bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600')
+      expect(gradient).toBe('bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900')
     })
 
     it('should return correct gradient for barrier page type', () => {
       const gradient = getPageTypeGradient('barrier')
-      expect(gradient).toBe('bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600')
+      expect(gradient).toBe('bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900')
     })
 
     it('should return correct gradient for life_area page type', () => {
       const gradient = getPageTypeGradient('life_area')
-      expect(gradient).toBe('bg-gradient-to-br from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600')
+      expect(gradient).toBe('bg-gradient-to-br from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900')
     })
 
     it('should return correct gradient for complex_loop page type', () => {
       const gradient = getPageTypeGradient('complex_loop')
-      expect(gradient).toBe('bg-gradient-to-br from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600')
+      expect(gradient).toBe('bg-gradient-to-br from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900')
     })
 
     it('should return correct gradient for identity page type', () => {
       const gradient = getPageTypeGradient('identity')
-      expect(gradient).toBe('bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600')
+      expect(gradient).toBe('bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900')
     })
 
     it('should return default gradient for unknown page type', () => {
       const gradient = getPageTypeGradient('unknown' as any)
-      expect(gradient).toBe('bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-600')
+      expect(gradient).toBe('bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900')
     })
   })
 

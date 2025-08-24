@@ -5,12 +5,12 @@ export type PageType = 'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' 
 
 // ===== YOUR BEAUTIFUL GRADIENTS PRESERVED =====
 export const PAGE_BACKGROUND_GRADIENTS = {
-  feeling: 'bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600',
-  barrier: 'bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600',
-  life_area: 'bg-gradient-to-br from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600',
-  complex_loop: 'bg-gradient-to-br from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600',
-  identity: 'bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600',
-  home: 'bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-600'
+  feeling: 'bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900',
+  barrier: 'bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900',
+  life_area: 'bg-gradient-to-br from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900',
+  complex_loop: 'bg-gradient-to-br from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900',
+  identity: 'bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900',
+  home: 'bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900'
 } as const
 
 // ===== YOUR EMOTIONAL BUTTON GRADIENTS =====

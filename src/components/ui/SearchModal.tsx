@@ -1,11 +1,29 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Search, X, Heart, Wrench, AlertCircle, User, BookOpen, MessageSquareText, HelpCircle, RotateCcw } from 'lucide-react'
+import { Search, X, Heart, Wrench, AlertCircle, User, BookOpen, MessageSquareText, HelpCircle, RotateCcw, Mic, MicOff, Zap, Sparkles, Clock, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getStrategies } from '@/lib/strategies'
 import { supabase } from '@/lib/supabase'
 import type { Strategy } from '@/lib/supabase'
+
+// Speech Recognition types
+declare global {
+  interface Window {
+    webkitSpeechRecognition: any
+    SpeechRecognition: any
+  }
+}
+
+// ADHD-friendly search suggestions
+const QUICK_SEARCHES = [
+  { query: 'overwhelmed', label: 'Feeling Overwhelmed', icon: AlertCircle, color: 'text-red-600 bg-red-100' },
+  { query: 'cant start', label: 'Can\'t Start Tasks', icon: Clock, color: 'text-orange-600 bg-orange-100' },
+  { query: 'anxious', label: 'Anxiety & Worry', icon: Heart, color: 'text-pink-600 bg-pink-100' },
+  { query: 'focus', label: 'Need to Focus', icon: Target, color: 'text-blue-600 bg-blue-100' },
+  { query: 'tired', label: 'Feeling Drained', icon: Zap, color: 'text-purple-600 bg-purple-100' },
+  { query: 'procrastination', label: 'Procrastinating', icon: Clock, color: 'text-green-600 bg-green-100' }
+]
 
 interface SearchResult {
   id: string
@@ -26,7 +44,10 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchResult[]>([])
   const [isSearching, setIsSearching] = useState(false)
+  const [isListening, setIsListening] = useState(false)
+  const [searchMode, setSearchMode] = useState<'normal' | 'crisis'>('normal')
   const inputRef = useRef<HTMLInputElement>(null)
+  const recognitionRef = useRef<SpeechRecognition | null>(null)
 
   // Static content for non-strategy items
   const staticContent: SearchResult[] = [
@@ -268,6 +289,51 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     return () => clearTimeout(timer)
   }, [query, performSearch])
 
+  // Voice search functionality
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
+      const SpeechRecognition = window.webkitSpeechRecognition || (window as any).SpeechRecognition
+      recognitionRef.current = new SpeechRecognition()
+      recognitionRef.current.continuous = false
+      recognitionRef.current.interimResults = false
+      recognitionRef.current.lang = 'en-US'
+
+      recognitionRef.current.onresult = (event) => {
+        const transcript = event.results[0][0].transcript
+        setQuery(transcript)
+        setIsListening(false)
+      }
+
+      recognitionRef.current.onerror = () => {
+        setIsListening(false)
+      }
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false)
+      }
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop()
+      }
+    }
+  }, [])
+
+  const startVoiceSearch = () => {
+    if (recognitionRef.current && !isListening) {
+      setIsListening(true)
+      recognitionRef.current.start()
+    }
+  }
+
+  const stopVoiceSearch = () => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop()
+      setIsListening(false)
+    }
+  }
+
   // Focus input when modal opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -280,6 +346,11 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose()
+      }
+      // Add voice search shortcut (Ctrl/Cmd + M)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'm') {
+        e.preventDefault()
+        startVoiceSearch()
       }
     }
 
@@ -340,24 +411,69 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       {/* Modal */}
       <div className="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
         {/* Search Header */}
-        <div className="flex items-center gap-3 p-4 border-b border-gray-200 dark:border-gray-700">
-          <Search className="h-5 w-5 text-gray-400" />
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="Search strategies by content, feelings, barriers, or keywords like 'breathing'..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="flex-1 bg-transparent text-gray-900 dark:text-white placeholder-gray-500 border-none outline-none text-lg"
-          />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-          >
-            <X className="h-5 w-5" />
-          </Button>
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          {/* Mode Toggle */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Button
+                variant={searchMode === 'normal' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setSearchMode('normal')}
+                className="text-xs"
+              >
+                <Search className="h-3 w-3 mr-1" />
+                Normal
+              </Button>
+              <Button
+                variant={searchMode === 'crisis' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setSearchMode('crisis')}
+                className="text-xs text-red-600 border-red-200 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20"
+              >
+                <AlertCircle className="h-3 w-3 mr-1" />
+                Crisis Mode
+              </Button>
+            </div>
+            <div className="flex items-center gap-2">
+              {/* Voice Search Button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={isListening ? stopVoiceSearch : startVoiceSearch}
+                className={`text-xs ${isListening ? 'text-red-600 animate-pulse' : 'text-gray-400'}`}
+                title="Voice search (Ctrl/Cmd + M)"
+              >
+                {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Search Input */}
+          <div className="flex items-center gap-3">
+            <Search className="h-5 w-5 text-gray-400" />
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder={
+                searchMode === 'crisis'
+                  ? "Quick help needed! Search for urgent strategies..."
+                  : "Search strategies by content, feelings, barriers, or keywords like 'breathing'..."
+              }
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className={`flex-1 bg-transparent text-gray-900 dark:text-white placeholder-gray-500 border-none outline-none text-lg ${
+                searchMode === 'crisis' ? 'text-red-600 dark:text-red-400' : ''
+              }`}
+            />
+          </div>
         </div>
 
         {/* Results */}
@@ -414,33 +530,115 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               </p>
             </div>
           ) : (
-            <div className="text-center py-12 px-4">
-              <Search className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                Search the ADHD First Aid Kit
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Find strategies, guides, scripts, and support for any ADHD challenge
-              </p>
-              <div className="flex flex-wrap gap-2 justify-center">
-                <span className="text-xs px-3 py-1 rounded-full bg-pink-100 text-pink-700">Feelings</span>
-                <span className="text-xs px-3 py-1 rounded-full bg-blue-100 text-blue-700">Tasks</span>
-                <span className="text-xs px-3 py-1 rounded-full bg-purple-100 text-purple-700">Identities</span>
-                <span className="text-xs px-3 py-1 rounded-full bg-green-100 text-green-700">Guides</span>
-                <span className="text-xs px-3 py-1 rounded-full bg-orange-100 text-orange-700">Barriers</span>
-              </div>
+            <div className="p-4">
+              {searchMode === 'crisis' ? (
+                // Crisis Mode - Quick Actions
+                <div className="space-y-4">
+                  <div className="text-center py-6">
+                    <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-red-700 dark:text-red-400 mb-2">
+                      Crisis Mode: Quick Help
+                    </h3>
+                    <p className="text-red-600 dark:text-red-300 text-sm">
+                      Immediate strategies for when you need help right now
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    {QUICK_SEARCHES.slice(0, 4).map((item) => {
+                      const Icon = item.icon
+                      return (
+                        <button
+                          key={item.query}
+                          onClick={() => setQuery(item.query)}
+                          className="p-3 rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors text-left"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className={`rounded-lg p-1.5 ${item.color}`}>
+                              <Icon className="h-3 w-3" />
+                            </div>
+                            <span className="text-sm font-medium text-red-700 dark:text-red-300">
+                              {item.label}
+                            </span>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              ) : (
+                // Normal Mode - Quick Suggestions
+                <div className="space-y-4">
+                  <div className="text-center py-6">
+                    <Sparkles className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                      Quick Search Suggestions
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                      Click any suggestion or type your own search
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    {QUICK_SEARCHES.map((item) => {
+                      const Icon = item.icon
+                      return (
+                        <button
+                          key={item.query}
+                          onClick={() => setQuery(item.query)}
+                          className="p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left group"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className={`rounded-lg p-1.5 ${item.color} group-hover:scale-110 transition-transform`}>
+                              <Icon className="h-3 w-3" />
+                            </div>
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                              {item.label}
+                            </span>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                      Or search by category:
+                    </p>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      <span className="text-xs px-3 py-1 rounded-full bg-pink-100 text-pink-700">Feelings</span>
+                      <span className="text-xs px-3 py-1 rounded-full bg-blue-100 text-blue-700">Tasks</span>
+                      <span className="text-xs px-3 py-1 rounded-full bg-purple-100 text-purple-700">Identities</span>
+                      <span className="text-xs px-3 py-1 rounded-full bg-green-100 text-green-700">Guides</span>
+                      <span className="text-xs px-3 py-1 rounded-full bg-orange-100 text-orange-700">Barriers</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
 
         {/* Footer */}
         <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-3 bg-gray-50 dark:bg-gray-800">
-          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-            <span>Press esc to close</span>
-            <span>{results.length > 0 ? `${results.length} results` : ''}</span>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-4">
+                <span>Esc to close</span>
+                {searchMode === 'normal' && <span>Ctrl/Cmd + M for voice</span>}
+              </div>
+              <span>{results.length > 0 ? `${results.length} results` : ''}</span>
+            </div>
+            {searchMode === 'crisis' && (
+              <div className="text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-3 py-2 rounded-lg">
+                💡 Crisis Mode: Focus on immediate help. Try "breathing" or "grounding" for quick strategies.
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
   )
 }
+
+export default SearchModal

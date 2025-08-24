@@ -500,21 +500,50 @@ blockquote {
 }
 
 .dark .dropdown-item:hover {
-  background: rgba(255, 255, 255, 0.15) !important;
-  color: #ffffff !important;
+  background: rgba(240, 240, 240, 0.1) !important; /* Warmer hover background */
+  color: #f0f0f0 !important;
 }
 
-/* Dark mode text improvements */
+/* Eye-friendly dark mode - Warm grays instead of harsh blacks */
 .dark body {
-  color: #f5f5f5;
+  background: #1a1a1a; /* Warm charcoal instead of pure black */
+  color: #e8e8e8; /* Soft off-white instead of harsh white */
 }
 
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
-  color: #ffffff;
+  color: #f0f0f0; /* Slightly warmer white for headings */
 }
 
 .dark .text-muted-foreground {
-  color: #9ca3af !important;
+  color: #b8b8b8 !important; /* Warmer gray for secondary text */
+}
+
+/* Improve readability with better contrast ratios */
+.dark p, .dark span, .dark div {
+  color: #e0e0e0; /* Consistent warm gray for body text */
+}
+
+/* Card and component backgrounds - warmer and less harsh */
+.dark .bg-white\/80 {
+  background: rgba(45, 45, 45, 0.8) !important; /* Warm charcoal instead of white */
+}
+
+.dark .bg-gray-900\/80 {
+  background: rgba(30, 30, 30, 0.8) !important; /* Slightly darker warm gray */
+}
+
+/* Keep blues as requested - they look good in dark mode */
+.dark .blue-text, .dark .text-blue-600, .dark .text-blue-700 {
+  color: #60a5fa !important; /* Keep the blue colors */
+}
+
+/* Make borders less harsh */
+.dark .border-white\/20 {
+  border-color: rgba(200, 200, 200, 0.2) !important;
+}
+
+.dark .border-gray-200 {
+  border-color: #404040 !important;
 }
 
 .dark .heading-gradient {
@@ -523,31 +552,31 @@ blockquote {
   -webkit-text-fill-color: transparent;
 }
 
-/* Dark mode hover text backgrounds - using gray instead of white */
+/* Eye-friendly dark mode hover states - using warm grays */
 .dark .feeling-button:hover,
 .dark button.feeling-button:hover,
 html.dark .feeling-button:hover,
 html.dark button.feeling-button:hover {
-  background: #374151 !important;
-  border-color: #6b7280 !important;
+  background: #2d2d2d !important; /* Warm charcoal instead of harsh gray */
+  border-color: #4a4a4a !important;
   box-shadow: 0 8px 25px -8px rgba(99, 102, 241, 0.3) !important;
-  color: #ffffff !important;
+  color: #f0f0f0 !important;
 }
 
 .dark .strategy-card:hover {
-  background: #374151 !important;
-  border-color: #6b7280;
-  box-shadow: 
+  background: #252525 !important; /* Slightly lighter warm gray */
+  border-color: #404040;
+  box-shadow:
     0 20px 60px -12px rgba(99, 102, 241, 0.2),
-    0 0 0 1px #6b7280;
+    0 0 0 1px #404040;
 }
 
 .dark .strategy-card:hover .strategy-title {
-  color: #ffffff !important;
+  color: #f0f0f0 !important;
 }
 
 .dark .strategy-card:hover .strategy-description {
-  color: #f3f4f6 !important;
+  color: #d0d0d0 !important; /* Warmer secondary text */
 }
 
 .dark .strategy-card:hover .strategy-category {

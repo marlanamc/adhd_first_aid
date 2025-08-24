@@ -58,7 +58,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }:
     <>
       {/* Fixed Header - Background extends to absolute top */}
       <header
-        className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm bg-transparent border-b border-white/20 dark:border-white/10 shadow-sm pt-5"
+        className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm bg-transparent border-b border-white/20 dark:border-warm-gray-700 shadow-sm pt-5"
         style={isClient ? { paddingTop: 'env(safe-area-inset-top)' } : {}}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
@@ -100,14 +100,14 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }:
 
                 {/* Dropdown Content */}
                 {showDropdown && (
-                  <div className="dropdown-menu absolute right-0 top-full mt-2 w-48 sm:w-56 bg-white/95 backdrop-blur-lg rounded-lg shadow-lg border border-white/30 overflow-hidden z-50">
+                  <div className="dropdown-menu absolute right-0 top-full mt-2 w-48 sm:w-56 bg-white/95 dark:bg-warm-gray-800/95 backdrop-blur-lg rounded-lg shadow-lg border border-white/30 dark:border-warm-gray-600 overflow-hidden z-50">
                     {/* First Section: Main Navigation */}
                     <button
                       onClick={() => {
                         navigateToPage('favorites')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px] flex items-center gap-2"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-warm-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px] flex items-center gap-2"
                     >
                       <Heart className="h-4 w-4" />
                       <span>My Favorites</span>
@@ -124,7 +124,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }:
                         navigateToPage('faq')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-warm-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       FAQ
                     </button>
@@ -133,7 +133,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }:
                         navigateToPage('blog')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-warm-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       Blog
                     </button>
@@ -147,7 +147,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }:
                         navigateToPage('about')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-warm-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       About
                     </button>
@@ -156,7 +156,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }:
                         navigateToPage('contact')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-warm-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       Contact Me
                     </button>
@@ -165,7 +165,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }:
                         navigateToPage('suggest')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-warm-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       Suggest a Strategy
                     </button>
@@ -174,7 +174,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }:
                         navigateToPage('legal')
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-warm-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px]"
                     >
                       Legal & Privacy
                     </button>
@@ -188,7 +188,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }:
                         toggleTheme()
                         setShowDropdown(false)
                       }}
-                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px] flex items-center gap-2"
+                      className="dropdown-item w-full text-left px-3 sm:px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-warm-gray-700 transition-all duration-200 font-light touch-manipulation min-h-[44px] flex items-center gap-2"
                     >
                       {theme === 'light' ? (
                         <>

@@ -10,6 +10,7 @@ import { Footer } from '@/components/layout/Footer'
 import { SearchModal } from '@/components/ui/SearchModal'
 import { ModalProvider, useModal } from '@/contexts/ModalContext'
 import { FeedbackModal } from '@/components/ui/FeedbackModal'
+import ErrorBoundary from '@/components/ErrorBoundary'
 // import { PWAInstallPrompt } from '@/components/ui/PWAInstallPrompt'
 
 // Fonts are now imported via CSS to prevent hydration mismatches
@@ -176,28 +177,13 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#ec4899" />
         <meta name="msapplication-TileImage" content="/icon-144x144.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
-        
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('theme');
-                  if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                  }
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
       </head>
       <body className="font-inter">
         <ThemeProvider>
           <ModalProvider>
             <div className="min-h-screen flex flex-col relative">
               {/* Background gradient that covers entire viewport including behind header */}
-              <div className="fixed inset-0 bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 -z-20" />
+              <div className="fixed inset-0 bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900 -z-20" />
 
               <Header
                 navigateHome={navigateHome}
@@ -208,7 +194,9 @@ export default function RootLayout({
 
               {/* Main content positioned below header */}
               <main className="flex-1 flex flex-col relative z-10">
-                {children}
+                <ErrorBoundary>
+                  {children}
+                </ErrorBoundary>
               </main>
 
               <Footer
