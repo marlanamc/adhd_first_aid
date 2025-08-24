@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { useCollapsibleSections } from '@/hooks/useCollapsibleSections'
 import { 
   ArrowLeft, Plus, Minus, Share2, Brain, Heart, 
@@ -17,7 +18,7 @@ import {
   ScrollText, Pencil, PhoneCall, Bell, GraduationCap,
   Library, Palette, MailPlus, TrendingUp, TrendingDown,
   Award, Medal, Music, Laptop, Monitor, MapPin, 
-  Link, Globe, Snowflake, Scissors, Hammer,
+  Link as LinkIcon, Globe, Snowflake, Scissors, Hammer,
   Paintbrush, Brush, Shield, Gem, Crown, Flower, Leaf,
   Gamepad2, User, Rocket
 } from 'lucide-react'
@@ -49,137 +50,7 @@ const getSectionSubtitle = (title: string): string => {
   return 'Open for a quick, plain‑language guide to help you move forward'
 }
 
-// Function to convert markdown-style formatting to JSX with intelligent enhancement
-const formatMarkdownText = (text: string) => {
-  // If text already has markdown formatting, process it as-is
-  if (text.includes('**') || text.includes('_')) {
-    // First handle bold text (**text**)
-    const withBold = text.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
-      }
-      return { type: 'text', content: part, key: `text-${index}` };
-    });
-
-    // Then handle italics (_text_) within each part
-    const result: React.ReactNode[] = [];
-    withBold.forEach((item) => {
-      if (item.type === 'bold') {
-        result.push(<strong key={item.key}>{item.content}</strong>);
-      } else {
-        // Process italics in text parts
-        const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
-          if (part.startsWith('_') && part.endsWith('_')) {
-            return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
-          }
-          return part;
-        });
-        result.push(...italicParts);
-      }
-    });
-
-    return result;
-  }
-
-  // For plain text advice, add intelligent formatting
-  // Key phrases and concepts that should be emphasized in advice
-  const emphasisPatterns = [
-    // Emotional validation & task-specific support
-    { pattern: /\b(you are safe|you're safe|you are enough|you're enough|you matter|this is valid|this is real)\b/gi, style: 'bold' },
-    { pattern: /\b(not your fault|not weakness|not overreacting|not broken|not lazy|not failing)\b/gi, style: 'bold' },
-    { pattern: /\b(you can do this|you've got this|you're capable|you're learning)\b/gi, style: 'bold' },
-    
-    // Task execution and productivity
-    { pattern: /\b(start small|tiny step|micro-task|break it down|chunk it|one piece)\b/gi, style: 'bold' },
-    { pattern: /\b(timer|pomodoro|time block|schedule|deadline|priority)\b/gi, style: 'bold' },
-    { pattern: /\b(focus|attention|concentration|distraction|multitask)\b/gi, style: 'bold' },
-    { pattern: /\b(energy|momentum|motivation|dopamine|reward)\b/gi, style: 'bold' },
-    
-    // Core actions and techniques for tasks
-    { pattern: /\b(breathe|pause|stop|slow down|take a break|rest|reset)\b/gi, style: 'bold' },
-    { pattern: /\b(one step|one thing|next task|next action|small steps)\b/gi, style: 'bold' },
-    { pattern: /\b(body double|accountability|support|help|collaborate)\b/gi, style: 'bold' },
-    
-    // Time and completion reframes
-    { pattern: /\b(right now|this moment|today|not forever|will pass|temporary)\b/gi, style: 'bold' },
-    { pattern: /\b(doesn't have to be perfect|good enough|done is better|progress not perfection)\b/gi, style: 'bold' },
-    { pattern: /\b(finish later|come back to it|pause and resume|save and continue)\b/gi, style: 'bold' },
-    
-    // Task-specific ADHD concepts
-    { pattern: /\b(executive function|working memory|task switching|initiation|completion)\b/gi, style: 'bold' },
-    { pattern: /\b(ADHD brain|neurodivergent|rejection sensitivity|time blindness|hyperfocus)\b/gi, style: 'bold' },
-    { pattern: /\b(overwhelm|shutdown|freeze|stuck|procrastination|avoidance)\b/gi, style: 'bold' },
-    { pattern: /\b(nervous system|sensory|stimming|regulation|hypervigilance)\b/gi, style: 'bold' },
-    
-    // Organization and systems
-    { pattern: /\b(organize|structure|system|routine|habit|workflow)\b/gi, style: 'bold' },
-    { pattern: /\b(environment|workspace|setup|prepare|tools|resources)\b/gi, style: 'bold' },
-    { pattern: /\b(checklist|reminder|alarm|calendar|notes|external brain)\b/gi, style: 'bold' },
-    
-    // Self-care and maintenance
-    { pattern: /\b(hydrate|eat|sleep|move|stretch|walk|exercise)\b/gi, style: 'bold' },
-    { pattern: /\b(medication|supplements|therapy|support group)\b/gi, style: 'bold' },
-    
-    // Gentle self-talk patterns for italics
-    { pattern: /\b(maybe|perhaps|gently|softly|kindly|compassionately)\b/gi, style: 'italic' },
-    { pattern: /\b(it's okay to|it's normal to|you're allowed to|you can|you might)\b/gi, style: 'italic' },
-    { pattern: /\b(consider|try|experiment|explore|notice|observe)\b/gi, style: 'italic' },
-    { pattern: /\b(when you feel ready|if it helps|as needed|as you can)\b/gi, style: 'italic' },
-  ];
-
-  let formattedText = text;
-  const replacements: Array<{start: number, end: number, replacement: string, originalText: string}> = [];
-
-  // Find and mark all patterns for replacement
-  emphasisPatterns.forEach(({ pattern, style }) => {
-    let match;
-    // Reset the regex to start from beginning
-    pattern.lastIndex = 0;
-    while ((match = pattern.exec(text)) !== null) {
-      const marker = style === 'bold' ? '**' : '_';
-      replacements.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        replacement: `${marker}${match[0]}${marker}`,
-        originalText: match[0]
-      });
-    }
-  });
-
-  // Sort replacements by position (reverse order to avoid index shifting)
-  replacements.sort((a, b) => b.start - a.start);
-
-  // Apply replacements
-  replacements.forEach(({ start, end, replacement }) => {
-    formattedText = formattedText.slice(0, start) + replacement + formattedText.slice(end);
-  });
-
-  // Now process the enhanced text with our original markdown processor
-  const withBold = formattedText.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
-    }
-    return { type: 'text', content: part, key: `text-${index}` };
-  });
-
-  const result: React.ReactNode[] = [];
-  withBold.forEach((item) => {
-    if (item.type === 'bold') {
-      result.push(<strong key={item.key}>{item.content}</strong>);
-    } else {
-      // Process italics in text parts
-      const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
-        if (part.startsWith('_') && part.endsWith('_')) {
-          return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
-        }
-        return part;
-      });
-      result.push(...italicParts);
-    }
-  });
-
-  return result;
-};
+import { formatMarkdownTextWithIntelligence } from '@/lib/utils'
 
 // Direct mapping of task names to Lucide icons (no emoji intermediary)
 const getTaskIcon = (taskName: string): React.ElementType => {
@@ -401,7 +272,7 @@ const getSectionIcon = (emoji: string): React.ElementType => {
     '🛡️': Shield,
     '⚖️': Award, // Scale of justice
     '🧩': Puzzle,
-    '🔗': Link,
+    '🔗': LinkIcon,
     '🌐': Globe,
     '💫': Star, // Dizzy star
     '⚪': Activity, // White circle
@@ -488,7 +359,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
           
           // Fetch sources using the slug format
           // Convert URL slug to match database format
-          let lifeAreaSlug = resolvedParams.life_area
+          const lifeAreaSlug = resolvedParams.life_area
 
           // Map URL slugs to preferred base slug first
           const slugMappings: Record<string, string> = {
@@ -624,7 +495,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#9ee5b5] via-[#b0f4ea] to-[#8fd3f4] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-      <div className="max-w-5xl mx-auto px-4 py-6 pt-20">
+      <div className="max-w-5xl mx-auto px-4 py-6 pt-4">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-4 md:p-6 shadow-lg">
           {/* Header */}
           <div className="mb-6">
@@ -713,7 +584,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
               {expandedSections['gentle-advice'] && (
                 <div className="bg-[#61ffb5]/40 rounded-xl p-3 space-y-2 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
                   <p className="text-base text-gray-900 leading-relaxed">
-                    {formatMarkdownText(content.gentle_advice)}
+                    {formatMarkdownTextWithIntelligence(content.gentle_advice, 'tasks')}
                   </p>
                 </div>
               )}
@@ -742,7 +613,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
               {expandedSections['stern-advice'] && (
                 <div className="bg-[#ff61ab]/40 rounded-xl p-3 space-y-2 animate-in slide-in-from-top duration-300 border border-[#FF9EBB]/60 mt-2">
                   <p className="text-base text-gray-900 leading-relaxed">
-                    {formatMarkdownText(content.stern_advice)}
+                    {formatMarkdownTextWithIntelligence(content.stern_advice, 'tasks')}
                   </p>
                 </div>
               )}
@@ -1645,7 +1516,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
           </div>
           {/* Footer */}
           <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>Need more help? Check out our <a href="/guides" className="text-blue-600 hover:underline">guides</a>, <a href="/scripts" className="text-blue-600 hover:underline">scripts</a>, <a href="/quizzes" className="text-blue-600 hover:underline">quizzes</a>, or <a href="/resources" className="text-blue-600 hover:underline">resources</a>.</p>
+            <p>Need more help? Check out our <Link href="/guides" className="text-blue-600 hover:underline">guides</Link>, <Link href="/scripts" className="text-blue-600 hover:underline">scripts</Link>, <Link href="/quizzes" className="text-blue-600 hover:underline">quizzes</Link>, or <Link href="/resources" className="text-blue-600 hover:underline">resources</Link>.</p>
           </div>
           
           </div> {/* Close glassmorphism container */}

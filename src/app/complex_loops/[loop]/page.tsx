@@ -48,136 +48,7 @@ const getSectionSubtitle = (title: string): string => {
   return 'Open for a quick, plain‑language guide to help you move forward'
 }
 
-// Function to convert markdown-style formatting to JSX with intelligent enhancement
-const formatMarkdownText = (text: string) => {
-  // If text already has markdown formatting, process it as-is
-  if (text.includes('**') || text.includes('_')) {
-    // First handle bold text (**text**)
-    const withBold = text.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
-      }
-      return { type: 'text', content: part, key: `text-${index}` };
-    });
-
-    // Then handle italics (_text_) within each part
-    const result: React.ReactNode[] = [];
-    withBold.forEach((item) => {
-      if (item.type === 'bold') {
-        result.push(<strong key={item.key}>{item.content}</strong>);
-      } else {
-        // Process italics in text parts
-        const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
-          if (part.startsWith('_') && part.endsWith('_')) {
-            return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
-          }
-          return part;
-        });
-        result.push(...italicParts);
-      }
-    });
-
-    return result;
-  }
-
-  // For plain text advice, add intelligent formatting
-  // Key phrases and concepts that should be emphasized in advice for complex loops
-  const emphasisPatterns = [
-    // Emotional validation & loop-breaking support
-    { pattern: /\b(you are safe|you're safe|you are enough|you're enough|you matter|this is valid|this is real)\b/gi, style: 'bold' },
-    { pattern: /\b(not your fault|not weakness|not overreacting|not broken|not lazy|not stupid)\b/gi, style: 'bold' },
-    { pattern: /\b(you can do this|you've got this|you're capable|you're learning|you can break this)\b/gi, style: 'bold' },
-    
-    // Loop recognition and interruption
-    { pattern: /\b(notice the pattern|recognize the loop|catch yourself|awareness|mindfulness)\b/gi, style: 'bold' },
-    { pattern: /\b(interrupt|break the cycle|stop the spiral|pause the loop|redirect)\b/gi, style: 'bold' },
-    { pattern: /\b(choice point|decision moment|crossroads|turning point)\b/gi, style: 'bold' },
-    
-    // Core actions and techniques for breaking loops
-    { pattern: /\b(breathe|pause|stop|slow down|take a break|rest|reset)\b/gi, style: 'bold' },
-    { pattern: /\b(one step|one thing|small change|tiny shift|micro adjustment)\b/gi, style: 'bold' },
-    { pattern: /\b(self-compassion|be kind|gentle with yourself|forgive yourself)\b/gi, style: 'bold' },
-    
-    // Pattern and behavioral insights
-    { pattern: /\b(trigger|cue|signal|warning sign|red flag)\b/gi, style: 'bold' },
-    { pattern: /\b(habit|pattern|cycle|loop|spiral|routine)\b/gi, style: 'bold' },
-    { pattern: /\b(automatic|unconscious|default|reactive|impulsive)\b/gi, style: 'bold' },
-    
-    // Time and change reframes
-    { pattern: /\b(right now|this moment|today|not forever|will pass|temporary)\b/gi, style: 'bold' },
-    { pattern: /\b(progress not perfection|small wins|baby steps|gradual change)\b/gi, style: 'bold' },
-    { pattern: /\b(practice|repetition|consistency|patience|persistence)\b/gi, style: 'bold' },
-    
-    // Loop-specific ADHD concepts
-    { pattern: /\b(executive function|working memory|dopamine|motivation|regulation)\b/gi, style: 'bold' },
-    { pattern: /\b(ADHD brain|neurodivergent|rejection sensitivity|emotional dysregulation)\b/gi, style: 'bold' },
-    { pattern: /\b(overwhelm|shutdown|freeze|stuck|rumination|hyperfocus)\b/gi, style: 'bold' },
-    { pattern: /\b(nervous system|fight or flight|stress response|cortisol)\b/gi, style: 'bold' },
-    
-    // Support and environment
-    { pattern: /\b(support|help|community|accountability|therapy)\b/gi, style: 'bold' },
-    { pattern: /\b(environment|setup|structure|boundaries|limits)\b/gi, style: 'bold' },
-    
-    // Gentle self-talk patterns for italics
-    { pattern: /\b(maybe|perhaps|gently|softly|kindly|compassionately)\b/gi, style: 'italic' },
-    { pattern: /\b(it's okay to|it's normal to|you're allowed to|you can|you might)\b/gi, style: 'italic' },
-    { pattern: /\b(consider|try|experiment|explore|notice|observe)\b/gi, style: 'italic' },
-    { pattern: /\b(when you feel ready|if it helps|as you can|at your own pace)\b/gi, style: 'italic' },
-  ];
-
-  let formattedText = text;
-  const replacements: Array<{start: number, end: number, replacement: string, originalText: string}> = [];
-
-  // Find and mark all patterns for replacement
-  emphasisPatterns.forEach(({ pattern, style }) => {
-    let match;
-    // Reset the regex to start from beginning
-    pattern.lastIndex = 0;
-    while ((match = pattern.exec(text)) !== null) {
-      const marker = style === 'bold' ? '**' : '_';
-      replacements.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        replacement: `${marker}${match[0]}${marker}`,
-        originalText: match[0]
-      });
-    }
-  });
-
-  // Sort replacements by position (reverse order to avoid index shifting)
-  replacements.sort((a, b) => b.start - a.start);
-
-  // Apply replacements
-  replacements.forEach(({ start, end, replacement }) => {
-    formattedText = formattedText.slice(0, start) + replacement + formattedText.slice(end);
-  });
-
-  // Now process the enhanced text with our original markdown processor
-  const withBold = formattedText.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
-    }
-    return { type: 'text', content: part, key: `text-${index}` };
-  });
-
-  const result: React.ReactNode[] = [];
-  withBold.forEach((item) => {
-    if (item.type === 'bold') {
-      result.push(<strong key={item.key}>{item.content}</strong>);
-    } else {
-      // Process italics in text parts
-      const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
-        if (part.startsWith('_') && part.endsWith('_')) {
-          return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
-        }
-        return part;
-      });
-      result.push(...italicParts);
-    }
-  });
-
-  return result;
-};
+import { formatMarkdownTextWithIntelligence } from '@/lib/utils'
 
 // Direct mapping of loop names to Lucide icons (no emoji intermediary)
 const getLoopIcon = (loopName: string): React.ElementType => {
@@ -542,7 +413,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#b0f4ea] via-[#78c2f2] to-[#a18cd1] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-      <div className="max-w-5xl mx-auto px-6 py-4 sm:py-6 md:py-8 pt-24 sm:pt-28 md:pt-24">
+      <div className="max-w-5xl mx-auto px-6 py-4 sm:py-6 md:py-8 pt-20 sm:pt-22 md:pt-24">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
           <div className="mb-4 sm:mb-6 md:mb-8">
@@ -642,7 +513,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
               {expandedSections['gentle-advice'] && (
                 <div className="bg-[#61ffb5]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
                   <p className="text-base text-gray-900 leading-relaxed">
-                    {formatMarkdownText(content.gentle_advice)}
+                    {formatMarkdownTextWithIntelligence(content.gentle_advice, 'complex_loops')}
                   </p>
                 </div>
               )}
@@ -674,7 +545,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
               {expandedSections['stern-advice'] && (
                 <div className="bg-[#ff61ab]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#FF9EBB]/60 mt-2">
                   <p className="text-base text-gray-900 leading-relaxed">
-                    {formatMarkdownText(content.stern_advice)}
+                    {formatMarkdownTextWithIntelligence(content.stern_advice, 'complex_loops')}
                   </p>
                 </div>
               )}

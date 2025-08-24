@@ -26,6 +26,19 @@ interface TimelineItem {
   era?: string
 }
 
+interface NamingSection {
+  key: string
+  title: string
+  body: string[]
+  listTitle?: string
+  list?: string[]
+  subsections?: Array<{
+    title: string
+    content: string[]
+  }>
+  chips?: string[]
+}
+
 // Parse timeline data from markdown content
 const parseTimelineFromContent = (_content: string): TimelineItem[] => {
   // This would parse the actual markdown content
@@ -273,7 +286,7 @@ export default function GuideClientEnhanced({ guide }: GuideClientEnhancedProps)
       window.removeEventListener('scroll', handleScroll)
       observer.disconnect()
     }
-  }, [])
+  }, [quickNavItems])
 
   return (
     <div className="min-h-screen bg-[#CAE5FF] dark:from-[#0a0f1a] dark:via-[#0e1422] dark:to-[#0f1a2e]">
@@ -546,7 +559,7 @@ export default function GuideClientEnhanced({ guide }: GuideClientEnhancedProps)
         {isNamingGuide && (
           <div className="space-y-8 mb-8">
             {namingSections.map((sec) => {
-              const hasSubsections = 'subsections' in sec && (sec as any).subsections
+              const hasSubsections = 'subsections' in sec && (sec as NamingSection).subsections
               
               return (
                 <section id={sec.key} key={sec.key} className="bg-white/90 dark:bg-blue-900/40 border border-blue-200/50 dark:border-blue-800 rounded-3xl shadow-lg guide-section overflow-hidden">
@@ -581,7 +594,7 @@ export default function GuideClientEnhanced({ guide }: GuideClientEnhancedProps)
                     {/* Special layout for "Why the Name Falls Short" */}
                     {sec.key === 'why-short' && hasSubsections && (
                       <div className="grid gap-8 lg:grid-cols-3">
-                        {(sec as any).subsections.map((sub: { title: string; items: string[] }, i: number) => {
+                        {(sec as NamingSection).subsections?.map((sub: { title: string; content: string[] }, i: number) => {
                           const colors = [
                             'bg-gradient-to-br from-rose-50 to-pink-50 border-rose-200',
                             'bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200', 
@@ -649,11 +662,11 @@ export default function GuideClientEnhanced({ guide }: GuideClientEnhancedProps)
                     )}
 
                     {/* Chips for alternative terms */}
-                    {'chips' in sec && (sec as any).chips && (
+                    {'chips' in sec && (sec as NamingSection).chips && (
                       <div className="mt-10">
                         <h4 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-6">Alternative Terms:</h4>
                         <div className="grid gap-4 sm:grid-cols-2">
-                          {(sec as any).chips.map((chip: string, i: number) => {
+                          {(sec as NamingSection).chips!.map((chip: string, i: number) => {
                             const colors = [
                               'bg-gradient-to-r from-rose-100 to-pink-100 text-rose-800 border-rose-200',
                               'bg-gradient-to-r from-teal-100 to-cyan-100 text-teal-800 border-teal-200',

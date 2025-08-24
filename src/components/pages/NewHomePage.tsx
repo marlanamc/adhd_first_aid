@@ -1,23 +1,9 @@
-import { useState } from 'react'
-import { MessageSquareText, HeartCrack, Brain, Settings, BookOpen, ArrowRight, Wrench, User, HelpCircle, AlertCircle, RotateCcw, FileText, MessageCircle, Puzzle, ExternalLink } from 'lucide-react'
+'use client'
 
-interface Feeling {
-  id: string
-  name: string
-  emoji: string | null
-  color: string | null
-  category: string | null
-  hover_description: string | null
-}
+import { useState, useEffect } from 'react'
+import { HeartCrack, Settings, ArrowRight, Wrench, User, AlertCircle, RotateCcw, FileText, MessageCircle, Puzzle, ExternalLink } from 'lucide-react'
 
-interface Task {
-  id: string
-  name: string
-  emoji: string | null
-  color: string | null
-  category: string | null
-  hover_description: string | null
-}
+
 
 interface NewHomePageProps {
   // Simplified props - no database dependencies for now
@@ -120,6 +106,16 @@ export default function NewHomePage({
   selectedCard
 }: NewHomePageProps) {
   const [localSelectedCard, setLocalSelectedCard] = useState<string | null>(null)
+  const [greeting, setGreeting] = useState<string>('') // Start empty, will be set on client mount
+
+  useEffect(() => {
+    // Set greeting only on client side after component mounts
+    const hour = new Date().getHours()
+    const timeOfDay = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening'
+    const emoji = hour < 12 ? '☀️' : hour < 17 ? '🌤️' : '🌙'
+
+    setGreeting(`Good ${timeOfDay}. ${emoji}`)
+  }, []) // Empty dependency array ensures this runs only once after mount
 
   const handleCardClick = (categoryId: string) => {
     setLocalSelectedCard(categoryId)
@@ -163,20 +159,13 @@ export default function NewHomePage({
     }
   }
 
-  const getPersonalizedGreeting = () => {
-    const hour = new Date().getHours()
-    const timeOfDay = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening'
-    const emoji = hour < 12 ? '☀️' : hour < 17 ? '🌤️' : '🌙'
-    
-    return `Good ${timeOfDay}. ${emoji}`
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 flex flex-col items-center justify-center p-4 md:p-6">
       {/* Header */}
       <div className="text-center mb-8 md:mb-12 space-y-3 md:space-y-4 mt-12 md:mt-20">
         <h1 className="text-lg md:text-xl lg:text-2xl font-light text-gray-800 dark:text-gray-200">
-          {getPersonalizedGreeting()}
+          {greeting || 'Welcome back. 🌟'}
         </h1>
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-gray-900 dark:text-blue-300 homepage-main-heading px-4 md:px-0">
           Where do you want to start?

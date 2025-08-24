@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, Wrench, Home, Calendar, Brain, Clock, Mail, ClipboardList, Briefcase, BookOpen, Brush, ShoppingCart, Utensils, Bed, Shirt, Trash2, Laptop, Phone, Wallet, FileText, Users, Sparkles, Bath, Car, Sun, Dumbbell, CookingPot, Refrigerator, Recycle, Store, PackageCheck, Receipt, Calculator, ScrollText, Pencil, PhoneCall, Bell, GraduationCap, Library, Palette, DoorClosed, Pill, MailPlus, MousePointerClick, Target } from 'lucide-react'
+import { ArrowLeft, Wrench, Calendar, Brain, Clock, Mail, ClipboardList, Briefcase, BookOpen, Brush, ShoppingCart, Utensils, Shirt, Wallet, FileText, Sparkles, Bath, Car, Sun, Dumbbell, CookingPot, Refrigerator, Recycle, Store, PackageCheck, Receipt, Calculator, ScrollText, Pencil, PhoneCall, Bell, GraduationCap, Library, DoorClosed, Pill, MailPlus, MousePointerClick, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -296,7 +296,7 @@ export default function TasksPage() {
             </div>
             
             <p className="text-black dark:text-white text-sm mb-4">
-              Sometimes it's easier to start with how you're feeling or what's blocking you.
+              Sometimes it&apos;s easier to start with how you&apos;re feeling or what&apos;s blocking you.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button 

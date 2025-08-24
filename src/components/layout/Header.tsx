@@ -1,9 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Search, Menu, Moon, Sun, Heart } from 'lucide-react'
-import Image from 'next/image'
 import { useTheme } from '@/contexts/ThemeContext'
 import { useFavorites } from '@/hooks/useFavorites'
 
@@ -46,13 +45,22 @@ const getLogoColor = (pageType: string | undefined, isDark: boolean) => {
 
 export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }: HeaderProps) {
   const [showDropdown, setShowDropdown] = useState(false)
+  const [isClient, setIsClient] = useState(false)
   const { theme, toggleTheme } = useTheme()
   const { favoritesCount } = useFavorites()
 
+  // Handle client-side only rendering for safe area
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   return (
     <>
-      {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/10 dark:bg-gray-900/60 backdrop-blur-md border-b border-white/20 dark:border-white/10 shadow-sm pt-safe">
+      {/* Fixed Header - Background extends to absolute top */}
+      <header
+        className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm bg-transparent border-b border-white/20 dark:border-white/10 shadow-sm pt-5"
+        style={isClient ? { paddingTop: 'env(safe-area-inset-top)' } : {}}
+      >
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
           <div className="flex justify-between items-center py-2 sm:py-1 min-h-[60px]">
             {/* Logo Area */}

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, Heart, Brain, Zap, Frown, Users, LockKeyhole, Flame, MoveRight, CloudLightning, Activity, Skull, CloudRain, Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, Battery, UserX, ZapOff, EyeOff, Sparkles, Scissors } from 'lucide-react'
+import { ArrowLeft, Brain, Zap, Frown, Users, LockKeyhole, Flame, CloudLightning, Activity, Skull, CloudRain, Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, ZapOff, EyeOff, Sparkles, BatteryLow, Scissors, UserX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SuggestFeelingModal } from '@/components/ui/SuggestFeelingModal'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -30,7 +30,7 @@ const feelings = [
   
   // Dysregulation & Shutdown
   { name: 'Stuck', category: 'Dysregulation & Shutdown', icon: LockKeyhole },
-  { name: 'Drained', category: 'Dysregulation & Shutdown', icon: Battery },
+  { name: 'Drained', category: 'Dysregulation & Shutdown', icon: BatteryLow },
   { name: 'Burned Out', category: 'Dysregulation & Shutdown', icon: Flame },
   { name: 'Numb', category: 'Dysregulation & Shutdown', icon: Skull },
   { name: 'Ashamed', category: 'Dysregulation & Shutdown', icon: Frown },
@@ -254,7 +254,7 @@ export default function FeelingsPage() {
         <div className="text-center mt-8 md:mt-12 max-w-3xl mx-auto">
           <div className="bg-white/20 dark:bg-gray-800/60 backdrop-blur-md rounded-xl md:rounded-2xl p-5 md:p-6 border border-white/10 dark:border-gray-600/30">
             <h3 className="text-base md:text-lg font-semibold text-black dark:text-white mb-2">
-              Don't see your feeling?
+              Don&apos;t see your feeling?
             </h3>
             
             {/* Suggest a Feeling Button */}

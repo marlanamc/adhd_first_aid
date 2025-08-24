@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, User, Users, Home, Briefcase, Brain, Heart, Globe, Palette, Coins, ArrowUpRight, School, HeartHandshake, Building2, Zap, GraduationCap, Brush, Baby, UserCog, UserMinus, Stethoscope, UserCheck, Building, Lightbulb, Award, BrainCircuit, HeartPulse, UserX, Rainbow, UserPlus, CircleDollarSign, Target, Sparkles, BanknoteX, ClipboardPlus, Flame, Fingerprint, MousePointerClick } from 'lucide-react'
+import { ArrowLeft, User, Users, Home, Briefcase, Brain, Globe, HeartHandshake, GraduationCap, Baby, UserCog, UserMinus, Building, Lightbulb, Award, HeartPulse, UserX, Rainbow, UserPlus, Target, Sparkles, BanknoteX, ClipboardPlus, Flame, Fingerprint, MousePointerClick } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'

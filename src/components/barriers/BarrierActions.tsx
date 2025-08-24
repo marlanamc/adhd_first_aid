@@ -6,33 +6,7 @@ import { Zap, Footprints } from 'lucide-react'
 import { useCrisisAndWalkthrough } from '@/hooks/useCrisisAndWalkthrough'
 import type { BarriersContent, BarrierSources } from '@/lib/supabase'
 
-function formatMarkdownText(text: string) {
-  if (!text) return null
-  if (text.includes('**') || text.includes('_')) {
-    const withBold = text.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` }
-      }
-      return { type: 'text', content: part, key: `text-${index}` }
-    })
-    const result: React.ReactNode[] = []
-    withBold.forEach((item) => {
-      if (item.type === 'bold') {
-        result.push(<strong key={item.key}>{item.content}</strong>)
-      } else {
-        const italicParts = (item.content as string).split(/(_[^_]+_)/).map((part, i) => {
-          if (part.startsWith('_') && part.endsWith('_')) {
-            return <em key={`${item.key}-italic-${i}`}>{part.slice(1, -1)}</em>
-          }
-          return part
-        })
-        result.push(...italicParts)
-      }
-    })
-    return result
-  }
-  return text
-}
+import { formatMarkdownText } from '@/lib/utils'
 
 export interface BarrierActionsProps {
   slug: string

@@ -1,0 +1,1 @@
+{"mcpServers":{"supabase":{"command":"supabase","args":["mcp","--project-ref","sjbsmjaagvyyshumkohq"],"env":{"SUPABASE_ACCESS_TOKEN":"$SUPABASE_ACCESS_TOKEN"}}}}

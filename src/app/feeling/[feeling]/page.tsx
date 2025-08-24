@@ -9,7 +9,14 @@ import { getStrategies } from '@/lib/strategies'
 // import { getAllGuides, type GuideMetadata } from '@/lib/markdown'
 
 // Hardcoded guide mappings for now (we can make this dynamic later)
-const FEELING_GUIDE_MAPPINGS = {
+interface GuideMapping {
+  title: string
+  slug: string
+  emoji: string
+  description: string
+}
+
+const FEELING_GUIDE_MAPPINGS: Record<string, GuideMapping> = {
   'overwhelmed': {
     title: 'Cognitive & Overload Guide',
     slug: 'mentalfog',
@@ -26,7 +33,7 @@ export default function FeelingIssuePage({ params }: { params: Promise<{ feeling
   const [issues, setIssues] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [availableGuide, setAvailableGuide] = useState<any>(null)
+  const [availableGuide, setAvailableGuide] = useState<GuideMapping | null>(null)
 
   // Fetch strategies and extract available issues
   useEffect(() => {
@@ -140,7 +147,7 @@ export default function FeelingIssuePage({ params }: { params: Promise<{ feeling
       />
 
       <main className="flex-1 flex flex-col">
-        <div className="flex-1 container mx-auto max-w-6xl px-4 sm:px-6 pt-12 md:pt-16 pb-24">
+        <div className="flex-1 container mx-auto max-w-6xl px-4 sm:px-6 pt-4 md:pt-6 pb-24">
           {/* Navigation */}
           <div className="mb-12 mt-10">
             <div className="flex items-center justify-between bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3">

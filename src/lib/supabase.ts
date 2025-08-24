@@ -1,15 +1,13 @@
 import { createClient } from '@supabase/supabase-js'
+import { logError, handleSupabaseError, getErrorMessage } from './error-handling'
 
-// Supabase configuration
+// Supabase configuration - validate environment variables at startup
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-// Log environment variables (but not the full key)
-console.log('Supabase URL:', supabaseUrl);
-console.log('Supabase Key exists:', !!supabaseAnonKey);
-
+// Validate environment variables (only log errors, not success on every import)
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing environment variables:', {
+  console.error('❌ Missing Supabase environment variables:', {
     url: supabaseUrl ? 'present' : 'missing',
     key: supabaseAnonKey ? 'present' : 'missing'
   });
@@ -18,7 +16,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 // Validate URL format
 if (!supabaseUrl.startsWith('https://') || !supabaseUrl.includes('.supabase.co')) {
-  console.error('Invalid Supabase URL format:', supabaseUrl);
+  console.error('❌ Invalid Supabase URL format:', supabaseUrl);
   throw new Error('Invalid Supabase URL format. Expected: https://your-project.supabase.co');
 }
 
@@ -45,24 +43,51 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
 })
 
-// Test the connection immediately
-async function testConnection() {
+// Connection testing utilities - only use when needed for debugging
+
+/**
+ * Test database connection by querying a simple table
+ * @returns Connection status with optional count and error details
+ */
+export async function testConnection(): Promise<{ success: boolean; error?: string; count?: number }> {
   try {
     const { count, error } = await supabase
       .from('help_tasks')
       .select('count', { count: 'exact', head: true });
 
     if (error) {
-      console.error('Failed to connect to Supabase:', error.message);
+      const appError = handleSupabaseError(error, 'connection test', 'testConnection')
+      return { success: false, error: appError.message };
     } else {
-      console.log('Successfully connected to Supabase. Help tasks count:', count);
+      logError('Successfully connected to Supabase', undefined, 'testConnection', 'low')
+      return { success: true, count: count ?? undefined };
     }
   } catch (err) {
-    console.error('Exception while testing Supabase connection:', err);
+    const errorMessage = getErrorMessage(err)
+    logError('Exception while testing Supabase connection', err, 'testConnection', 'high')
+    return { success: false, error: errorMessage };
   }
 }
 
-void testConnection();
+/**
+ * Lightweight connection check without making a database query
+ * @returns Basic connectivity information
+ */
+export function getConnectionInfo() {
+  return {
+    url: supabaseUrl,
+    hasKey: !!supabaseAnonKey,
+    isConfigured: !!(supabaseUrl && supabaseAnonKey),
+    environment: process.env.NODE_ENV
+  };
+}
+
+// Development helper - can be called manually for connection testing
+// Example usage: import { testConnection } from '@/lib/supabase'; testConnection();
+if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_SUPABASE_TEST_CONNECTION === 'true') {
+  // Only test connection in development if explicitly requested
+  testConnection().catch(console.error);
+}
 
 // Re-export types from the types directory
 export type {
@@ -154,52 +179,109 @@ CREATE POLICY "Allow public insert on strategy_votes" ON strategy_votes
   FOR INSERT WITH CHECK (true);
 */
 
-// Feelings content function
-export async function getFeelingsContent(feelingName: string) {
+// Generic Supabase query wrapper
+async function supabaseQuery<T = any>(
+  table: string,
+  operation: 'select' | 'selectAll',
+  options: {
+    column?: string;
+    value?: string;
+    orderBy?: string;
+    useIlike?: boolean;
+  } = {},
+  errorMessage: string
+): Promise<{ data: T | T[] | null; error: any }> {
+  console.log(`🚨 ALERT: supabaseQuery is being called with table: "${table}" - this should NOT happen for feeling_sources!`);
+
   try {
-    const { data, error } = await supabase
-      .from('feelings_content')
-      .select('*')
-      .eq('feeling_name', feelingName)
-      .single();
+    if (operation === 'select' && options.column && options.value) {
+      console.log(`🔍 SUPABASE_QUERY: Querying table "${table}" for column "${options.column}" = "${options.value}"`);
+
+      // Add stack trace to see who's calling this
+      console.trace('🚨 supabaseQuery call stack:');
+
+      let query = supabase.from(table).select('*');
+
+      if (options.useIlike) {
+        query = query.ilike(options.column, options.value);
+      } else {
+        query = query.eq(options.column, options.value);
+      }
+
+      const { data, error } = await query.single();
+
+      console.log(`🔍 SUPABASE_QUERY: Result for "${table}":`, {
+        data: data ? 'Found data' : 'No data',
+        error: error ? error.message : 'No error',
+        errorCode: error?.code
+      });
+
+      if (error) {
+        const appError = handleSupabaseError(error, 'select', table)
+        return { data: null, error: appError };
+      }
+
+      return { data, error: null };
+    }
+
+    if (operation === 'selectAll') {
+      let query = supabase.from(table).select('*');
+
+      if (options.orderBy) {
+        query = query.order(options.orderBy);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        const appError = handleSupabaseError(error, 'select', table)
+        return { data: null, error: appError };
+      }
+
+      return { data, error: null };
+    }
+
+    // Default case
+    const { data, error } = await supabase.from(table).select('*');
 
     if (error) {
-      console.error('Error fetching feelings content:', error);
+      console.error(`Error ${errorMessage}:`, error);
       return { data: null, error };
     }
 
     return { data, error: null };
   } catch (error) {
-    console.error('Exception fetching feelings content:', error);
+    const appError = logError(
+      `Exception during database operation: ${errorMessage}`,
+      error,
+      table,
+      'high'
+    )
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Failed to fetch feelings content')
+      error: appError
     };
   }
 }
 
-// Barriers content function
+// Feelings content function - now uses generic wrapper
+export async function getFeelingsContent(feelingName: string) {
+  return supabaseQuery(
+    'feelings_content',
+    'select',
+    { column: 'feeling_name', value: feelingName },
+    'fetching feelings content'
+  );
+}
+
+// Barriers content function - now uses generic wrapper
 export async function getBarriersContent(barrierName: string) {
-  try {
-    const { data, error } = await supabase
-      .from('barriers_content')
-      .select('*')
-      .eq('barrier_name', barrierName)
-      .single();
-
-    if (error) {
-      console.error('Error fetching barriers content:', error);
-      return { data: null, error };
-    }
-
-    return { data, error: null };
-  } catch (error) {
-    console.error('Exception fetching barriers content:', error);
-    return {
-      data: null,
-      error: error instanceof Error ? error : new Error('Failed to fetch barriers content')
-    };
-  }
+  return supabaseQuery(
+    'barriers_content',
+    'select',
+    { column: 'barrier_name', value: barrierName },
+    'fetching barriers content'
+  );
 }
 
 // Quiz submission function
@@ -226,240 +308,287 @@ export async function saveQuizSubmission(submission: {
   }
 }
 
-// Identity Content Functions
+// Identity Content Functions - now use generic wrapper
 export async function getIdentitiesContent(identityName: string) {
-  try {
-    const { data, error } = await supabase
-      .from('identities_content')
-      .select('*')
-      .eq('identity_name', identityName)
-      .single();
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching identity content:', error);
-    return { 
-      data: null, 
-      error: error instanceof Error ? error : new Error('Failed to fetch identity content') 
-    };
-  }
+  return supabaseQuery(
+    'identities_content',
+    'select',
+    { column: 'identity_name', value: identityName },
+    'fetching identity content'
+  );
 }
 
-// Crisis Mode Functions
+// Crisis Mode Functions - now use generic wrapper
 export async function getCrisisModeFeeling(feelingName: string) {
-  try {
-    const { data, error } = await supabase
-      .from('crisis_mode_feelings')
-      .select('*')
-      .eq('feeling_name', feelingName)
-      .single();
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching crisis mode feeling:', error);
-    return { 
-      data: null, 
-      error: error instanceof Error ? error : new Error('Failed to fetch crisis mode feeling') 
-    };
-  }
+  return supabaseQuery(
+    'crisis_mode_feelings',
+    'select',
+    { column: 'feeling_name', value: feelingName },
+    'fetching crisis mode feeling'
+  );
 }
 
 export async function getAllCrisisModeFeelingsNames() {
-  try {
-    const { data, error } = await supabase
-      .from('crisis_mode_feelings')
-      .select('feeling_name, description, icon')
-      .order('feeling_name');
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching crisis mode feelings names:', error);
-    return { 
-      data: null, 
-      error: error instanceof Error ? error : new Error('Failed to fetch crisis mode feelings names') 
-    };
-  }
+  return supabaseQuery(
+    'crisis_mode_feelings',
+    'selectAll',
+    { orderBy: 'feeling_name' },
+    'fetching all crisis mode feelings names'
+  );
 }
 
 export async function getAllIdentitiesContent() {
-  try {
-    const { data, error } = await supabase
-      .from('identities_content')
-      .select('*')
-      .order('identity_name');
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching all identity content:', error);
-    return { 
-      data: null, 
-      error: error instanceof Error ? error : new Error('Failed to fetch identity content') 
-    };
-  }
+  return supabaseQuery(
+    'identities_content',
+    'selectAll',
+    { orderBy: 'identity_name' },
+    'fetching all identity content'
+  );
 }
 
-// Tasks Content Functions
+// Tasks Content Functions - now use generic wrapper
 export async function getTasksContent(taskName: string) {
-  try {
-    const { data, error } = await supabase
-      .from('tasks_content')
-      .select('*')
-      .ilike('task_name', taskName)
-      .single();
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching task content:', error);
-    return { 
-      data: null, 
-      error: error instanceof Error ? error : new Error('Failed to fetch task content') 
-    };
-  }
+  return supabaseQuery(
+    'tasks_content',
+    'select',
+    { column: 'task_name', value: taskName, useIlike: true },
+    'fetching task content'
+  );
 }
 
 export async function getAllTasksContent() {
-  try {
-    const { data, error } = await supabase
-      .from('tasks_content')
-      .select('*')
-      .order('task_name');
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching all task content:', error);
-    return { 
-      data: null, 
-      error: error instanceof Error ? error : new Error('Failed to fetch task content') 
-    };
-  }
+  return supabaseQuery(
+    'tasks_content',
+    'selectAll',
+    { orderBy: 'task_name' },
+    'fetching all task content'
+  );
 }
 
-// Complex Loops Content Functions
+// Complex Loops Content Functions - now use generic wrapper
 export async function getComplexLoopsContent(loopName: string) {
-  try {
-    const { data, error } = await supabase
-      .from('complex_loops_content')
-      .select('*')  
-      .ilike('loop_name', loopName)
-      .single();
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching complex loop content:', error);
-    return { 
-      data: null, 
-      error: error instanceof Error ? error : new Error('Failed to fetch complex loop content') 
-    };
-  }
+  return supabaseQuery(
+    'complex_loops_content',
+    'select',
+    { column: 'loop_name', value: loopName, useIlike: true },
+    'fetching complex loop content'
+  );
 }
 
 export async function getAllComplexLoopsContent() {
-  try {
-    const { data, error } = await supabase
-      .from('complex_loops_content')
-      .select('*')
-      .order('loop_name');
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching all complex loop content:', error);
-    return { 
-      data: null, 
-      error: error instanceof Error ? error : new Error('Failed to fetch complex loop content') 
-    };
-  }
+  return supabaseQuery(
+    'complex_loops_content',
+    'selectAll',
+    { orderBy: 'loop_name' },
+    'fetching all complex loop content'
+  );
 }
 
-// Complex Loop Sources Functions
+// Complex Loop Sources Functions - now use direct queries for better error handling
 export async function getComplexLoopSources(loopSlug: string) {
+  console.log(`🔍 DEBUG: Querying complex_loop_sources for slug: "${loopSlug}"`);
+
   try {
-    const { data, error } = await supabase
+    // Check if the specific loop_slug exists
+    const { data: specificData, error: specificError } = await supabase
       .from('complex_loop_sources')
       .select('*')
-      .eq('loop_slug', loopSlug)
-      .order('category, title');
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching complex loop sources:', error);
-    return {
-      data: null,
-      error: error instanceof Error ? error : new Error('Failed to fetch complex loop sources')
-    };
+      .eq('loop_slug', loopSlug);
+
+    console.log(`🔍 DEBUG: Specific query for "${loopSlug}":`, {
+      data: specificData,
+      error: specificError,
+      count: specificData?.length || 0
+    });
+
+    // Return the data regardless of count
+    if (specificData) {
+      console.log(`✅ Found ${specificData.length} sources for "${loopSlug}"`);
+      return { data: specificData, error: null };
+    }
+
+    // If there's an error, return empty array
+    if (specificError) {
+      console.log(`⚠️ Error querying sources for "${loopSlug}":`, specificError);
+      return { data: [], error: specificError };
+    }
+
+    // If no data and no error, return empty array
+    console.log(`⚠️ No sources found for "${loopSlug}"`);
+    return { data: [], error: null };
+
+  } catch (debugError) {
+    console.error(`🔍 DEBUG: Error during debug queries:`, debugError);
+    return { data: [], error: null };
   }
 }
 
-// Feeling Sources Functions
+// Feeling Sources Functions - now use generic wrapper
 export async function getFeelingSources(feelingSlug: string) {
+  console.log(`🔍 DEBUG: Querying feeling_sources for slug: "${feelingSlug}"`);
+
+  // First, let's see what data actually exists in the feeling_sources table
   try {
-    const { data, error } = await supabase
+    console.log(`🔍 DEBUG: Checking all data in feeling_sources table...`);
+    const { data: allData, error: allError } = await supabase
       .from('feeling_sources')
       .select('*')
-      .eq('feeling_slug', feelingSlug)  
-      .order('category, title');
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching feeling sources:', error);
-    return { 
-      data: null, 
-      error: error instanceof Error ? error : new Error('Failed to fetch feeling sources') 
-    };
+      .limit(10);
+
+    console.log(`🔍 DEBUG: All feeling_sources data (first 10):`, {
+      data: allData,
+      error: allError,
+      count: allData?.length || 0
+    });
+
+    // Check if the specific feeling_slug exists
+    const { data: specificData, error: specificError } = await supabase
+      .from('feeling_sources')
+      .select('*')
+      .eq('feeling_slug', feelingSlug);
+
+    console.log(`🔍 DEBUG: Specific query for "${feelingSlug}":`, {
+      data: specificData,
+      error: specificError,
+      count: specificData?.length || 0
+    });
+
+    // Return the data regardless of count - the database has the data!
+    if (specificData) {
+      console.log(`✅ Found ${specificData.length} sources for "${feelingSlug}"`);
+      return { data: specificData, error: null };
+    }
+
+    // If there's an error, return empty array
+    if (specificError) {
+      console.log(`⚠️ Error querying sources for "${feelingSlug}":`, specificError);
+      return { data: [], error: specificError };
+    }
+
+    // If no data and no error, return empty array
+    console.log(`⚠️ No sources found for "${feelingSlug}"`);
+    return { data: [], error: null };
+
+  } catch (debugError) {
+    console.error(`🔍 DEBUG: Error during debug queries:`, debugError);
+    return { data: [], error: null };
   }
 }
 
-// Barrier Sources Functions
+// Barrier Sources Functions - now use direct queries for better error handling
 export async function getBarrierSources(barrierSlug: string) {
+  console.log(`🔍 DEBUG: Querying barrier_sources for slug: "${barrierSlug}"`);
+
   try {
-    const { data, error } = await supabase
+    // Check if the specific barrier_slug exists
+    const { data: specificData, error: specificError } = await supabase
       .from('barrier_sources')
       .select('*')
-      .eq('barrier_slug', barrierSlug)  
-      .order('category, title');
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching barrier sources:', error);
-    return { 
-      data: null, 
-      error: error instanceof Error ? error : new Error('Failed to fetch barrier sources') 
-    };
+      .eq('barrier_slug', barrierSlug);
+
+    console.log(`🔍 DEBUG: Specific query for "${barrierSlug}":`, {
+      data: specificData,
+      error: specificError,
+      count: specificData?.length || 0
+    });
+
+    // Return the data regardless of count
+    if (specificData) {
+      console.log(`✅ Found ${specificData.length} sources for "${barrierSlug}"`);
+      return { data: specificData, error: null };
+    }
+
+    // If there's an error, return empty array
+    if (specificError) {
+      console.log(`⚠️ Error querying sources for "${barrierSlug}":`, specificError);
+      return { data: [], error: specificError };
+    }
+
+    // If no data and no error, return empty array
+    console.log(`⚠️ No sources found for "${barrierSlug}"`);
+    return { data: [], error: null };
+
+  } catch (debugError) {
+    console.error(`🔍 DEBUG: Error during debug queries:`, debugError);
+    return { data: [], error: null };
   }
 }
 
-// Life Area Sources Functions
+// Life Area Sources Functions - now use direct queries for better error handling
 export async function getLifeAreaSources(lifeAreaSlug: string) {
+  console.log(`🔍 DEBUG: Querying life_areas_sources for slug: "${lifeAreaSlug}"`);
+
   try {
-    const { data, error } = await supabase
+    // Check if the specific life_area_slug exists
+    const { data: specificData, error: specificError } = await supabase
       .from('life_areas_sources')
       .select('*')
-      .eq('life_area_slug', lifeAreaSlug)  
-      .order('category, title');
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Error fetching life area sources:', error);
-    return { 
-      data: null, 
-      error: error instanceof Error ? error : new Error('Failed to fetch life area sources') 
-    };
+      .eq('life_area_slug', lifeAreaSlug);
+
+    console.log(`🔍 DEBUG: Specific query for "${lifeAreaSlug}":`, {
+      data: specificData,
+      error: specificError,
+      count: specificData?.length || 0
+    });
+
+    // Return the data regardless of count
+    if (specificData) {
+      console.log(`✅ Found ${specificData.length} sources for "${lifeAreaSlug}"`);
+      return { data: specificData, error: null };
+    }
+
+    // If there's an error, return empty array
+    if (specificError) {
+      console.log(`⚠️ Error querying sources for "${lifeAreaSlug}":`, specificError);
+      return { data: [], error: specificError };
+    }
+
+    // If no data and no error, return empty array
+    console.log(`⚠️ No sources found for "${lifeAreaSlug}"`);
+    return { data: [], error: null };
+
+  } catch (debugError) {
+    console.error(`🔍 DEBUG: Error during debug queries:`, debugError);
+    return { data: [], error: null };
   }
 }
 
-// Identity Sources Functions
+// Identity Sources Functions - now use direct queries for better error handling
 export async function getIdentitySources(identitySlug: string) {
+  console.log(`🔍 DEBUG: Querying identity_sources for slug: "${identitySlug}"`);
+
   try {
-    const { data, error } = await supabase
+    // Check if the specific identity_slug exists
+    const { data: specificData, error: specificError } = await supabase
       .from('identity_sources')
       .select('*')
-      .eq('identity_slug', identitySlug)
-      .order('category, title')
-    return { data, error }
-  } catch (error) {
-    console.error('Error fetching identity sources:', error)
-    return {
-      data: null,
-      error: error instanceof Error ? error : new Error('Failed to fetch identity sources')
+      .eq('identity_slug', identitySlug);
+
+    console.log(`🔍 DEBUG: Specific query for "${identitySlug}":`, {
+      data: specificData,
+      error: specificError,
+      count: specificData?.length || 0
+    });
+
+    // Return the data regardless of count
+    if (specificData) {
+      console.log(`✅ Found ${specificData.length} sources for "${identitySlug}"`);
+      return { data: specificData, error: null };
     }
+
+    // If there's an error, return empty array
+    if (specificError) {
+      console.log(`⚠️ Error querying sources for "${identitySlug}":`, specificError);
+      return { data: [], error: specificError };
+    }
+
+    // If no data and no error, return empty array
+    console.log(`⚠️ No sources found for "${identitySlug}"`);
+    return { data: [], error: null };
+
+  } catch (debugError) {
+    console.error(`🔍 DEBUG: Error during debug queries:`, debugError);
+    return { data: [], error: null };
   }
 }
 

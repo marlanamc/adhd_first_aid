@@ -1,42 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { X, ArrowRight } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { CrisisModeFeeling } from '@/types/crisis-mode'
 
 // Function to format markdown text (same as used in content pages)
-const formatMarkdownText = (text: string) => {
-  if (!text) return text
-  
-  // Handle bold text (**text**)
-  const withBold = text.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
-    }
-    return { type: 'text', content: part, key: `text-${index}` };
-  });
-
-  // Then handle italics (_text_) within each part
-  const result: React.ReactNode[] = [];
-  withBold.forEach((item) => {
-    if (item.type === 'bold') {
-      result.push(<strong key={item.key}>{item.content}</strong>);
-    } else {
-      // Process italics in text parts
-      const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
-        if (part.startsWith('_') && part.endsWith('_')) {
-          return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
-        }
-        return part;
-      });
-      result.push(...italicParts);
-    }
-  });
-
-  return result;
-};
+import { formatMarkdownText } from '@/lib/utils'
 
 interface TargetedCrisisModeProps {
   feelingName: string
@@ -50,13 +21,7 @@ export function TargetedCrisisMode({ feelingName, isOpen, onClose, feelingEmoji 
   const [isLoading, setIsLoading] = useState(false)
   const [completedStrategies, setCompletedStrategies] = useState<Set<number>>(new Set())
 
-  useEffect(() => {
-    if (isOpen && feelingName) {
-      fetchCrisisFeeling()
-    }
-  }, [isOpen, feelingName])
-
-  const fetchCrisisFeeling = async () => {
+  const fetchCrisisFeeling = useCallback(async () => {
     setIsLoading(true)
     try {
       const { data, error } = await supabase
@@ -76,7 +41,13 @@ export function TargetedCrisisMode({ feelingName, isOpen, onClose, feelingEmoji 
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [feelingName])
+
+  useEffect(() => {
+    if (isOpen && feelingName) {
+      fetchCrisisFeeling()
+    }
+  }, [isOpen, feelingName, fetchCrisisFeeling])
 
   const toggleStrategy = (index: number) => {
     const newCompleted = new Set(completedStrategies)

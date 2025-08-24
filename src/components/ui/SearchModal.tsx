@@ -266,7 +266,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     }, 400) // Slightly longer delay for database queries
 
     return () => clearTimeout(timer)
-  }, [query])
+  }, [query, performSearch])
 
   // Focus input when modal opens
   useEffect(() => {

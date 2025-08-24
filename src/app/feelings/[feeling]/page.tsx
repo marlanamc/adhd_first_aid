@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useState, useEffect, use } from 'react'
+import Link from 'next/link'
 import { 
   ArrowLeft, Heart, Plus, Minus, BookOpen, 
   Brain, Zap, Frown, Users, BrainCircuit, 
@@ -9,7 +10,7 @@ import {
   Activity, Skull, CloudRain, Rainbow,
   Waves, CloudDrizzle, ArrowLeftRight, UserMinus, UserCircle, HeartOff, ZapOff,
   Share2, Wrench, Construction, RotateCcw, Puzzle, XCircle,
-  Scale, Scissors, UserX, Battery, X, User, Star, Lock
+
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getFeelingsContent, getFeelingSources } from '@/lib/supabase'
@@ -21,116 +22,7 @@ import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import { TargetedCrisisMode } from '@/components/ui/TargetedCrisisMode'
 
 
-// Function to convert markdown-style formatting to JSX with intelligent enhancement
-const formatMarkdownText = (text: string) => {
-  // If text already has markdown formatting, process it as-is
-  if (text.includes('**') || text.includes('_')) {
-    // First handle bold text (**text**)
-    const withBold = text.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
-      }
-      return { type: 'text', content: part, key: `text-${index}` };
-    });
-
-    // Then handle italics (_text_) within each part
-    const result: React.ReactNode[] = [];
-    withBold.forEach((item) => {
-      if (item.type === 'bold') {
-        result.push(<strong key={item.key}>{item.content}</strong>);
-      } else {
-        // Process italics in text parts
-        const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
-          if (part.startsWith('_') && part.endsWith('_')) {
-            return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
-          }
-          return part;
-        });
-        result.push(...italicParts);
-      }
-    });
-
-    return result;
-  }
-
-  // For plain text advice, add intelligent formatting
-  // Key phrases and concepts that should be emphasized in advice
-  const emphasisPatterns = [
-    // Emotional validation
-    { pattern: /\b(you are safe|you're safe|you are enough|you're enough|you matter|this is valid|this is real)\b/gi, style: 'bold' },
-    { pattern: /\b(not your fault|not weakness|not overreacting|not broken)\b/gi, style: 'bold' },
-    
-    // Core actions and techniques
-    { pattern: /\b(breathe|pause|stop|slow down|take a break|rest)\b/gi, style: 'bold' },
-    { pattern: /\b(one step|one thing|small steps|tiny actions)\b/gi, style: 'bold' },
-    { pattern: /\b(body knows|brain knows|you know|trust yourself)\b/gi, style: 'bold' },
-    
-    // Time and urgency reframes
-    { pattern: /\b(right now|this moment|today|not forever|will pass|temporary)\b/gi, style: 'bold' },
-    { pattern: /\b(doesn't have to be perfect|good enough|done is better|progress not perfection)\b/gi, style: 'bold' },
-    
-    // ADHD-specific concepts
-    { pattern: /\b(executive function|working memory|dopamine|nervous system|sensory|overwhelm)\b/gi, style: 'bold' },
-    { pattern: /\b(ADHD brain|neurodivergent|rejection sensitivity|time blindness)\b/gi, style: 'bold' },
-    
-    // Gentle self-talk patterns for italics
-    { pattern: /\b(maybe|perhaps|gently|softly|kindly|compassionately)\b/gi, style: 'italic' },
-    { pattern: /\b(it's okay to|it's normal to|you're allowed to|you can)\b/gi, style: 'italic' },
-  ];
-
-  let formattedText = text;
-  const replacements: Array<{start: number, end: number, replacement: string, originalText: string}> = [];
-
-  // Find and mark all patterns for replacement
-  emphasisPatterns.forEach(({ pattern, style }) => {
-    let match;
-    // Reset the regex to start from beginning
-    pattern.lastIndex = 0;
-    while ((match = pattern.exec(text)) !== null) {
-      const marker = style === 'bold' ? '**' : '_';
-      replacements.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        replacement: `${marker}${match[0]}${marker}`,
-        originalText: match[0]
-      });
-    }
-  });
-
-  // Sort replacements by position (reverse order to avoid index shifting)
-  replacements.sort((a, b) => b.start - a.start);
-
-  // Apply replacements
-  replacements.forEach(({ start, end, replacement }) => {
-    formattedText = formattedText.slice(0, start) + replacement + formattedText.slice(end);
-  });
-
-  // Now process the enhanced text with our original markdown processor
-  const withBold = formattedText.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
-    }
-    return { type: 'text', content: part, key: `text-${index}` };
-  });
-
-  const result: React.ReactNode[] = [];
-  withBold.forEach((item) => {
-    if (item.type === 'bold') {
-      result.push(<strong key={item.key}>{item.content}</strong>);
-    } else {
-      // Process italics in text parts
-      const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
-        if (part.startsWith('_') && part.endsWith('_')) {
-          return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
-        }
-        return part;
-      });
-      result.push(...italicParts);
-    }
-  });
-
-  return result;
-};
+import { formatMarkdownTextWithIntelligence as formatMarkdownText } from '@/lib/utils'
 
 // Icon mapping to match main feelings page
 const FEELING_ICONS: Record<string, React.ElementType> = {
@@ -246,7 +138,9 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
         // Fetch sources data using the URL slug
         const feelingSlug = resolvedParams.feeling  // This is the URL slug like 'mental-fog'
-        const { data: sourcesData } = await getFeelingSources(feelingSlug.replace(/-/g, '_'))
+        const transformedSlug = feelingSlug.replace(/-/g, '_');
+
+        const { data: sourcesData } = await getFeelingSources(transformedSlug)
         
         if (sourcesData && sourcesData.length > 0) {
           setSources(sourcesData)
@@ -320,7 +214,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fca3b7] via-[#fbc2eb] to-[#fbd786] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-      <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6 md:py-8 pt-24 sm:pt-28 md:pt-24">
+      <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6 md:py-8 pt-20 sm:pt-22 md:pt-24">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
           <div className="mb-4 sm:mb-6 md:mb-6">
@@ -474,7 +368,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
-              <p className="text-sm font-medium">Explore when you're ready</p>
+              <p className="text-sm font-medium">Explore when you&apos;re ready</p>
             </div>
             <div className="h-px bg-gray-300 dark:bg-gray-700 flex-1" />
           </div>
@@ -994,7 +888,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
           {/* Footer */}
           <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>Need more help? Check out our <a href="/guides" className="text-blue-600 hover:underline">guides</a>, <a href="/scripts" className="text-blue-600 hover:underline">scripts</a>, <a href="/quizzes" className="text-blue-600 hover:underline">quizzes</a>, or <a href="/resources" className="text-blue-600 hover:underline">resources</a>.</p>
+            <p>Need more help? Check out our <Link href="/guides" className="text-blue-600 hover:underline">guides</Link>, <Link href="/scripts" className="text-blue-600 hover:underline">scripts</Link>, <Link href="/quizzes" className="text-blue-600 hover:underline">quizzes</Link>, or <Link href="/resources" className="text-blue-600 hover:underline">resources</Link>.</p>
           </div>
           
           </div> {/* Close glassmorphism container */}

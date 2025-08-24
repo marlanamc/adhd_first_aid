@@ -20,126 +20,9 @@ import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
 
 
-// Function to convert markdown-style formatting to JSX with intelligent enhancement
-const formatMarkdownText = (text: string) => {
-  // If text already has markdown formatting, process it as-is
-  if (text.includes('**') || text.includes('_')) {
-    // First handle bold text (**text**)
-    const withBold = text.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
-      }
-      return { type: 'text', content: part, key: `text-${index}` };
-    });
+import { formatMarkdownTextWithIntelligence } from '@/lib/utils'
 
-    // Then handle italics (_text_) within each part
-    const result: React.ReactNode[] = [];
-    withBold.forEach((item) => {
-      if (item.type === 'bold') {
-        result.push(<strong key={item.key}>{item.content}</strong>);
-      } else {
-        // Process italics in text parts
-        const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
-          if (part.startsWith('_') && part.endsWith('_')) {
-            return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
-          }
-          return part;
-        });
-        result.push(...italicParts);
-      }
-    });
-
-    return result;
-  }
-
-  // For plain text advice, add intelligent formatting
-  // Key phrases and concepts that should be emphasized in advice
-  const emphasisPatterns = [
-    // Emotional validation & barrier-specific support
-    { pattern: /\b(you are safe|you're safe|you are enough|you're enough|you matter|this is valid|this is real)\b/gi, style: 'bold' },
-    { pattern: /\b(not your fault|not weakness|not overreacting|not broken|not lazy|not stupid)\b/gi, style: 'bold' },
-    { pattern: /\b(you can do this|you've got this|you're capable|you're stronger)\b/gi, style: 'bold' },
-    
-    // Core actions and techniques for barriers
-    { pattern: /\b(start small|tiny step|micro-action|break it down|chunk it)\b/gi, style: 'bold' },
-    { pattern: /\b(breathe|pause|stop|slow down|take a break|rest)\b/gi, style: 'bold' },
-    { pattern: /\b(one step|one thing|small steps|tiny actions|next right thing)\b/gi, style: 'bold' },
-    { pattern: /\b(ask for help|reach out|support|accountability|body doubling)\b/gi, style: 'bold' },
-    
-    // Time and urgency reframes for barriers
-    { pattern: /\b(right now|this moment|today|not forever|will pass|temporary)\b/gi, style: 'bold' },
-    { pattern: /\b(doesn't have to be perfect|good enough|done is better|progress not perfection)\b/gi, style: 'bold' },
-    { pattern: /\b(when you're ready|at your pace|no rush|take your time)\b/gi, style: 'bold' },
-    
-    // Barrier-specific concepts
-    { pattern: /\b(executive function|working memory|dopamine|motivation|energy|focus)\b/gi, style: 'bold' },
-    { pattern: /\b(ADHD brain|neurodivergent|rejection sensitivity|time blindness|task paralysis)\b/gi, style: 'bold' },
-    { pattern: /\b(overwhelm|shutdown|freeze|stuck|procrastination)\b/gi, style: 'bold' },
-    { pattern: /\b(nervous system|sensory|stimming|regulation)\b/gi, style: 'bold' },
-    
-    // Strategy and planning emphasis
-    { pattern: /\b(strategy|plan|system|routine|structure|scaffold)\b/gi, style: 'bold' },
-    { pattern: /\b(environment|setup|prepare|organize|declutter)\b/gi, style: 'bold' },
-    
-    // Gentle self-talk patterns for italics
-    { pattern: /\b(maybe|perhaps|gently|softly|kindly|compassionately)\b/gi, style: 'italic' },
-    { pattern: /\b(it's okay to|it's normal to|you're allowed to|you can|you might)\b/gi, style: 'italic' },
-    { pattern: /\b(consider|try|experiment|explore|notice)\b/gi, style: 'italic' },
-  ];
-
-  let formattedText = text;
-  const replacements: Array<{start: number, end: number, replacement: string, originalText: string}> = [];
-
-  // Find and mark all patterns for replacement
-  emphasisPatterns.forEach(({ pattern, style }) => {
-    let match;
-    // Reset the regex to start from beginning
-    pattern.lastIndex = 0;
-    while ((match = pattern.exec(text)) !== null) {
-      const marker = style === 'bold' ? '**' : '_';
-      replacements.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        replacement: `${marker}${match[0]}${marker}`,
-        originalText: match[0]
-      });
-    }
-  });
-
-  // Sort replacements by position (reverse order to avoid index shifting)
-  replacements.sort((a, b) => b.start - a.start);
-
-  // Apply replacements
-  replacements.forEach(({ start, end, replacement }) => {
-    formattedText = formattedText.slice(0, start) + replacement + formattedText.slice(end);
-  });
-
-  // Now process the enhanced text with our original markdown processor
-  const withBold = formattedText.split(/(\*\*[^*]+\*\*)/).map((part, index) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return { type: 'bold', content: part.slice(2, -2), key: `bold-${index}` };
-    }
-    return { type: 'text', content: part, key: `text-${index}` };
-  });
-
-  const result: React.ReactNode[] = [];
-  withBold.forEach((item) => {
-    if (item.type === 'bold') {
-      result.push(<strong key={item.key}>{item.content}</strong>);
-    } else {
-      // Process italics in text parts
-      const italicParts = item.content.split(/(_[^_]+_)/).map((part, index) => {
-        if (part.startsWith('_') && part.endsWith('_')) {
-          return <em key={`${item.key}-italic-${index}`}>{part.slice(1, -1)}</em>;
-        }
-        return part;
-      });
-      result.push(...italicParts);
-    }
-  });
-
-  return result;
-};
+// Removed duplicated formatMarkdownTextWithIntelligence function - now using centralized version
 
 interface BarrierPageProps {
   params: Promise<{
@@ -298,7 +181,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
   if (error || !content) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-        <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6 md:py-8 pt-24 sm:pt-28 md:pt-24">
+        <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6 md:py-8 pt-20 sm:pt-22 md:pt-24">
           <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-10 shadow-lg">
             <div className="flex items-center gap-4 mb-5">
               <Button
@@ -335,7 +218,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-      <div className="max-w-5xl mx-auto px-6 py-4 sm:py-6 md:py-8 pt-24 sm:pt-28 md:pt-24">
+      <div className="max-w-5xl mx-auto px-6 py-4 sm:py-6 md:py-8 pt-20 sm:pt-22 md:pt-24">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
           <div className="mb-4 sm:mb-6 md:mb-8">
@@ -380,7 +263,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
               className="border-l-4 border-orange-400 bg-orange-50/50 dark:bg-orange-900/10 pl-5 py-5 mb-4 sm:mb-6 md:mb-8 rounded-r-lg"
             >
               <p className="text-base md:text-lg text-foreground leading-relaxed">
-                {content?.intro_paragraph && formatMarkdownText(content.intro_paragraph)}
+                {content?.intro_paragraph && formatMarkdownTextWithIntelligence(content.intro_paragraph, 'barriers')}
               </p>
             </div>
           </div>
@@ -423,7 +306,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
               {expandedSections['gentle'] && (
                 <div className="bg-[#A0E8AF]/40 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#A0E8AF]/60 mt-2">
                   <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {formatMarkdownText(content.gentle_advice)}
+                    {formatMarkdownTextWithIntelligence(content.gentle_advice, 'barriers')}
                   </p>
                 </div>
               )}
@@ -455,7 +338,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
               {expandedSections['stern'] && (
                 <div className="bg-[#F87171]/30 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-[#F87171]/50 mt-2">
                   <p className="text-base text-gray-800 dark:text-gray-200 leading-relaxed">
-                    {formatMarkdownText(content.stern_advice)}
+                    {formatMarkdownTextWithIntelligence(content.stern_advice, 'barriers')}
                   </p>
                 </div>
               )}
@@ -533,8 +416,8 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                           <div className="flex-1">
                             <div className="text-gray-900 leading-snug">
                               {parsedReason
-                                ? (<><strong>{parsedReason.heading}:</strong> {formatMarkdownText(parsedReason.body)}</>)
-                                : formatMarkdownText(reason)}
+                                ? (<><strong>{parsedReason.heading}:</strong> {formatMarkdownTextWithIntelligence(parsedReason.body, 'barriers')}</>)
+                                : formatMarkdownTextWithIntelligence(reason, 'barriers')}
                             </div>
                           </div>
                         </div>
@@ -580,7 +463,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                               {step.number}. {step.title.replace(/\*\*(.*?)\*\*/g, '$1')}
                             </h3>
                             <p className="text-xs md:text-sm text-gray-700 mt-0.5">
-                              {formatMarkdownText(step.intro)}
+                              {formatMarkdownTextWithIntelligence(step.intro, 'barriers')}
                             </p>
                           </div>
                         </div>
@@ -630,8 +513,8 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                                         <span className="text-gray-500 flex-shrink-0 translate-y-[1px] text-base">→</span>
                                         <span className="text-gray-900 leading-snug">
                                           {parsed
-                                            ? (<><strong>{parsed.heading}:</strong> {formatMarkdownText(parsed.body)}</>)
-                                            : formatMarkdownText(processedItem)}
+                                            ? (<><strong>{parsed.heading}:</strong> {formatMarkdownTextWithIntelligence(parsed.body, 'barriers')}</>)
+                                            : formatMarkdownTextWithIntelligence(processedItem)}
                                         </span>
                                       </li>
                                     );
@@ -642,8 +525,8 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                                         <span className={`${colors.bulletColor} flex-shrink-0 translate-y-[1px] text-base`}>•</span>
                                         <span className="text-gray-900 leading-snug">
                                           {parsed
-                                            ? (<><strong>{parsed.heading}:</strong> {formatMarkdownText(parsed.body)}</>)
-                                            : formatMarkdownText(processedItem)}
+                                            ? (<><strong>{parsed.heading}:</strong> {formatMarkdownTextWithIntelligence(parsed.body, 'barriers')}</>)
+                                            : formatMarkdownTextWithIntelligence(processedItem)}
                                         </span>
                                       </li>
                                     );
@@ -654,7 +537,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                             
                             <div className={`${colors.tipBg} border-l-4 ${colors.border} pl-4 py-3 rounded-r-lg`}>
                               <p className="text-sm text-gray-700">
-                                <span className="font-semibold">💡 Tip:</span> {formatMarkdownText(step.tip)}
+                                <span className="font-semibold">💡 Tip:</span> {formatMarkdownTextWithIntelligence(step.tip)}
                               </p>
                             </div>
                           </div>

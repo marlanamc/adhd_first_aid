@@ -415,6 +415,9 @@ export async function hasUserVoted(strategyId: string, sessionId: string) {
 
 // Utility function to generate a session ID for anonymous users
 export function generateSessionId() {
-  return 'session_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36)
+  // Use a more deterministic approach to avoid hydration issues
+  const timestamp = Date.now()
+  const randomPart = (timestamp % 1000000).toString(36)
+  return 'session_' + randomPart + timestamp.toString(36)
 }
 

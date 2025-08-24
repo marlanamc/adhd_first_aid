@@ -4,9 +4,9 @@ import { getGuideBySlug, type Guide } from '@/lib/markdown'
 import GuideClient from './GuideClient'
 import GuideClientEnhanced from './GuideClientEnhanced'
 
-// Relax typing to align with Next.js PageProps expectations in Next 15
+// Proper typing for Next.js 15 page props
 interface GuidePageProps {
-  params: any
+  params: Promise<{ slug: string }>
 }
 
 async function getGuide(slug: string): Promise<Guide | null> {

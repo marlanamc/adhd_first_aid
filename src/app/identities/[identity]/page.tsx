@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useState, useEffect, use } from 'react'
+import Link from 'next/link'
 import { 
   ArrowLeft, Plus, Minus, Share2, Brain, Heart, 
   Wrench, RotateCcw, Rainbow, Puzzle, Construction,
@@ -16,8 +17,8 @@ import {
   Key, Flame, Folder, FileText,
   Stethoscope, Laptop, Handshake,
   UserPlus, DollarSign, Sprout,
-  Network, Timer, Building2,
-  Building, Link, ArrowLeftRight, Baby,
+  Network, Timer,   Building2,
+  Building, Link as LinkIcon, ArrowLeftRight, Baby,
   UserCog, Fingerprint, ClipboardPlus,
   BrainCircuit, HeartPulse, UserX,
   UserMinus, BanknoteX, GraduationCap,
@@ -74,7 +75,7 @@ const getSectionIcon = (emoji: string): React.ElementType => {
     '📈': TrendingUp,
     '🚀': Rocket,
     '🧩': Puzzle,
-    '🔗': Link,
+    '🔗': LinkIcon,
     '🌐': Network,
     '🌱': Sprout,
     '🛡️': Shield,
@@ -109,7 +110,7 @@ const getSectionIcon = (emoji: string): React.ElementType => {
     '🧘': Activity,
     '🧘‍♀️': Building,
     '🧱': Construction,
-    '⛓️': Link,
+    '⛓️': LinkIcon,
     '🚧': AlertTriangle,
     '⚖️': Scale,
     '⚠️': AlertTriangle,
@@ -124,270 +125,7 @@ const getSectionIcon = (emoji: string): React.ElementType => {
   return sectionIconMap[emoji] || Lightbulb // Default fallback
 }
 
-// Function to convert markdown-style formatting to JSX, including callout boxes
-const formatMarkdownText = (text: string, colorScheme?: any) => {
-  // Handle callout boxes (> content) first
-  if (text.startsWith('> ')) {
-    const calloutContent = text.substring(2);
-    
-    // Split by double newlines to handle multi-paragraph callouts
-    const paragraphs = calloutContent.split('\n\n');
-    
-    // Use section color scheme if provided, otherwise default to blue
-    const calloutColors = colorScheme ? {
-      bg: colorScheme.bg.replace('/50', '/30'), // Make callout slightly more subtle
-      border: colorScheme.border.split(' ')[0], // Get just the border color class
-      textColor: colorScheme.bulletColor
-    } : {
-      bg: 'bg-blue-100/30 dark:bg-blue-900/15',
-      border: 'border-blue-200',
-      textColor: 'text-blue-600 dark:text-blue-400'
-    };
-    
-    return (
-      <div className={`${calloutColors.bg} border-l-4 ${calloutColors.border} p-4 rounded-r-lg my-4`}>
-        <div className={`${calloutColors.textColor} font-medium space-y-2`}>
-          {paragraphs.map((paragraph, index) => (
-            <div key={index}>
-              {processTextFormatting(paragraph.trim())}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-  
-  return processTextFormatting(text);
-};
-
-// Helper function to process bold and italic formatting
-const processTextFormatting = (text: string) => {
-  // If text already has markdown formatting, process it as-is
-  if (text.includes('**') || text.includes('_') || text.includes('*')) {
-    const result: React.ReactNode[] = [];
-    let keyCounter = 0;
-
-    // Simple approach: find all markdown patterns and replace them in order
-    let processedText = text;
-    const replacements: Array<{ start: number; end: number; element: React.ReactNode }> = [];
-
-    // Find all bold patterns (**text**)
-    const boldMatches = [...processedText.matchAll(/\*\*([^*]+?)\*\*/g)];
-    boldMatches.forEach(match => {
-      if (match.index !== undefined) {
-        replacements.push({
-          start: match.index,
-          end: match.index + match[0].length,
-          element: <strong key={`bold-${keyCounter++}`}>{match[1]}</strong>
-        });
-      }
-    });
-
-    // Find all italic patterns (*text*) that don't overlap with bold
-    const italicMatches = [...processedText.matchAll(/\*([^*]+?)\*/g)];
-    italicMatches.forEach(match => {
-      if (match.index !== undefined) {
-        // Check if this overlaps with any bold matches or is part of **text**
-        const overlaps = replacements.some(r => 
-          (match.index! < r.end && match.index! + match[0].length > r.start)
-        );
-        
-        // Also check if this is part of a **text** pattern
-        const isPartOfBold = (match.index! > 0 && processedText[match.index! - 1] === '*') ||
-                            (match.index! + match[0].length < processedText.length && processedText[match.index! + match[0].length] === '*');
-        
-        if (!overlaps && !isPartOfBold) {
-          replacements.push({
-            start: match.index,
-            end: match.index + match[0].length,
-            element: <em key={`italic-${keyCounter++}`}>{match[1]}</em>
-          });
-        }
-      }
-    });
-
-    // Find all italic patterns (_text_)
-    const underscoreMatches = [...processedText.matchAll(/_([^_]+?)_/g)];
-    underscoreMatches.forEach(match => {
-      if (match.index !== undefined) {
-        // Check if this overlaps with existing matches
-        const overlaps = replacements.some(r => 
-          (match.index! < r.end && match.index! + match[0].length > r.start)
-        );
-        if (!overlaps) {
-          replacements.push({
-            start: match.index,
-            end: match.index + match[0].length,
-            element: <em key={`italic-${keyCounter++}`}>{match[1]}</em>
-          });
-        }
-      }
-    });
-
-    // Sort replacements by position
-    replacements.sort((a, b) => a.start - b.start);
-
-    // Build result by interleaving text and elements
-    let lastEnd = 0;
-    replacements.forEach(replacement => {
-      // Add text before this replacement
-      if (replacement.start > lastEnd) {
-        const textBefore = processedText.slice(lastEnd, replacement.start);
-        if (textBefore) {
-          result.push(textBefore);
-        }
-      }
-      // Add the replacement element
-      result.push(replacement.element);
-      lastEnd = replacement.end;
-    });
-
-    // Add remaining text
-    if (lastEnd < processedText.length) {
-      const remainingText = processedText.slice(lastEnd);
-      if (remainingText) {
-        result.push(remainingText);
-      }
-    }
-
-    // If no replacements, return original text
-    return result.length > 0 ? result : [text];
-  }
-
-  // For plain text advice, add intelligent formatting for identity-specific content
-  const emphasisPatterns = [
-    // Emotional validation & identity-specific support
-    { pattern: /\b(you are safe|you're safe|you are enough|you're enough|you matter|this is valid|this is real)\b/gi, style: 'bold' },
-    { pattern: /\b(not your fault|not weakness|not overreacting|not broken|not too much|not too little)\b/gi, style: 'bold' },
-    { pattern: /\b(you belong|you're welcome|you're valued|you're seen|you're heard)\b/gi, style: 'bold' },
-    
-    // Identity affirmation and empowerment
-    { pattern: /\b(your identity|your truth|your experience|your story|your journey)\b/gi, style: 'bold' },
-    { pattern: /\b(authentic|genuine|real|true to yourself|honor yourself)\b/gi, style: 'bold' },
-    { pattern: /\b(boundaries|limits|needs|rights|dignity|respect)\b/gi, style: 'bold' },
-    
-    // Core actions and self-advocacy
-    { pattern: /\b(speak up|advocate|assert|communicate|express|voice)\b/gi, style: 'bold' },
-    { pattern: /\b(ask for help|reach out|support|community|allies)\b/gi, style: 'bold' },
-    { pattern: /\b(self-care|self-compassion|self-advocacy|self-protection)\b/gi, style: 'bold' },
-    
-    // Navigating challenges and systems
-    { pattern: /\b(navigate|manage|cope with|handle|deal with|work through)\b/gi, style: 'bold' },
-    { pattern: /\b(discrimination|bias|stigma|prejudice|microaggressions)\b/gi, style: 'bold' },
-    { pattern: /\b(workplace|school|healthcare|family|relationships)\b/gi, style: 'bold' },
-    
-    // Identity-specific ADHD concepts
-    { pattern: /\b(masking|camouflaging|hiding|performing|pretending)\b/gi, style: 'bold' },
-    { pattern: /\b(intersectionality|multiple identities|complex identity)\b/gi, style: 'bold' },
-    { pattern: /\b(double stigma|triple threat|additional challenges)\b/gi, style: 'bold' },
-    
-    // Time and change reframes
-    { pattern: /\b(right now|this moment|today|not forever|will pass|temporary)\b/gi, style: 'bold' },
-    { pattern: /\b(progress not perfection|small steps|your pace|gradual change)\b/gi, style: 'bold' },
-    { pattern: /\b(healing|growth|learning|evolving|becoming)\b/gi, style: 'bold' },
-    
-    // Support and community
-    { pattern: /\b(community|tribe|chosen family|support network|allies)\b/gi, style: 'bold' },
-    { pattern: /\b(representation|visibility|role models|mentors)\b/gi, style: 'bold' },
-    
-    // Gentle self-talk patterns for italics
-    { pattern: /\b(maybe|perhaps|gently|softly|kindly|compassionately)\b/gi, style: 'italic' },
-    { pattern: /\b(it's okay to|it's normal to|you're allowed to|you can|you might)\b/gi, style: 'italic' },
-    { pattern: /\b(consider|try|experiment|explore|notice|observe)\b/gi, style: 'italic' },
-    { pattern: /\b(when you feel ready|if it helps|as you can|at your own pace)\b/gi, style: 'italic' },
-    { pattern: /\b(remember|know that|trust that|believe that)\b/gi, style: 'italic' },
-  ];
-
-  let formattedText = text;
-  const markdownReplacements: Array<{start: number, end: number, replacement: string, originalText: string}> = [];
-
-  // Find and mark all patterns for replacement
-  emphasisPatterns.forEach(({ pattern, style }) => {
-    let match;
-    // Reset the regex to start from beginning
-    pattern.lastIndex = 0;
-    while ((match = pattern.exec(text)) !== null) {
-      const marker = style === 'bold' ? '**' : '_';
-      markdownReplacements.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        replacement: `${marker}${match[0]}${marker}`,
-        originalText: match[0]
-      });
-    }
-  });
-
-  // Sort replacements by position (reverse order to avoid index shifting)
-  markdownReplacements.sort((a, b) => b.start - a.start);
-
-  // Apply replacements
-  markdownReplacements.forEach(({ start, end, replacement }) => {
-    formattedText = formattedText.slice(0, start) + replacement + formattedText.slice(end);
-  });
-
-  // Now process the enhanced text with the existing markdown processor
-  const result: React.ReactNode[] = [];
-  let keyCounter = 0;
-  const replacements: Array<{ start: number; end: number; element: React.ReactNode }> = [];
-
-  // Find all bold patterns (**text**)
-  const boldMatches = [...formattedText.matchAll(/\*\*([^*]+?)\*\*/g)];
-  boldMatches.forEach(match => {
-    if (match.index !== undefined) {
-      replacements.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        element: <strong key={`bold-${keyCounter++}`}>{match[1]}</strong>
-      });
-    }
-  });
-
-  // Find all italic patterns (_text_)
-  const underscoreMatches = [...formattedText.matchAll(/_([^_]+?)_/g)];
-  underscoreMatches.forEach(match => {
-    if (match.index !== undefined) {
-      const overlaps = replacements.some(r => 
-        (match.index! < r.end && match.index! + match[0].length > r.start)
-      );
-      if (!overlaps) {
-        replacements.push({
-          start: match.index,
-          end: match.index + match[0].length,
-          element: <em key={`italic-${keyCounter++}`}>{match[1]}</em>
-        });
-      }
-    }
-  });
-
-  // Sort replacements by position
-  replacements.sort((a, b) => a.start - b.start);
-
-  // Build result by interleaving text and elements
-  let lastEnd = 0;
-  replacements.forEach(replacement => {
-    // Add text before this replacement
-    if (replacement.start > lastEnd) {
-      const textBefore = formattedText.slice(lastEnd, replacement.start);
-      if (textBefore) {
-        result.push(textBefore);
-      }
-    }
-    // Add the replacement element
-    result.push(replacement.element);
-    lastEnd = replacement.end;
-  });
-
-  // Add remaining text
-  if (lastEnd < formattedText.length) {
-    const remainingText = formattedText.slice(lastEnd);
-    if (remainingText) {
-      result.push(remainingText);
-    }
-  }
-
-  // If no replacements, return original text
-  return result.length > 0 ? result : [text];
-};
+import { formatIdentityMarkdownText } from '@/lib/utils'
 
 interface IdentityPageProps {
   params: Promise<{
@@ -553,7 +291,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
   if (error || !content) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-4">
           <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-10 shadow-lg">
             <div className="flex items-center gap-4 mb-5">
               <Button
@@ -590,7 +328,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
-      <div className="max-w-5xl mx-auto px-6 py-8 pt-24">
+      <div className="max-w-5xl mx-auto px-6 py-8 pt-4">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
           <div className="mb-8">
@@ -634,7 +372,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
               className="border-l-4 border-purple-400 bg-purple-50/50 dark:bg-purple-900/10 pl-5 py-4 mb-7 rounded-r-lg"
             >
               <p className="text-base md:text-lg text-foreground leading-relaxed">
-                {content?.intro_paragraph && formatMarkdownText(content.intro_paragraph, {
+                {content?.intro_paragraph && formatIdentityMarkdownText(content.intro_paragraph, {
                   bg: 'bg-purple-100/50 dark:bg-purple-900/20',
                   border: 'border-purple-200 dark:border-purple-800',
                   bulletColor: 'text-purple-600 dark:text-purple-400'
@@ -691,7 +429,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
               {expandedSections['gentle'] && (
                 <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-green-200 dark:border-green-800 mt-2">
                   <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {formatMarkdownText(content.gentle_advice, {
+                    {formatIdentityMarkdownText(content.gentle_advice, {
                       bg: 'bg-green-100/50 dark:bg-green-900/20',
                       border: 'border-green-200 dark:border-green-800',
                       bulletColor: 'text-green-600 dark:text-green-400'
@@ -737,7 +475,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
               {expandedSections['stern'] && (
                 <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in slide-in-from-top duration-300 border border-red-200 dark:border-red-800 mt-2">
                   <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {formatMarkdownText(content.stern_advice, {
+                    {formatIdentityMarkdownText(content.stern_advice, {
                       bg: 'bg-red-100/50 dark:bg-red-900/20',
                       border: 'border-red-200 dark:border-red-800',
                       bulletColor: 'text-red-600 dark:text-red-400'
@@ -951,7 +689,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                 if (item.startsWith('> ')) {
                                   return (
                                     <div key={itemIndex}>
-                                      {formatMarkdownText(item, colors)}
+                                      {formatIdentityMarkdownText(item, colors)}
                                     </div>
                                   );
                                 }
@@ -962,7 +700,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                     <div key={itemIndex} className="flex items-start gap-3 mt-3 first:mt-0">
                                       <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
                                       <span className="text-gray-700 dark:text-gray-300 leading-relaxed font-semibold">
-                                        {formatMarkdownText(item, colors)}
+                                        {formatIdentityMarkdownText(item, colors)}
                                       </span>
                                     </div>
                                   );
@@ -974,7 +712,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                     <div key={itemIndex} className="flex items-start gap-3 ml-4">
                                       <span className={`${colors.bulletColor} flex-shrink-0 text-base`}>→</span>
                                       <span className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
-                                        {formatMarkdownText(item.trim().substring(1).trim(), colors)}
+                                        {formatIdentityMarkdownText(item.trim().substring(1).trim(), colors)}
                                       </span>
                                     </div>
                                   );
@@ -990,7 +728,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                     <div key={itemIndex} className="flex items-start gap-3 ml-4">
                                       <span className={`${colors.bulletColor} flex-shrink-0 text-base`}>→</span>
                                       <span className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
-                                        {formatMarkdownText(item, colors)}
+                                        {formatIdentityMarkdownText(item, colors)}
                                       </span>
                                     </div>
                                   );
@@ -1001,7 +739,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                   <div key={itemIndex} className="flex items-start gap-3">
                                     <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
                                     <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                      {formatMarkdownText(item, colors)}
+                                      {formatIdentityMarkdownText(item, colors)}
                                     </span>
                                   </div>
                                 );
@@ -1026,7 +764,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                   })}
                                   <div className="flex-1 text-left">
                                     <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                      {formatMarkdownText(subsection.title, colors)}
+                                      {formatIdentityMarkdownText(subsection.title, colors)}
                                     </h4>
                                   </div>
                                   <div className="flex-shrink-0">
@@ -1046,7 +784,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                         if (subItem.startsWith('> ')) {
                                           return (
                                             <div key={subItemIndex}>
-                                              {formatMarkdownText(subItem, colors)}
+                                              {formatIdentityMarkdownText(subItem, colors)}
                                             </div>
                                           );
                                         }
@@ -1057,7 +795,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                             <div key={subItemIndex} className="flex items-start gap-3 mt-3 first:mt-0">
                                               <span className={`${colors.bulletColor} mt-1 flex-shrink-0 text-base`}>•</span>
                                               <span className="text-gray-700 dark:text-gray-300 leading-relaxed text-base font-semibold">
-                                                {formatMarkdownText(subItem, colors)}
+                                                {formatIdentityMarkdownText(subItem, colors)}
                                               </span>
                                             </div>
                                           );
@@ -1069,7 +807,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                             <div key={subItemIndex} className="flex items-start gap-3 ml-4">
                                               <span className={`${colors.bulletColor} flex-shrink-0 text-base`}>→</span>
                                               <span className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
-                                                {formatMarkdownText(subItem.trim().substring(1).trim(), colors)}
+                                                {formatIdentityMarkdownText(subItem.trim().substring(1).trim(), colors)}
                                               </span>
                                             </div>
                                           );
@@ -1085,7 +823,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                             <div key={subItemIndex} className="flex items-start gap-3 ml-4">
                                               <span className={`${colors.bulletColor} flex-shrink-0 text-base`}>→</span>
                                               <span className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
-                                                {formatMarkdownText(subItem, colors)}
+                                                {formatIdentityMarkdownText(subItem, colors)}
                                               </span>
                                             </div>
                                           );
@@ -1096,7 +834,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                           <div key={subItemIndex} className="flex items-start gap-3">
                                             <span className={`${colors.bulletColor} mt-1 flex-shrink-0 text-base`}>•</span>
                                             <span className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
-                                              {formatMarkdownText(subItem, colors)}
+                                              {formatIdentityMarkdownText(subItem, colors)}
                                             </span>
                                           </div>
                                         );
@@ -1410,7 +1148,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
 
           {/* Footer */}
           <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>Need more help? Check out our <a href="/guides" className="text-purple-600 hover:underline">guides</a>, <a href="/scripts" className="text-purple-600 hover:underline">scripts</a>, <a href="/quizzes" className="text-purple-600 hover:underline">quizzes</a>, or <a href="/resources" className="text-purple-600 hover:underline">resources</a>.</p>
+            <p>Need more help? Check out our <Link href="/guides" className="text-purple-600 hover:underline">guides</Link>, <Link href="/scripts" className="text-purple-600 hover:underline">scripts</Link>, <Link href="/quizzes" className="text-purple-600 hover:underline">quizzes</Link>, or <Link href="/resources" className="text-purple-600 hover:underline">resources</Link>.</p>
           </div>
           
           </div> {/* Close glassmorphism container */}

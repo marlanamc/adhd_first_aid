@@ -1,200 +1,183 @@
-# ADHD First Aid Kit
+# Supabase CLI
 
-A gentle, supportive web application designed specifically for ADHD minds during overwhelming moments. This toolkit provides personalized strategies and resources to help users navigate executive dysfunction, emotional overwhelm, and daily challenges.
+[![Coverage Status](https://coveralls.io/repos/github/supabase/cli/badge.svg?branch=main)](https://coveralls.io/github/supabase/cli?branch=main) [![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/supabase-cli/setup-cli/master?style=flat-square&label=Bitbucket%20Canary)](https://bitbucket.org/supabase-cli/setup-cli/pipelines) [![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/sweatybridge%2Fsetup-cli?label=Gitlab%20Canary)
+](https://gitlab.com/sweatybridge/setup-cli/-/pipelines)
 
-## 🎯 What This Is
+[Supabase](https://supabase.io) is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade open source tools.
 
-A safe, accessible digital space where people with ADHD can find immediate, practical support tailored to their specific situation and emotional state. Every design choice prioritizes neurodivergent accessibility, gentle language, and reducing cognitive load.
+This repository contains all the functionality for Supabase CLI.
 
-## 🚀 Quick Start
+- [x] Running Supabase locally
+- [x] Managing database migrations
+- [x] Creating and deploying Supabase Functions
+- [x] Generating types directly from your database schema
+- [x] Making authenticated HTTP requests to [Management API](https://supabase.com/docs/reference/api/introduction)
 
-```bash
-# Clone the repository
-git clone https://github.com/marlanamc/adhd_first_aid
-cd adhd-first-aid-kit
+## Getting started
 
-# Install dependencies
-npm install
+### Install the CLI
 
-# Set up environment variables
-# Create .env.local with your Supabase credentials:
-# NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-# NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-key
-
-# Start development server
-npm run dev
-```
-
-Visit `http://localhost:3000` to see the application.
-
-## 🌟 Key Features
-
-### Multiple Entry Points
-Navigate by how you're feeling in the moment:
-- **Feelings** - 22 emotion-specific pages with gentle/stern advice
-- **Barriers** - 20 pages addressing specific obstacles
-- **Tasks** - 36 task-specific guides with ADHD-friendly approaches  
-- **Identities** - 23 identity-based support pages
-- **Complex Loops** - 29 behavioral pattern pages with strategies
-
-### ADHD-Friendly Design
-- **Collapsible Content** - Reduce overwhelm with expandable sections
-- **Progressive Disclosure** - Information revealed step-by-step
-- **Gentle Language** - No harsh productivity advice
-- **Mobile-First** - Optimized for phones and touch interaction
-- **Visual Calm** - Soft gradients and glassmorphism effects
-
-### Interactive Features
-- **Crisis Mode** - Targeted support for overwhelming moments
-- **Systems Lab** - Browse and build ADHD-friendly routines
-- **Guides** - Educational content about ADHD
-- **Scripts** - Communication templates for difficult conversations
-- **Quizzes** - Self-assessment tools
-- **Resources** - Curated external resources and terminology
-
-## 🏗️ Tech Stack
-
-- **Next.js 15** with TypeScript and App Router
-- **Supabase** - PostgreSQL database with row-level security
-- **Tailwind CSS** - Custom ADHD-friendly styling
-- **shadcn/ui** - Accessible component library
-- **Lucide React** - Icon library
-
-## 📁 Project Structure
-
-```
-src/
-├── app/                 # Next.js App Router pages
-│   ├── barriers/        # Barrier pages
-│   ├── feelings/        # Feeling pages  
-│   ├── tasks/           # Task pages
-│   ├── identities/      # Identity pages
-│   ├── complex_loops/   # Complex loop pages
-│   ├── systems/         # Systems Lab
-│   ├── guides/          # Educational guides
-│   └── [others]/        # Additional features
-├── components/          
-│   ├── ui/              # Reusable UI components
-│   │   ├── TargetedCrisisMode.tsx    # Crisis mode support
-│   │   └── FixedBottomActions.tsx    # Action buttons
-│   ├── barriers/        # Barrier-specific components
-│   └── feelings/        # Feeling-specific components
-├── lib/                 # Utilities and database client
-├── hooks/               # Custom React hooks
-├── types/               # TypeScript definitions
-└── scripts/             # Essential import scripts only
-```
-
-## 🧠 Database Structure
-
-All content is stored in Supabase with comprehensive relational data:
-
-- **strategies** - 289 ADHD-specific strategies
-- **feelings_content** - Complete feeling pages with dual advice system
-- **tasks_content** - Task-specific guidance with ADHD reasons
-- **barriers_content** - Barrier-focused strategies
-- **identities_content** - Identity-based support
-- **complex_loops_content** - Behavioral pattern content
-- **crisis_mode_feelings** - Quick access crisis support
-- **[entity]_sources** - Research sources for content credibility
-
-## 🎨 Design Philosophy
-
-### Visual Design
-- **Ocean Gradients** - Calming color schemes
-- **Glassmorphism** - Modern, gentle aesthetic
-- **Soft Typography** - Easy on the eyes
-- **Clear Hierarchy** - Information organized intuitively
-
-### UX Principles
-- **Work WITH ADHD** - Not against it
-- **Small Steps** - Everything broken into manageable pieces
-- **Multiple Paths** - Different entry points for different needs
-- **No Judgment** - Supportive, understanding tone throughout
-
-## 📝 Development Commands
+Available via [NPM](https://www.npmjs.com) as dev dependency. To install:
 
 ```bash
-npm run dev          # Start development server
-npm run build        # Build for production  
-npm run lint         # Run ESLint
-npm run import-data  # Import CSV data to Supabase
-
-# Essential scripts (optimized repository)
-tsx scripts/import-data.ts                    # Main data import
-tsx scripts/import-life-areas-sources.ts     # Import sources
-tsx scripts/import-identity-sources.ts       # Import identity sources  
-tsx scripts/import-complex-loop-sources.ts   # Import loop sources
+npm i supabase --save-dev
 ```
 
-## 🤝 Contributing
+To install the beta release channel:
 
-We welcome contributions that align with our ADHD-friendly philosophy:
+```bash
+npm i supabase@beta --save-dev
+```
 
-1. **Understand ADHD** - Familiarize yourself with executive dysfunction
-2. **Use Gentle Language** - Avoid productivity shame
-3. **Test on Mobile** - Ensure touch-friendly interactions
-4. **Consider Cognitive Load** - Keep interfaces simple and clear
+When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
 
-## ⚠️ Important Notes
+```
+NODE_OPTIONS=--no-experimental-fetch yarn add supabase
+```
 
-- **Not Medical Advice** - This is peer support, not clinical treatment
-- **Crisis Resources** - Emergency contacts are prominently displayed
-- **Privacy First** - No tracking, no data collection
-- **Local Storage** - User preferences saved locally only
+> **Note**
+For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
 
-## 🚨 Crisis Mode
+<details>
+  <summary><b>macOS</b></summary>
 
-A dedicated support system for overwhelming moments, offering:
+  Available via [Homebrew](https://brew.sh). To install:
 
-### Targeted Crisis Support
+  ```sh
+  brew install supabase/tap/supabase
+  ```
 
-- **Mood-Based Categories** - Anxious, Despair, Numbed, Overwhelmed, Scattered
-- **Quick Access** - Immediate help without navigation complexity  
-- **Feeling-Specific Resources** - 22 crisis-ready emotions with tailored support
-- **Mobile-Optimized** - Touch-friendly interface for distressed states
+  To install the beta release channel:
+  
+  ```sh
+  brew install supabase/tap/supabase-beta
+  brew link --overwrite supabase-beta
+  ```
+  
+  To upgrade:
 
-### Crisis Mode Features
+  ```sh
+  brew upgrade supabase
+  ```
+</details>
 
-- **One-Touch Access** - Crisis button available throughout the app
-- **Gentle Language** - Supportive, non-judgmental tone
-- **Progressive Steps** - Simple, achievable actions
-- **Safety Resources** - Crisis hotlines and emergency contacts
+<details>
+  <summary><b>Windows</b></summary>
 
-Crisis mode integrates seamlessly across feelings, barriers, and complex loops pages, ensuring help is always within reach.
+  Available via [Scoop](https://scoop.sh). To install:
 
-## 📚 Recent Updates
+  ```powershell
+  scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+  scoop install supabase
+  ```
 
-### August 2025
+  To upgrade:
 
-- **NEW: Crisis Mode** - Targeted support for overwhelming moments
-- **Repository Optimization** - Reduced from 18,761 files to ~50 (99.7% reduction)
-- **Performance Improvements** - Dramatically faster development experience
-- **Enhanced Database** - Added crisis_mode_feelings table
-- **Updated UI Components** - TargetedCrisisMode and enhanced FixedBottomActions
+  ```powershell
+  scoop update supabase
+  ```
+</details>
 
-### January 2025
+<details>
+  <summary><b>Linux</b></summary>
 
-- Complete database migration for all content
-- Enhanced UI components for barriers and feelings  
-- New crisis and walkthrough support hooks
-- Improved guide system with better navigation
-- Added comprehensive source citations for credibility
+  Available via [Homebrew](https://brew.sh) and Linux packages.
 
-## 🌈 Our Mission
+  #### via Homebrew
 
-Create a genuinely helpful resource for the ADHD community where overwhelm is met with understanding, and practical support is offered without judgment. This isn't about "fixing" ADHD brains—it's about providing tools that work WITH their unique wiring.
+  To install:
 
-## 📄 License
+  ```sh
+  brew install supabase/tap/supabase
+  ```
 
-This project is open source and available under the MIT License.
+  To upgrade:
 
-## 🔗 Links
+  ```sh
+  brew upgrade supabase
+  ```
 
-- **Live Site**: [Coming Soon]
-- **GitHub**: [github.com/marlanamc/adhd_first_aid](https://github.com/marlanamc/adhd_first_aid)
-- **Issues**: [Report bugs or request features](https://github.com/marlanamc/adhd_first_aid/issues)
+  #### via Linux packages
 
----
+  Linux packages are provided in [Releases](https://github.com/supabase/cli/releases). To install, download the `.apk`/`.deb`/`.rpm`/`.pkg.tar.zst` file depending on your package manager and run the respective commands.
 
-Made with 💛 for the ADHD community
+  ```sh
+  sudo apk add --allow-untrusted <...>.apk
+  ```
+
+  ```sh
+  sudo dpkg -i <...>.deb
+  ```
+
+  ```sh
+  sudo rpm -i <...>.rpm
+  ```
+
+  ```sh
+  sudo pacman -U <...>.pkg.tar.zst
+  ```
+</details>
+
+<details>
+  <summary><b>Other Platforms</b></summary>
+
+  You can also install the CLI via [go modules](https://go.dev/ref/mod#go-install) without the help of package managers.
+
+  ```sh
+  go install github.com/supabase/cli@latest
+  ```
+
+  Add a symlink to the binary in `$PATH` for easier access:
+
+  ```sh
+  ln -s "$(go env GOPATH)/bin/cli" /usr/bin/supabase
+  ```
+
+  This works on other non-standard Linux distros.
+</details>
+
+<details>
+  <summary><b>Community Maintained Packages</b></summary>
+
+  Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
+  To install in your working directory:
+
+  ```bash
+  pkgx install supabase
+  ```
+
+  Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
+</details>
+
+### Run the CLI
+
+```bash
+supabase bootstrap
+```
+
+Or using npx:
+
+```bash
+npx supabase bootstrap
+```
+
+The bootstrap command will guide you through the process of setting up a Supabase project using one of the [starter](https://github.com/supabase-community/supabase-samples/blob/main/samples.json) templates.
+
+## Docs
+
+Command & config reference can be found [here](https://supabase.com/docs/reference/cli/about).
+
+## Breaking changes
+
+We follow semantic versioning for changes that directly impact CLI commands, flags, and configurations.
+
+However, due to dependencies on other service images, we cannot guarantee that schema migrations, seed.sql, and generated types will always work for the same CLI major version. If you need such guarantees, we encourage you to pin a specific version of CLI in package.json.
+
+## Developing
+
+To run from source:
+
+```sh
+# Go >= 1.22
+go run . help
+```
