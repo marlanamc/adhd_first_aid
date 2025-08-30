@@ -104,12 +104,12 @@ export const PAGE_TYPE_COLORS = {
 } as const
 
 // ===== UTILITY FUNCTIONS =====
-export const getPageTypeColors = (pageType: PageType) => PAGE_TYPE_COLORS[pageType] || PAGE_TYPE_COLORS.default
+export const getPageTypeColors = (pageType: PageType) => PAGE_TYPE_COLORS[pageType as keyof typeof PAGE_TYPE_COLORS] || PAGE_TYPE_COLORS.default
 
 export const getPageTypeGradient = (pageType: PageType) => PAGE_BACKGROUND_GRADIENTS[pageType as keyof typeof PAGE_BACKGROUND_GRADIENTS] || PAGE_BACKGROUND_GRADIENTS.home
 
 export const getPageTypeClass = (pageType: PageType, variant: keyof typeof PAGE_TYPE_COLORS.feeling) =>
-  PAGE_TYPE_COLORS[pageType]?.[variant] || PAGE_TYPE_COLORS.default?.[variant] || PAGE_TYPE_COLORS.default.primary
+  PAGE_TYPE_COLORS[pageType as keyof typeof PAGE_TYPE_COLORS]?.[variant] || PAGE_TYPE_COLORS.default?.[variant] || PAGE_TYPE_COLORS.default.primary
 
 export const getEmotionalGradient = (emotion: keyof typeof EMOTIONAL_GRADIENTS) => EMOTIONAL_GRADIENTS[emotion]
 

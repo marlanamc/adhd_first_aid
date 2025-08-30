@@ -5,6 +5,48 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Reset default margins and padding */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Category-specific background gradients */
+.bg-identities {
+  background: linear-gradient(135deg, #78c2f2 0%, #b39ddb 50%, #e1d5f9 100%);
+}
+.dark .bg-identities {
+  background: linear-gradient(135deg, #1e293b 0%, #374151 50%, #4b5563 100%);
+}
+
+.bg-complex-loops {
+  background: linear-gradient(135deg, #b0f4ea 0%, #78c2f2 50%, #a18cd1 100%);
+}
+.dark .bg-complex-loops {
+  background: linear-gradient(135deg, #1e293b 0%, #374151 50%, #4b5563 100%);
+}
+
+.bg-feelings {
+  background: linear-gradient(135deg, #fca3b7 0%, #fbc2eb 50%, #fbd786 100%);
+}
+.dark .bg-feelings {
+  background: linear-gradient(135deg, #1e293b 0%, #374151 50%, #4b5563 100%);
+}
+
+.bg-barriers {
+  background: linear-gradient(135deg, #fbd786 0%, #fff5db 50%, #c0f5a3 100%);
+}
+.dark .bg-barriers {
+  background: linear-gradient(135deg, #1e293b 0%, #374151 50%, #4b5563 100%);
+}
+
+.bg-life-areas {
+  background: linear-gradient(135deg, #9ee5b5 0%, #b0f4ea 50%, #8fd3f4 100%);
+}
+.dark .bg-life-areas {
+  background: linear-gradient(135deg, #1e293b 0%, #374151 50%, #4b5563 100%);
+}
+
 /* Font Classes */
 .font-inter {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;

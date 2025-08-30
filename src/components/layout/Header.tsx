@@ -58,7 +58,7 @@ export function Header({ navigateHome, navigateToPage, onSearchOpen, pageType }:
     <>
       {/* Fixed Header - Background extends to absolute top */}
       <header
-        className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm bg-transparent border-b border-white/20 dark:border-warm-gray-700 shadow-sm pt-5"
+        className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm bg-transparent border-b border-white/20 dark:border-warm-gray-700 shadow-sm"
         style={isClient ? { paddingTop: 'env(safe-area-inset-top)' } : {}}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">

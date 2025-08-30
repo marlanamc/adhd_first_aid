@@ -277,7 +277,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
+      <div className="min-h-screen relative flex items-center justify-center">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
@@ -327,7 +327,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#78c2f2] via-[#b39ddb] to-[#e1d5f9] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
+    <div className="min-h-screen relative">
       <div className="max-w-5xl mx-auto px-6 py-8 pt-4">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
@@ -498,26 +498,31 @@ export default function IdentityPage({ params }: IdentityPageProps) {
 
           {/* ADHD Reasons - Paired two-column like complex_loops */}
           {content.adhd_reasons && content.adhd_reasons.length > 0 && (
-            <div className="bg-purple-100/40 dark:bg-purple-900/20 backdrop-blur-sm rounded-2xl border border-purple-200 dark:border-purple-800 transition-all duration-300 mb-8">
+            <div className="bg-white rounded-2xl border-2 border-[#FBF8CC] transition-all duration-300 mb-8">
               <button
                 onClick={() => toggleSection('adhd-reasons')}
-                className="w-full p-6 text-left hover:bg-purple-100/60 dark:hover:bg-purple-900/30 rounded-2xl transition-all duration-300 flex items-center justify-between group"
+                className="w-full p-4 text-left hover:bg-white rounded-2xl transition-all duration-300 flex items-center gap-4 group min-h-[75px]"
                 title={expandedSections['adhd-reasons'] ? 'Close section' : 'Open section'}
               >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-300/80 dark:bg-purple-700/80 rounded-lg flex-shrink-0 transition-transform duration-300">
-                    <Brain className="h-5 w-5 text-gray-900" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900">Why this can be hard with ADHD</h3>
+                <div className="bg-[#FBF8CC] rounded-full p-3 flex-shrink-0">
+                  <Brain className="h-5 w-5 text-gray-900" />
                 </div>
-                {expandedSections['adhd-reasons'] ? (
-                  <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
-                ) : (
-                  <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
-                )}
+                <div className="flex-1 text-left min-w-0">
+                  <h3 className="text-lg font-bold text-gray-900 break-words">
+                    Why {content?.identity_name?.replace(/^(The |ADHD Identity Guide: The |ADHD Identity Guide: )/, '') || content?.identity_name} is Hard with ADHD
+                  </h3>
+                  <p className="text-sm text-gray-700 mt-0.5">Connect what you feel with what's happening in your brain, no shame, just clarity</p>
+                </div>
+                <div className="flex-shrink-0">
+                  {expandedSections['adhd-reasons'] ? (
+                    <Minus className="h-5 w-5 text-gray-900 flex-shrink-0" />
+                  ) : (
+                    <Plus className="h-5 w-5 text-gray-900 flex-shrink-0" />
+                  )}
+                </div>
               </button>
               {expandedSections['adhd-reasons'] && (
-                <div className="px-6 pb-6 animate-in slide-in-from-top duration-300">
+                <div className="px-4 pb-4 animate-in slide-in-from-top duration-300 border-t border-[#FBF8CC] bg-white">
                   <div className="space-y-4">
                     {(() => {
                       const youMight: string[] = []
@@ -626,60 +631,48 @@ export default function IdentityPage({ params }: IdentityPageProps) {
             </div>
           )}
 
-          {/* Content Sections with nested toggles */}
+          {/* Content Sections - Simplified structure like complex_loops */}
           {content.content_sections && content.content_sections.length > 0 && (
             <div className="space-y-4">
               {content.content_sections.map((section, index) => {
-                // Define different color schemes for each section
+                // Fixed accent colors per section (starting with orange since ADHD reasons uses yellow)
                 const colorSchemes = [
-                  { bg: 'bg-blue-100/50', hover: 'hover:bg-blue-100', dark: 'dark:bg-blue-900/20 dark:hover:bg-blue-900/30', border: 'border-blue-200 dark:border-blue-800', iconBg: 'bg-blue-200 dark:bg-blue-800', bulletColor: 'text-blue-600 dark:text-blue-400' },
-                  { bg: 'bg-purple-100/50', hover: 'hover:bg-purple-100', dark: 'dark:bg-purple-900/20 dark:hover:bg-purple-900/30', border: 'border-purple-200 dark:border-purple-800', iconBg: 'bg-purple-200 dark:bg-purple-800', bulletColor: 'text-purple-600 dark:text-purple-400' },
-                  { bg: 'bg-teal-100/50', hover: 'hover:bg-teal-100', dark: 'dark:bg-teal-900/20 dark:hover:bg-teal-900/30', border: 'border-teal-200 dark:border-teal-800', iconBg: 'bg-teal-200 dark:bg-teal-800', bulletColor: 'text-teal-600 dark:text-teal-400' },
-                  { bg: 'bg-pink-100/50', hover: 'hover:bg-pink-100', dark: 'dark:bg-pink-900/20 dark:hover:bg-pink-900/30', border: 'border-pink-200 dark:border-pink-800', iconBg: 'bg-pink-200 dark:bg-pink-800', bulletColor: 'text-pink-600 dark:text-pink-400' },
-                  { bg: 'bg-amber-100/50', hover: 'hover:bg-amber-100', dark: 'dark:bg-amber-900/20 dark:hover:bg-amber-900/30', border: 'border-amber-200 dark:border-amber-800', iconBg: 'bg-amber-200 dark:bg-amber-800', bulletColor: 'text-amber-600 dark:text-amber-400' }
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#FDE4CF]', iconBg: 'bg-[#FDE4CF]', textColor: 'text-[#FDE4CF]', panelBg: 'bg-[#FDE4CF]/20', bulletColor: 'text-orange-600' }, // Orange/peach - First section
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#B9FBC0]', iconBg: 'bg-[#B9FBC0]', textColor: 'text-[#B9FBC0]', panelBg: 'bg-[#B9FBC0]/20', bulletColor: 'text-green-600' }, // Light green
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#F1C0E8]', iconBg: 'bg-[#F1C0E8]', textColor: 'text-[#F1C0E8]', panelBg: 'bg-[#F1C0E8]/20', bulletColor: 'text-pink-600' }, // Light pink
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#A3C4F3]', iconBg: 'bg-[#A3C4F3]', textColor: 'text-[#A3C4F3]', panelBg: 'bg-[#A3C4F3]/20', bulletColor: 'text-blue-600' }, // Light blue
+                  { bg: 'bg-white', hover: 'hover:bg-white', border: 'border-[#FBF8CC]', iconBg: 'bg-[#FBF8CC]', textColor: 'text-[#FBF8CC]', panelBg: 'bg-[#FBF8CC]/20', bulletColor: 'text-yellow-600' }, // Yellow - Last section
                 ];
                 
                 const colors = colorSchemes[index % colorSchemes.length];
                 
                 return (
                   <div key={index} className="relative">
-                    <Button
+                    <button
                       onClick={() => toggleSection(`section_${index}`)}
-                      onMouseEnter={() => setHoveredSection(`section_${index}`)}
-                      onMouseLeave={() => setHoveredSection(null)}
-                      onTouchStart={() => setHoveredSection(null)}
-                      className="w-full flex items-center gap-4 mb-3 p-4 rounded-xl bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors min-h-[75px] touch-manipulation"
-                      variant="ghost"
-                      size="lg"
+                      className={`w-full flex items-center gap-4 p-4 rounded-2xl border-2 ${colors.bg} ${colors.hover} ${colors.border} transition-colors min-h-[75px] touch-manipulation`}
                     >
                       <div className={`${colors.iconBg} rounded-full p-3 flex-shrink-0`}>
                         {React.createElement(getSectionIcon(section.emoji), {
-                          className: "h-6 w-6 text-gray-700 dark:text-gray-300"
+                          className: "h-5 w-5 text-gray-900"
                         })}
                       </div>
                       <div className="flex-1 text-left min-w-0">
-                        <h3 className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white mb-1 break-words">
+                        <h3 className="text-lg font-bold text-gray-900 break-words">
                           {section.title.replace(/\*\*(.*?)\*\*/g, '$1')}
                         </h3>
                       </div>
                       <div className="flex-shrink-0">
                         {expandedSections[`section_${index}`] ? (
-                          <Minus className="h-6 w-6 text-gray-500" />
+                          <Minus className="h-5 w-5 text-gray-900" />
                         ) : (
-                          <Plus className="h-6 w-6 text-gray-500" />
+                          <Plus className="h-5 w-5 text-gray-900" />
                         )}
                       </div>
-                    </Button>
-                    
-                    {/* Custom Tooltip */}
-                    {hoveredSection === `section_${index}` && (
-                      <div className="absolute right-2 top-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs px-2 py-1 rounded shadow-lg z-10 pointer-events-none">
-                        {expandedSections[`section_${index}`] ? "Close section" : "Open section"}
-                      </div>
-                    )}
+                    </button>
                     
                     {expandedSections[`section_${index}`] && (
-                      <div className="bg-white dark:bg-gray-900 rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 mb-4">
+                      <div className={`${colors.panelBg || 'bg-white'} rounded-xl p-5 space-y-4 animate-in slide-in-from-top duration-300 mb-4 border ${colors.border}`}>
                         {/* Main section content */}
                         {section.content && section.content.length > 0 && (
                           <div>
@@ -748,9 +741,10 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                           </div>
                         )}
                         
-                        {/* Subsections */}
+                        {/* Subsections - Only show if they exist and have content */}
                         {section.subsections && section.subsections.length > 0 && (
-                          <div className="space-y-3">
+                          <div className="mt-4 space-y-3 border-l-4 border-gray-200 dark:border-gray-700 pl-4">
+                            <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-3">Related Strategies:</h4>
                             {section.subsections.map((subsection, subIndex) => (
                               <div key={subIndex} className="relative">
                                 <Button
@@ -763,8 +757,8 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                     className: "h-5 w-5 text-gray-600 dark:text-gray-400"
                                   })}
                                   <div className="flex-1 text-left">
-                                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                      {formatIdentityMarkdownText(subsection.title, colors)}
+                                    <h4 className="text-base font-medium text-gray-900 dark:text-white">
+                                      {subsection.title}
                                     </h4>
                                   </div>
                                   <div className="flex-shrink-0">
@@ -777,64 +771,34 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                                 </Button>
                                 
                                 {expandedSections[`subsection_${index}_${subIndex}`] && (
-                                  <div className="mt-2 ml-6 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg animate-in slide-in-from-top duration-300">
-                                    <div className="space-y-3">
-                                      {subsection.content.map((subItem, subItemIndex) => {
-                                        // If it's a callout, render without bullet point
-                                        if (subItem.startsWith('> ')) {
+                                  <div className="mt-2 p-4 bg-white/50 dark:bg-gray-900/50 rounded-lg animate-in slide-in-from-top duration-300">
+                                    <div className="space-y-2">
+                                      {subsection.content.map((item, itemIndex) => {
+                                        // Handle different content types
+                                        if (item.startsWith('> ')) {
                                           return (
-                                            <div key={subItemIndex}>
-                                              {formatIdentityMarkdownText(subItem, colors)}
+                                            <div key={itemIndex} className="border-l-4 border-purple-400 bg-purple-50/50 dark:bg-purple-900/10 pl-4 py-2 rounded-r">
+                                              {formatIdentityMarkdownText(item.substring(2), colors)}
                                             </div>
                                           );
                                         }
                                         
-                                        // Check if it's a header/subheader (starts with bold text **text**)
-                                        if (subItem.trim().match(/^\*\*[^*]+\*\*/)) {
+                                        if (item.trim().startsWith('→') || item.trim().startsWith('-')) {
                                           return (
-                                            <div key={subItemIndex} className="flex items-start gap-3 mt-3 first:mt-0">
-                                              <span className={`${colors.bulletColor} mt-1 flex-shrink-0 text-base`}>•</span>
-                                              <span className="text-gray-700 dark:text-gray-300 leading-relaxed text-base font-semibold">
-                                                {formatIdentityMarkdownText(subItem, colors)}
+                                            <div key={itemIndex} className="flex items-start gap-2 ml-4">
+                                              <span className={`${colors.bulletColor} flex-shrink-0`}>→</span>
+                                              <span className="text-gray-700 dark:text-gray-300 text-sm">
+                                                {formatIdentityMarkdownText(item.replace(/^[→-]\s*/, ''), colors)}
                                               </span>
                                             </div>
                                           );
                                         }
                                         
-                                        // Check if it's an indented sub-bullet (starts with →)
-                                        if (subItem.trim().startsWith('→')) {
-                                          return (
-                                            <div key={subItemIndex} className="flex items-start gap-3 ml-4">
-                                              <span className={`${colors.bulletColor} flex-shrink-0 text-base`}>→</span>
-                                              <span className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
-                                                {formatIdentityMarkdownText(subItem.trim().substring(1).trim(), colors)}
-                                              </span>
-                                            </div>
-                                          );
-                                        }
-                                        
-                                        // Check if this should be an indented item (follows a bold header)
-                                        const previousSubItem = subItemIndex > 0 ? subsection.content[subItemIndex - 1] : null;
-                                        const isFollowingBoldHeader = previousSubItem && previousSubItem.trim().match(/^\*\*[^*]+\*\*/);
-                                        const isNotBoldItself = !subItem.trim().match(/^\*\*[^*]+\*\*/);
-                                        
-                                        if (isFollowingBoldHeader && isNotBoldItself) {
-                                          return (
-                                            <div key={subItemIndex} className="flex items-start gap-3 ml-4">
-                                              <span className={`${colors.bulletColor} flex-shrink-0 text-base`}>→</span>
-                                              <span className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
-                                                {formatIdentityMarkdownText(subItem, colors)}
-                                              </span>
-                                            </div>
-                                          );
-                                        }
-                                        
-                                        // Regular bullet point (but only for items that aren't headers)
                                         return (
-                                          <div key={subItemIndex} className="flex items-start gap-3">
-                                            <span className={`${colors.bulletColor} mt-1 flex-shrink-0 text-base`}>•</span>
-                                            <span className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
-                                              {formatIdentityMarkdownText(subItem, colors)}
+                                          <div key={itemIndex} className="flex items-start gap-2">
+                                            <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
+                                            <span className="text-gray-700 dark:text-gray-300">
+                                              {formatIdentityMarkdownText(item, colors)}
                                             </span>
                                           </div>
                                         );

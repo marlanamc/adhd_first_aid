@@ -8,7 +8,7 @@ import { CrisisModeFeeling } from '@/types/database'
 import * as LucideIcons from 'lucide-react'
 
 import { formatMarkdownText } from '@/lib/utils'
-import { getPageTypeColors, getEmotionalGradient } from '@/lib/colors'
+import { getPageTypeColors, getEmotionalGradient, type PageType } from '@/lib/colors'
 import { logError, getErrorMessage, logWarning } from '@/lib/error-handling'
 
 // ===== DOM SCANNING UTILITIES =====
@@ -285,7 +285,7 @@ export interface CustomWalkStep {
 
 export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageType }: UseCrisisAndWalkthroughOptions) {
   // Extract concerns into focused hooks
-  const colors = usePageTypeColors(pageType)
+  const colors = usePageTypeColors(pageType || 'home' as PageType)
   const walkthroughState = useWalkthroughState(slug, customSteps)
   const crisisMode = useCrisisMode()
 

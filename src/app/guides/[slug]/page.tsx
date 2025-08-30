@@ -20,7 +20,8 @@ async function getGuide(slug: string): Promise<Guide | null> {
 }
 
 export default async function GuidePage({ params }: GuidePageProps) {
-  const guide = await getGuide(params.slug)
+  const resolvedParams = await params
+  const guide = await getGuide(resolvedParams.slug)
 
   if (!guide) {
     return (
@@ -44,7 +45,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
   // Use enhanced version for guides with timeline or complex scientific content
   const enhancedGuides = ['is-it-time-to-rethink-adhd']
-  const useEnhanced = enhancedGuides.includes(params.slug)
+  const useEnhanced = enhancedGuides.includes(resolvedParams.slug)
 
   return useEnhanced ? <GuideClientEnhanced guide={guide} /> : <GuideClient guide={guide} />
 }

@@ -47,7 +47,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [isListening, setIsListening] = useState(false)
   const [searchMode, setSearchMode] = useState<'normal' | 'crisis'>('normal')
   const inputRef = useRef<HTMLInputElement>(null)
-  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const recognitionRef = useRef<any>(null)
 
   // Static content for non-strategy items
   const staticContent: SearchResult[] = [
@@ -298,7 +298,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       recognitionRef.current.interimResults = false
       recognitionRef.current.lang = 'en-US'
 
-      recognitionRef.current.onresult = (event) => {
+      recognitionRef.current.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript
         setQuery(transcript)
         setIsListening(false)

@@ -178,12 +178,21 @@ export default function RootLayout({
         <meta name="msapplication-TileImage" content="/icon-144x144.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
       </head>
-      <body className="font-inter">
+      <body className="font-inter m-0 p-0">
+        {/* Background gradient that covers entire viewport */}
+        <div className={`fixed inset-0 ${
+          pathname.startsWith('/identities') ? 'bg-identities' :
+          pathname.startsWith('/complex_loops') ? 'bg-complex-loops' :
+          pathname.startsWith('/feelings') ? 'bg-feelings' :
+          pathname.startsWith('/barriers') ? 'bg-barriers' :
+          pathname.startsWith('/life_areas') ? 'bg-life-areas' :
+          'bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900'
+        }`} 
+             style={{ zIndex: -1000, top: 0, left: 0, right: 0, bottom: 0, position: 'fixed' }} />
+        
         <ThemeProvider>
           <ModalProvider>
             <div className="min-h-screen flex flex-col relative">
-              {/* Background gradient that covers entire viewport including behind header */}
-              <div className="fixed inset-0 bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-warm-gray-900 dark:via-warm-gray-800 dark:to-warm-gray-900 -z-20" />
 
               <Header
                 navigateHome={navigateHome}
@@ -192,8 +201,8 @@ export default function RootLayout({
                 pageType={pageType}
               />
 
-              {/* Main content positioned below header */}
-              <main className="flex-1 flex flex-col relative z-10">
+              {/* Main content positioned below header with proper top margin */}
+              <main className="flex-1 flex flex-col relative z-10 mt-[80px]">
                 <ErrorBoundary>
                   {children}
                 </ErrorBoundary>

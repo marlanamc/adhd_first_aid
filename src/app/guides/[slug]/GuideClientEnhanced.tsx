@@ -604,7 +604,7 @@ export default function GuideClientEnhanced({ guide }: GuideClientEnhancedProps)
                             <div key={i} className={`rounded-2xl p-8 border-2 ${colors[i]} dark:from-blue-900/30 dark:to-blue-900/10 dark:border-blue-800/50`}>
                               <h4 className="text-lg md:text-xl font-bold text-slate-900 dark:text-slate-100 mb-6">{sub.title}</h4>
                               <ul className="space-y-4">
-                                {sub.items.map((it, j) => (
+                                {sub.content && sub.content.map((it, j) => (
                                   <li key={j} className="flex items-start gap-4">
                                     <div className="w-2 h-2 bg-slate-600 dark:bg-slate-300 rounded-full mt-3 flex-shrink-0"></div>
                                     <span className="text-sm md:text-base text-slate-800 dark:text-slate-200 leading-relaxed" dangerouslySetInnerHTML={{__html: it.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}} />

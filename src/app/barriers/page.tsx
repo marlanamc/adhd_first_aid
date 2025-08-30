@@ -122,7 +122,7 @@ export default function BarriersPage() {
     : []
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fbd786] via-[#fff5db] to-[#c0f5a3] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative">
+    <div className="min-h-screen relative">
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-12">
