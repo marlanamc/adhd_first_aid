@@ -27,6 +27,7 @@ import { getComplexLoopsContent, getComplexLoopSources } from '@/lib/supabase'
 import type { ComplexLoopsContent } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import AdhdReasonsThreeCol, { type Row as AdhdRow } from '@/components/ui/AdhdReasonsThreeCol'
+import FrameworkSection, { type FrameworkSections } from '@/components/ui/FrameworkSection'
 import CorePrinciplesCondensed from '@/components/ui/CorePrinciplesCondensed'
 import { ShareModal } from '@/components/ui/ShareModal';
 
@@ -273,6 +274,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
+  const [isFrameworkExpanded, setIsFrameworkExpanded] = useState(false)
   const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [sources, setSources] = useState<Array<{ id: number; loop_slug: string; category: string; title: string; authors: string | null; description: string }> | null>(null)
@@ -564,8 +566,20 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
 
           <div className="mb-8">
 
-            {/* ADHD Reasons - life_areas style */}
-            {content.adhd_reasons && content.adhd_reasons.length > 0 && (
+            {/* Framework Section - replaces ADHD Reasons */}
+            {content.loop_type && content.framework_title && content.framework_sections && (
+              <FrameworkSection
+                loopName={content.loop_name}
+                loopType={content.loop_type}
+                frameworkTitle={content.framework_title}
+                frameworkSections={content.framework_sections}
+                isExpanded={isFrameworkExpanded}
+                onToggle={() => setIsFrameworkExpanded(!isFrameworkExpanded)}
+              />
+            )}
+            
+            {/* Fallback to old ADHD Reasons section if new framework data is not available */}
+            {(!content.loop_type || !content.framework_sections) && content.adhd_reasons && content.adhd_reasons.length > 0 && (
               <div className="rounded-2xl transition-all duration-300 mb-4 bg-white border border-[#FBF8CC]">
                 <button
                   onClick={() => toggleSection('adhd-reasons')}
@@ -613,6 +627,29 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
                           let rest = s; let emoji: string | null = null
                           if (emojiMatch) { emoji = emojiMatch[1]; rest = emojiMatch[2] }
                           rest = sanitize(rest.replace(/^[\uFFFD\s]+/, ''))
+                          
+                          // Handle corrupted data with repeated patterns
+                          // Remove leading dash
+                          rest = rest.replace(/^-\s*/, '')
+                          
+                          // Find the first **Title** and extract it
+                          const titleMatch = rest.match(/\*\*([^*]+)\*\*/)
+                          if (titleMatch) {
+                            const title = titleMatch[1]
+                            // Find where the actual description starts (after the repetitive pattern)
+                            const afterTitle = rest.substring(titleMatch.index! + titleMatch[0].length)
+                            
+                            // Look for the pattern ": - Title: - Title: - Title: actual description"
+                            // Extract the final description after repetitive patterns
+                            let desc = afterTitle
+                              .replace(/^:\s*/, '') // Remove initial colon
+                              .replace(/(- [^:]+:\s*)+/, '') // Remove repeated "- something: " patterns
+                              .replace(/^-\s*/, '') // Remove any leading dash from description
+                              .trim()
+                            
+                            return { emoji, heading: title, desc }
+                          }
+                          
                           const boldMatch = rest.match(/^\*\*(.*?)\*\*[:：]?\s*(.*)?$/)
                           if (boldMatch) return { emoji, heading: boldMatch[1], desc: boldMatch[2] || '' }
                           return { emoji, heading: null, desc: rest }

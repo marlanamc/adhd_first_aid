@@ -14,7 +14,7 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:local": "BASE_URL=http://localhost:3000 playwright test",
-    "import-data": "tsx scripts/import-data.ts",
+    "import-data": "tsx scripts/scripts/import-data.ts",
     "validate": "tsx scripts/universal-content-validator.ts",
     "validate:all": "tsx scripts/universal-content-validator.ts",
     "validate:barriers": "tsx scripts/universal-content-validator.ts barriers",

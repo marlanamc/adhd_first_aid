@@ -214,6 +214,36 @@ export interface ComplexLoopsContent {
   stern_advice: string;
   adhd_reasons: string[];
   content_sections: IdentityContentSection[];
+  loop_type?: 'time_transition' | 'analysis_decision' | 'social_relationship' | 'dopamine_impulse' | 'energy_capacity' | 'task_communication';
+  framework_title?: string;
+  framework_sections?: {
+    // Time & Transition (The Time Trap)
+    setup?: { title: string; content: string; };
+    adhd_response?: { title: string; content: string; mechanisms: string[]; };
+    cascade?: { title: string; steps: string[]; };
+    loop?: { title: string; content: string; };
+    // Analysis & Decision (The Thinking Spiral)
+    trigger?: { title: string; content: string; };
+    adhd_amplification?: { title: string; content: string; mechanisms: string[]; };
+    mental_traffic_jam?: { title: string; steps: string[]; };
+    paralysis?: { title: string; content: string; };
+    // Social & Relationship (The Social Spiral)
+    protective_response?: { title: string; steps: string[]; };
+    reinforcement?: { title: string; content: string; };
+    // Dopamine & Impulse (The Dopamine Cycle)
+    adhd_hijack?: { title: string; content: string; mechanisms: string[]; };
+    hyperfocus_trap?: { title: string; steps: string[]; };
+    crash?: { title: string; content: string; };
+    // Energy & Capacity (The Depletion Pattern)
+    demand?: { title: string; content: string; };
+    overextension?: { title: string; content: string; mechanisms: string[]; };
+    shame_cycle?: { title: string; content: string; };
+    // Task & Communication (The Avoidance Spiral)
+    task?: { title: string; content: string; };
+    executive_breakdown?: { title: string; content: string; mechanisms: string[]; };
+    avoidance?: { title: string; steps: string[]; };
+    mountain_effect?: { title: string; content: string; };
+  };
   created_at: string;
   updated_at: string;
 }
