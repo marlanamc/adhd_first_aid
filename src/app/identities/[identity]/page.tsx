@@ -29,7 +29,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getIdentitiesContent, getIdentitySources } from '@/lib/supabase'
-import type { IdentitiesContent } from '@/lib/supabase'
+import type { IdentitiesContent, IdentitySources } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
 import FixedBottomActions from '@/components/ui/FixedBottomActions'
@@ -145,7 +145,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
   const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [isCrisisModeOpen, setIsCrisisModeOpen] = useState(false)
-  const [sources, setSources] = useState<Array<{ id: number; identity_slug: string; category: string; title: string; authors: string | null; description: string }> | null>(null)
+  const [sources, setSources] = useState<IdentitySources[] | null>(null)
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({

@@ -1,7 +1,7 @@
 // 🎨 Centralized Color System - Preserving Your Beautiful Gradients
 // This system centralizes your carefully chosen colors while keeping all gradients intact
 
-export type PageType = 'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' | 'identity' | 'guide' | 'script' | 'quiz' | 'resource'
+export type PageType = 'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' | 'identity' | 'life_area' | 'guide' | 'script' | 'quiz' | 'resource'
 
 // ===== YOUR BEAUTIFUL GRADIENTS PRESERVED =====
 export const PAGE_BACKGROUND_GRADIENTS = {

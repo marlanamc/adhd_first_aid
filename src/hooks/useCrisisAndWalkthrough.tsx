@@ -252,31 +252,31 @@ const useCrisisMode = (filterByType?: 'feeling' | 'barrier' | 'complex_loop' | '
       ])
 
       const allItems = [
-        ...(feelingsRes.data || []).map(item => ({
+        ...(feelingsRes.data || []).map((item: any) => ({
           name: item.feeling_name,
           type: 'feeling' as const,
           description: item.description,
           icon: item.icon
         })),
-        ...(barriersRes.data || []).map(item => ({
+        ...(barriersRes.data || []).map((item: any) => ({
           name: item.barrier_name,
           type: 'barrier' as const,
           description: item.description,
           icon: item.icon
         })),
-        ...(loopsRes.data || []).map(item => ({
+        ...(loopsRes.data || []).map((item: any) => ({
           name: item.loop_name,
           type: 'complex_loop' as const,
           description: item.description,
           icon: item.icon
         })),
-        ...(lifeAreasRes.data || []).map(item => ({
+        ...(lifeAreasRes.data || []).map((item: any) => ({
           name: item.life_area_name,
           type: 'life_area' as const,
           description: item.description,
           icon: item.icon
         })),
-        ...(identitiesRes.data || []).map(item => ({
+        ...(identitiesRes.data || []).map((item: any) => ({
           name: item.identity_name,
           type: 'identity' as const,
           description: item.description,
@@ -361,7 +361,7 @@ export interface UseCrisisAndWalkthroughOptions {
   slug: string
   summaryHtml?: string
   customSteps?: CustomWalkStep[]
-  pageType?: 'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' | 'identity' | 'guide' | 'script' | 'quiz' | 'resource'
+  pageType?: 'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' | 'identity' | 'life_area' | 'guide' | 'script' | 'quiz' | 'resource'
   crisisFilterType?: 'feeling' | 'barrier' | 'complex_loop' | 'life_area' | 'identity'
 }
 
@@ -470,7 +470,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
             </DialogTitle>
             <DialogDescription className="text-center">
               {selectedFeeling ? (
-                `${selectedFeeling.feeling_name || selectedFeeling.barrier_name || selectedFeeling.loop_name || selectedFeeling.life_area_name || selectedFeeling.identity_name} - Immediate support strategies`
+                `${(selectedFeeling as any).feeling_name || (selectedFeeling as any).barrier_name || (selectedFeeling as any).loop_name || (selectedFeeling as any).life_area_name || (selectedFeeling as any).identity_name} - Immediate support strategies`
               ) : (
                 "Pick the feeling that matches where you are right now"
               )}

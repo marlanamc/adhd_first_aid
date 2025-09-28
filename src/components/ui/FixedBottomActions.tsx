@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Zap, Footprints } from 'lucide-react'
 import { useCrisisAndWalkthrough } from '@/hooks/useCrisisAndWalkthrough'
 import { useIsMobile } from '@/hooks/use-mobile'
-import type { FeelingsContent, FeelingSources, BarriersContent, BarrierSources } from '@/lib/supabase'
+import type { FeelingsContent, FeelingSources, BarriersContent, BarrierSources, IdentitySources, IdentitiesContent, LifeAreaSources, TasksContent } from '@/lib/supabase'
 
 import { formatMarkdownText } from '@/lib/utils'
 
@@ -13,9 +13,9 @@ interface FixedBottomActionsProps {
   slug: string
   summaryHtml?: string
   customSteps?: Array<{ id: string; title: string; classes?: string; content: React.ReactNode }>
-  pageType?: 'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' | 'identity' | 'guide' | 'script' | 'quiz' | 'resource'
-  content?: FeelingsContent | BarriersContent | null
-  sources?: FeelingSources[] | BarrierSources[] | null
+  pageType?: 'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' | 'identity' | 'life_area' | 'guide' | 'script' | 'quiz' | 'resource'
+  content?: FeelingsContent | BarriersContent | IdentitiesContent | TasksContent | null
+  sources?: FeelingSources[] | BarrierSources[] | IdentitySources[] | LifeAreaSources[] | null
   crisisOnly?: boolean // Show only crisis mode button, no walkthrough
   onOpenCrisisMode?: () => void // Function to open targeted crisis mode for feelings
 }
@@ -107,8 +107,8 @@ export default function FixedBottomActions({
       })
     }
     
-    // Add Step Sections
-    if (Array.isArray(content.step_sections) && content.step_sections.length > 0) {
+    // Add Step Sections (only for FeelingsContent and BarriersContent)
+    if ('step_sections' in content && Array.isArray(content.step_sections) && content.step_sections.length > 0) {
       const colorSchemes = [
         { bg: 'bg-[#FCF6BD]/20', border: 'border-[#FCF6BD]/50' },
         { bg: 'bg-[#D0F4DE]/20', border: 'border-[#D0F4DE]/50' },
@@ -167,7 +167,7 @@ export default function FixedBottomActions({
     
     // Add Sources if available
     if (Array.isArray(sources) && sources.length > 0) {
-      const grouped = sources.reduce<Record<string, (FeelingSources | BarrierSources)[]>>((acc, s) => {
+      const grouped = sources.reduce<Record<string, (FeelingSources | BarrierSources | IdentitySources | LifeAreaSources)[]>>((acc, s) => {
         const cat = s.category || 'Other'
         if (!acc[cat]) acc[cat] = []
         acc[cat].push(s)
@@ -207,11 +207,56 @@ export default function FixedBottomActions({
     return steps
   }, [providedCustomSteps, content, sources, pageType])
   
-  const { goCrisis, openWalkthrough, modal } = useCrisisAndWalkthrough({ 
-    slug, 
-    summaryHtml, 
+  // Map pageType to crisis filter type for both category pages and individual content pages
+  const getCrisisFilterType = (pageType: string, slug: string) => {
+    // Check if it's a category page
+    const isCategoryPage = ['barriers', 'complex_loops', 'life_areas', 'identities', 'feelings'].includes(slug)
+
+    // For individual content pages, filter based on pageType
+    // For category pages, also filter based on pageType
+    switch (pageType) {
+      case 'barrier': return 'barrier' as const
+      case 'complex_loop': return 'complex_loop' as const
+      case 'identity': return 'identity' as const
+      case 'feeling': return 'feeling' as const
+      case 'task': return 'life_area' as const
+      default:
+        // Handle life_areas based on slug since pageType might not match exactly
+        if (slug === 'life_areas' || isCategoryPage && slug === 'life_areas') return 'life_area' as const
+        return undefined
+    }
+  }
+
+  const crisisFilterType = getCrisisFilterType(pageType || '', slug)
+
+  // Get background class to match the page background - SSR-friendly
+  const getBackgroundClass = (pageType: string, slug: string) => {
+    // Use pageType/slug checking instead of window.location to avoid hydration issues
+    if (pageType === 'identity') return 'bg-identities'
+    if (pageType === 'complex_loop') return 'bg-complex-loops'
+    if (pageType === 'feeling') return 'bg-feelings'
+    if (pageType === 'barrier') return 'bg-barriers'
+    if (pageType === 'task') return 'bg-life-areas'
+
+    // Check slug patterns for additional reliability
+    if (slug === 'identities' || slug.includes('identities')) return 'bg-identities'
+    if (slug === 'complex_loops' || slug.includes('complex_loops')) return 'bg-complex-loops'
+    if (slug === 'feelings' || slug.includes('feelings')) return 'bg-feelings'
+    if (slug === 'barriers' || slug.includes('barriers')) return 'bg-barriers'
+    if (slug === 'life_areas' || slug.includes('life_areas')) return 'bg-life-areas'
+
+    // Default gradient for other pages
+    return 'bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-600'
+  }
+
+  const backgroundClass = getBackgroundClass(pageType || '', slug)
+
+  const { goCrisis, openWalkthrough, modal } = useCrisisAndWalkthrough({
+    slug,
+    summaryHtml,
     customSteps,
-    pageType
+    pageType,
+    crisisFilterType
   })
 
   // Gradient styles for buttons to match design
@@ -223,11 +268,11 @@ export default function FixedBottomActions({
   return (
     <>
       {/* Fixed bottom action bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 backdrop-blur-md border-t border-white/20 dark:border-gray-600/20 shadow-lg z-50">
+      <div className={`fixed bottom-0 left-0 right-0 ${backgroundClass} backdrop-blur-md border-t border-white/20 dark:border-gray-600/20 shadow-lg z-50`}>
         <div className="max-w-4xl mx-auto px-4 py-3 pb-safe">
           <div className="flex items-center gap-3 justify-center">
-            <Button 
-              onClick={pageType === 'feeling' && onOpenCrisisMode ? onOpenCrisisMode : goCrisis} 
+            <Button
+              onClick={onOpenCrisisMode ? onOpenCrisisMode : goCrisis}
               className={`flex-1 sm:flex-none sm:min-w-[140px] ${gradientStyles.crisis} text-black font-medium border-0`}
               size="default"
             >
@@ -235,7 +280,7 @@ export default function FixedBottomActions({
               Crisis mode
             </Button>
             
-            {!isMobile && !crisisOnly && (
+            {!isMobile && !crisisOnly && !crisisFilterType && (
               <Button 
                 onClick={openWalkthrough} 
                 className={`flex-1 sm:flex-none sm:min-w-[180px] ${gradientStyles.walkthrough} text-black font-medium border-0`}
