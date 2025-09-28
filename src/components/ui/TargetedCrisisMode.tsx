@@ -3,51 +3,78 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { X, ArrowRight } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
-import { CrisisModeFeeling } from '@/types/crisis-mode'
+import {
+  getCrisisModeFeeling,
+  getCrisisModeBarrier,
+  getCrisisModeComplexLoop,
+  getCrisisModeLifeArea,
+  getCrisisModeIdentity
+} from '@/lib/supabase'
+import {
+  CrisisModeContent,
+  ContentType
+} from '@/types/crisis-mode'
 
 // Function to format markdown text (same as used in content pages)
 import { formatMarkdownText } from '@/lib/utils'
 
 interface TargetedCrisisModeProps {
-  feelingName: string
+  contentName: string
+  contentType: ContentType
   isOpen: boolean
   onClose: () => void
-  feelingEmoji?: string // The emoji icon to display
+  contentEmoji?: string // The emoji icon to display
 }
 
-export function TargetedCrisisMode({ feelingName, isOpen, onClose, feelingEmoji }: TargetedCrisisModeProps) {
-  const [crisisFeeling, setCrisisFeeling] = useState<CrisisModeFeeling | null>(null)
+export function TargetedCrisisMode({ contentName, contentType, isOpen, onClose, contentEmoji }: TargetedCrisisModeProps) {
+  const [crisisContent, setCrisisContent] = useState<CrisisModeContent | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [completedStrategies, setCompletedStrategies] = useState<Set<number>>(new Set())
 
-  const fetchCrisisFeeling = useCallback(async () => {
+  const fetchCrisisContent = useCallback(async () => {
     setIsLoading(true)
     try {
-      const { data, error } = await supabase
-        .from('crisis_mode_feelings')
-        .select('*')
-        .eq('feeling_name', feelingName)
-        .single()
+      let result;
 
-      if (error) {
-        console.error('Error fetching crisis feeling:', error)
+      switch (contentType) {
+        case 'feeling':
+          result = await getCrisisModeFeeling(contentName)
+          break
+        case 'barrier':
+          result = await getCrisisModeBarrier(contentName)
+          break
+        case 'complex_loop':
+          result = await getCrisisModeComplexLoop(contentName)
+          break
+        case 'life_area':
+          result = await getCrisisModeLifeArea(contentName)
+          break
+        case 'identity':
+          result = await getCrisisModeIdentity(contentName)
+          break
+        default:
+          console.error('Unknown content type:', contentType)
+          return
+      }
+
+      if (result.error) {
+        console.error('Error fetching crisis content:', result.error)
         return
       }
 
-      setCrisisFeeling(data)
+      setCrisisContent(result.data)
     } catch (error) {
-      console.error('Error fetching crisis feeling:', error)
+      console.error('Error fetching crisis content:', error)
     } finally {
       setIsLoading(false)
     }
-  }, [feelingName])
+  }, [contentName, contentType])
 
   useEffect(() => {
-    if (isOpen && feelingName) {
-      fetchCrisisFeeling()
+    if (isOpen && contentName) {
+      fetchCrisisContent()
     }
-  }, [isOpen, feelingName, fetchCrisisFeeling])
+  }, [isOpen, contentName, fetchCrisisContent])
 
   const toggleStrategy = (index: number) => {
     const newCompleted = new Set(completedStrategies)
@@ -62,15 +89,15 @@ export function TargetedCrisisMode({ feelingName, isOpen, onClose, feelingEmoji 
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 pt-24 md:pt-28">
+    <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4 pt-24 md:pt-28">
       <div className="bg-white rounded-xl max-w-md w-full max-h-[80vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-              <span className="text-lg">{feelingEmoji || '❤️'}</span>
+              <span className="text-lg">{contentEmoji || '❤️'}</span>
             </div>
             <h2 className="text-lg font-semibold text-gray-900">
-              Crisis Support: {feelingName}
+              Crisis Support: {contentName}
             </h2>
           </div>
           <Button
@@ -89,11 +116,11 @@ export function TargetedCrisisMode({ feelingName, isOpen, onClose, feelingEmoji 
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto"></div>
               <p className="text-gray-600 mt-2">Loading crisis support...</p>
             </div>
-          ) : crisisFeeling ? (
+          ) : crisisContent ? (
             <>
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                 <p className="text-red-800 text-sm leading-relaxed">
-                  {formatMarkdownText(crisisFeeling.description)}
+                  {formatMarkdownText(crisisContent.description)}
                 </p>
               </div>
 
@@ -102,7 +129,7 @@ export function TargetedCrisisMode({ feelingName, isOpen, onClose, feelingEmoji 
                   Try these strategies right now:
                 </h3>
                 <div className="space-y-2">
-                  {crisisFeeling.strategies.map((strategy, index) => (
+                  {crisisContent.strategies.map((strategy, index) => (
                     <div
                       key={index}
                       className={`p-3 rounded-lg border cursor-pointer transition-colors ${
@@ -157,7 +184,7 @@ export function TargetedCrisisMode({ feelingName, isOpen, onClose, feelingEmoji 
           ) : (
             <div className="text-center py-8">
               <p className="text-gray-600">
-                Crisis support not available for this feeling yet.
+                Crisis support not available for this {contentType} yet.
               </p>
               <Button
                 onClick={onClose}

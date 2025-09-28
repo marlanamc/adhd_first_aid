@@ -337,6 +337,78 @@ export async function getAllCrisisModeFeelingsNames() {
   );
 }
 
+export async function getCrisisModeBarrier(barrierName: string) {
+  return supabaseQuery(
+    'crisis_mode_barriers',
+    'select',
+    { column: 'barrier_name', value: barrierName },
+    'fetching crisis mode barrier'
+  );
+}
+
+export async function getAllCrisisModeBarriersNames() {
+  return supabaseQuery(
+    'crisis_mode_barriers',
+    'selectAll',
+    { orderBy: 'barrier_name' },
+    'fetching all crisis mode barriers names'
+  );
+}
+
+export async function getCrisisModeComplexLoop(loopName: string) {
+  return supabaseQuery(
+    'crisis_mode_complex_loops',
+    'select',
+    { column: 'loop_name', value: loopName },
+    'fetching crisis mode complex loop'
+  );
+}
+
+export async function getAllCrisisModeComplexLoopsNames() {
+  return supabaseQuery(
+    'crisis_mode_complex_loops',
+    'selectAll',
+    { orderBy: 'loop_name' },
+    'fetching all crisis mode complex loops names'
+  );
+}
+
+export async function getCrisisModeLifeArea(lifeAreaName: string) {
+  return supabaseQuery(
+    'crisis_mode_life_areas',
+    'select',
+    { column: 'life_area_name', value: lifeAreaName },
+    'fetching crisis mode life area'
+  );
+}
+
+export async function getAllCrisisModeLifeAreasNames() {
+  return supabaseQuery(
+    'crisis_mode_life_areas',
+    'selectAll',
+    { orderBy: 'life_area_name' },
+    'fetching all crisis mode life areas names'
+  );
+}
+
+export async function getCrisisModeIdentity(identityName: string) {
+  return supabaseQuery(
+    'crisis_mode_identities',
+    'select',
+    { column: 'identity_name', value: identityName },
+    'fetching crisis mode identity'
+  );
+}
+
+export async function getAllCrisisModeIdentitiesNames() {
+  return supabaseQuery(
+    'crisis_mode_identities',
+    'selectAll',
+    { orderBy: 'identity_name' },
+    'fetching all crisis mode identities names'
+  );
+}
+
 export async function getAllIdentitiesContent() {
   return supabaseQuery(
     'identities_content',
