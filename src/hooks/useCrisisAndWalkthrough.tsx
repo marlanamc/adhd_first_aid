@@ -540,8 +540,10 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
                 {/* Feelings grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pb-4">
                   {crisisFeelings.map((feeling) => {
-                    const IconComponent = (LucideIcons as any)[feeling.icon] as React.ComponentType<any>
-                    
+                    // Check if the icon is an emoji or a Lucide icon name
+                    const isEmoji = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u.test(feeling.icon)
+                    const IconComponent = !isEmoji ? (LucideIcons as any)[feeling.icon] as React.ComponentType<any> : null
+
                     return (
                       <button
                         key={`${feeling.type}-${feeling.name}`}
@@ -550,7 +552,9 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
                       >
                         <div className="flex items-start gap-3">
                           <div className="flex-shrink-0">
-                            {IconComponent ? (
+                            {isEmoji ? (
+                              <span className="text-lg w-5 h-5 flex items-center justify-center">{feeling.icon}</span>
+                            ) : IconComponent ? (
                               <IconComponent className="h-5 w-5 text-pink-600 dark:text-pink-400" />
                             ) : (
                               <LucideIcons.Circle className="h-5 w-5 text-pink-600 dark:text-pink-400" />
