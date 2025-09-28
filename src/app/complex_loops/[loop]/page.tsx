@@ -23,6 +23,7 @@ import {
 } from 'lucide-react'
 import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import { Button } from '@/components/ui/button'
+import { TargetedCrisisMode } from '@/components/ui/TargetedCrisisMode'
 import { getComplexLoopsContent, getComplexLoopSources } from '@/lib/supabase'
 import type { ComplexLoopsContent } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
@@ -277,6 +278,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
   const [isFrameworkExpanded, setIsFrameworkExpanded] = useState(false)
   const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [isCrisisModeOpen, setIsCrisisModeOpen] = useState(false)
   const [sources, setSources] = useState<Array<{ id: number; loop_slug: string; category: string; title: string; authors: string | null; description: string }> | null>(null)
 
   const toggleSection = (sectionId: string) => {
@@ -415,7 +417,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
 
   return (
     <div className="min-h-screen relative">
-      <div className="max-w-5xl mx-auto px-6 py-4 sm:py-6 md:py-8 pt-20 sm:pt-22 md:pt-24">
+      <div className="max-w-5xl mx-auto px-6 py-4 sm:py-6 md:py-8 pt-8 sm:pt-10 md:pt-12">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
           <div className="mb-4 sm:mb-6 md:mb-8">
@@ -1410,11 +1412,21 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
         description={`Get help with ${content?.loop_name?.toLowerCase() || 'this complex loop'} - ADHD-friendly strategies and support.`}
       />
 
+      {/* Targeted Crisis Mode Modal */}
+      <TargetedCrisisMode
+        contentName={content?.loop_name || ''}
+        contentType="complex_loop"
+        isOpen={isCrisisModeOpen}
+        onClose={() => setIsCrisisModeOpen(false)}
+        contentEmoji="🔄"
+      />
+
       {/* Fixed Bottom Actions */}
       <FixedBottomActions
         slug={resolvedParams.loop}
         summaryHtml={content?.intro_paragraph ? `<p>${content.intro_paragraph}</p>` : ''}
         pageType="complex_loop"
+        onOpenCrisisMode={() => setIsCrisisModeOpen(true)}
       />
     </div>
   )

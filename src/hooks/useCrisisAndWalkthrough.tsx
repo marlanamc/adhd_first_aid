@@ -1,15 +1,27 @@
 'use client'
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogOverlay } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { getAllCrisisModeFeelingsNames, getCrisisModeFeeling } from '@/lib/supabase'
+import {
+  getAllCrisisModeFeelingsNames,
+  getCrisisModeFeeling,
+  getAllCrisisModeBarriersNames,
+  getCrisisModeBarrier,
+  getAllCrisisModeComplexLoopsNames,
+  getCrisisModeComplexLoop,
+  getAllCrisisModeLifeAreasNames,
+  getCrisisModeLifeArea,
+  getAllCrisisModeIdentitiesNames,
+  getCrisisModeIdentity
+} from '@/lib/supabase'
 import { CrisisModeFeeling } from '@/types/database'
+import { CrisisModeContent } from '@/types/crisis-mode'
 import * as LucideIcons from 'lucide-react'
 
 import { formatMarkdownText } from '@/lib/utils'
+import { getErrorMessage, logError, logWarning } from '@/lib/error-handling'
 import { getPageTypeColors, getEmotionalGradient, type PageType } from '@/lib/colors'
-import { logError, getErrorMessage, logWarning } from '@/lib/error-handling'
 
 // ===== DOM SCANNING UTILITIES =====
 const findGuideSections = (): HTMLElement[] => {
@@ -204,22 +216,80 @@ const useWalkthroughState = (slug: string, customSteps?: CustomWalkStep[]) => {
 }
 
 // Hook for crisis mode functionality
-const useCrisisMode = () => {
+const useCrisisMode = (filterByType?: 'feeling' | 'barrier' | 'complex_loop' | 'life_area' | 'identity') => {
   const [isCrisisOpen, setIsCrisisOpen] = useState(false)
-  const [crisisFeelings, setCrisisFeelings] = useState<Pick<CrisisModeFeeling, 'feeling_name' | 'description' | 'icon'>[]>([])
-  const [selectedFeeling, setSelectedFeeling] = useState<CrisisModeFeeling | null>(null)
+  const [crisisItems, setCrisisItems] = useState<Array<{
+    name: string;
+    type: 'feeling' | 'barrier' | 'complex_loop' | 'life_area' | 'identity';
+    description: string;
+    icon: string;
+  }>>([])
+  const [selectedItem, setSelectedItem] = useState<CrisisModeContent | null>(null)
   const [crisisLoading, setCrisisLoading] = useState(false)
 
-  // Load crisis feelings when crisis modal opens
-  const loadCrisisFeelings = useCallback(async () => {
+  // Get the correct back button text based on filter type
+  const getBackButtonText = () => {
+    switch (filterByType) {
+      case 'barrier': return 'Back to barriers'
+      case 'complex_loop': return 'Back to complex loops'
+      case 'life_area': return 'Back to life areas'
+      case 'identity': return 'Back to identities'
+      case 'feeling': return 'Back to feelings'
+      default: return 'Back to crisis options'
+    }
+  }
+
+  // Load all crisis items when crisis modal opens
+  const loadCrisisItems = useCallback(async () => {
     setCrisisLoading(true)
     try {
-      const { data, error } = await getAllCrisisModeFeelingsNames()
-      if (error) throw error
-      setCrisisFeelings(data || [])
+      const [feelingsRes, barriersRes, loopsRes, lifeAreasRes, identitiesRes] = await Promise.all([
+        getAllCrisisModeFeelingsNames(),
+        getAllCrisisModeBarriersNames(),
+        getAllCrisisModeComplexLoopsNames(),
+        getAllCrisisModeLifeAreasNames(),
+        getAllCrisisModeIdentitiesNames()
+      ])
+
+      const allItems = [
+        ...(feelingsRes.data || []).map(item => ({
+          name: item.feeling_name,
+          type: 'feeling' as const,
+          description: item.description,
+          icon: item.icon
+        })),
+        ...(barriersRes.data || []).map(item => ({
+          name: item.barrier_name,
+          type: 'barrier' as const,
+          description: item.description,
+          icon: item.icon
+        })),
+        ...(loopsRes.data || []).map(item => ({
+          name: item.loop_name,
+          type: 'complex_loop' as const,
+          description: item.description,
+          icon: item.icon
+        })),
+        ...(lifeAreasRes.data || []).map(item => ({
+          name: item.life_area_name,
+          type: 'life_area' as const,
+          description: item.description,
+          icon: item.icon
+        })),
+        ...(identitiesRes.data || []).map(item => ({
+          name: item.identity_name,
+          type: 'identity' as const,
+          description: item.description,
+          icon: item.icon
+        }))
+      ]
+
+      console.log('Crisis items loaded:', allItems.length, allItems)
+      setCrisisItems(allItems)
     } catch (error) {
       const errorMessage = getErrorMessage(error)
-      logError('Failed to load crisis feelings', error, 'crisisMode', 'high')
+      console.error('Failed to load crisis items:', error)
+      logError('Failed to load crisis items', error, 'crisisMode', 'high')
     } finally {
       setCrisisLoading(false)
     }
@@ -227,33 +297,63 @@ const useCrisisMode = () => {
 
   const goCrisis = useCallback(() => {
     setIsCrisisOpen(true)
-    loadCrisisFeelings()
-  }, [loadCrisisFeelings])
+    loadCrisisItems()
+  }, [loadCrisisItems])
 
-  const selectFeeling = useCallback(async (feelingName: string) => {
+  const selectFeeling = useCallback(async (itemName: string, itemType?: 'feeling' | 'barrier' | 'complex_loop' | 'life_area' | 'identity') => {
     setCrisisLoading(true)
     try {
-      const { data, error } = await getCrisisModeFeeling(feelingName)
-      if (error) throw error
-      setSelectedFeeling(data)
+      let result;
+
+      // If type is provided, use it; otherwise try to find the item in our crisis items list
+      const type = itemType || crisisItems.find(item => item.name === itemName)?.type || 'feeling'
+
+      switch (type) {
+        case 'feeling':
+          result = await getCrisisModeFeeling(itemName)
+          break
+        case 'barrier':
+          result = await getCrisisModeBarrier(itemName)
+          break
+        case 'complex_loop':
+          result = await getCrisisModeComplexLoop(itemName)
+          break
+        case 'life_area':
+          result = await getCrisisModeLifeArea(itemName)
+          break
+        case 'identity':
+          result = await getCrisisModeIdentity(itemName)
+          break
+        default:
+          throw new Error(`Unknown crisis item type: ${type}`)
+      }
+
+      if (result.error) throw result.error
+      setSelectedItem(result.data)
     } catch (error) {
       const errorMessage = getErrorMessage(error)
-      logError('Failed to load feeling details', error, 'crisisMode', 'high')
+      logError('Failed to load crisis item details', error, 'crisisMode', 'high')
     } finally {
       setCrisisLoading(false)
     }
-  }, [])
+  }, [crisisItems])
+
+  // Filter items if filterByType is provided
+  const filteredCrisisItems = filterByType
+    ? crisisItems.filter(item => item.type === filterByType)
+    : crisisItems
 
   return {
     isCrisisOpen,
     setIsCrisisOpen,
-    crisisFeelings,
-    selectedFeeling,
-    setSelectedFeeling,
+    crisisFeelings: filteredCrisisItems, // Keep the old name for compatibility
+    selectedFeeling: selectedItem, // Keep the old name for compatibility
+    setSelectedFeeling: setSelectedItem,
     crisisLoading,
     goCrisis,
     selectFeeling,
-    loadCrisisFeelings
+    loadCrisisFeelings: loadCrisisItems,
+    getBackButtonText
   }
 }
 
@@ -262,6 +362,7 @@ export interface UseCrisisAndWalkthroughOptions {
   summaryHtml?: string
   customSteps?: CustomWalkStep[]
   pageType?: 'home' | 'barrier' | 'feeling' | 'task' | 'complex_loop' | 'identity' | 'guide' | 'script' | 'quiz' | 'resource'
+  crisisFilterType?: 'feeling' | 'barrier' | 'complex_loop' | 'life_area' | 'identity'
 }
 
 interface WalkStep {
@@ -283,11 +384,11 @@ export interface CustomWalkStep {
 
 // ===== REFACTORED MAIN HOOK =====
 
-export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageType }: UseCrisisAndWalkthroughOptions) {
+export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageType, crisisFilterType }: UseCrisisAndWalkthroughOptions) {
   // Extract concerns into focused hooks
   const colors = usePageTypeColors(pageType || 'home' as PageType)
   const walkthroughState = useWalkthroughState(slug, customSteps)
-  const crisisMode = useCrisisMode()
+  const crisisMode = useCrisisMode(crisisFilterType)
 
   // Local state for summary and walkthrough modals
   const [isSummaryOpen, setIsSummaryOpen] = useState(false)
@@ -311,7 +412,8 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
     setSelectedFeeling,
     crisisLoading,
     goCrisis,
-    selectFeeling
+    selectFeeling,
+    getBackButtonText
   } = crisisMode
 
   // Enhanced walkthrough opener with validation
@@ -359,7 +461,8 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
     <>
       {/* Crisis mode dialog */}
       <Dialog open={isCrisisOpen} onOpenChange={setIsCrisisOpen}>
-        <DialogContent className="max-w-4xl w-full bg-white dark:bg-gray-900 !top-20 !translate-y-0 sm:!top-20 max-h-[calc(100vh-5rem)] overflow-hidden flex flex-col">
+        <DialogOverlay className="z-[99]" />
+        <DialogContent className="max-w-4xl w-full bg-white dark:bg-gray-900 !top-20 !translate-y-0 sm:!top-20 max-h-[calc(100vh-5rem)] overflow-hidden flex flex-col z-[100]">
           <DialogHeader className="text-center flex-shrink-0">
             <DialogTitle className="flex items-center justify-center gap-2 text-2xl">
               <LucideIcons.Zap className="h-6 w-6 text-pink-600" />
@@ -367,7 +470,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
             </DialogTitle>
             <DialogDescription className="text-center">
               {selectedFeeling ? (
-                `${selectedFeeling.feeling_name} - Immediate support strategies`
+                `${selectedFeeling.feeling_name || selectedFeeling.barrier_name || selectedFeeling.loop_name || selectedFeeling.life_area_name || selectedFeeling.identity_name} - Immediate support strategies`
               ) : (
                 "Pick the feeling that matches where you are right now"
               )}
@@ -441,8 +544,8 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
                     
                     return (
                       <button
-                        key={feeling.feeling_name}
-                        onClick={() => selectFeeling(feeling.feeling_name)}
+                        key={`${feeling.type}-${feeling.name}`}
+                        onClick={() => selectFeeling(feeling.name)}
                         className="text-left bg-gray-50 dark:bg-gray-800 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700 group"
                       >
                         <div className="flex items-start gap-3">
@@ -455,7 +558,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
                           </div>
                           <div className="flex-1 min-w-0">
                             <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-pink-700 dark:group-hover:text-pink-300 transition-colors text-sm">
-                              {feeling.feeling_name}
+                              {feeling.name}
                             </h3>
                             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
                               {formatMarkdownText(feeling.description)}
@@ -481,11 +584,11 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
           <div className="flex-shrink-0 border-t pt-4">
             {selectedFeeling ? (
               <div className="flex gap-2 justify-center">
-                <Button 
-                  onClick={() => setSelectedFeeling(null)} 
+                <Button
+                  onClick={() => setSelectedFeeling(null)}
                   variant="outline"
                 >
-                  ← Back to feelings
+                  ← {getBackButtonText()}
                 </Button>
                 <Button 
                   onClick={() => setIsCrisisOpen(false)} 
@@ -522,7 +625,8 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
 
       {/* Walkthrough dialog */}
       <Dialog open={isWalkOpen} onOpenChange={setIsWalkOpen}>
-        <DialogContent className="max-w-5xl w-full bg-white dark:bg-gray-900">
+        <DialogOverlay className="z-[99]" />
+        <DialogContent className="max-w-5xl w-full bg-white dark:bg-gray-900 z-[100]">
           <DialogHeader className="text-center">
             <DialogTitle className="text-center">
               {steps.length > 0 ? `Step ${Math.min(index + 1, steps.length)} of ${steps.length}` : 'No sections found'}

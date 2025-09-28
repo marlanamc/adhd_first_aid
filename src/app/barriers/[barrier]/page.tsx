@@ -18,6 +18,7 @@ import { StepIcon } from '@/components/ui/StepIcon';
 import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
+import { TargetedCrisisMode } from '@/components/ui/TargetedCrisisMode';
 
 
 import { formatMarkdownTextWithIntelligence } from '@/lib/utils'
@@ -39,6 +40,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({})
   const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [isCrisisModeOpen, setIsCrisisModeOpen] = useState(false)
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
@@ -181,7 +183,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
   if (error || !content) {
     return (
       <div className="min-h-screen relative">
-        <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6 md:py-8 pt-20 sm:pt-22 md:pt-24">
+        <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6 md:py-8 pt-8 sm:pt-10 md:pt-12">
           <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-10 shadow-lg">
             <div className="flex items-center gap-4 mb-5">
               <Button
@@ -218,7 +220,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
 
   return (
     <div className="min-h-screen relative">
-      <div className="max-w-5xl mx-auto px-6 py-4 sm:py-6 md:py-8 pt-20 sm:pt-22 md:pt-24">
+      <div className="max-w-5xl mx-auto px-6 py-4 sm:py-6 md:py-8 pt-8 sm:pt-10 md:pt-12">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
           <div className="mb-4 sm:mb-6 md:mb-8">
@@ -834,6 +836,15 @@ export default function BarrierPage({ params }: BarrierPageProps) {
         description={`Get help overcoming "${content?.barrier_name}" - ADHD-friendly strategies and support.`}
       />
 
+      {/* Targeted Crisis Mode Modal */}
+      <TargetedCrisisMode
+        contentName={content?.barrier_name || ''}
+        contentType="barrier"
+        isOpen={isCrisisModeOpen}
+        onClose={() => setIsCrisisModeOpen(false)}
+        contentEmoji="🚧"
+      />
+
       {/* Fixed Bottom Actions */}
       <FixedBottomActions
         slug={resolvedParams.barrier}
@@ -841,6 +852,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
         pageType="barrier"
         content={content}
         sources={sources}
+        onOpenCrisisMode={() => setIsCrisisModeOpen(true)}
       />
     </div>
   )

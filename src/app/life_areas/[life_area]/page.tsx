@@ -28,6 +28,8 @@ import type { TasksContent, LifeAreaSources } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
 import StudyPainpointsGrid from '@/components/ui/StudyPainpointsGrid'
+import FixedBottomActions from '@/components/ui/FixedBottomActions'
+import { TargetedCrisisMode } from '@/components/ui/TargetedCrisisMode'
 import CorePrinciplesCondensed from '@/components/ui/CorePrinciplesCondensed'
 import AdhdReasonsThreeCol, { type Row as AdhdRow } from '@/components/ui/AdhdReasonsThreeCol'
 import { CollapsibleToggle } from '@/components/ui/CollapsibleToggle'
@@ -308,6 +310,8 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [isCrisisModeOpen, setIsCrisisModeOpen] = useState(false)
+  const [slug, setSlug] = useState<string>('')
 
   // Use our collapsible sections hook
   const { 
@@ -324,8 +328,11 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
         setLoading(true)
         // Await params since it's now a Promise in Next.js 15
         const resolvedParams = await params
-        
-        // Convert URL param back to display name  
+
+        // Set the slug for FixedBottomActions
+        setSlug(resolvedParams.life_area)
+
+        // Convert URL param back to display name
         let taskName = decodeURIComponent(resolvedParams.life_area)
           .split('-')
           .filter(word => word.length > 0) // Remove empty strings from double dashes
@@ -1530,6 +1537,25 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
         title={content?.task_name || 'Task Page'}
         url={typeof window !== 'undefined' ? window.location.href : ''}
         description={`Get help with ${content?.task_name?.toLowerCase() || 'this task'} - ADHD-friendly strategies and support.`}
+      />
+
+      {/* Targeted Crisis Mode Modal */}
+      <TargetedCrisisMode
+        contentName={content?.task_name || ''}
+        contentType="life_area"
+        isOpen={isCrisisModeOpen}
+        onClose={() => setIsCrisisModeOpen(false)}
+        contentEmoji="🏠"
+      />
+
+      {/* Fixed Bottom Actions with Crisis Mode and Walkthrough */}
+      <FixedBottomActions
+        slug={slug}
+        summaryHtml={`ADHD-friendly strategies for ${content?.task_name || 'this life area'}`}
+        pageType="task"
+        sources={sources}
+        content={content}
+        onOpenCrisisMode={() => setIsCrisisModeOpen(true)}
       />
     </div>
   )

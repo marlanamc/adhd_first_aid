@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useIsMobile } from '@/hooks/use-mobile'
+import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import React from 'react'
 
 // Complex Loops data with icons - Brain first, Sparkles last, no duplicates (28 loops)
@@ -327,6 +328,13 @@ export default function ComplexLoopsPage() {
         isOpen={isSuggestModalOpen}
         onClose={() => setIsSuggestModalOpen(false)}
         contentType="complex_loop"
+      />
+
+      {/* Fixed Bottom Actions with Crisis Mode */}
+      <FixedBottomActions
+        slug="complex_loops-category"
+        pageType="complex_loop"
+        crisisOnly={true}
       />
     </div>
   )

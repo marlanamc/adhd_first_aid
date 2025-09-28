@@ -32,6 +32,8 @@ import { getIdentitiesContent, getIdentitySources } from '@/lib/supabase'
 import type { IdentitiesContent } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
+import FixedBottomActions from '@/components/ui/FixedBottomActions'
+import { TargetedCrisisMode } from '@/components/ui/TargetedCrisisMode'
 
 // Simple emoji to icon mapping for content sections
 const getSectionIcon = (emoji: string): React.ElementType => {
@@ -142,6 +144,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
   const [hoveredSection, setHoveredSection] = useState<string | null>(null)
   const [copySuccess] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [isCrisisModeOpen, setIsCrisisModeOpen] = useState(false)
   const [sources, setSources] = useState<Array<{ id: number; identity_slug: string; category: string; title: string; authors: string | null; description: string }> | null>(null)
 
   const toggleSection = (section: string) => {
@@ -1126,6 +1129,25 @@ export default function IdentityPage({ params }: IdentityPageProps) {
         title={content?.identity_name?.replace(/^(The |ADHD Identity Guide: The |ADHD Identity Guide: )/, '') || content?.identity_name || 'Identity Page'}
         url={typeof window !== 'undefined' ? window.location.href : ''}
         description={`Get ADHD support as "${content?.identity_name?.replace(/^(The |ADHD Identity Guide: The |ADHD Identity Guide: )/, '') || content?.identity_name}" - ADHD-friendly strategies and guidance.`}
+      />
+
+      {/* Targeted Crisis Mode Modal */}
+      <TargetedCrisisMode
+        contentName={content?.identity_name || ''}
+        contentType="identity"
+        isOpen={isCrisisModeOpen}
+        onClose={() => setIsCrisisModeOpen(false)}
+        contentEmoji="👤"
+      />
+
+      {/* Fixed Bottom Actions with Crisis Mode and Walkthrough */}
+      <FixedBottomActions
+        slug={resolvedParams.identity}
+        summaryHtml={`ADHD-friendly strategies for ${content?.identity_name || 'this identity'}`}
+        pageType="identity"
+        sources={sources}
+        content={content}
+        onOpenCrisisMode={() => setIsCrisisModeOpen(true)}
       />
     </div>
   )

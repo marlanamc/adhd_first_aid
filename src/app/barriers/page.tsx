@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useIsMobile } from '@/hooks/use-mobile'
+import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import React from 'react'
 
 // Icon mapping to ensure proper resolution
@@ -335,6 +336,13 @@ export default function BarriersPage() {
         isOpen={isSuggestModalOpen}
         onClose={() => setIsSuggestModalOpen(false)}
         contentType="barrier"
+      />
+
+      {/* Fixed Bottom Actions with Crisis Mode */}
+      <FixedBottomActions
+        slug="barriers-category"
+        pageType="barrier"
+        crisisOnly={true}
       />
     </div>
   )

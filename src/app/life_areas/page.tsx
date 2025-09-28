@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useIsMobile } from '@/hooks/use-mobile'
+import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import React from 'react'
 
 // Tasks data with icons - updated to ensure Brain is first, Sparkles is last, no duplicates
@@ -341,6 +342,13 @@ export default function TasksPage() {
         isOpen={isSuggestModalOpen}
         onClose={() => setIsSuggestModalOpen(false)}
         contentType="task"
+      />
+
+      {/* Fixed Bottom Actions with Crisis Mode */}
+      <FixedBottomActions
+        slug="life_areas-category"
+        pageType="life_area"
+        crisisOnly={true}
       />
     </div>
   )

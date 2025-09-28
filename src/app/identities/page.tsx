@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { SuggestContentModal } from '@/components/ui/SuggestContentModal'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useIsMobile } from '@/hooks/use-mobile'
+import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import React from 'react'
 
 // Identity data with icons - Brain first, Sparkles last, no duplicates
@@ -126,8 +127,13 @@ export default function IdentitiesPage() {
 
   // Filter identities by selected category
   const filteredIdentities = selectedCategory === 'View All'
-    ? [...identities].sort((a, b) => a.name.localeCompare(b.name))
-    : selectedCategory 
+    ? [...identities].sort((a, b) => {
+        // Sort by the simplified display names, not the full database names
+        const displayNameA = a.name.replace(/^(The |ADHD Identity Guide: The |ADHD Identity Guide: )/, '')
+        const displayNameB = b.name.replace(/^(The |ADHD Identity Guide: The |ADHD Identity Guide: )/, '')
+        return displayNameA.localeCompare(displayNameB)
+      })
+    : selectedCategory
     ? identities.filter(identity => identity.category === selectedCategory)
     : []
 
@@ -344,6 +350,13 @@ export default function IdentitiesPage() {
         isOpen={isSuggestModalOpen}
         onClose={() => setIsSuggestModalOpen(false)}
         contentType="identity"
+      />
+
+      {/* Fixed Bottom Actions with Crisis Mode */}
+      <FixedBottomActions
+        slug="identities-category"
+        pageType="identity"
+        crisisOnly={true}
       />
     </div>
   )
