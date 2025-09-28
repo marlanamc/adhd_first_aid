@@ -214,7 +214,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
   return (
     <div className="min-h-screen relative">
-      <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6 md:py-8 pt-20 sm:pt-22 md:pt-24">
+      <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6 md:py-8 pt-8 sm:pt-10 md:pt-12">
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
           {/* Header */}
           <div className="mb-4 sm:mb-6 md:mb-6">
@@ -906,10 +906,11 @@ export default function FeelingPage({ params }: FeelingPageProps) {
 
       {/* Targeted Crisis Mode Modal */}
       <TargetedCrisisMode
-        feelingName={content?.feeling_name || ''}
+        contentName={content?.feeling_name || ''}
+        contentType="feeling"
         isOpen={isCrisisModeOpen}
         onClose={() => setIsCrisisModeOpen(false)}
-        feelingEmoji={FEELING_EMOJI_ICONS[content?.feeling_name || ''] || '❤️'}
+        contentEmoji={FEELING_EMOJI_ICONS[content?.feeling_name || ''] || '❤️'}
       />
 
       {/* Fixed Bottom Actions */}

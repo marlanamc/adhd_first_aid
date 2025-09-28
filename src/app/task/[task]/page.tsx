@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, ChevronRight } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
+import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import { supabase } from '@/lib/supabase'
 import type { Barrier } from '@/types/database'
 import {
@@ -204,6 +205,14 @@ export default function TaskBarrierPage() {
             </div>
           </div>
         </div>
-      </main></div>
+      </main>
+
+      {/* Fixed Bottom Actions with Crisis Mode and Walkthrough */}
+      <FixedBottomActions
+        slug={params.task as string}
+        summaryHtml={`ADHD-friendly task strategies`}
+        pageType="task"
+      />
+    </div>
   )
 }
