@@ -42,8 +42,7 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false, // Remove X-Powered-By header for security
   
-  // Compiler optimizations
-  swcMinify: true,
+  // Note: swcMinify is deprecated in Next.js 15+ (SWC minification is enabled by default)
 }
 
 module.exports = withBundleAnalyzer(nextConfig)
