@@ -18,8 +18,8 @@ import { StepIcon } from '@/components/ui/StepIcon';
 import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
-import { TargetedCrisisMode } from '@/components/ui/TargetedCrisisMode';
-
+import { TargetedCrisisMode } from '@/components/ui/TargetedCrisisMode'
+import { ContentPageSkeleton } from '@/components/ui/ContentPageSkeleton'
 
 import { formatMarkdownTextWithIntelligence } from '@/lib/utils'
 
@@ -168,16 +168,7 @@ export default function BarrierPage({ params }: BarrierPageProps) {
   }
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#fbc687] via-[#fff5db] to-[#d4fc79] dark:from-slate-800 dark:via-slate-700 dark:to-slate-600 relative flex items-center justify-center">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
-          <div className="flex items-center gap-3">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-            <p className="text-lg">Loading barrier content...</p>
-          </div>
-        </div>
-      </div>
-    )
+    return <ContentPageSkeleton />
   }
 
   if (error || !content) {

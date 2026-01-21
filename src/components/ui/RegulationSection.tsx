@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Minus, Sparkles, Wind, Eye, Home, Heart, Brain, Clock, CheckCircle, X, Monitor, Lightbulb, Volume2, Thermometer, Zap, HandIcon, Droplets, Activity, Footprints, RotateCcw, Target, Lightbulb as BulbIcon, Star } from 'lucide-react'
+import { Plus, Minus, Sparkles, Eye, Heart, Brain, Clock, CheckCircle, X, Monitor, Lightbulb, Volume2, Thermometer, Zap, HandIcon, Droplets, Activity, Footprints, RotateCcw, Target, Lightbulb as BulbIcon, Star } from 'lucide-react'
 
 interface RegulationSectionProps {
   barrierType?: string
@@ -68,6 +68,7 @@ export default function RegulationSection({
       markTechniqueComplete(activeTimer.type)
       setActiveTimer(null)
     }
+    return undefined
   }, [activeTimer])
 
   const formatTime = (seconds: number) => {

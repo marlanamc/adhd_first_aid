@@ -70,14 +70,6 @@ const categories = [
   { name: 'View All', color: 'from-gray-400 to-gray-600', count: 36 }
 ]
 
-const categoryColors = {
-  'Home & Cleaning': 'from-green-400 to-emerald-500',
-  'Health & Routines': 'from-teal-400 to-cyan-500',
-  'Food & Shopping': 'from-orange-400 to-amber-500',
-  'Planning & Organization': 'from-blue-400 to-indigo-500',
-  'Work & Study': 'from-purple-400 to-violet-500',
-  'Creative & Personal': 'from-pink-400 to-rose-500'
-}
 
 export default function TasksPage() {
   const [selectedTask, setSelectedTask] = useState<string | null>(null)

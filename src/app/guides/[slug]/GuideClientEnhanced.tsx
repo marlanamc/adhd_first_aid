@@ -101,7 +101,7 @@ const parseTimelineFromContent = (_content: string): TimelineItem[] => {
 
 export default function GuideClientEnhanced({ guide }: GuideClientEnhancedProps) {
   const [isShareOpen, setIsShareOpen] = useState(false)
-  const [activeAnchor, setActiveAnchor] = useState<string | null>(null)
+  const [_activeAnchor, setActiveAnchor] = useState<string | null>(null)
   const [isTldrOpen, setIsTldrOpen] = useState(false)
   // Start with all sections collapsed by default
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set(['timeline', 'what-it-means', 'from-add-to-adhd', 'why-short', 'reframing']))

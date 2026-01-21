@@ -1,13 +1,11 @@
-interface FooterProps {
-  navigateToPage: (page: string) => void
-}
+import Link from 'next/link'
 
-export function Footer({ navigateToPage }: FooterProps) {
+export function Footer() {
   return (
     <footer className="relative z-10 mt-auto">
       <div className="absolute inset-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-lg"></div>
       <div className="relative border-t border-white/20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 md:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
           {/* Footer Links and Info */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             {/* About Section */}
@@ -22,24 +20,24 @@ export function Footer({ navigateToPage }: FooterProps) {
             <div className="text-center">
               <h4 className="text-base font-serif text-[#22223B] dark:text-white/90 mb-3">Quick Links</h4>
               <div className="space-y-2">
-                <button
-                  onClick={() => navigateToPage('about')}
+                <Link
+                  href="/about"
                   className="block mx-auto text-sm text-[#22223B]/70 dark:text-white/70 hover:text-[#22223B] dark:hover:text-white/90 transition-colors duration-300"
                 >
                   About
-                </button>
-                <button
-                  onClick={() => navigateToPage('faq')}
+                </Link>
+                <Link
+                  href="/faq"
                   className="block mx-auto text-sm text-[#22223B]/70 dark:text-white/70 hover:text-[#22223B] dark:hover:text-white/90 transition-colors duration-300"
                 >
                   FAQ
-                </button>
-                <button
-                  onClick={() => navigateToPage('legal')}
+                </Link>
+                <Link
+                  href="/legal"
                   className="block mx-auto text-sm text-[#22223B]/70 dark:text-white/70 hover:text-[#22223B] dark:hover:text-white/90 transition-colors duration-300"
                 >
                   Legal & Privacy
-                </button>
+                </Link>
               </div>
             </div>
 

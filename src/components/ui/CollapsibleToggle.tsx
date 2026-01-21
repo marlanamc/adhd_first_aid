@@ -11,7 +11,7 @@ interface CollapsibleToggleProps {
 
 export function CollapsibleToggle({ 
   isAllExpanded, 
-  isAllCollapsed, 
+  isAllCollapsed: _isAllCollapsed, 
   onToggleAll, 
   className = "" 
 }: CollapsibleToggleProps) {

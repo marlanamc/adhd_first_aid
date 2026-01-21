@@ -1,11 +1,12 @@
 import React from 'react'
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { ThemeProvider } from '../contexts/ThemeContext'
 import { ModalProvider } from '../contexts/ModalContext'
 import { Header } from '../components/layout/Header'
 import SearchModal from '../components/ui/SearchModal'
-import FeedbackModal from '../components/ui/FeedbackModal'
+import { FeedbackModal } from '../components/ui/FeedbackModal'
+import ErrorBoundary from '../components/ErrorBoundary'
 
 // Mock Next.js router
 const mockPush = jest.fn()
@@ -162,7 +163,6 @@ describe('Page Interaction Integration Tests', () => {
           <FeedbackModal
             isOpen={false}
             onClose={() => {}}
-            pageType="home"
           />
         </TestWrapper>
       )
@@ -187,7 +187,6 @@ describe('Page Interaction Integration Tests', () => {
           <FeedbackModal
             isOpen={false}
             onClose={() => {}}
-            pageType="home"
           />
         </TestWrapper>
       )
@@ -213,7 +212,6 @@ describe('Page Interaction Integration Tests', () => {
           <FeedbackModal
             isOpen={true}
             onClose={() => {}}
-            pageType="home"
           />
         </TestWrapper>
       )

@@ -122,14 +122,6 @@ export function FeedbackModal({ isOpen, onClose, pageType = 'feelings' }: Feedba
     try {
       // Send email using a service like EmailJS or similar
       // For now, we'll simulate the API call
-      const formData = {
-        category,
-        email: email || 'Not provided',
-        feedback,
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent
-      }
-
       // Simulate API call - in production, replace with actual email service
       await new Promise(resolve => setTimeout(resolve, 1500))
       
@@ -264,7 +256,7 @@ export function FeedbackModal({ isOpen, onClose, pageType = 'feelings' }: Feedba
                 onChange={(e) => setFeedback(e.target.value)}
                 required
                 rows={6}
-                placeholder="Share your thoughts, suggestions, or resources... We'd love to hear from you! 😊"
+                placeholder="Share your thoughts, suggestions, or resources... Your feedback helps us improve the toolkit. 😊"
                 className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-vertical"
               />
             </div>

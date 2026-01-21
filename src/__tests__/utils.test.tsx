@@ -65,7 +65,7 @@ describe('Utility Functions', () => {
   describe('formatMarkdownTextWithIntelligence', () => {
     it('should format emotional context with callouts', () => {
       const text = 'This is **important** information about anxiety.'
-      const result = formatMarkdownTextWithIntelligence(text, 'feeling')
+      const result = formatMarkdownTextWithIntelligence(text, 'feelings')
 
       expect(result).toHaveLength(3)
       expect(result[1]).toEqual(<strong key="bold-1">important</strong>)
@@ -73,7 +73,7 @@ describe('Utility Functions', () => {
 
     it('should handle different page types', () => {
       const text = '**Key point** about barriers'
-      const result = formatMarkdownTextWithIntelligence(text, 'barrier')
+      const result = formatMarkdownTextWithIntelligence(text, 'barriers')
 
       expect(result).toHaveLength(3)
       expect(result[1]).toEqual(<strong key="bold-1">Key point</strong>)
@@ -81,7 +81,7 @@ describe('Utility Functions', () => {
 
     it('should create callout boxes for important information', () => {
       const text = '⚠️ **Warning:** This is critical information.'
-      const result = formatMarkdownTextWithIntelligence(text, 'feeling')
+      const result = formatMarkdownTextWithIntelligence(text, 'feelings')
 
       expect(result).toHaveLength(3)
       expect(result[1]).toEqual(<strong key="bold-1">Warning:</strong>)
@@ -93,24 +93,33 @@ describe('Utility Functions', () => {
       const text = 'This is **key information** for identity exploration.'
       const result = formatIdentityMarkdownText(text)
 
-      expect(result).toHaveLength(3)
-      expect(result[1]).toEqual(<strong key="bold-0">key information</strong>)
+      expect(Array.isArray(result)).toBe(true)
+      if (Array.isArray(result)) {
+        expect(result).toHaveLength(3)
+        expect(result[1]).toEqual(<strong key="bold-0">key information</strong>)
+      }
     })
 
     it('should handle emotional aspects', () => {
       const text = 'Understanding your **core identity** is crucial.'
       const result = formatIdentityMarkdownText(text)
 
-      expect(result).toHaveLength(3)
-      expect(result[1]).toEqual(<strong key="bold-0">core identity</strong>)
+      expect(Array.isArray(result)).toBe(true)
+      if (Array.isArray(result)) {
+        expect(result).toHaveLength(3)
+        expect(result[1]).toEqual(<strong key="bold-0">core identity</strong>)
+      }
     })
 
     it('should create appropriate callout styling', () => {
       const text = '💡 **Insight:** This helps with self-discovery.'
       const result = formatIdentityMarkdownText(text)
 
-      expect(result).toHaveLength(3)
-      expect(result[1]).toEqual(<strong key="bold-0">Insight:</strong>)
+      expect(Array.isArray(result)).toBe(true)
+      if (Array.isArray(result)) {
+        expect(result).toHaveLength(3)
+        expect(result[1]).toEqual(<strong key="bold-0">Insight:</strong>)
+      }
     })
   })
 

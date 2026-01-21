@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowLeft, MessageSquareText } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 // Scripts data from Content_Index.csv
@@ -14,14 +14,6 @@ const scripts = [
   { name: 'I\'m trying my best (to family/friends/self)', category: 'Self-Compassion', emoji: '💙' }
 ]
 
-const categoryColors = {
-  'Advocacy & Boundaries': 'from-red-400 to-pink-500',
-  'Medical Navigation': 'from-blue-400 to-cyan-500',
-  'Relationship Communication': 'from-purple-400 to-indigo-500',
-  'Repair & Reassurance': 'from-orange-400 to-amber-500',
-  'Workplace Advocacy': 'from-green-400 to-emerald-500',
-  'Self-Compassion': 'from-teal-400 to-cyan-500'
-}
 
 const categories = [
   { name: 'Advocacy & Boundaries', color: 'from-red-400 to-pink-500', count: 1 },

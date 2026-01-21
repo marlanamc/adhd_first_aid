@@ -91,7 +91,7 @@ describe('ErrorBoundary', () => {
     // Mock console.error to avoid noise in test output
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
 
-    const { rerender } = render(
+    render(
       <ErrorBoundary>
         <ErrorTriggerComponent />
       </ErrorBoundary>
@@ -160,7 +160,11 @@ describe('ErrorBoundary', () => {
 
     // Set NODE_ENV to development
     const originalEnv = process.env.NODE_ENV
-    process.env.NODE_ENV = 'development'
+    Object.defineProperty(process.env, 'NODE_ENV', {
+      value: 'development',
+      writable: true,
+      configurable: true
+    })
 
     render(
       <ErrorBoundary>
@@ -171,7 +175,11 @@ describe('ErrorBoundary', () => {
     expect(screen.getByText('Error Details (Development)')).toBeInTheDocument()
 
     // Restore original environment
-    process.env.NODE_ENV = originalEnv
+    Object.defineProperty(process.env, 'NODE_ENV', {
+      value: originalEnv,
+      writable: true,
+      configurable: true
+    })
 
     consoleError.mockRestore()
   })
@@ -182,7 +190,11 @@ describe('ErrorBoundary', () => {
 
     // Set NODE_ENV to production
     const originalEnv = process.env.NODE_ENV
-    process.env.NODE_ENV = 'production'
+    Object.defineProperty(process.env, 'NODE_ENV', {
+      value: 'production',
+      writable: true,
+      configurable: true
+    })
 
     render(
       <ErrorBoundary>
@@ -193,7 +205,11 @@ describe('ErrorBoundary', () => {
     expect(screen.queryByText('Error Details (Development)')).not.toBeInTheDocument()
 
     // Restore original environment
-    process.env.NODE_ENV = originalEnv
+    Object.defineProperty(process.env, 'NODE_ENV', {
+      value: originalEnv,
+      writable: true,
+      configurable: true
+    })
 
     consoleError.mockRestore()
   })

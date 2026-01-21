@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
-import { ArrowLeft, BookOpen, Headphones, Globe, User, ExternalLink, Search, Filter } from 'lucide-react'
+import { ArrowLeft, BookOpen, Headphones, Globe, User, ExternalLink, Search } from 'lucide-react'
 
 // ADHD terminology and definitions
 const terminology = [
@@ -401,7 +401,6 @@ export default function ResourcesPage() {
               <h2 className="text-xl font-semibold text-black text-center mb-6">Choose a resource type:</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {resourceCategories.map((category) => {
-                  const IconComponent = category.icon
                   const isSelected = selectedCategory === category.id
                   
                   return (

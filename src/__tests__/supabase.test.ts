@@ -44,9 +44,12 @@ describe('Supabase Functions', () => {
         }))
       }
 
-      supabase.from.mockReturnValue({
+      const mockFrom = jest.fn(() => ({
         select: jest.fn(() => mockQuery)
-      })
+      }))
+      
+      // Use type assertion to allow mocking
+      ;(supabase.from as jest.Mock).mockImplementation(mockFrom)
 
       const query = supabase
         .from('feelings')
@@ -63,9 +66,11 @@ describe('Supabase Functions', () => {
         }))
       }
 
-      supabase.from.mockReturnValue({
+      const mockFrom = jest.fn(() => ({
         select: jest.fn(() => mockQuery)
-      })
+      }))
+      
+      ;(supabase.from as jest.Mock).mockImplementation(mockFrom)
 
       const query = supabase
         .from('feelings')
@@ -82,9 +87,11 @@ describe('Supabase Functions', () => {
         }))
       }
 
-      supabase.from.mockReturnValue({
+      const mockFrom = jest.fn(() => ({
         select: jest.fn(() => mockQuery)
-      })
+      }))
+      
+      ;(supabase.from as jest.Mock).mockImplementation(mockFrom)
 
       const query = supabase
         .from('feelings')
@@ -104,11 +111,13 @@ describe('Supabase Functions', () => {
         })
       }
 
-      supabase.from.mockReturnValue({
+      const mockFrom = jest.fn(() => ({
         select: jest.fn(() => ({
           eq: jest.fn(() => mockQuery)
         }))
-      })
+      }))
+      
+      ;(supabase.from as jest.Mock).mockImplementation(mockFrom)
 
       const result = await mockQuery.single()
       expect(result.error).toBeDefined()
@@ -124,11 +133,13 @@ describe('Supabase Functions', () => {
         })
       }
 
-      supabase.from.mockReturnValue({
+      const mockFrom = jest.fn(() => ({
         select: jest.fn(() => ({
           eq: jest.fn(() => mockQuery)
         }))
-      })
+      }))
+      
+      ;(supabase.from as jest.Mock).mockImplementation(mockFrom)
 
       const result = await mockQuery.single()
       expect(result.data).toEqual(mockData)

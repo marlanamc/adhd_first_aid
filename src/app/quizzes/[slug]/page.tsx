@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, Calculator, Brain, Clock, Star, RefreshCw, Download } from 'lucide-react'
+import { ArrowLeft, Star, RefreshCw, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 // Quizzes data with full content

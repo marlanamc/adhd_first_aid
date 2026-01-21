@@ -1,37 +1,50 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  env: {
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  },
-  // Allow builds to proceed even if there are ESLint errors during content work
+  // Environment variables are automatically handled by Next.js for NEXT_PUBLIC_* vars
+  // No need for custom webpack config or env object
+  
+  // ESLint: Enable during builds for better code quality
+  // TODO: Run `npm run lint` and fix all errors, then set to false
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true, // Temporarily true - set to false after fixing ESLint errors
   },
-  // Enable experimental features for better environment variable support
+  
+  // TypeScript: Enable type checking during builds
+  typescript: {
+    ignoreBuildErrors: false, // Ensure type safety
+  },
+  
+  // Experimental features
   experimental: {
     serverActions: {
       allowedOrigins: ['localhost:3000'],
     },
   },
-  // Add Supabase domain to allowed image sources
+  
+  // Image optimization configuration
   images: {
-    domains: ['sjbsmjaagvyyshumkohq.supabase.co'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'sjbsmjaagvyyshumkohq.supabase.co',
+        pathname: '/**',
+      },
+    ],
+    // Use modern image formats
+    formats: ['image/avif', 'image/webp'],
   },
-  // Webpack configuration for better environment variable handling
-  webpack: (config, { isServer }) => {
-    // Add environment variables to DefinePlugin
-    config.plugins.forEach((plugin) => {
-      if (plugin.constructor.name === 'DefinePlugin') {
-        Object.assign(plugin.definitions, {
-          'process.env.NEXT_PUBLIC_SUPABASE_URL': JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_URL),
-          'process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY': JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
-        });
-      }
-    });
-    return config;
-  },
+  
+  // Performance optimizations
+  compress: true,
+  poweredByHeader: false, // Remove X-Powered-By header for security
+  
+  // Compiler optimizations
+  swcMinify: true,
 }
 
-module.exports = nextConfig
+module.exports = withBundleAnalyzer(nextConfig)
 

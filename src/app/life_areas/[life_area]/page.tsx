@@ -27,12 +27,12 @@ import { getTasksContent, getLifeAreaSources } from '@/lib/supabase'
 import type { TasksContent, LifeAreaSources } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
-import StudyPainpointsGrid from '@/components/ui/StudyPainpointsGrid'
 import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import { TargetedCrisisMode } from '@/components/ui/TargetedCrisisMode'
 import CorePrinciplesCondensed from '@/components/ui/CorePrinciplesCondensed'
 import AdhdReasonsThreeCol, { type Row as AdhdRow } from '@/components/ui/AdhdReasonsThreeCol'
 import { CollapsibleToggle } from '@/components/ui/CollapsibleToggle'
+import { ContentPageSkeleton } from '@/components/ui/ContentPageSkeleton'
 
 // Short, ADHD‑friendly subtitles for section headers (customized for life areas)
 const getSectionSubtitle = (title: string): string => {
@@ -470,16 +470,7 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
   }
 
   if (loading) {
-    return (
-      <div className="min-h-screen relative flex items-center justify-center">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
-          <div className="flex items-center gap-3">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-            <p className="text-lg">Prepping your executive function helpers...</p>
-          </div>
-        </div>
-      </div>
-    )
+    return <ContentPageSkeleton />
   }
 
   if (error || !content) {
@@ -770,17 +761,6 @@ export default function LifeAreaPage({ params }: LifeAreaPageProps) {
                         if (k.includes('shame') || k.includes('rsd')) return '😔'
                         if (k.includes('dopamine') || k.includes('motivation')) return '⚡'
                         return '✨'
-                      }
-
-                      const rightEmojiFor = (h?: string | null) => {
-                        const k = (h || '').toLowerCase()
-                        if (k.includes('executive')) return '🧩'
-                        if (k.includes('working memory')) return '🧠'
-                        if (k.includes('time')) return '⏰'
-                        if (k.includes('attention')) return '🎯'
-                        if (k.includes('motivation')) return '🔥'
-                        if (k.includes('nervous system')) return '⚡'
-                        return '💡'
                       }
 
                       const rows: AdhdRow[] = pairs.map((pair) => {

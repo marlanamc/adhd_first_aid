@@ -51,7 +51,7 @@ export default function FixedBottomActions({
       steps.push({
         id: 'gentle',
         title: 'Soft Start',
-        classes: 'bg-[#A0E8AF]/40 border border-[#A0E8AF]/60 rounded-xl p-5',
+        classes: 'bg-[#A0E8AF]/40 border border-[#A0E8AF]/60 rounded-lg p-4',
         content: (
           <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">{formatMarkdownText(content.gentle_advice)}</p>
         ),
@@ -63,7 +63,7 @@ export default function FixedBottomActions({
       steps.push({
         id: 'stern',
         title: 'Tough Love',
-        classes: 'bg-[#F87171]/30 border border-[#F87171]/50 rounded-xl p-5',
+        classes: 'bg-[#F87171]/30 border border-[#F87171]/50 rounded-lg p-4',
         content: (
           <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">{formatMarkdownText(content.stern_advice)}</p>
         ),
@@ -79,7 +79,7 @@ export default function FixedBottomActions({
       steps.push({
         id: 'adhd_reasons',
         title,
-        classes: 'bg-[#FFADD3]/20 border border-[#FFADD3]/30 rounded-xl p-5',
+        classes: 'bg-[#FFADD3]/20 border border-[#FFADD3]/30 rounded-lg p-4',
         content: (
           <ul className="space-y-3">
             {content.adhd_reasons.map((reason, i) => {
@@ -89,7 +89,7 @@ export default function FixedBottomActions({
               const description = hasColon ? reason.substring(colonIndex + 1).trim() : reason
               return (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="translate-y-[2px]">•</span>
+                  <span className="shrink-0">•</span>
                   <span className="text-gray-900 dark:text-gray-100 leading-relaxed">
                     {hasColon ? (
                       <>
@@ -122,7 +122,7 @@ export default function FixedBottomActions({
         steps.push({
           id: `step_${idx}`,
           title: `${s.number}. ${s.title.replace(/\*\*(.*?)\*\*/g, '$1')}`,
-          classes: `${colors.bg} border ${colors.border} rounded-xl p-5`,
+          classes: `${colors.bg} border ${colors.border} rounded-lg p-4`,
           content: (
             <div className="space-y-4">
               <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">{formatMarkdownText(s.intro)}</p>
@@ -188,7 +188,7 @@ export default function FixedBottomActions({
         steps.push({
           id: 'sources',
           title: `Sources — ${category}`,
-          classes: `rounded-xl p-5 ${c.bg} border ${c.border}`,
+          classes: `rounded-lg p-4 ${c.bg} border ${c.border}`,
           content: (
             <ul className="space-y-2">
               {items.map((src) => (

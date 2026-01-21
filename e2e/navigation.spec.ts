@@ -27,7 +27,7 @@ test.describe('Navigation', () => {
       { path: '/faq', title: /FAQ/ },
     ];
 
-    for (const { path, title } of mainPages) {
+    for (const { path } of mainPages) {
       await page.goto(path);
       await expect(page).toHaveURL(new RegExp(path));
       // Check if page loads (at least has some content)

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowLeft, HelpCircle } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 // Quizzes/Tools data from Content_Index.csv
@@ -14,14 +14,6 @@ const quizzes = [
   { name: 'Root Cause Quiz – Why Don\'t You Want to Shower?', category: 'Motivation Insight', emoji: '🚿' }
 ]
 
-const categoryColors = {
-  'Self-Understanding': 'from-blue-400 to-indigo-500',
-  'Sleep Hygiene': 'from-purple-400 to-indigo-500',
-  'Cognitive Style Insight': 'from-green-400 to-teal-500',
-  'Personalized Support': 'from-pink-400 to-rose-500',
-  'Time Awareness': 'from-orange-400 to-amber-500',
-  'Motivation Insight': 'from-cyan-400 to-blue-500'
-}
 
 const categories = [
   { name: 'Self-Understanding', color: 'from-blue-400 to-indigo-500', count: 1 },

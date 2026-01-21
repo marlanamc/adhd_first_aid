@@ -81,13 +81,9 @@ export default function TaskBarrierPage() {
     fetchBarriersForTask()
   }, [task])
 
-  const handleBarrierSelect = (barrierName: string) => {
+  const handleBarrierSelect = (_barrierName: string) => {
     setIsTransitioning(true)
     setTimeout(() => {
-      const searchParams = new URLSearchParams({
-        task,
-        barrier: barrierName
-      })
       router.push('/')
     }, 300)
   }

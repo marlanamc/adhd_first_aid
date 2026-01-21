@@ -11,7 +11,7 @@ export default function QuizPopup() {
 
   useEffect(() => {
     // Only show on main page
-    if (pathname !== '/') return;
+    if (pathname !== '/') return undefined;
 
     // Check if the popup has been shown before
     const hasShown = localStorage.getItem('quizPopupShown');
@@ -24,6 +24,8 @@ export default function QuizPopup() {
 
       return () => clearTimeout(timer);
     }
+    
+    return undefined;
   }, [pathname]);
 
   const handleDismiss = () => {

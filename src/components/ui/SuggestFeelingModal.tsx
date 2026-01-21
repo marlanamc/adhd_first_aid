@@ -43,22 +43,19 @@ export function SuggestFeelingModal({ isOpen, onClose }: SuggestFeelingModalProp
     setIsSubmitting(true)
 
     try {
-      // Create email content
-      const subject = `ADHD First Aid Kit - Feeling Suggestion: ${feelingName}`
-      const body = `Suggested Feeling: ${feelingName}
-
-Submitter Email: ${email || 'Not provided'}
-
-Additional Information: ${additionalInfo || 'None provided'}
-
----
-Sent from ADHD First Aid Kit Feeling Suggestion Form
-Timestamp: ${new Date().toLocaleString()}`
-
-      // Create mailto link
-      const mailtoLink = `mailto:marlie@navcoaching.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-      
-      // Don't open email client - just show thank you message
+      // Email content creation commented out - not opening email client
+      // const subject = `ADHD First Aid Kit - Feeling Suggestion: ${feelingName}`
+      // const body = `Suggested Feeling: ${feelingName}
+      //
+      // Submitter Email: ${email || 'Not provided'}
+      //
+      // Additional Information: ${additionalInfo || 'None provided'}
+      //
+      // ---
+      // Sent from ADHD First Aid Kit Feeling Suggestion Form
+      // Timestamp: ${new Date().toLocaleString()}`
+      //
+      // const mailtoLink = `mailto:marlie@navcoaching.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
       // window.open(mailtoLink, '_blank')
       
       setSubmitted(true)

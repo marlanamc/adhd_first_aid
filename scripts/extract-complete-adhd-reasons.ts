@@ -108,7 +108,7 @@ async function extractAllCompleteAdhdReasons() {
         results[loopName] = adhdReasons;
         
         console.log(`${loopName}:`);
-        adhdReasons.forEach((reason, index) => {
+        adhdReasons.forEach((reason) => {
           console.log(`  ${reason}`);
         });
         console.log('');

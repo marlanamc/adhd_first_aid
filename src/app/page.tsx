@@ -8,8 +8,8 @@ import NewHomePage from '@/components/pages/NewHomePage'
 import './globals.css'
 
 export default function Home() {
-  const [isTransitioning, setIsTransitioning] = useState(false)
-  const [selectedCard, setSelectedCard] = useState<string | null>(null)
+  const [isTransitioning] = useState(false)
+  const [selectedCard] = useState<string | null>(null)
 
   return (
     <NewHomePage

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Search, X, Heart, Wrench, AlertCircle, User, BookOpen, MessageSquareText, HelpCircle, RotateCcw, Mic, MicOff, Zap, Sparkles, Clock, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Loader } from '@/components/ui/Loader'
 import { getStrategies } from '@/lib/strategies'
 import { supabase } from '@/lib/supabase'
 import type { Strategy } from '@/lib/supabase'
@@ -409,7 +410,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       />
       
       {/* Modal */}
-      <div className="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
         {/* Search Header */}
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
           {/* Mode Toggle */}
@@ -480,7 +481,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
         <div className="max-h-96 overflow-y-auto">
           {isSearching ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+              <Loader size="md" className="border-blue-500 border-t-transparent" />
             </div>
           ) : results.length > 0 ? (
             <div className="p-2">
@@ -495,7 +496,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     className="w-full text-left p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
                   >
                     <div className="flex items-start gap-3">
-                      <div className={`rounded-lg p-2 ${colorClasses} group-hover:scale-110 transition-transform`}>
+                      <div className={`rounded-lg p-2 ${colorClasses}`}>
                         <Icon className="h-4 w-4" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -589,7 +590,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                           className="p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left group"
                         >
                           <div className="flex items-center gap-2">
-                            <div className={`rounded-lg p-1.5 ${item.color} group-hover:scale-110 transition-transform`}>
+                            <div className={`rounded-lg p-1.5 ${item.color}`}>
                               <Icon className="h-3 w-3" />
                             </div>
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">

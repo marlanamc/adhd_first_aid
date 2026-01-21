@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogOverlay } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,13 +15,13 @@ import {
   getAllCrisisModeIdentitiesNames,
   getCrisisModeIdentity
 } from '@/lib/supabase'
-import { CrisisModeFeeling } from '@/types/database'
 import { CrisisModeContent } from '@/types/crisis-mode'
-import * as LucideIcons from 'lucide-react'
+import { iconRegistry, Zap, AlertTriangle, Circle } from '@/lib/iconRegistry'
 
 import { formatMarkdownText } from '@/lib/utils'
-import { getErrorMessage, logError, logWarning } from '@/lib/error-handling'
-import { getPageTypeColors, getEmotionalGradient, type PageType } from '@/lib/colors'
+import { logError, logWarning } from '@/lib/error-handling'
+import { getPageTypeColors, type PageType } from '@/lib/colors'
+import { Loader } from '@/components/ui/Loader'
 
 // ===== DOM SCANNING UTILITIES =====
 const findGuideSections = (): HTMLElement[] => {
@@ -287,7 +287,6 @@ const useCrisisMode = (filterByType?: 'feeling' | 'barrier' | 'complex_loop' | '
       console.log('Crisis items loaded:', allItems.length, allItems)
       setCrisisItems(allItems)
     } catch (error) {
-      const errorMessage = getErrorMessage(error)
       console.error('Failed to load crisis items:', error)
       logError('Failed to load crisis items', error, 'crisisMode', 'high')
     } finally {
@@ -331,7 +330,6 @@ const useCrisisMode = (filterByType?: 'feeling' | 'barrier' | 'complex_loop' | '
       if (result.error) throw result.error
       setSelectedItem(result.data)
     } catch (error) {
-      const errorMessage = getErrorMessage(error)
       logError('Failed to load crisis item details', error, 'crisisMode', 'high')
     } finally {
       setCrisisLoading(false)
@@ -399,7 +397,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
     steps,
     index,
     setIndex,
-    jumpTo,
+    jumpTo: _jumpTo,
     prefersReduced,
     scanDom
   } = walkthroughState
@@ -465,7 +463,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
         <DialogContent className="max-w-4xl w-full bg-white dark:bg-gray-900 !top-20 !translate-y-0 sm:!top-20 max-h-[calc(100vh-5rem)] overflow-hidden flex flex-col z-[100]">
           <DialogHeader className="text-center flex-shrink-0">
             <DialogTitle className="flex items-center justify-center gap-2 text-2xl">
-              <LucideIcons.Zap className="h-6 w-6 text-pink-600" />
+              <Zap className="h-6 w-6 text-pink-600" />
               🆘 Crisis Mode
             </DialogTitle>
             <DialogDescription className="text-center">
@@ -480,7 +478,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
           <div className="flex-1 overflow-y-auto min-h-0">
             {crisisLoading ? (
               <div className="flex items-center justify-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600"></div>
+                <Loader size="md" className="border-pink-600 border-t-transparent" />
               </div>
             ) : selectedFeeling ? (
               // Selected feeling view
@@ -488,7 +486,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
                 {/* Emergency notice */}
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
                   <div className="flex items-start gap-3">
-                    <LucideIcons.AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                    <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
                     <div className="text-sm text-red-800 dark:text-red-200">
                       <p className="font-semibold mb-1">If you're in immediate danger or having thoughts of self-harm:</p>
                       <p>Call 988 (Suicide & Crisis Lifeline) or text "HELLO" to 741741 (Crisis Text Line)</p>
@@ -529,7 +527,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
                 {/* Emergency notice */}
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
                   <div className="flex items-start gap-3">
-                    <LucideIcons.AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                    <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
                     <div className="text-sm text-red-800 dark:text-red-200">
                       <p className="font-semibold mb-1">If you're in immediate danger or having thoughts of self-harm:</p>
                       <p>Call 988 (Suicide & Crisis Lifeline) or text "HELLO" to 741741 (Crisis Text Line)</p>
@@ -542,7 +540,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
                   {crisisFeelings.map((feeling) => {
                     // Check if the icon is an emoji or a Lucide icon name
                     const isEmoji = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u.test(feeling.icon)
-                    const IconComponent = !isEmoji ? (LucideIcons as any)[feeling.icon] as React.ComponentType<any> : null
+                    const IconComponent = !isEmoji ? iconRegistry[feeling.icon] as React.ComponentType<any> : null
 
                     return (
                       <button
@@ -557,7 +555,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
                             ) : IconComponent ? (
                               <IconComponent className="h-5 w-5 text-pink-600 dark:text-pink-400" />
                             ) : (
-                              <LucideIcons.Circle className="h-5 w-5 text-pink-600 dark:text-pink-400" />
+                              <Circle className="h-5 w-5 text-pink-600 dark:text-pink-400" />
                             )}
                           </div>
                           <div className="flex-1 min-w-0">

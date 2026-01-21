@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowLeft, Settings, Plus, Heart, Clock, Zap, Coffee, Moon, RefreshCw, Users, Share2, Download, Home, Brain, Calendar } from 'lucide-react'
+import { ArrowLeft, Settings, Plus, Heart, Zap, Coffee, Moon, RefreshCw, Share2, Download, Home, Brain, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 // Sample systems data - in a real app, this would come from a database

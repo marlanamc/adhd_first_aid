@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { ThemeProvider } from '../contexts/ThemeContext'
 import { ModalProvider } from '../contexts/ModalContext'
@@ -118,7 +118,7 @@ describe('Integration Tests - User Flows and Component Interactions', () => {
     it('should handle search modal integration', () => {
       const mockOnSearchOpen = jest.fn()
 
-      const { rerender } = render(
+      render(
         <TestWrapper>
           <Header
             navigateHome={() => {}}

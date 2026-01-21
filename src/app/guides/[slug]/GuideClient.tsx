@@ -34,7 +34,7 @@ export default function GuideClient({ guide }: GuideClientProps) {
   // Process the markdown content to handle callouts before ReactMarkdown
   const processCallouts = (content: string) => {
     // Replace callout syntax with a special marker that we can detect
-    return content.replace(/^>\s*\[!(note|info|tip|warning|danger|example)\]\s*/gim, (match, type) => {
+    return content.replace(/^>\s*\[!(note|info|tip|warning|danger|example)\]\s*/gim, (_match, type) => {
       return `> __CALLOUT_${type.toUpperCase()}__ `
     })
   }

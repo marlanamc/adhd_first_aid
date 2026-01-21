@@ -20,7 +20,7 @@ import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import { ShareModal } from '@/components/ui/ShareModal';
 import FixedBottomActions from '@/components/ui/FixedBottomActions'
 import { TargetedCrisisMode } from '@/components/ui/TargetedCrisisMode'
-
+import { ContentPageSkeleton } from '@/components/ui/ContentPageSkeleton'
 
 import { formatMarkdownTextWithIntelligence as formatMarkdownText } from '@/lib/utils'
 
@@ -182,16 +182,7 @@ export default function FeelingPage({ params }: FeelingPageProps) {
   }
 
   if (loading) {
-    return (
-      <div className="min-h-screen relative flex items-center justify-center">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
-          <div className="flex items-center gap-3">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-            <p className="text-lg">Gathering your ADHD-friendly emotional support...</p>
-          </div>
-        </div>
-      </div>
-    )
+    return <ContentPageSkeleton />
   }
 
   if (error || !content) {

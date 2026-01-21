@@ -5,7 +5,7 @@ import { ThemeProvider } from '../contexts/ThemeContext'
 import { ModalProvider } from '../contexts/ModalContext'
 import { Header } from '../components/layout/Header'
 import SearchModal from '../components/ui/SearchModal'
-import FeedbackModal from '../components/ui/FeedbackModal'
+import { FeedbackModal } from '../components/ui/FeedbackModal'
 import ErrorBoundary from '../components/ErrorBoundary'
 
 // Mock Next.js router
@@ -75,7 +75,6 @@ describe('Complete User Journey Integration Tests', () => {
           <FeedbackModal
             isOpen={false}
             onClose={() => {}}
-            pageType="home"
           />
           <main>
             <h1>Welcome to ADHD First Aid Kit</h1>
@@ -133,7 +132,7 @@ describe('Complete User Journey Integration Tests', () => {
           <FeedbackModal
             isOpen={false}
             onClose={() => {}}
-            pageType="feeling"
+            pageType="feelings"
           />
         </TestWrapper>
       )
@@ -158,7 +157,7 @@ describe('Complete User Journey Integration Tests', () => {
           <FeedbackModal
             isOpen={true}
             onClose={() => {}}
-            pageType="feeling"
+            pageType="feelings"
           />
         </TestWrapper>
       )
@@ -288,7 +287,7 @@ describe('Complete User Journey Integration Tests', () => {
       ]
 
       // Test tab navigation
-      interactiveElements.forEach((element, index) => {
+      interactiveElements.forEach((element) => {
         element.focus()
         expect(document.activeElement).toBe(element)
 

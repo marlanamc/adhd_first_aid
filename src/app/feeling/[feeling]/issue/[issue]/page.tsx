@@ -59,14 +59,9 @@ export default function FeelingIssueBarrierPage() {
     fetchStrategiesAndBarriers()
   }, [feeling, issue])
 
-  const handleBarrierSelect = (barrierName: string) => {
+  const handleBarrierSelect = (_barrierName: string) => {
     setIsTransitioning(true)
     setTimeout(() => {
-      const searchParams = new URLSearchParams({
-        feeling,
-        issue,
-        barrier: barrierName
-      })
       router.push('/')
     }, 300)
   }

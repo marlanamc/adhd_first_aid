@@ -28,9 +28,10 @@ import { getComplexLoopsContent, getComplexLoopSources } from '@/lib/supabase'
 import type { ComplexLoopsContent } from '@/lib/supabase'
 import { SuggestionButton } from '@/components/ui/SuggestionButton';
 import AdhdReasonsThreeCol, { type Row as AdhdRow } from '@/components/ui/AdhdReasonsThreeCol'
-import FrameworkSection, { type FrameworkSections } from '@/components/ui/FrameworkSection'
+import FrameworkSection from '@/components/ui/FrameworkSection'
 import CorePrinciplesCondensed from '@/components/ui/CorePrinciplesCondensed'
-import { ShareModal } from '@/components/ui/ShareModal';
+import { ShareModal } from '@/components/ui/ShareModal'
+import { ContentPageSkeleton } from '@/components/ui/ContentPageSkeleton'
 
 // Short, ADHD‑friendly subtitles for section headers
 const getSectionSubtitle = (title: string): string => {
@@ -385,16 +386,7 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
   }
 
   if (loading) {
-    return (
-      <div className="min-h-screen relative flex items-center justify-center">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
-          <div className="flex items-center gap-3">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-            <p className="text-lg">Breaking down your pattern with ADHD insights...</p>
-          </div>
-        </div>
-      </div>
-    )
+    return <ContentPageSkeleton />
   }
 
   if (error || !content) {
