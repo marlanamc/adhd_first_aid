@@ -295,6 +295,9 @@ export default function FixedBottomActions({
 
   const backgroundClass = getBackgroundClass(pageType || '', slug)
 
+  // Check if this is a category page (slug ends with "-category")
+  const isCategoryPage = slug.endsWith('-category')
+
   const { goCrisis, openWalkthrough, modal } = useCrisisAndWalkthrough({
     slug,
     summaryHtml,
@@ -324,7 +327,7 @@ export default function FixedBottomActions({
               Crisis mode
             </Button>
             
-            {!crisisOnly && (
+            {!crisisOnly && !isCategoryPage && (
               <Button 
                 onClick={openWalkthrough} 
                 className={`flex-1 sm:flex-none sm:min-w-[180px] ${gradientStyles.walkthrough} text-black font-medium border-0`}

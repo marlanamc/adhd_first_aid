@@ -89,7 +89,7 @@ export function TargetedCrisisMode({ contentName, contentType, isOpen, onClose, 
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4 pt-24 md:pt-28">
+    <div className="fixed inset-0 bg-black/95 backdrop-blur-md backdrop-brightness-50 z-[60] flex items-center justify-center p-4 pt-24 md:pt-28">
       <div className="bg-white rounded-xl max-w-md w-full max-h-[80vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
