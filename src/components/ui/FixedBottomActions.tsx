@@ -54,7 +54,7 @@ export default function FixedBottomActions({
       )
     }
     
-    const identitySteps: Array<{ id: string; title: string; content?: React.ReactNode }> = []
+    const identitySteps: Array<{ id: string; title: string; classes?: string; content: React.ReactNode }> = []
     if (pageType === 'identity' && 'content_sections' in content && Array.isArray(content.content_sections)) {
       content.content_sections.forEach((section, index) => {
         const sectionTitle = section.title ? section.title.replace(/\*\*(.*?)\*\*/g, '$1').trim() : `Section ${index + 1}`

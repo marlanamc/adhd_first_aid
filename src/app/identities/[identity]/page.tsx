@@ -640,9 +640,11 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                 ];
                 
                 const colors = colorSchemes[index % colorSchemes.length];
+                const sectionId = `identity-section-${index}`
                 
                 return (
-                  <div key={index} className="relative">
+                  <section key={sectionId} id={sectionId} className="guide-section relative">
+                    <div className="relative">
                     <button
                       onClick={() => toggleSection(`section_${index}`)}
                       className={`w-full flex items-center gap-4 p-4 rounded-2xl border-2 ${colors.bg} ${colors.hover} ${colors.border} transition-colors min-h-[75px] touch-manipulation`}
@@ -740,82 +742,87 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                         {section.subsections && section.subsections.length > 0 && (
                           <div className="mt-4 space-y-3 border-l-4 border-gray-200 dark:border-gray-700 pl-4">
                             <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-3">Related Strategies:</h4>
-                            {section.subsections.map((subsection, subIndex) => (
-                              <div key={subIndex} className="relative">
-                                <Button
-                                  onClick={() => toggleSection(`subsection_${index}_${subIndex}`)}
-                                  className="w-full flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                                  variant="ghost"
-                                  size="sm"
-                                >
-                                  {React.createElement(getSectionIcon(subsection.emoji), {
-                                    className: "h-5 w-5 text-gray-600 dark:text-gray-400"
-                                  })}
-                                  <div className="flex-1 text-left">
-                                    <h4 className="text-base font-medium text-gray-900 dark:text-white">
-                                      {subsection.title}
-                                    </h4>
-                                  </div>
-                                  <div className="flex-shrink-0">
-                                    {expandedSections[`subsection_${index}_${subIndex}`] ? (
-                                      <Minus className="h-4 w-4 text-gray-500" />
-                                    ) : (
-                                      <Plus className="h-4 w-4 text-gray-500" />
+                            {section.subsections.map((subsection, subIndex) => {
+                              const subSectionId = `identity-section-${index}-sub-${subIndex}`
+                              return (
+                                <section key={subSectionId} id={subSectionId} className="guide-section relative">
+                                  <div className="relative">
+                                    <Button
+                                      onClick={() => toggleSection(`subsection_${index}_${subIndex}`)}
+                                      className="w-full flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                      variant="ghost"
+                                      size="sm"
+                                    >
+                                      {React.createElement(getSectionIcon(subsection.emoji), {
+                                        className: "h-5 w-5 text-gray-600 dark:text-gray-400"
+                                      })}
+                                      <div className="flex-1 text-left">
+                                        <h4 className="text-base font-medium text-gray-900 dark:text-white">
+                                          {subsection.title}
+                                        </h4>
+                                      </div>
+                                      <div className="flex-shrink-0">
+                                        {expandedSections[`subsection_${index}_${subIndex}`] ? (
+                                          <Minus className="h-4 w-4 text-gray-500" />
+                                        ) : (
+                                          <Plus className="h-4 w-4 text-gray-500" />
+                                        )}
+                                      </div>
+                                    </Button>
+                                    {expandedSections[`subsection_${index}_${subIndex}`] && (
+                                      <div className="mt-2 p-4 bg-white/50 dark:bg-gray-900/50 rounded-lg animate-in slide-in-from-top duration-300">
+                                        <div className="space-y-2">
+                                          {subsection.content.map((item, itemIndex) => {
+                                            // Handle different content types
+                                            if (item.startsWith('> ')) {
+                                              return (
+                                                <div key={itemIndex} className="border-l-4 border-purple-400 bg-purple-50/50 dark:bg-purple-900/10 pl-4 py-2 rounded-r">
+                                                  {formatIdentityMarkdownText(item.substring(2), colors)}
+                                                </div>
+                                              );
+                                            }
+                                            
+                                            if (item.trim().startsWith('→') || item.trim().startsWith('-')) {
+                                              return (
+                                                <div key={itemIndex} className="flex items-start gap-2 ml-4">
+                                                  <span className={`${colors.bulletColor} flex-shrink-0`}>→</span>
+                                                  <span className="text-gray-700 dark:text-gray-300 text-sm">
+                                                    {formatIdentityMarkdownText(item.replace(/^[→-]\s*/, ''), colors)}
+                                                  </span>
+                                                </div>
+                                              );
+                                            }
+                                            
+                                            return (
+                                              <div key={itemIndex} className="flex items-start gap-2">
+                                                <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
+                                                <span className="text-gray-700 dark:text-gray-300">
+                                                  {formatIdentityMarkdownText(item, colors)}
+                                                </span>
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
                                     )}
                                   </div>
-                                </Button>
-                                
-                                {expandedSections[`subsection_${index}_${subIndex}`] && (
-                                  <div className="mt-2 p-4 bg-white/50 dark:bg-gray-900/50 rounded-lg animate-in slide-in-from-top duration-300">
-                                    <div className="space-y-2">
-                                      {subsection.content.map((item, itemIndex) => {
-                                        // Handle different content types
-                                        if (item.startsWith('> ')) {
-                                          return (
-                                            <div key={itemIndex} className="border-l-4 border-purple-400 bg-purple-50/50 dark:bg-purple-900/10 pl-4 py-2 rounded-r">
-                                              {formatIdentityMarkdownText(item.substring(2), colors)}
-                                            </div>
-                                          );
-                                        }
-                                        
-                                        if (item.trim().startsWith('→') || item.trim().startsWith('-')) {
-                                          return (
-                                            <div key={itemIndex} className="flex items-start gap-2 ml-4">
-                                              <span className={`${colors.bulletColor} flex-shrink-0`}>→</span>
-                                              <span className="text-gray-700 dark:text-gray-300 text-sm">
-                                                {formatIdentityMarkdownText(item.replace(/^[→-]\s*/, ''), colors)}
-                                              </span>
-                                            </div>
-                                          );
-                                        }
-                                        
-                                        return (
-                                          <div key={itemIndex} className="flex items-start gap-2">
-                                            <span className={`${colors.bulletColor} mt-1 flex-shrink-0`}>•</span>
-                                            <span className="text-gray-700 dark:text-gray-300">
-                                              {formatIdentityMarkdownText(item, colors)}
-                                            </span>
-                                          </div>
-                                        );
-                                      })}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            ))}
+                                </section>
+                              )
+                            })}
                           </div>
-                        )}
+                          )}
                       </div>
                     )}
                   </div>
-                );
+                </section>
+              );
               })}
             </div>
           )}
 
           {/* Sources Section - last header */}
           {sources && sources.length > 0 && (
-            <div className="space-y-4 mt-8">
+            <section id="sources" className="guide-section relative space-y-4 mt-8">
               <div className="relative">
                 <Button
                   onClick={() => setExpandedSections(prev=>({ ...prev, 'sources': !prev['sources'] }))}
@@ -942,7 +949,7 @@ export default function IdentityPage({ params }: IdentityPageProps) {
                   </div>
                 )}
               </div>
-            </div>
+            </section>
           )}
 
           {/* Next Steps Section with Glassmorphism Background */}
