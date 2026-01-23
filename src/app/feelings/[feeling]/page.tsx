@@ -469,8 +469,8 @@ export default function FeelingPage({ params }: FeelingPageProps) {
                       const emoji = getEmoji(reason, usedEmojis);
                       
                       return (
-                        <div key={index} className="flex items-start gap-3 p-2 rounded-xl bg-[#FBF8CC]/40 border border-[#FBF8CC]/60 hover:bg-[#FBF8CC]/60 transition-colors">
-                          <div className="bg-[#FBF8CC] rounded-full p-2 flex-shrink-0">
+                        <div key={index} className="flex items-center gap-3 p-2 rounded-xl bg-[#FBF8CC]/40 border border-[#FBF8CC]/60 hover:bg-[#FBF8CC]/60 transition-colors">
+                          <div className="bg-[#FBF8CC] rounded-full p-2 flex items-center justify-center flex-shrink-0">
                             <span className="text-lg">{emoji}</span>
                           </div>
                           <div className="flex-1">

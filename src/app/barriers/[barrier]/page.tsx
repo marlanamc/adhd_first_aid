@@ -373,8 +373,8 @@ export default function BarrierPage({ params }: BarrierPageProps) {
               </button>
               
               {expandedSections['adhd_reasons'] && (
-                <div className="px-5 md:px-6 pb-5 md:pb-6 animate-in slide-in-from-top duration-300 border-t border-[#FFADD3] bg-white">
-                  <div className="space-y-4">
+                <div className="px-3 md:px-4 pb-2 md:pb-3 animate-in slide-in-from-top duration-300 border-t border-[#FFADD3] bg-white">
+                  <div className="space-y-1">
                     {content.adhd_reasons.map((reason, index) => {
                       // Define emojis for each ADHD reason
                       const reasonEmojis = ['🧩', '⏰', '🧠', '💔', '⚡'];
@@ -402,8 +402,8 @@ export default function BarrierPage({ params }: BarrierPageProps) {
                       const parsedReason = parseHeadingAndBody(reason);
                       
                       return (
-                        <div key={index} className="flex items-start gap-3 p-4 rounded-xl bg-[#FBF8CC]/40 border border-[#FBF8CC]/60 hover:bg-[#FBF8CC]/60 transition-colors">
-                          <div className="bg-[#FBF8CC] rounded-full p-2 flex-shrink-0">
+                        <div key={index} className="flex items-center gap-3 p-2 md:p-3 rounded-xl bg-[#FBF8CC]/40 border border-[#FBF8CC]/60 hover:bg-[#FBF8CC]/60 transition-colors">
+                          <div className="bg-[#FBF8CC] rounded-full p-2 flex items-center justify-center flex-shrink-0">
                             <span className="text-lg">{emoji}</span>
                           </div>
                           <div className="flex-1">
