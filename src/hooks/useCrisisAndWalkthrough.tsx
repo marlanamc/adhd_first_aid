@@ -29,14 +29,14 @@ const findGuideSections = (): HTMLElement[] => {
 }
 
 const extractTitleFromNode = (node: HTMLElement): string => {
-  // First try: direct h2/h3
-  const directHeading = node.querySelector('h2, h3')
+  // First try: direct heading (expand range to include h1-h6)
+  const directHeading = node.querySelector('h1, h2, h3, h4, h5, h6')
   if (directHeading?.textContent) {
     return directHeading.textContent.trim()
   }
 
   // Second try: heading inside button
-  const buttonHeading = node.querySelector('button h3, button h2')
+  const buttonHeading = node.querySelector('button h1, button h2, button h3, button h4, button h5, button h6')
   if (buttonHeading?.textContent) {
     return buttonHeading.textContent.trim()
   }
@@ -627,7 +627,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
 
       {/* Walkthrough dialog */}
       <Dialog open={isWalkOpen} onOpenChange={setIsWalkOpen}>
-        <DialogOverlay className="z-[99]" />
+        <DialogOverlay className="z-[10005] bg-black/95 backdrop-blur-md backdrop-brightness-50" />
         <DialogContent className="max-w-5xl w-full bg-white dark:bg-gray-900 z-[100]">
           <DialogHeader className="text-center">
             <DialogTitle className="text-center">
@@ -693,4 +693,3 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
 }
 
 export default useCrisisAndWalkthrough
-
