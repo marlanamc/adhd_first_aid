@@ -30,7 +30,7 @@ export default function NotFoundPage() {
               404
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 md:w-24 md:h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center animate-bounce">
+              <div className="w-16 h-16 md:w-24 md:h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center" aria-hidden="true">
                 <Search className="w-8 h-8 md:w-12 md:h-12 text-white" />
               </div>
             </div>

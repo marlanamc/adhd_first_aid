@@ -190,12 +190,15 @@ export function FeedbackModal({ isOpen, onClose, pageType = 'feelings' }: Feedba
             <div className="text-center max-w-md mx-auto">
               <div className="mb-6">
                 <div className="relative mx-auto mb-4 w-20 h-20">
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full animate-pulse"></div>
+                  <div
+                    className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full"
+                    aria-hidden="true"
+                  />
                   <div className="relative bg-gradient-to-br from-green-500 to-emerald-700 rounded-full w-full h-full flex items-center justify-center">
                     <CheckCircle className="h-10 w-10 text-white" />
                   </div>
                   <div className="absolute -top-1 -right-1">
-                    <Sparkles className="h-6 w-6 text-yellow-400 animate-bounce" />
+                    <Sparkles className="h-6 w-6 text-yellow-400" />
                   </div>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">

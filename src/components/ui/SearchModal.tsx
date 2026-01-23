@@ -441,7 +441,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 variant="ghost"
                 size="sm"
                 onClick={isListening ? stopVoiceSearch : startVoiceSearch}
-                className={`text-xs ${isListening ? 'text-red-600 animate-pulse' : 'text-gray-400'}`}
+                className={`text-xs ${isListening ? 'text-red-600' : 'text-gray-400'}`}
                 title="Voice search (Ctrl/Cmd + M)"
               >
                 {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}

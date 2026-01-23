@@ -149,7 +149,10 @@ export default function TasksPage() {
           </h2>
           {isMobile === undefined ? (
             // Show loading state during hydration to prevent flash
-            <div className="w-full bg-white/20 dark:bg-gray-800/40 backdrop-blur-md border border-white/30 dark:border-gray-600/30 rounded-md h-10 animate-pulse"></div>
+            <div
+              className="w-full bg-white/20 dark:bg-gray-800/40 backdrop-blur-md border border-white/30 dark:border-gray-600/30 rounded-md h-10"
+              aria-hidden="true"
+            />
           ) : isMobile ? (
             <Select value={selectedCategory || undefined} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-full bg-white/20 dark:bg-gray-800/40 backdrop-blur-md border-white/30 dark:border-gray-600/30 text-black dark:text-white">
