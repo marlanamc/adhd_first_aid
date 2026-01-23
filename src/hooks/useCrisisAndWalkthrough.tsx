@@ -459,7 +459,7 @@ export function useCrisisAndWalkthrough({ slug, summaryHtml, customSteps, pageTy
     <>
       {/* Crisis mode dialog */}
       <Dialog open={isCrisisOpen} onOpenChange={setIsCrisisOpen}>
-        <DialogOverlay className="z-[99]" />
+        <DialogOverlay className="z-[10005] bg-black/95 backdrop-blur-md backdrop-brightness-50" />
         <DialogContent className="max-w-4xl w-full bg-white dark:bg-gray-900 !top-20 !translate-y-0 sm:!top-20 max-h-[calc(100vh-5rem)] overflow-hidden flex flex-col z-[100]">
           <DialogHeader className="text-center flex-shrink-0">
             <DialogTitle className="flex items-center justify-center gap-2 text-2xl">
