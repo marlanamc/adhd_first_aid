@@ -30,7 +30,7 @@ export default function FixedBottomActions({
   crisisOnly = false,
   onOpenCrisisMode
 }: FixedBottomActionsProps) {
-  const isMobile = useIsMobile()
+  useIsMobile() // still run to hydrate other components if needed
   // Build custom steps from content if not provided
   const customSteps = useMemo(() => {
     // If custom steps are already provided, use them
