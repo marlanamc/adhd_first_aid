@@ -343,7 +343,6 @@ export default function TasksPage() {
       <FixedBottomActions
         slug="life_areas-category"
         pageType="life_area"
-        crisisOnly={true}
       />
     </div>
   )

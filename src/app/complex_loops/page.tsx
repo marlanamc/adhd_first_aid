@@ -334,7 +334,6 @@ export default function ComplexLoopsPage() {
       <FixedBottomActions
         slug="complex_loops-category"
         pageType="complex_loop"
-        crisisOnly={true}
       />
     </div>
   )

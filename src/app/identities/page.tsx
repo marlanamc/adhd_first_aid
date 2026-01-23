@@ -356,7 +356,6 @@ export default function IdentitiesPage() {
       <FixedBottomActions
         slug="identities-category"
         pageType="identity"
-        crisisOnly={true}
       />
     </div>
   )

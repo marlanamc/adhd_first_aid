@@ -323,7 +323,6 @@ export default function FeelingsPage() {
       <FixedBottomActions 
         slug="feelings-category"
         pageType="feeling"
-        crisisOnly={true}
       />
     </div>
   )

@@ -342,7 +342,6 @@ export default function BarriersPage() {
       <FixedBottomActions
         slug="barriers-category"
         pageType="barrier"
-        crisisOnly={true}
       />
     </div>
   )
