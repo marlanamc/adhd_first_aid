@@ -7,7 +7,7 @@ import { useCrisisAndWalkthrough } from '@/hooks/useCrisisAndWalkthrough'
 import { useIsMobile } from '@/hooks/use-mobile'
 import type { FeelingsContent, FeelingSources, BarriersContent, BarrierSources, IdentitySources, IdentitiesContent, LifeAreaSources, TasksContent } from '@/lib/supabase'
 
-import { formatMarkdownText } from '@/lib/utils'
+import { formatIdentityMarkdownText, formatMarkdownText } from '@/lib/utils'
 
 interface FixedBottomActionsProps {
   slug: string
@@ -40,6 +40,47 @@ export default function FixedBottomActions({
     // If no content, return empty steps (no TL;DR since intro is already visible on page)
     if (!content) {
       return []
+    }
+    
+    const renderIdentitySectionContent = (items?: string[]) => {
+      if (!items || items.length === 0) return null
+      return (
+        <div className="space-y-2">
+          {items.map((item, idx) => (
+            <p key={idx} className="text-sm text-gray-900 dark:text-gray-100 leading-relaxed">
+              {formatIdentityMarkdownText(item)}
+            </p>
+          ))}
+        </div>
+      )
+    }
+    
+    const identitySteps: Array<{ id: string; title: string; content?: React.ReactNode }> = []
+    if (pageType === 'identity' && 'content_sections' in content && Array.isArray(content.content_sections)) {
+      content.content_sections.forEach((section, index) => {
+        const sectionTitle = section.title ? section.title.replace(/\*\*(.*?)\*\*/g, '$1').trim() : `Section ${index + 1}`
+        const sectionBody = renderIdentitySectionContent(section.content)
+        if (sectionBody) {
+          identitySteps.push({
+            id: `identity-section-${index}`,
+            title: sectionTitle,
+            content: sectionBody,
+          })
+        }
+
+        if (Array.isArray(section.subsections)) {
+          section.subsections.forEach((subsection, subIndex) => {
+            const subsectionBody = renderIdentitySectionContent(subsection.content)
+            if (subsectionBody) {
+              identitySteps.push({
+                id: `identity-section-${index}-sub-${subIndex}`,
+                title: subsection.title || `Subsection ${subIndex + 1}`,
+                content: subsectionBody
+              })
+            }
+          })
+        }
+      })
     }
     
     const steps: Array<{ id: string; title: string; classes?: string; content: React.ReactNode }> = []
@@ -165,6 +206,10 @@ export default function FixedBottomActions({
       })
     }
     
+    if (identitySteps.length > 0) {
+      steps.push(...identitySteps)
+    }
+
     // Add Sources if available
     if (Array.isArray(sources) && sources.length > 0) {
       const grouped = sources.reduce<Record<string, (FeelingSources | BarrierSources | IdentitySources | LifeAreaSources)[]>>((acc, s) => {
@@ -280,7 +325,7 @@ export default function FixedBottomActions({
               Crisis mode
             </Button>
             
-            {!isMobile && !crisisOnly && !crisisFilterType && (
+            {!crisisOnly && (
               <Button 
                 onClick={openWalkthrough} 
                 className={`flex-1 sm:flex-none sm:min-w-[180px] ${gradientStyles.walkthrough} text-black font-medium border-0`}
