@@ -31,7 +31,6 @@ export default function FixedBottomActions({
   onOpenCrisisMode
 }: FixedBottomActionsProps) {
   const isMobile = useIsMobile()
-  
   // Build custom steps from content if not provided
   const customSteps = useMemo(() => {
     // If custom steps are already provided, use them
