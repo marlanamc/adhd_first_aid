@@ -132,7 +132,8 @@ export default function FeelingIssuePage({ params }: { params: Promise<{ feeling
           onSearchOpen={() => {}} 
         />
         <main className="flex-1 flex flex-col items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div className="rounded-full h-12 w-12 border-b-2 border-primary" aria-hidden="true" />
+          <span className="sr-only">Finding what's weighing on you</span>
           <p className="mt-4 text-muted-foreground">Finding what's weighing on you...</p>
         </main></div>
     )

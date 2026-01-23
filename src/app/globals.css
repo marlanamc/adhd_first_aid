@@ -1219,5 +1219,18 @@ header.fixed {
   }
 }
 
+/* No-motion baseline for the entire site */
+:root {
+  scroll-behavior: auto !important;
+}
 
-
+*,
+*::before,
+*::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  animation-delay: 0s !important;
+  animation-name: none !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0s !important;
+}

@@ -417,7 +417,8 @@ export default function NewHomePage({
       {isTransitioning && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl">
-            <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
+            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" aria-hidden="true" />
+            <span className="sr-only">Loading</span>
             <p className="text-gray-600 dark:text-gray-400 text-center">
               {selectedCard === 'feelings' && 'Gathering your emotional support toolkit...'}
               {selectedCard === 'barriers' && 'Loading your obstacle-busting strategies...'}

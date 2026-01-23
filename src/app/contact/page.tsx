@@ -256,7 +256,8 @@ export default function ContactPage() {
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        <div className="rounded-full h-5 w-5 border-b-2 border-white mr-2" aria-hidden="true" />
+                        <span className="sr-only">Sending</span>
                         Sending...
                       </>
                     ) : (

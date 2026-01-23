@@ -17,7 +17,7 @@ export function Loader({ size = 'md', className }: LoaderProps) {
       role="status"
       aria-label="Loading"
       className={cn(
-        'rounded-full border-primary border-t-transparent animate-spin shrink-0',
+        'rounded-full border-primary border-t-transparent shrink-0',
         sizeMap[size],
         className
       )}

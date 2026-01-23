@@ -87,7 +87,8 @@ export default function FeelingIssueBarrierPage() {
           onSearchOpen={() => {}} 
         />
         <main className="flex-1 flex flex-col items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div className="rounded-full h-12 w-12 border-b-2 border-primary" aria-hidden="true" />
+          <span className="sr-only">Loading barriers content</span>
           <p className="mt-4 text-muted-foreground">Loading Barriers Content...</p>
         </main></div>
     )
