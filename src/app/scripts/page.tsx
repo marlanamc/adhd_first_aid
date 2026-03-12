@@ -3,36 +3,49 @@
 import { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { scripts } from '@/data/scripts'
 
-// Scripts data from Content_Index.csv
-const scripts = [
-  { name: 'How to talk to a friend who doubts ADHD', category: 'Advocacy & Boundaries', emoji: '🗣️' },
-  { name: 'How to ask your doctor for an ADHD evaluation', category: 'Medical Navigation', emoji: '🩺' },
-  { name: 'How to tell your partner what you need', category: 'Relationship Communication', emoji: '💕' },
-  { name: 'What to say when you forgot again', category: 'Repair & Reassurance', emoji: '😔' },
-  { name: 'How to ask your boss for accommodations', category: 'Workplace Advocacy', emoji: '💼' },
-  { name: 'I\'m trying my best (to family/friends/self)', category: 'Self-Compassion', emoji: '💙' }
-]
+// Generate categories dynamically from scripts
+const categoryColors: Record<string, string> = {
+  'Advocacy & Boundaries': 'from-red-400 to-pink-500',
+  'Medical Navigation': 'from-blue-400 to-cyan-500', 
+  'Relationship Communication': 'from-purple-400 to-indigo-500',
+  'Repair & Reassurance': 'from-orange-400 to-amber-500',
+  'Workplace Advocacy': 'from-green-400 to-emerald-500',
+  'Self-Compassion': 'from-teal-400 to-cyan-500',
+  'Boundaries & Energy': 'from-rose-400 to-pink-500',
+  'Productivity Support': 'from-violet-400 to-purple-500',
+  'Advocacy & Defense': 'from-red-500 to-rose-600',
+  'Sensory Support': 'from-cyan-400 to-teal-500',
+  'Recovery Protocols': 'from-orange-400 to-amber-500'
+}
 
+const defaultColor = 'from-gray-400 to-gray-600'
 
-const categories = [
-  { name: 'Advocacy & Boundaries', color: 'from-red-400 to-pink-500', count: 1 },
-  { name: 'Medical Navigation', color: 'from-blue-400 to-cyan-500', count: 1 },
-  { name: 'Relationship Communication', color: 'from-purple-400 to-indigo-500', count: 1 },
-  { name: 'Repair & Reassurance', color: 'from-orange-400 to-amber-500', count: 1 },
-  { name: 'Workplace Advocacy', color: 'from-green-400 to-emerald-500', count: 1 },
-  { name: 'Self-Compassion', color: 'from-teal-400 to-cyan-500', count: 1 },
-  { name: 'View All', color: 'from-gray-400 to-gray-600', count: 6 }
-]
+function getCategories() {
+  const counts = new Map<string, number>()
+  scripts.forEach(s => {
+    counts.set(s.category, (counts.get(s.category) || 0) + 1)
+  })
+
+  const cats = Array.from(counts.entries()).map(([name, count]) => ({
+    name,
+    count,
+    color: categoryColors[name] || defaultColor
+  })).sort((a, b) => a.name.localeCompare(b.name))
+
+  return [
+    ...cats,
+    { name: 'View All', count: scripts.length, color: defaultColor }
+  ]
+}
 
 export default function ScriptsPage() {
-  const [selectedScript, setSelectedScript] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>('View All')
+  const categories = getCategories()
 
-  const handleScriptSelect = (script: string) => {
-    setSelectedScript(script)
-    // Navigate to individual script page
-    window.location.href = `/scripts/${encodeURIComponent(script.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))}`
+  const handleScriptSelect = (slug: string) => {
+    window.location.href = `/scripts/${slug}`
   }
 
   const goBack = () => {
@@ -42,9 +55,7 @@ export default function ScriptsPage() {
   // Filter scripts by selected category
   const filteredScripts = selectedCategory === 'View All'
     ? [...scripts].sort((a, b) => a.name.localeCompare(b.name))
-    : selectedCategory 
-    ? scripts.filter(script => script.category === selectedCategory)
-    : []
+    : scripts.filter(script => script.category === selectedCategory)
 
   return (
     <div className="min-h-screen bg-[#E8D7FF] dark:bg-[#453975] relative">
@@ -104,44 +115,41 @@ export default function ScriptsPage() {
         </div>
 
         {/* Selected Category Scripts */}
-        {selectedCategory && (
-          <div>
-            <h2 className="text-2xl font-bold text-black text-center mb-8">
-              {selectedCategory === 'View All' ? 'All Scripts' : selectedCategory}
-            </h2>
-            
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredScripts.map((script) => (
-                <div
-                  key={script.name}
-                  onClick={() => handleScriptSelect(script.name)}
-                  className={`
-                    group cursor-pointer transform transition-all duration-300 ease-out
-                    hover:scale-105 hover:-translate-y-1
-                    ${selectedScript === script.name ? 'scale-105 -translate-y-1' : ''}
-                  `}
-                >
-                  <div className="bg-white/20 backdrop-blur-md rounded-xl p-8 
-                                shadow-lg hover:shadow-xl transition-all duration-300
-                                group-hover:bg-white/30
-                                h-40 flex flex-col justify-center items-center
-                                border border-white/10">
-                    
-                    {/* Emoji */}
-                    <div className="text-4xl mb-4 transition-all duration-300 group-hover:scale-110">
-                      {script.emoji}
-                    </div>
-                    
-                    {/* Script Name */}
-                    <h3 className="text-lg font-medium text-black text-center transition-all duration-300">
-                      {script.name}
-                    </h3>
+        <div>
+          <h2 className="text-2xl font-bold text-black text-center mb-8">
+            {selectedCategory === 'View All' ? 'All Scripts' : selectedCategory}
+          </h2>
+          
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredScripts.map((script) => (
+              <div
+                key={script.slug}
+                onClick={() => handleScriptSelect(script.slug)}
+                className={`
+                  group cursor-pointer transform transition-all duration-300 ease-out
+                  hover:scale-105 hover:-translate-y-1
+                `}
+              >
+                <div className="bg-white/20 backdrop-blur-md rounded-xl p-8 
+                              shadow-lg hover:shadow-xl transition-all duration-300
+                              group-hover:bg-white/30
+                              h-40 flex flex-col justify-center items-center
+                              border border-white/10">
+                  
+                  {/* Emoji */}
+                  <div className="text-4xl mb-4 transition-all duration-300 group-hover:scale-110">
+                    {script.emoji}
                   </div>
+                  
+                  {/* Script Name */}
+                  <h3 className="text-lg font-medium text-black text-center transition-all duration-300">
+                    {script.name}
+                  </h3>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
 
         {/* Footer Text */}
         <div className="text-center mt-12 max-w-3xl mx-auto">

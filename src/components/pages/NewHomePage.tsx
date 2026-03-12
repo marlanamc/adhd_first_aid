@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { HeartCrack, Settings, ArrowRight, Wrench, User, AlertCircle, RotateCcw, FileText, MessageCircle, Puzzle, ExternalLink } from 'lucide-react'
+import { HeartCrack, ArrowRight, Wrench, User, AlertCircle, RotateCcw, FileText, MessageCircle, Puzzle, ExternalLink } from 'lucide-react'
 
 
 
@@ -54,16 +54,6 @@ const topCategories = [
     examples: ['Parent', 'Student', 'Caregiver']
   }
 ]
-
-// Middle - Systems Lab
-const systemsCategory = {
-  id: 'systems',
-  title: 'Systems Lab',
-  subtitle: 'Build ADHD-friendly routines that actually work',
-  icon: Settings,
-  color: 'bg-[linear-gradient(135deg,_#fbc2eb,_#fbd786,_#fbc687,_#fff5db,_#d4fc79,_#b0f4ea,_#8fd3f4,_#78c2f2,_#a18cd1,_#b19cd9,_#dec6f7)] dark:bg-[linear-gradient(135deg,_#4A2D4A,_#4A3D2D,_#4A362D,_#3D4A2D,_#2D4A2D,_#2D4A4A,_#2D3D4A,_#2D354A,_#362D4A,_#3D2D4A,_#4A2D4A)]',
-  examples: ['Morning Routine', 'Post-Crash Reset', '7AM Workout']
-}
 
 // Bottom Row - Support & Tools
 const bottomCategories = [
@@ -262,67 +252,6 @@ export default function NewHomePage({
               </div>
             )
           })}
-          </div>
-        </div>
-
-        {/* Middle - Systems Lab (Subtle) */}
-        <div className="flex justify-center relative px-0 md:px-0">
-          {/* Subtle separator shadow - hidden on mobile */}
-          <div className="hidden md:block absolute -bottom-6 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-30"></div>
-          <div
-            onClick={() => handleCardClick(systemsCategory.id)}
-            className={`
-              relative group cursor-pointer transform transition-all duration-300 ease-out touch-manipulation
-              md:hover:scale-[1.01] md:hover:shadow-md
-              ${localSelectedCard === systemsCategory.id ? 'md:scale-[1.01] shadow-md' : ''}
-              ${isTransitioning ? 'pointer-events-none' : ''}
-              active:scale-[0.98] md:active:scale-95 max-w-2xl w-full
-            `}
-          >
-            <div 
-              className={`
-                relative overflow-hidden rounded-2xl md:rounded-xl p-5 md:p-4 border border-gray-200/30 dark:border-gray-700/30
-                bg-gradient-to-r from-gray-50/80 via-white/60 to-gray-50/80 
-                dark:from-gray-800/80 dark:via-gray-700/60 dark:to-gray-800/80
-                backdrop-blur-sm
-                transition-all duration-300 ease-out
-                h-[4.5rem] md:h-[3.5rem] lg:h-[4rem]
-                flex items-center
-                group-hover:border-gray-300/40 dark:group-hover:border-gray-600/40
-                group-hover:shadow-lg
-              `}
-            >
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center space-x-3">
-                  {/* Smaller, more subtle icon */}
-                  <div className="transition-all duration-300 ease-out">
-                    <div className="w-8 h-8 bg-gray-100/60 dark:bg-gray-600/60 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:bg-gray-200/60 dark:group-hover:bg-gray-500/60">
-                      <Settings className="w-4 h-4 text-gray-600 dark:text-gray-300 transition-all duration-300" />
-                    </div>
-                  </div>
-
-                  <div className="flex-1">
-                    <h3 className="text-base md:text-sm font-bold text-gray-700 dark:text-gray-300 transition-all duration-300 mb-0.5">
-                      {systemsCategory.title}
-                    </h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-xs md:text-xs transition-all duration-300 group-hover:text-gray-600 dark:group-hover:text-gray-300">
-                      Combine strategies from above into routines
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  {/* Visual hint that it combines the above */}
-                  <div className="flex -space-x-1">
-                    <div className="w-2 h-2 bg-[#fbc687]/60 rounded-full"></div>
-                    <div className="w-2 h-2 bg-[#d4fc79]/60 rounded-full"></div>
-                    <div className="w-2 h-2 bg-[#8fd3f4]/60 rounded-full"></div>
-                    <div className="w-2 h-2 bg-[#a18cd1]/60 rounded-full"></div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-gray-400 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:text-gray-600 dark:group-hover:text-gray-300" />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 

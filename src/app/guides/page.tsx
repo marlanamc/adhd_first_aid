@@ -27,8 +27,9 @@ const categoryColors = {
   'Health & Supplements': 'from-lime-400 to-green-500',
   'Medication Education': 'from-sky-400 to-blue-500',
   'Medication Access': 'from-amber-400 to-yellow-500',
-  'Sensory Support': 'from-cyan-400 to-teal-500',
-  'Whole-Person Care': 'from-rose-400 to-pink-500'
+  'Whole-Person Care': 'from-rose-400 to-pink-500',
+  'Productivity': 'from-blue-500 to-indigo-600',
+  'Recovery Protocols': 'from-orange-400 to-amber-500'
 }
 
 function buildCategories(guides: GuideMetadata[]) {
