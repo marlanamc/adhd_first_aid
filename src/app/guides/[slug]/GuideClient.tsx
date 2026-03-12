@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useMemo } from 'react'
-import { ArrowLeft, FileText, Info, Lightbulb, AlertTriangle, Zap, Code, Quote, ChevronDown, CheckCircle2, XCircle } from 'lucide-react'
+import { ArrowLeft, FileText, Info, Lightbulb, AlertTriangle, Zap, Code, Quote, ChevronDown, XCircle } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { type Guide } from '@/lib/markdown'
