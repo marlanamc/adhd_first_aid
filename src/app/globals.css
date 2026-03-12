@@ -147,6 +147,60 @@ html, body {
   }
 }
 
+@layer components {
+  .detail-page-shell {
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+
+  .detail-page-card {
+    min-height: calc(100vh - var(--header-height));
+    padding: 1.25rem 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(34, 34, 59, 0.08);
+  }
+
+  .dark .detail-page-card {
+    background: rgba(17, 24, 39, 0.92);
+    border-top-color: rgba(255, 255, 255, 0.12);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+
+  @media (min-width: 640px) {
+    .detail-page-shell {
+      padding: 1.25rem 1rem 1.5rem;
+    }
+
+    .detail-page-card {
+      min-height: auto;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 2rem;
+      box-shadow: 0 22px 60px -32px rgba(34, 34, 59, 0.45);
+    }
+
+    .dark .detail-page-card {
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 22px 60px -32px rgba(0, 0, 0, 0.7);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .detail-page-shell {
+      padding: 1.5rem;
+    }
+
+    .detail-page-card {
+      padding: 2rem;
+    }
+  }
+}
+
 /* Search Animations */
 @keyframes search-overlay-enter {
   from {

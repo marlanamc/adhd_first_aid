@@ -9,12 +9,12 @@ export function ContentPageSkeleton({ className }: ContentPageSkeletonProps) {
   return (
     <div
       className={cn(
-        'min-h-screen flex flex-col items-center justify-center p-4 sm:p-6',
+        'min-h-screen flex flex-col',
         className
       )}
     >
-      <div className="w-full max-w-4xl mx-auto space-y-6">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-lg p-6 shadow-sm border border-white/20 dark:border-gray-700">
+      <div className="detail-page-shell">
+        <div className="detail-page-card space-y-6">
           <div className="flex items-center gap-4 mb-6">
             <Skeleton className="h-10 w-10 rounded-full shrink-0" />
             <div className="flex-1 space-y-2">

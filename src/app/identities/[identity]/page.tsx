@@ -323,8 +323,8 @@ export default function IdentityPage({ params }: IdentityPageProps) {
 
   return (
     <div className="min-h-screen relative">
-      <div className="max-w-5xl mx-auto px-6 py-8 pt-4">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
+      <div className="detail-page-shell">
+        <div className="detail-page-card">
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-4 mb-5">

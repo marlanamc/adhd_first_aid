@@ -409,8 +409,8 @@ export default function ComplexLoopPage({ params }: ComplexLoopPageProps) {
 
   return (
     <div className="min-h-screen relative">
-      <div className="max-w-5xl mx-auto px-6 py-4 sm:py-6 md:py-8 pt-8 sm:pt-10 md:pt-12">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg">
+      <div className="detail-page-shell">
+        <div className="detail-page-card">
           {/* Header */}
           <div className="mb-4 sm:mb-6 md:mb-8">
             <div className="flex items-center gap-4 mb-6">
