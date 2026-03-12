@@ -25,24 +25,24 @@ export const scripts: Script[] = [
     emoji: '🗣️',
     slug: 'how-to-talk-to-a-friend-who-doubts-adhd',
     content: {
-      intro: "When someone doubts your ADHD, it can feel invalidating and hurtful. Here's a gentle but firm script to help you navigate this conversation.",
+      intro: "When someone acts like your ADHD is fake or exaggerated, it can hit hard. These versions sound more human while still holding the line.",
       scripts: [
         {
           title: "For the Skeptical Friend",
-          content: `"I understand ADHD might seem overdiagnosed or trendy to you, but my experience is real. This isn't about making excuses—it's about understanding why my brain works differently. I'd appreciate your support rather than skepticism."`
+          content: `"I get that ADHD might sound overused to you, but this is not some trend for me. It affects my actual life. I am not making excuses. I am trying to explain what is going on with me, and I need support more than skepticism."`
         },
         {
           title: "When They Say 'Everyone's a Little ADHD'",
-          content: `"That's like saying everyone's a little diabetic because everyone gets tired sometimes. ADHD isn't just being distracted—it's a neurodevelopmental difference that affects my daily life in significant ways."`
+          content: `"Everybody gets distracted sometimes, but that is not the same thing. ADHD affects how I function every day, not just once in a while when I am having an off day."`
         },
         {
           title: "Setting a Boundary",
-          content: `"I'm not asking you to become an expert on ADHD, but I am asking you to trust my experience and respect that this is real for me. Can we agree on that?"`
+          content: `"I am not asking you to be an expert on ADHD. I am asking you to trust that this is real for me and not argue with my experience. Can we do that?"`
         }
       ],
       tips: [
         "Practice these phrases beforehand so they feel natural",
-        "Stay calm—your tone matters as much as your words",
+        "Stay calm, your tone matters as much as the words",
         "Remember: you don't need to convince everyone, just set boundaries",
         "It's okay to end the conversation if they remain dismissive"
       ]
@@ -54,19 +54,19 @@ export const scripts: Script[] = [
     emoji: '🩺',
     slug: 'how-to-ask-your-doctor-for-an-adhd-evaluation',
     content: {
-      intro: "Asking for an ADHD evaluation can feel daunting. Here's how to advocate for yourself with confidence and clarity.",
+      intro: "Asking for an evaluation can feel awkward and high stakes. These scripts keep it direct without sounding robotic.",
       scripts: [
         {
           title: "Opening the Conversation",
-          content: `"I'd like to discuss the possibility of an ADHD evaluation. I've been experiencing [specific symptoms] that are impacting my work/relationships/daily life, and I think ADHD might explain some of these challenges."`
+          content: `"I want to talk about getting evaluated for ADHD. I have been dealing with [specific symptoms], and they are affecting my work, relationships, and daily life. I think ADHD could be part of what is going on."`
         },
         {
           title: "When They Dismiss Your Concerns",
-          content: `"I understand you might not see ADHD immediately, but these symptoms are significantly affecting my quality of life. Could we explore this possibility or perhaps refer me to a specialist who can do a comprehensive evaluation?"`
+          content: `"I know ADHD might not be the first thing that comes to mind, but these symptoms are seriously affecting my life. If you do not think you can evaluate this, can you refer me to someone who can?"`
         },
         {
           title: "If They Say You're Too Old/Smart/Successful",
-          content: `"ADHD can present differently in adults and can be masked by intelligence or coping strategies I've developed over time. I'd appreciate a thorough evaluation to rule it in or out definitively."`
+          content: `"I know ADHD can look different in adults, especially when someone has spent years masking or overcompensating. I would still like a proper evaluation so we can rule it in or out based on the full picture."`
         }
       ],
       tips: [
@@ -83,15 +83,15 @@ export const scripts: Script[] = [
     emoji: '💕',
     slug: 'how-to-tell-your-partner-what-you-need',
     content: {
-      intro: "Clear communication about your ADHD needs can strengthen your relationship. Here's how to have this important conversation.",
+      intro: "Telling your partner what you need is easier when it sounds like you and not a therapy worksheet. These are more grounded starting points.",
       scripts: [
         {
           title: "Explaining Your ADHD",
-          content: `"I want to help you understand how my ADHD affects me so we can work together better. When I [specific behavior], it's not because I don't care—it's because my brain processes things differently."`
+          content: `"I want to explain what ADHD looks like for me so we can be on the same page. When I [specific behavior], it is not because I do not care. It is usually because my brain is dropping a ball somewhere."`
         },
         {
           title: "Asking for Specific Support",
-          content: `"It would really help me if you could [specific request]. For example, when we make plans, could you send me a reminder text the day before? It's not that I don't value our time together—my brain just needs that extra support."`
+          content: `"It would help me a lot if you could [specific request]. For example, if we make plans, can you text me the day before? It is not because I do not care about our time. I just do better with an extra prompt."`
         },
         {
           title: "When You Make a Mistake",
@@ -112,7 +112,7 @@ export const scripts: Script[] = [
     emoji: '😔',
     slug: 'what-to-say-when-you-forgot-again',
     content: {
-      intro: "ADHD memory challenges can strain relationships. Here's how to acknowledge, apologize, and move forward constructively.",
+      intro: "Forgetting something again can bring up guilt fast. These scripts own it without spiraling.",
       scripts: [
         {
           title: "Taking Responsibility",
@@ -120,7 +120,7 @@ export const scripts: Script[] = [
         },
         {
           title: "When Someone's Frustrated",
-          content: `"I can hear that you're frustrated, and I don't blame you. I'm frustrated with myself too. My forgetting isn't about you not being important to me—you are incredibly important. Can we brainstorm some systems to help me remember better?"`
+          content: `"I can hear that you are frustrated, and I get why. I am frustrated too. Me forgetting is not about you not mattering to me, because you do. Can we figure out a better system so this does not keep happening?"`
         },
         {
           title: "Making Amends",
@@ -141,11 +141,11 @@ export const scripts: Script[] = [
     emoji: '💼',
     slug: 'how-to-ask-your-boss-for-accommodations',
     content: {
-      intro: "Requesting workplace accommodations is your right. Here's how to approach this conversation professionally and effectively.",
+      intro: "Asking for accommodations at work can feel loaded. These keep it clear, calm, and professional.",
       scripts: [
         {
           title: "Initial Request",
-          content: `"I'd like to schedule a meeting to discuss some workplace accommodations that would help me perform my job more effectively. I have ADHD, which affects [specific work areas], and there are some reasonable adjustments that could really improve my productivity."`
+          content: `"I would like to set up time to talk about a few accommodations that would help me do my job more effectively. I have ADHD, and it affects [specific work areas]. I have a couple of practical adjustments in mind that would make a real difference."`
         },
         {
           title: "Explaining the Need",
@@ -170,11 +170,11 @@ export const scripts: Script[] = [
     emoji: '💙',
     slug: 'im-trying-my-best-to-family-friends-self',
     content: {
-      intro: "Sometimes you need to remind others—and yourself—that you're doing your best with the brain you have.",
+      intro: "Sometimes you need words for the moment when you are trying so hard and someone still does not see it, including you.",
       scripts: [
         {
           title: "To Family/Friends",
-          content: `"I know it might not always look like it, but I am trying my best. My ADHD brain works differently, and what looks effortless for you might be incredibly difficult for me. I'm not making excuses—I'm explaining my reality."`
+          content: `"I know it might not always look like it, but I really am trying. My brain does not handle things the same way yours might. What looks easy from the outside can take a ton out of me. I am not making excuses. I am trying to be honest about what is hard."`
         },
         {
           title: "When Someone Says 'Just Try Harder'",
@@ -187,7 +187,7 @@ export const scripts: Script[] = [
       ],
       tips: [
         "Remember: effort and results aren't always proportional with ADHD",
-        "Your best might look different day to day—that's okay",
+        "Your best might look different day to day, and that is okay",
         "Focus on progress, not perfection",
         "Surround yourself with people who understand and support you"
       ]
@@ -199,7 +199,7 @@ export const scripts: Script[] = [
     emoji: '🔋',
     slug: 'declining-an-invite-overwhelmed',
     content: {
-      intro: "When you're running on empty, saying no is self-care. Here's how to decline plans without guilt.",
+      intro: "When you are completely drained, a real no is kinder than a fake yes. These keep it simple and honest.",
       scripts: [
         {
           title: "The Simple No",
@@ -228,7 +228,7 @@ export const scripts: Script[] = [
     emoji: '👯',
     slug: 'asking-for-body-doubling',
     content: {
-      intro: "Body doubling (working alongside someone) is a powerful ADHD tool. Here's how to ask for it.",
+      intro: "Body doubling helps a lot, but asking for it can feel weird if you have never said it out loud. These make it sound normal.",
       scripts: [
         {
           title: "To a Friend/Partner",
@@ -236,11 +236,11 @@ export const scripts: Script[] = [
         },
         {
           title: "Virtual Body Doubling",
-          content: `"Hey, do you have any work to do? I need to focus for an hour – want to jump on a silent video call and work 'together'?"`
+          content: `"Hey, do you have stuff to do too? I need to focus for an hour. Want to sit on a silent video call and work at the same time?"`
         },
         {
           title: "Explaining Why It Helps",
-          content: `"I just need a 'body double' – basically, your presence helps anchor my attention so I don't drift off. It's like having a gym buddy but for chores/work."`
+          content: `"I just need a body double. Basically, having another person there helps me stay anchored so I do not drift off. It is kind of like having a gym buddy, but for chores or work."`
         }
       ],
       tips: [
@@ -257,11 +257,11 @@ export const scripts: Script[] = [
     emoji: '🛡️',
     slug: 'responding-to-youre-just-lazy',
     content: {
-      intro: "The 'lazy' label is a common ADHD wound. Here's how to defend yourself and correct the narrative.",
+      intro: "Being called lazy hits a nerve for a reason. These responses push back without sounding rehearsed.",
       scripts: [
         {
           title: "Fact-Based Correction",
-          content: `"Actually, laziness is a choice – it's deciding not to do something you don't care about. Executive dysfunction (which is what I have) is wanting to do the thing, but being chemically unable to initiate it. There's a big difference."`
+          content: `"This is not me choosing not to care. The problem is that I want to do it and still cannot get myself to start. That is very different from being lazy."`
         },
         {
           title: "Setting a Firm Boundary",
@@ -269,7 +269,7 @@ export const scripts: Script[] = [
         },
         {
           title: "The Internal Dialogue (Self-Defense)",
-          content: `"I am not lazy. I am dealing with a invisible disability that affects my motivation and energy. I am doing the best I can."`
+          content: `"I am not lazy. I am dealing with an invisible disability that affects motivation, energy, and follow-through. I am doing the best I can."`
         }
       ],
       tips: [
@@ -286,7 +286,7 @@ export const scripts: Script[] = [
     emoji: '👻',
     slug: 'the-i-ghosted-you-re-entry',
     content: {
-      intro: "You didn't text back for 3 weeks, and now the shame is making it impossible to text back at all. Here's how to break the silence.",
+      intro: "When you disappear and then feel too weird to come back, you need something that sounds real, not overexplained.",
       scripts: [
         {
           title: "The Honest Truth",
@@ -294,7 +294,7 @@ export const scripts: Script[] = [
         },
         {
           title: "The 'No Excuse' Approach",
-          content: `"I am so sorry for the radio silence! Life got overwhelming and I accidentally went into hibernation mode. I'm resurfacing now—how are you?"`
+          content: `"I am so sorry I disappeared. Life got really overwhelming and then I got weird about replying because it had been so long. I am popping back up now. How are you?"`
         },
         {
           title: "The Low-Pressure Check-in",
@@ -302,7 +302,7 @@ export const scripts: Script[] = [
         }
       ],
       tips: [
-        "Don't wait for 'the perfect time' to reply—do it badly now rather than perfectly never",
+        "Do not wait for the perfect reply, send the imperfect one now",
         "Most friends won't be mad, they'll just be glad you're back",
         "Avoid over-explaining the specific reasons (too many details can sound like excuses)"
       ]
@@ -314,7 +314,7 @@ export const scripts: Script[] = [
     emoji: "🤯",
     slug: "sensory-overload-exit-strategy",
     content: {
-      intro: "When you are about to explode from noise/lights/textures and need to leave NOW without causing a scene.",
+      intro: "When you are about to hit sensory overload and need out fast, these help you leave without a whole explanation.",
       scripts: [
         {
           title: "To a Boss/Colleague",
@@ -322,7 +322,7 @@ export const scripts: Script[] = [
         },
         {
           title: "To Friends/Family (Code Red)",
-          content: `"I am feeling really overstimulated right now and need to reduce sensory input before I get irritable. I'm going to go sit in the quiet room/car for a bit. Please don't come check on me, I just need silence."`
+          content: `"I am getting really overstimulated and need quiet before I tip over the edge. I am going to sit in the quiet room or in the car for a bit. Please do not come check on me. I just need silence for a minute."`
         },
         {
           title: "The Graceful Exit (Party/Event)",
@@ -330,7 +330,7 @@ export const scripts: Script[] = [
         }
       ],
       tips: [
-        "Use 'migraine' or 'headache' if you don't feel safe explaining sensory processing—people understand physical pain better",
+        "Use 'migraine' or 'headache' if you do not feel safe explaining sensory overload, people usually get physical pain faster",
         "Leaving *before* the meltdown is responsible self-care, not flaking",
         "It's okay to wear sunglasses indoors or earplugs"
       ]
@@ -342,11 +342,11 @@ export const scripts: Script[] = [
     emoji: "🍳",
     slug: "the-i-cant-cook-negotiation",
     content: {
-      intro: "When you have zero executive function for meal prep and need to communicate that to a partner or family member without shame.",
+      intro: "When the idea of figuring out food makes you want to cry, you need words that sound normal and not dramatic.",
       scripts: [
         {
           title: "The Capacity Check",
-          content: `"I have zero executive function left for cooking tonight. The idea of deciding/chopping is making me panic. Can we do 'fend for yourself' night, or can you take lead on food?"`
+          content: `"I have nothing left for cooking tonight. Even deciding what to make feels like too much. Can we do fend-for-yourself night, or can you take the lead on food?"`
         },
         {
           title: "The Compromise",
@@ -354,12 +354,12 @@ export const scripts: Script[] = [
         },
         {
           title: "Setting the Standard (Long term)",
-          content: `"I'm realizing that me cooking on weeknights is leading to burnout/takeout. Can we simplify our meal plan? I need 'girl tax' meals (cheese, crackers, fruit) to be an acceptable dinner option."`
+          content: `"I am realizing that trying to cook on weeknights is burning me out and setting us up for takeout. Can we make the meal plan simpler? I need low-effort meals like cheese, crackers, and fruit to count as a valid dinner sometimes."`
         }
       ],
       tips: [
         "Fed is best. Cereal for dinner is morally neutral.",
-        "Separate the 'decision' of food from the 'act' of cooking—often the decision is the hardest part",
+        "Separate the decision about food from the act of cooking, because choosing is often the hardest part",
         "Keep 'emergency meals' (frozen pizza) for exactly these nights"
       ]
     }
