@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from 'react'
 import { ArrowLeft, FileText, Info, Lightbulb, AlertTriangle, Zap, Code, Quote, ChevronDown } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { type Guide } from '@/lib/markdown'
 import ReactMarkdown from 'react-markdown'
@@ -291,7 +290,6 @@ const markdownComponents: any = {
     </h4>
   ),
   p: ({children}: any) => {
-    const text = typeof children === 'string' ? children : ''
     // Check for checklist items that got parsed as paragraphs or bold starts
     if (typeof children === 'string' && (children.startsWith('✅') || children.startsWith('❌'))) {
        return (
@@ -310,9 +308,13 @@ const markdownComponents: any = {
     </ul>
   ),
   li: ({children}: any) => {
+    const hasNodeAndChildren = (value: unknown): value is { node?: { tagName?: string }; children?: unknown } => {
+      return typeof value === 'object' && value !== null
+    }
+
     // Handling for simple list items that might be checklists
-    const content = React.isValidElement(children) && children.props.node?.tagName === 'p' 
-        ? children.props.children 
+    const content = React.isValidElement(children) && hasNodeAndChildren(children.props) && children.props.node?.tagName === 'p'
+        ? children.props.children
         : children;
         
     return (
@@ -331,11 +333,15 @@ const markdownComponents: any = {
   ),
   blockquote: ({children}: any) => {
     // Logic to render callouts
-     const extractText = (node: unknown): string => {
+      const hasChildrenProp = (value: unknown): value is { children?: unknown } => {
+        return typeof value === 'object' && value !== null && 'children' in value
+      }
+
+      const extractText = (node: unknown): string => {
         if (typeof node === 'string') return node
+        if (typeof node === 'number') return String(node)
         if (Array.isArray(node)) return node.map(extractText).join('')
-        if (node && typeof node === 'object' && 'props' in node && 
-            node.props && typeof node.props === 'object' && 'children' in node.props) {
+        if (React.isValidElement(node) && hasChildrenProp(node.props)) {
           return extractText(node.props.children)
         }
         return ''
